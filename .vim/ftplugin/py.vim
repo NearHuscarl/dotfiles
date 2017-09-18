@@ -1,0 +1,2 @@
+setlocal omnifunc=pythoncomplete#Complete
+setlocal foldmethod=indent

@@ -1,0 +1,35 @@
+# https://stackoverflow.com/questions/987142/make-gitignore-ignore-everything-except-a-few-files
+
+# Exclude parent directory ($HOME/)
+/*
+
+# Then only reinclude necessary files/folders in parent dir
+!/README.md
+!/.bashrc
+!/.inputrc
+!/.gitignore
+
+!/bin/
+
+# Repeat the process for subdir
+!/.config/
+/.config/*
+!/.config/compton.conf
+!/.config/i3/
+!/.config/git/
+!/.config/ncmpcpp/
+!/.config/neofetch/
+!/.config/polybar/
+!/.config/ranger/
+!/.config/rofi/
+!/.config/xfce4/
+!/.config/zathura/
+
+!/.vim/
+/.vim/undo/*
+/.vim/plugged/*
+/.vim/session/*
+/.vim/swapfiles/*
+
+
+# Specific exclude

@@ -1,0 +1,119 @@
+#!/bin/bash
+
+# ============================================================================
+# File:        alias-utils
+# Description: Function for custom alias script
+# Author:      Near Huscarl <near.huscarl@gmail.com>
+# Last Change: Mon Sep 18 17:15:30 +07 2017
+# Licence:     BSD 3-Clause license
+# Note:        N/A
+# ============================================================================
+
+function alias-tree() {
+   local pwd=${1:-$(pwd)}
+   find $pwd -print | sed -e "s;$pwd;\.;g;s;[^/]*\/;|__;g;s;__|; |;g"
+}
+
+# pacman
+function alias-pac-install() {
+   sudo pacman -S "$@"
+   [[ -x $HOME/bin/pacMerge ]] && pacMerge
+}
+
+function alias-pac-update() {
+   sudo pacman -Syu
+   [[ -x $HOME/bin/pacMerge ]] && pacMerge
+}
+
+# list nth last explicitly installed packages which is not in base/base-devel group 
+function alias-pac-latest-e() {
+   explicitPkgs=$(comm -23 <(pacman -Qqe | sort) <(pacman -Qqg base base-devel | sort))
+   expac -HM --timefmt='%Y-%m-%d %T' '%l\t%-20n\t%m' $explicitPkgs  | sort | tail -n ${1:-10}
+}
+
+# print package's dependencies
+function alias-pac-dep() {
+   if [[ $# == 0 ]]; then
+      printf "Please enter a package name\n"
+   else
+      pacman -Si $1 | awk -F'[:<=>]' '/^Depends/ {print $2}' | xargs -n1 | sort -u
+   fi
+}
+
+function alias-aur-desc() {
+   pacaur -Si $@ | grep Description | sed -e "s/^Description.*://"
+}
+
+function alias-aur-size() {
+   pacaur -Qi $@ | grep "Installed Size" | sed -e "s/^Installed Size.*://"
+}
+
+function alias-aur-dep() {
+   if [[ $# == 0 ]]; then
+      printf "Please enter a package name\n"
+   else
+      pacman -Qi $1 | awk -F'[:<=>]' '/^Depends/ {print $2}' | xargs -n1 | sort -u
+   fi
+}
+
+function alias-gdiff() {
+   vim $1 -c "Gdiff"
+}
+
+function alias-gdiff-old() {
+   [[ $# == 0 ]] && git diff || git diff HEAD~$1
+}
+
+function alias-size() {
+   du -h --max-depth=${1:-0}
+}
+
+function alias-size-l() {
+   du -h --max-depth=${1:-0} --block-size=M | sort -n
+}
+
+function alias-pic() {
+   shopt -s nullglob
+
+   # picture extensions
+   local picExt="(jpg|png)"
+   local pwd=$(pwd)
+
+   # get all *.(jpg|png) of current path
+   local allPath=("$pwd"/*.@$picExt)
+
+   # remove $(pwd) prefix, only keep file names
+   allPath=("${allPath[@]#"$pwd/"}")
+
+   for i in "${!allPath[@]}"; do
+      if [[ "${allPath[$i]}" == "$1" ]]; then
+         # open sxiv in 
+         # (s)cale mode: (h)eight
+         # hide (b)ottom info
+         # search dirs (r)ecursively for images
+         # open at pic (n)umber <NUM> which is the selected picture
+         sxiv -s h -b -n "$((i+1))" *.@$picExt
+         shopt -u nullglob
+         return 0
+      fi
+   done
+
+}
+
+function alias-toggle-tray() {
+   local configPath="$HOME/.config/polybar/config"
+   if grep "^tray-position" "$configPath" 1> /dev/null; then
+      sed -i 's/^tray-position/;tray-position/' $HOME/.config/polybar/config
+   else
+      sed -i 's/^;tray-position/tray-position/' $HOME/.config/polybar/config
+   fi
+}
+
+function alias-rgr() {
+   rootDir=$(git rev-parse --show-toplevel 2> /dev/null)
+   if [[ $? == 0 ]]; then
+      rg "$@" $rootDir
+   else
+      rg "$@" $HOME
+   fi
+}

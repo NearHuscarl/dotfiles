@@ -1,0 +1,30 @@
+!_TAG_FILE_SORTED	2	/0=unsorted, 1=sorted, 2=foldcase/
+alias	/home/near/bin/alias-utils	/^function alias-aur-dep() {$/;"	f	language:Sh
+alias	/home/near/bin/alias-utils	/^function alias-aur-desc() {$/;"	f	language:Sh
+alias	/home/near/bin/alias-utils	/^function alias-aur-size() {$/;"	f	language:Sh
+alias	/home/near/bin/alias-utils	/^function alias-gdiff() {$/;"	f	language:Sh
+alias	/home/near/bin/alias-utils	/^function alias-gdiff-old() {$/;"	f	language:Sh
+alias	/home/near/bin/alias-utils	/^function alias-pac-dep() {$/;"	f	language:Sh
+alias	/home/near/bin/alias-utils	/^function alias-pac-install() {$/;"	f	language:Sh
+alias	/home/near/bin/alias-utils	/^function alias-pac-latest-e() {$/;"	f	language:Sh
+alias	/home/near/bin/alias-utils	/^function alias-pac-update() {$/;"	f	language:Sh
+alias	/home/near/bin/alias-utils	/^function alias-pic() {$/;"	f	language:Sh
+alias	/home/near/bin/alias-utils	/^function alias-rgr() {$/;"	f	language:Sh
+alias	/home/near/bin/alias-utils	/^function alias-size() {$/;"	f	language:Sh
+alias	/home/near/bin/alias-utils	/^function alias-size-l() {$/;"	f	language:Sh
+alias	/home/near/bin/alias-utils	/^function alias-toggle-tray() {$/;"	f	language:Sh
+alias	/home/near/bin/alias-utils	/^function alias-tree() {$/;"	f	language:Sh
+fco	/home/near/bin/fzf-script	/^fco() {$/;"	f	language:Sh
+fd	/home/near/bin/fzf-script	/^fd() {$/;"	f	language:Sh
+fe	/home/near/bin/fzf-script	/^fe() {$/;"	f	language:Sh
+fee	/home/near/bin/fzf-script	/^fee() {$/;"	f	language:Sh
+ff	/home/near/bin/fzf-script	/^ff() {$/;"	f	language:Sh
+fh	/home/near/bin/fzf-script	/^fh() {$/;"	f	language:Sh
+fkill	/home/near/bin/fzf-script	/^fkill() {$/;"	f	language:Sh
+fmpd	/home/near/bin/fzf-script	/^fmpd() {$/;"	f	language:Sh
+gb	/home/near/bin/fzf-script	/^gb() {$/;"	f	language:Sh
+gf	/home/near/bin/fzf-script	/^gf() {$/;"	f	language:Sh
+gh	/home/near/bin/fzf-script	/^gh() {$/;"	f	language:Sh
+gr	/home/near/bin/fzf-script	/^gr() {$/;"	f	language:Sh
+gt	/home/near/bin/fzf-script	/^gt() {$/;"	f	language:Sh
+is_in_git_repo	/home/near/bin/fzf-script	/^is_in_git_repo() {$/;"	f	language:Sh

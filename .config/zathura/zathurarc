@@ -1,0 +1,107 @@
+# zathurarc
+
+# settings
+set font "roboto normal 9"
+set page-padding 10
+set window-height 1024
+set window-width 768
+set adjust-open width
+set show-scrollbars true
+set first-page-column 1
+set window-title-basename true
+set selection-clipboard clipboard
+set smooth-scroll "true"
+set guioptions "sv"
+set show-hidden "true"
+# keep the color of image when go to dark mode
+set recolor-reverse-video "true"
+
+# key bindings
+
+# Why are these only defined for normal mode by default?
+map [fullscreen] f follow
+map [fullscreen] d toggle_page_mode 2
+map [fullscreen] j scroll down
+map [fullscreen] k scroll up
+
+map [index] q quit
+
+# not fucking working
+map [normal]     <A-i> abort
+map [fullscreen] <A-i> abort
+
+map [normal]     w adjust_window width
+map [fullscreen] w adjust_window width
+
+map [normal]     b adjust_window best-fit
+map [fullscreen] b adjust_window best-fit
+
+map [normal]     <A-l> rotate rotate-cw
+map [fullscreen] <A-l> rotate rotate-cw
+map [normal]     <A-h> rotate rotate-ccw
+map [fullscreen] <A-h> rotate rotate-ccw
+
+map [normal]     s toggle_statusbar
+map [fullscreen] s toggle_statusbar
+
+map [normal]     <A-i> toggle_inputbar
+map [fullscreen] <A-i> toggle_inputbar
+
+map [normal]     r recolor
+map [fullscreen] r recolor
+
+map [normal]     p print
+map [fullscreen] p print
+
+# map [normal]     gg goto top
+# map [fullscreen] gg goto top
+map [normal]     g goto
+map [fullscreen] g goto
+
+map [normal]     O     jumplist forward
+map [fullscreen] O     jumplist forward
+map [normal]     <A-o> jumplist backward
+map [fullscreen] <A-o> jumplist backward
+
+map [normal]     <A-f> toggle_fullscreen
+map [fullscreen] <A-f> toggle_fullscreen
+
+map [normal]     <Tab> toggle_index
+map [fullscreen] <Tab> toggle_index
+
+# colors
+set index-bg "#1F2D3A"
+set index-fg "#ECF0F1"
+set index-active-fg "#ECF0F1"
+set index-active-bg "#16A085"
+
+set highlight-color "#F39C12"
+set highlight-active-color "#E74C3C"
+set highlight-transparency 0.6
+
+set completion-fg "#84888B"
+set completion-bg "#1F2D3A"
+set completion-group-fg "#ECF0F1"
+set completion-group-bg "#1F2D3A"
+set completion-highlight-fg "#ECF0F1"
+set completion-highlight-bg "#16A085"
+
+set recolor "true"
+set recolor-darkcolor "#84888B"
+set recolor-lightcolor "#1F2D3A"
+
+set statusbar-fg "#84888B"
+set statusbar-bg "#2C3E50"
+set inputbar-fg "#ECF0F1"
+set inputbar-bg "#1F2D3A"
+
+set notification-warning-bg "#F39C12"
+set notification-warning-fg "#1F2D3A"
+set notification-error-bg "#C0392B"
+set notification-error-fg "#ECF0F1"
+set notification-bg "#27AE60"
+set notification-fg "#ECF0F1"
+
+# not working
+set default-bg "#1F2D3A"
+set default-fg "#ECF0F1"

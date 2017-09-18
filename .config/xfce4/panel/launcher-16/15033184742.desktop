@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Google Chrome
+Comment=Access the Internet
+Exec=/usr/bin/google-chrome-stable %U
+Icon=google-chrome
+Path=
+Terminal=false
+StartupNotify=false
+X-XFCE-Source=file:///home/near/Desktop/Google%20Chrome.desktop

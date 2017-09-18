@@ -1,0 +1,386 @@
+!_TAG_FILE_SORTED	2	/0=unsorted, 1=sorted, 2=foldcase/
+#	/home/near/.vim/plugin/00_config.vim	/^map #  <Plug>(incsearch-nohl-#)zz$/;"	m	language:Vim
+$	/home/near/.vim/plugin/00_config.vim	/^nnoremap $ g$|                                     "$ version that treat wrapped line as another line$/;"	m	language:Vim
+$MYVIMRC	/home/near/.vim/plugin/00_config.vim	/^   let $MYVIMRC = $HOME.'\/.vim\/plugin\/00_config.vim'$/;"	v	language:Vim
+$MYVIMRC	/home/near/.vim/plugin/00_config.vim	/^   let $MYVIMRC = $HOME.'\\vimfiles\\plugin\\00_config.vim'$/;"	v	language:Vim
+%	/home/near/.vim/plugin/00_config.vim	/^nnoremap % %zz|                                    "Jump between curly braces ("{", "}") and zz$/;"	m	language:Vim
+'	/home/near/.vim/plugin/00_config.vim	/^nnoremap ' `|                                      "' to jump to mark (line and column)$/;"	m	language:Vim
+*	/home/near/.vim/plugin/00_config.vim	/^map *  <Plug>(incsearch-nohl-*)zz$/;"	m	language:Vim
+-	/home/near/.vim/plugin/00_config.vim	/^nnoremap - :w<CR>|                                 "Write changes$/;"	m	language:Vim
+/	/home/near/.vim/plugin/00_config.vim	/^map \/  <Plug>(incsearch-forward)$/;"	m	language:Vim
+0	/home/near/.vim/plugin/00_config.vim	/^nnoremap 0 g0|                                     "0 version that treat wrapped line as another line$/;"	m	language:Vim
+:	/home/near/.vim/plugin/00_config.vim	/^nnoremap :   =|                                    "Indent + motion$/;"	m	language:Vim
+:	/home/near/.vim/plugin/00_config.vim	/^vnoremap :  =$/;"	m	language:Vim
+::	/home/near/.vim/plugin/00_config.vim	/^nnoremap :: ==|                                    "Indent$/;"	m	language:Vim
+::	/home/near/.vim/plugin/00_config.vim	/^vnoremap :: ==$/;"	m	language:Vim
+;	/home/near/.vim/plugin/00_config.vim	/^nnoremap ;   :|                                    "No need to shift ; anymore to enter command mode$/;"	m	language:Vim
+;	/home/near/.vim/plugin/00_config.vim	/^vnoremap ; y:<C-r>"<CR>|                           "Execute selected command in visual block$/;"	m	language:Vim
+<	/home/near/.vim/plugin/00_config.vim	/^vnoremap < <gv|                                    "Make indent easier$/;"	m	language:Vim
+<A-'>	/home/near/.vim/plugin/00_config.vim	/^cnoremap <A-'> <C-Right>|                          "Forward one nail word$/;"	m	language:Vim
+<A-'>	/home/near/.vim/plugin/00_config.vim	/^inoremap <A-'> <C-Right>|                          "Go to the next word$/;"	m	language:Vim
+<A-'>	/home/near/.vim/plugin/00_config.vim	/^nnoremap <A-'> :bnext<CR>|                         "Go to the next buffer$/;"	m	language:Vim
+<A-+>	/home/near/.vim/plugin/00_config.vim	/^nnoremap <silent><A-+> :resize +5<CR>|             "Increase window height by 5$/;"	m	language:Vim
+<A-,>	/home/near/.vim/plugin/00_config.vim	/^cnoremap <A-,> <Home>|                             "Move to the beginning of the line$/;"	m	language:Vim
+<A-,>	/home/near/.vim/plugin/00_config.vim	/^inoremap <expr><A-,>   pumvisible() ? "\\<PageUp>"      : "\\<Home>"$/;"	m	language:Vim
+<A-,>	/home/near/.vim/plugin/00_config.vim	/^nnoremap <A-,> :tabprevious<CR>|                   "Go to next tab$/;"	m	language:Vim
+<A-->	/home/near/.vim/plugin/00_config.vim	/^nnoremap <silent><A--> :vert res -5<CR>|           "Decrease window width by 5$/;"	m	language:Vim
+<A-.>	/home/near/.vim/plugin/00_config.vim	/^cnoremap <A-.> <End>|                              "Move to the end of the line$/;"	m	language:Vim
+<A-.>	/home/near/.vim/plugin/00_config.vim	/^inoremap <expr><A-.>   pumvisible() ? "\\<PageDown>"    : "\\<End>"$/;"	m	language:Vim
+<A-.>	/home/near/.vim/plugin/00_config.vim	/^nnoremap <A-.> :tabnext<CR>|                       "Go to previous tab$/;"	m	language:Vim
+<A-0>	/home/near/.vim/plugin/00_config.vim	/^   nnoremap <A-0> g,zz|                            "Jump forward$/;"	m	language:Vim
+<A-0>	/home/near/.vim/plugin/00_config.vim	/^cnoremap <A-0> <C-Right><C-w><BS>|                 "Delete forward word (Work for 1 whitespace only)$/;"	m	language:Vim
+<A-0>	/home/near/.vim/plugin/00_config.vim	/^inoremap <A-0> <Esc>lmaed`axi|                     "Delete next word$/;"	m	language:Vim
+<A-9>	/home/near/.vim/plugin/00_config.vim	/^   nnoremap <A-9> g;zz|                            "Jump backward$/;"	m	language:Vim
+<A-9>	/home/near/.vim/plugin/00_config.vim	/^cnoremap <A-9> <C-w>|                              "Delete previous word$/;"	m	language:Vim
+<A-9>	/home/near/.vim/plugin/00_config.vim	/^inoremap <A-9> <C-w>|                              "Delete previous word$/;"	m	language:Vim
+<A-;>	/home/near/.vim/plugin/00_config.vim	/^cnoremap <A-;> <C-Left>|                           "Backward one word$/;"	m	language:Vim
+<A-;>	/home/near/.vim/plugin/00_config.vim	/^inoremap <A-;> <C-Left>|                           "Go to the previous word$/;"	m	language:Vim
+<A-;>	/home/near/.vim/plugin/00_config.vim	/^nnoremap <A-;> :bprevious<CR>|                     "Go to the previous buffer$/;"	m	language:Vim
+<A-=>	/home/near/.vim/plugin/00_config.vim	/^nnoremap <silent><A-=> :vert res +5<CR>|           "Increase window width by 5$/;"	m	language:Vim
+<A-a>	/home/near/.vim/plugin/00_config.vim	/^cnoremap <A-a> <C-r><C-a>|                         "Insert WORD under cursor$/;"	m	language:Vim
+<A-Down>	/home/near/.vim/plugin/00_config.vim	/^nmap <silent><A-Down> <Plug>FontsizeDec$/;"	m	language:Vim
+<A-e>	/home/near/.vim/plugin/00_config.vim	/^inoremap <expr><A-e>   pumvisible() ? "\\<C-y>"         : ""$/;"	m	language:Vim
+<A-e>	/home/near/.vim/plugin/00_config.vim	/^nnoremap <A-e> :enew<CR>|                          "Edit new buffer$/;"	m	language:Vim
+<A-F1>	/home/near/.vim/plugin/00_config.vim	/^nnoremap <A-F1> :ToggleMenuBar<CR>|                "Toggle menu bar$/;"	m	language:Vim
+<A-h>	/home/near/.vim/plugin/00_config.vim	/^   nnoremap <silent><A-h> 10<C-y>10k$/;"	m	language:Vim
+<A-h>	/home/near/.vim/plugin/00_config.vim	/^cnoremap <A-h> <Left>|                             "Go to the left one character$/;"	m	language:Vim
+<A-h>	/home/near/.vim/plugin/00_config.vim	/^inoremap <expr><A-h>   pumvisible() ? "\\<C-x>\\<Left>"  : "\\<Left>"$/;"	m	language:Vim
+<A-h>	/home/near/.vim/plugin/00_config.vim	/^nnoremap <silent> <A-h> :call smooth_scroll#up(15, 0, 3)<CR>$/;"	m	language:Vim
+<A-h>	/home/near/.vim/plugin/00_config.vim	/^vnoremap <silent> <A-h> 5<C-y>5k5<C-y>5k5<C-y>5k|  "Scroll 5 line below$/;"	m	language:Vim
+<A-i>	/home/near/.vim/plugin/00_config.vim	/^cnoremap <A-i> <C-c>|                              "Switch to normal mode from command mode$/;"	m	language:Vim
+<A-i>	/home/near/.vim/plugin/00_config.vim	/^inoremap <A-i> <Esc><Right>|                       "Switch to normal mode from insert mode$/;"	m	language:Vim
+<A-i>	/home/near/.vim/plugin/00_config.vim	/^vnoremap <A-i> <Esc>|                              "Switch to normal mode from visual mode$/;"	m	language:Vim
+<A-j>	/home/near/.vim/plugin/00_config.vim	/^   nnoremap <silent><A-j> 3<C-e>3j$/;"	m	language:Vim
+<A-j>	/home/near/.vim/plugin/00_config.vim	/^cnoremap <A-j> <C-n>|                              "Go to the next command in history$/;"	m	language:Vim
+<A-j>	/home/near/.vim/plugin/00_config.vim	/^inoremap <expr><A-j>   pumvisible() ? "\\<C-x>\\<Down>"  : "\\<Down>"$/;"	m	language:Vim
+<A-j>	/home/near/.vim/plugin/00_config.vim	/^nnoremap <silent> <A-j> :call smooth_scroll#down(6, 0, 2)<CR>$/;"	m	language:Vim
+<A-j>	/home/near/.vim/plugin/00_config.vim	/^vnoremap <silent> <A-j> 2<C-e>2j2<C-e>2j2<C-e>2j|  "Scroll 2 line below$/;"	m	language:Vim
+<A-k>	/home/near/.vim/plugin/00_config.vim	/^   nnoremap <silent><A-k> 3<C-y>3k$/;"	m	language:Vim
+<A-k>	/home/near/.vim/plugin/00_config.vim	/^cnoremap <A-k> <C-p>|                              "Go to the previous command in history$/;"	m	language:Vim
+<A-k>	/home/near/.vim/plugin/00_config.vim	/^cnoremap <A-k> <C-r><C-w>|                         "Insert word under cursor$/;"	m	language:Vim
+<A-k>	/home/near/.vim/plugin/00_config.vim	/^inoremap <expr><A-k>   pumvisible() ? "\\<C-x>\\<Up>"    : "\\<Up>"$/;"	m	language:Vim
+<A-k>	/home/near/.vim/plugin/00_config.vim	/^nnoremap <silent> <A-k> :call smooth_scroll#up(6, 0, 2)<CR>$/;"	m	language:Vim
+<A-k>	/home/near/.vim/plugin/00_config.vim	/^vnoremap <silent> <A-k> 2<C-y>2k2<C-y>2k2<C-y>2k|  "Scroll 2 line above$/;"	m	language:Vim
+<A-l>	/home/near/.vim/plugin/00_config.vim	/^   nnoremap <silent><A-l> 10<C-e>10j$/;"	m	language:Vim
+<A-l>	/home/near/.vim/plugin/00_config.vim	/^cnoremap <A-l> <Right>|                            "Go to the right one character$/;"	m	language:Vim
+<A-l>	/home/near/.vim/plugin/00_config.vim	/^inoremap <expr><A-l>   pumvisible() ? "\\<C-x>\\<Right>" : "\\<Right>"$/;"	m	language:Vim
+<A-l>	/home/near/.vim/plugin/00_config.vim	/^nnoremap <silent> <A-l> :call smooth_scroll#down(15, 0, 3)<CR>$/;"	m	language:Vim
+<A-l>	/home/near/.vim/plugin/00_config.vim	/^vnoremap <silent> <A-l> 5<C-e>5j5<C-e>5j5<C-e>5j|  "Scroll 5 line above$/;"	m	language:Vim
+<A-m>	/home/near/.vim/plugin/00_config.vim	/^inoremap <A-m> <Esc>zzli|                          "Make current line the center of window$/;"	m	language:Vim
+<A-m>	/home/near/.vim/plugin/00_config.vim	/^nnoremap <A-m>     <C-w>w|                         "Cycle through panes$/;"	m	language:Vim
+<A-n>	/home/near/.vim/plugin/00_config.vim	/^cnoremap <A-n> <C-n>|                              "Go to the next command in history$/;"	m	language:Vim
+<A-n>	/home/near/.vim/plugin/00_config.vim	/^inoremap <expr><A-n>   pumvisible() ? "\\<Down>"        : "\\<C-n>"$/;"	m	language:Vim
+<A-n>	/home/near/.vim/plugin/00_config.vim	/^nnoremap <A-n>     <C-w>W|                         "Cycle through panes (backward)$/;"	m	language:Vim
+<A-o>	/home/near/.vim/plugin/00_config.vim	/^   nnoremap <A-o> <C-o>zz|                         "Jump back (include non-tag jump)$/;"	m	language:Vim
+<A-p>	/home/near/.vim/plugin/00_config.vim	/^cnoremap <A-p> <C-p>|                              "Go to the previous command in history$/;"	m	language:Vim
+<A-p>	/home/near/.vim/plugin/00_config.vim	/^inoremap <expr><A-p>   pumvisible() ? "\\<Up>"          : ""$/;"	m	language:Vim
+<A-r>	/home/near/.vim/plugin/00_config.vim	/^cnoremap <A-r> <C-r>*|                             "Paste yanked text in command line$/;"	m	language:Vim
+<A-r>	/home/near/.vim/plugin/00_config.vim	/^inoremap <A-r> <C-r>*|                             "Paste in insert mode$/;"	m	language:Vim
+<A-r>	/home/near/.vim/plugin/00_config.vim	/^inoremap <A-r> <C-r>|                              "Insert register ...$/;"	m	language:Vim
+<A-r>	/home/near/.vim/plugin/00_config.vim	/^nnoremap <A-r>     <C-w>r|                         "Rotate pane down\/right$/;"	m	language:Vim
+<A-R>	/home/near/.vim/plugin/00_config.vim	/^nnoremap <A-R>     <C-w>R|                         "Rotate pane up\/left$/;"	m	language:Vim
+<A-Space>	/home/near/.vim/plugin/00_config.vim	/^cnoremap <A-Space> <BS>|                           "Delete 1 character$/;"	m	language:Vim
+<A-Space>	/home/near/.vim/plugin/00_config.vim	/^inoremap <A-Space> <BS>|                           "Delete 1 character$/;"	m	language:Vim
+<A-Space>	/home/near/.vim/plugin/00_config.vim	/^nnoremap <A-Space> a<Space><Left><esc>|            "Insert a whitespace$/;"	m	language:Vim
+<A-t>	/home/near/.vim/plugin/00_config.vim	/^inoremap <A-t> <Esc>:TableModeToggle<CR>a$/;"	m	language:Vim
+<A-t>	/home/near/.vim/plugin/00_config.vim	/^nnoremap <A-t> <C-t>zz|                            "Jump back between tag$/;"	m	language:Vim
+<A-u>	/home/near/.vim/plugin/00_config.vim	/^cnoremap <A-u> <End><C-u>|                         "Delete current line$/;"	m	language:Vim
+<A-u>	/home/near/.vim/plugin/00_config.vim	/^inoremap <expr><A-u>   pumvisible() ? "\\<C-x>"         : "\\<Esc>0Di"$/;"	m	language:Vim
+<A-u>	/home/near/.vim/plugin/00_config.vim	/^nnoremap <A-u> <C-r>|                              "Redo$/;"	m	language:Vim
+<A-Up>	/home/near/.vim/plugin/00_config.vim	/^nmap <silent><A-Up>   <Plug>FontsizeInc$/;"	m	language:Vim
+<A-v>	/home/near/.vim/plugin/00_config.vim	/^nnoremap <A-v> <C-q>|                              "Visual block$/;"	m	language:Vim
+<A-v>	/home/near/.vim/plugin/00_config.vim	/^vnoremap <A-v> <C-q>|                              "Visual block (Use to switch to VBlock from Visual)$/;"	m	language:Vim
+<A-y>	/home/near/.vim/plugin/00_config.vim	/^cnoremap <silent><A-y> <C-f>yy:q<CR>|              "Copy command content$/;"	m	language:Vim
+<A-\>	/home/near/.vim/plugin/00_config.vim	/^nnoremap <A-\\> :OpenTagInVSplit<CR>zz|             "Open tag in vertical split$/;"	m	language:Vim
+<A-]>	/home/near/.vim/plugin/00_config.vim	/^nnoremap <A-]> g<C-]>zz|                           "Jump to definition (Open tag list if there are more than 1 tag)$/;"	m	language:Vim
+<A-_>	/home/near/.vim/plugin/00_config.vim	/^nnoremap <silent><A-_> :resize -5<CR>|             "Decrease window height by 5$/;"	m	language:Vim
+<C-o>	/home/near/.vim/plugin/00_config.vim	/^nnoremap <C-o> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR>$/;"	m	language:Vim
+<C-w>	/home/near/.vim/plugin/00_config.vim	/^nnoremap <C-w> :ToggleWrap<CR>|                     "Toggle wrap option$/;"	m	language:Vim
+<Enter>	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Enter> o<Esc>|                           "Make new line$/;"	m	language:Vim
+<F8>	/home/near/.vim/plugin/00_config.vim	/^nnoremap <F8> mzggg?G`z|                           "Encrypted with ROT13, just for fun$/;"	m	language:Vim
+<Leader>-	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>- :SudoWrite<CR>$/;"	m	language:Vim
+<Leader><Leader>U	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader><Leader>U :UltiSnipsEdit!<CR>|                   " Open all available files to select$/;"	m	language:Vim
+<Leader><Tab>	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader><Tab> :tabnew<CR>|                "Make a new tab$/;"	m	language:Vim
+<Leader>a	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>a :Ag<Space>|                     "Ag search (just like grep but faster) (example: Ag <Query> \/<Dir>)$/;"	m	language:Vim
+<Leader>a	/home/near/.vim/plugin/00_config.vim	/^vnoremap <Leader>a y:Ag <C-r>"<Space>|             "Ag search (just like grep but faster)$/;"	m	language:Vim
+<Leader>b	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>b  :Buffers<CR>$/;"	m	language:Vim
+<Leader>c	/home/near/.vim/plugin/00_config.vim	/^vnoremap <Leader>c y:CtrlP <C-r>"<CR>|             "CtrlP search$/;"	m	language:Vim
+<Leader>cp	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>cp :CtrlP<Space>|                 "CtrlP search$/;"	m	language:Vim
+<Leader>e/	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>e\/ :FilesRoot<CR>$/;"	m	language:Vim
+<Leader>ea	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>ea :FilesAll<CR>$/;"	m	language:Vim
+<Leader>eh	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>eh :Files $HOME<CR>$/;"	m	language:Vim
+<Leader>em	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>em :History<CR>$/;"	m	language:Vim
+<Leader>er	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>er :Files<CR>         " when using with vim-rooter, search for files in root project folder$/;"	m	language:Vim
+<Leader>ga	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>ga  :Git add %:p<CR>|             "Git add in vim!$/;"	m	language:Vim
+<Leader>gbl	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>gbl :Gblame<CR>|                  "Git blame in vim!$/;"	m	language:Vim
+<Leader>gbr	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>gbr :Gbrowse<CR>|                 "Open current file on github$/;"	m	language:Vim
+<Leader>gBR	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>gBR :Gbrowse<Space><C-d>|         "Open current file on github$/;"	m	language:Vim
+<Leader>gc	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>gc  :Gcommit<CR>|                 "Git commmit in vim!$/;"	m	language:Vim
+<Leader>gC	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>gC  :Gcommit<Space><C-d>|         "Git commmit in vim!$/;"	m	language:Vim
+<Leader>gd	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>gd  :Gdiff<CR>|                   "Git diff in vim!$/;"	m	language:Vim
+<Leader>gD	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>gD  :Gdiff<Space><C-d>|           "Git diff in vim!$/;"	m	language:Vim
+<Leader>gg	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>gg  :Ggrep! <C-r><C-w><CR><CR>|   "Find word under cursor in repo$/;"	m	language:Vim
+<Leader>gh	/home/near/.vim/plugin/00_config.vim	/^nnoremap <silent><Leader>gh $/;"	m	language:Vim
+<Leader>gL	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>gL  :Glog!<Space><C-d>|           "Load all version before$/;"	m	language:Vim
+<Leader>gl	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>gl$/;"	m	language:Vim
+<Leader>gm	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>gm  :Gmove<CR>|                   "Git move in vim!$/;"	m	language:Vim
+<Leader>gM	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>gM  :Gmove<Space><C-d>|           "Git move in vim!$/;"	m	language:Vim
+<Leader>gpl	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>gpl :Gpull<CR>|                   "Git pull in vim!$/;"	m	language:Vim
+<Leader>gPL	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>gPL :Gpull<Space><C-d>|           "Git pull in vim!$/;"	m	language:Vim
+<Leader>gps	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>gps :Gpush<CR>|                   "Git push in vim!$/;"	m	language:Vim
+<Leader>gPS	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>gPS :Gpush<Space><C-d>|           "Git push in vim!$/;"	m	language:Vim
+<Leader>gr	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>gr  :Gread<CR>|                   "Git read in vim!$/;"	m	language:Vim
+<Leader>gsc	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>gsc :Glog! --grep= -- %<C-Left><C-Left><Left>| "Search for commit message$/;"	m	language:Vim
+<Leader>gsd	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>gsd :Glog! -S -- %<C-Left><C-Left><Left>|      "Search content in diffs history$/;"	m	language:Vim
+<Leader>gst	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>gst :Gstatus<CR>|                 "Git status in vim!$/;"	m	language:Vim
+<Leader>gw	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>gw  :Gwrite<CR>|                  "Git write in vim!$/;"	m	language:Vim
+<Leader>h	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>h  :Helptags<CR>$/;"	m	language:Vim
+<Leader>H	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>H <C-w>H|                         "Move current pane to the far right$/;"	m	language:Vim
+<Leader>j	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>j  :Tags<CR>$/;"	m	language:Vim
+<Leader>J	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>J <C-w>J|                         "Move current pane to the very bottom$/;"	m	language:Vim
+<Leader>K	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>K <C-w>K|                         "Move current pane to the very top$/;"	m	language:Vim
+<Leader>l	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>l  :Lines<CR>$/;"	m	language:Vim
+<Leader>L	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>L <C-w>L|                         "Move current pane to the far left$/;"	m	language:Vim
+<Leader>m	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>m  :Maps<CR>$/;"	m	language:Vim
+<Leader>N	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>N :nohlsearch<CR>|                "diable highlight result$/;"	m	language:Vim
+<Leader>nf	/home/near/.vim/plugin/00_config.vim	/^nnoremap <silent><Leader>nf :NERDTreeFind<CR>|       " Press <Leader>Nf to go to the directory where current file is openned$/;"	m	language:Vim
+<Leader>nt	/home/near/.vim/plugin/00_config.vim	/^nnoremap <silent><Leader>nt :NERDTreeTabsToggle<CR>| "Toggle NERDTree and move cursor back to the last window$/;"	m	language:Vim
+<Leader>pC	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>pC :PlugClean!<CR>|                   "Clean directory$/;"	m	language:Vim
+<Leader>pc	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>pc :PlugClean<CR>|                    "Clean directory$/;"	m	language:Vim
+<Leader>pd	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>pd :PlugDiff<CR>|                     "Show changes between update$/;"	m	language:Vim
+<Leader>pi	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>pi :PlugInstall<Space><C-d>|          "Install new plugin$/;"	m	language:Vim
+<Leader>pi	/home/near/.vim/plugin/00_config.vim	/^vnoremap <Leader>pi y:PlugInstall<Space><C-r>"<CR>|    "Install plugin under cursor$/;"	m	language:Vim
+<Leader>ps	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>ps :PlugStatus<CR>|                   "Check plugin status$/;"	m	language:Vim
+<Leader>pu	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>pu :PlugUpdate<Space><C-d>|           "Update other plugins$/;"	m	language:Vim
+<Leader>pu	/home/near/.vim/plugin/00_config.vim	/^vnoremap <Leader>pu y:PlugUpdate<Space><C-r>"<CR>|     "Update plugin under cursor$/;"	m	language:Vim
+<Leader>pv	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>pv :PlugUpgrade<CR>|                  "Update vim-plug$/;"	m	language:Vim
+<leader>py	/home/near/.vim/plugin/00_config.vim	/^nnoremap <leader>py :echom expand("%:p")<CR>|      "Echo current file path$/;"	m	language:Vim
+<Leader>q	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>q :bp <Bar>:bd #<CR>|             "Delete current buffer$/;"	m	language:Vim
+<Leader>rb	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>rb :bufdo %s\/|                    "Replace across opening buffers$/;"	m	language:Vim
+<Leader>rb	/home/near/.vim/plugin/00_config.vim	/^vnoremap <Leader>rb y:bufdo %s\/<C-r>"\/|            "Replace across opening buffers with query is the selected word$/;"	m	language:Vim
+<Leader>rf	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>rf :%s\/|                          "Replace in whole file$/;"	m	language:Vim
+<Leader>rf	/home/near/.vim/plugin/00_config.vim	/^vnoremap <Leader>rf y:%s\/<C-r>"\/|                  "Replace in whole file with query is the selected word$/;"	m	language:Vim
+<Leader>rg	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>rg :Grep<CR>$/;"	m	language:Vim
+<Leader>rr	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>rr :.,.+s\/\/<Left><Left><Left>|    "Replace from current line to ...$/;"	m	language:Vim
+<Leader>rr	/home/near/.vim/plugin/00_config.vim	/^vnoremap <Leader>rr $/;"	m	language:Vim
+<Leader>S	/home/near/.vim/plugin/00_config.vim	/^nnoremap <silent><Leader>S$/;"	m	language:Vim
+<Leader>sc	/home/near/.vim/plugin/00_config.vim	/^nnoremap <silent><Leader>sc :call near#utils#SCloseLazyLoad()<CR>$/;"	m	language:Vim
+<Leader>sd	/home/near/.vim/plugin/00_config.vim	/^nnoremap <silent><Leader>sd :call near#utils#SDeleteLazyLoad()<CR>$/;"	m	language:Vim
+<Leader>so	/home/near/.vim/plugin/00_config.vim	/^nnoremap <silent><Leader>so :call near#utils#SOpenLazyLoad()<CR>$/;"	m	language:Vim
+<Leader>ss	/home/near/.vim/plugin/00_config.vim	/^nnoremap <silent><Leader>ss :call near#utils#SSaveLazyLoad()<CR>$/;"	m	language:Vim
+<Leader>sS	/home/near/.vim/plugin/00_config.vim	/^nnoremap <silent><Leader>sS :call near#utils#SSAVELazyLoad()<CR>$/;"	m	language:Vim
+<Leader>sv	/home/near/.vim/plugin/00_config.vim	/^nnoremap <silent><Leader>sv :call near#utils#SViewLazyLoad()<CR>$/;"	m	language:Vim
+<Leader>sV	/home/near/.vim/plugin/00_config.vim	/^nnoremap <silent><Leader>sV :call near#utils#SVIEWLazyLoad()<CR>$/;"	m	language:Vim
+<Leader>ta	/home/near/.vim/plugin/00_config.vim	/^   nnoremap <Leader>ta$/;"	m	language:Vim
+<Leader>tc	/home/near/.vim/plugin/00_config.vim	/^   nnoremap <Leader>tc$/;"	m	language:Vim
+<Leader>to	/home/near/.vim/plugin/00_config.vim	/^   nnoremap <Leader>to :Thesaurus<Space>$/;"	m	language:Vim
+<Leader>tV	/home/near/.vim/plugin/00_config.vim	/^   nnoremap <Leader>tV$/;"	m	language:Vim
+<Leader>tv	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>tv$/;"	m	language:Vim
+<Leader>tV	/home/near/.vim/plugin/00_config.vim	/^nnoremap <silent><Leader>tV :call near#utils#ToggleVerbose()<CR>$/;"	m	language:Vim
+<Leader>u	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>u :GundoToggle<CR>$/;"	m	language:Vim
+<Leader>U	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>U :UltiSnipsEdit<CR>|                            " Open new file to define snippets$/;"	m	language:Vim
+<Leader>x	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>x :e#<CR>|                        "Open last closed buffer (not really)$/;"	m	language:Vim
+<Leader>z	/home/near/.vim/plugin/00_config.vim	/^nnoremap <Leader>z zMzvzz|                         "Open current fold and close all other fold outside$/;"	m	language:Vim
+<S-o>	/home/near/.vim/plugin/00_config.vim	/^   nnoremap <S-o> <C-i>zz|                         "Jump forward (include non-tag jump)$/;"	m	language:Vim
+<S-Tab>	/home/near/.vim/plugin/00_config.vim	/^inoremap <S-Tab> <C-p>|                            "Go to previous selection in comepletion menu$/;"	m	language:Vim
+<Tab>	/home/near/.vim/plugin/00_config.vim	/^inoremap <silent><Tab> <C-R>=near#utils#UltiSnips_Complete()<CR>$/;"	m	language:Vim
+>	/home/near/.vim/plugin/00_config.vim	/^vnoremap > >gv|                                    "Make indent easier$/;"	m	language:Vim
+?	/home/near/.vim/plugin/00_config.vim	/^map ?  <Plug>(incsearch-backward)$/;"	m	language:Vim
+Ag	/home/near/.vim/plugin/00_config.vim	/^command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|copen 20|redraw!$/;"	c	language:Vim
+blacklist	/home/near/.vim/plugin/00_config.vim	/^let blacklist = ['nerdtree', 'qf', 'gundo', 'fugitiveblame', 'vim-plug']$/;"	v	language:Vim
+BufferIsEmpty	/home/near/.vim/plugin/00_config.vim	/^function! s:BufferIsEmpty()$/;"	f	language:Vim
+Buffers	/home/near/.vim/plugin/00_config.vim	/^command! -bang -nargs=? -complete=buffer Buffers$/;"	c	language:Vim
+charList	/home/near/.vim/plugin/00_config.vim	/^   let charList = [$/;"	v	language:Vim
+CloseEmptyBuffer	/home/near/.vim/plugin/00_config.vim	/^command! CloseEmptyBuffer                       call <SID>CloseEmptyBuffer()$/;"	c	language:Vim
+CloseEmptyBuffer	/home/near/.vim/plugin/00_config.vim	/^function! s:CloseEmptyBuffer()$/;"	f	language:Vim
+Colors	/home/near/.vim/plugin/00_config.vim	/^command! -bang Colors$/;"	c	language:Vim
+cs	/home/near/.vim/plugin/00_config.vim	/^nmap cs  <Plug>Csurround$/;"	m	language:Vim
+cS	/home/near/.vim/plugin/00_config.vim	/^nmap cS  <Plug>CSurround$/;"	m	language:Vim
+CscopeLoad	/home/near/.vim/plugin/00_config.vim	/^command! CscopeLoad                             call near#utils#CscopeLoad()$/;"	c	language:Vim
+ds	/home/near/.vim/plugin/00_config.vim	/^nmap ds  <Plug>Dsurround$/;"	m	language:Vim
+du	/home/near/.vim/plugin/00_config.vim	/^nnoremap <expr><silent> du near#utils#Nmap_du()|              "Update diff if it doesnt update automatically$/;"	m	language:Vim
+Eatchar	/home/near/.vim/plugin/00_config.vim	/^function! s:Eatchar(pat)$/;"	f	language:Vim
+ExistsInTab	/home/near/.vim/plugin/00_config.vim	/^command! -nargs=+ ExistsInTab                   echo near#utils#ExistsInTab(<f-args>)$/;"	c	language:Vim
+Files	/home/near/.vim/plugin/00_config.vim	/^command! -bang -nargs=? -complete=dir Files$/;"	c	language:Vim
+FilesAll	/home/near/.vim/plugin/00_config.vim	/^command! -bang FilesAll$/;"	c	language:Vim
+FilesRoot	/home/near/.vim/plugin/00_config.vim	/^command! -bang FilesRoot$/;"	c	language:Vim
+g#	/home/near/.vim/plugin/00_config.vim	/^map g# <Plug>(incsearch-nohl-g#)zz$/;"	m	language:Vim
+g*	/home/near/.vim/plugin/00_config.vim	/^map g* <Plug>(incsearch-nohl-g*)zz$/;"	m	language:Vim
+g/	/home/near/.vim/plugin/00_config.vim	/^map g\/ <Plug>(incsearch-stay)$/;"	m	language:Vim
+g:AutoPairsMoveCharacter	/home/near/.vim/plugin/00_config.vim	/^let g:AutoPairsMoveCharacter      = ''$/;"	v	language:Vim
+g:AutoPairsShortcutBackInsert	/home/near/.vim/plugin/00_config.vim	/^let g:AutoPairsShortcutBackInsert = ''$/;"	v	language:Vim
+g:AutoPairsShortcutFastWrap	/home/near/.vim/plugin/00_config.vim	/^let g:AutoPairsShortcutFastWrap   = ''$/;"	v	language:Vim
+g:AutoPairsShortcutJump	/home/near/.vim/plugin/00_config.vim	/^let g:AutoPairsShortcutJump       = ''$/;"	v	language:Vim
+g:AutoPairsShortcutToggle	/home/near/.vim/plugin/00_config.vim	/^let g:AutoPairsShortcutToggle     = ''$/;"	v	language:Vim
+g:bufferline_active_buffer_left	/home/near/.vim/plugin/00_config.vim	/^let g:bufferline_active_buffer_left  = '['$/;"	v	language:Vim
+g:bufferline_active_buffer_right	/home/near/.vim/plugin/00_config.vim	/^let g:bufferline_active_buffer_right = ']'$/;"	v	language:Vim
+g:bufferline_rotate	/home/near/.vim/plugin/00_config.vim	/^let g:bufferline_rotate              = 2$/;"	v	language:Vim
+g:bufferline_solo_highlight	/home/near/.vim/plugin/00_config.vim	/^let g:bufferline_solo_highlight      = 1$/;"	v	language:Vim
+g:easytags_async	/home/near/.vim/plugin/00_config.vim	/^let g:easytags_async = 1$/;"	v	language:Vim
+g:easytags_auto_highlight	/home/near/.vim/plugin/00_config.vim	/^let g:easytags_auto_highlight = 0$/;"	v	language:Vim
+g:easytags_dynamic_files	/home/near/.vim/plugin/00_config.vim	/^let g:easytags_dynamic_files = 2$/;"	v	language:Vim
+g:easytags_events	/home/near/.vim/plugin/00_config.vim	/^let g:easytags_events = ['BufWritePost']$/;"	v	language:Vim
+g:easytags_opts	/home/near/.vim/plugin/00_config.vim	/^let g:easytags_opts = ['--exclude=*vim\/plugged\/']$/;"	v	language:Vim
+g:easy_align_ignore_groups	/home/near/.vim/plugin/00_config.vim	/^let g:easy_align_ignore_groups = []       " Vim Align ignore comment by default$/;"	v	language:Vim
+g:fastfold_fold_command_suffixes	/home/near/.vim/plugin/00_config.vim	/^let g:fastfold_fold_command_suffixes  = []$/;"	v	language:Vim
+g:fastfold_fold_movement_commands	/home/near/.vim/plugin/00_config.vim	/^let g:fastfold_fold_movement_commands = []$/;"	v	language:Vim
+g:fastfold_skip_filetypes	/home/near/.vim/plugin/00_config.vim	/^let g:fastfold_skip_filetypes         = ['vim', 'py']$/;"	v	language:Vim
+g:fontsize#defaultSize	/home/near/.vim/plugin/00_config.vim	/^let g:fontsize#defaultSize = 8$/;"	v	language:Vim
+g:fzfOpt	/home/near/.vim/plugin/00_config.vim	/^let g:fzfOpt='--bind=$/;"	v	language:Vim
+g:fzf_action	/home/near/.vim/plugin/00_config.vim	/^let g:fzf_action = {$/;"	v	language:Vim
+g:goyo_enable	/home/near/.vim/plugin/00_config.vim	/^let g:goyo_enable = 0$/;"	v	language:Vim
+g:goyo_height	/home/near/.vim/plugin/00_config.vim	/^let g:goyo_height = 100$/;"	v	language:Vim
+g:goyo_width	/home/near/.vim/plugin/00_config.vim	/^let g:goyo_width  = 110$/;"	v	language:Vim
+g:gundo_auto_preview	/home/near/.vim/plugin/00_config.vim	/^let g:gundo_auto_preview     = 1$/;"	v	language:Vim
+g:gundo_help	/home/near/.vim/plugin/00_config.vim	/^let g:gundo_help             = 0$/;"	v	language:Vim
+g:gundo_prefer_python3	/home/near/.vim/plugin/00_config.vim	/^   let g:gundo_prefer_python3 = 1$/;"	v	language:Vim
+g:gundo_preview_bottom	/home/near/.vim/plugin/00_config.vim	/^let g:gundo_preview_bottom   = 1$/;"	v	language:Vim
+g:gundo_preview_height	/home/near/.vim/plugin/00_config.vim	/^let g:gundo_preview_height   = 11$/;"	v	language:Vim
+g:gundo_return_on_revert	/home/near/.vim/plugin/00_config.vim	/^let g:gundo_return_on_revert = 0$/;"	v	language:Vim
+g:gundo_right	/home/near/.vim/plugin/00_config.vim	/^let g:gundo_right            = 0$/;"	v	language:Vim
+g:incsearch#auto_nohlsearch	/home/near/.vim/plugin/00_config.vim	/^let g:incsearch#auto_nohlsearch = 1$/;"	v	language:Vim
+g:limelight_priority	/home/near/.vim/plugin/00_config.vim	/^let g:limelight_priority = -1                      "Do not overrule hlsearch$/;"	v	language:Vim
+g:neocomplete#auto_complete_delay	/home/near/.vim/plugin/00_config.vim	/^let g:neocomplete#auto_complete_delay               = 100$/;"	v	language:Vim
+g:neocomplete#enable_at_startup	/home/near/.vim/plugin/00_config.vim	/^let g:neocomplete#enable_at_startup                 = 1 " Use neocomplete.$/;"	v	language:Vim
+g:neocomplete#enable_auto_delimiter	/home/near/.vim/plugin/00_config.vim	/^let g:neocomplete#enable_auto_delimiter             = 1$/;"	v	language:Vim
+g:neocomplete#enable_smart_case	/home/near/.vim/plugin/00_config.vim	/^let g:neocomplete#enable_smart_case                 = 1 " Use smartcase.$/;"	v	language:Vim
+g:neocomplete#sources#omni#functions	/home/near/.vim/plugin/00_config.vim	/^let g:neocomplete#sources#omni#functions            = ['cpp']$/;"	v	language:Vim
+g:neocomplete#sources#syntax#min_keyword_length	/home/near/.vim/plugin/00_config.vim	/^let g:neocomplete#sources#syntax#min_keyword_length = 3 " Set minimum syntax keyword length.$/;"	v	language:Vim
+g:NeoCompleteAutoCompletionLength	/home/near/.vim/plugin/00_config.vim	/^let g:NeoCompleteAutoCompletionLength               = 3 " Set minimum char to trigger Autocomplete$/;"	v	language:Vim
+g:NERDTreeDirArrowCollapsible	/home/near/.vim/plugin/00_config.vim	/^   let g:NERDTreeDirArrowCollapsible = '-'$/;"	v	language:Vim
+g:NERDTreeDirArrowCollapsible	/home/near/.vim/plugin/00_config.vim	/^   let g:NERDTreeDirArrowCollapsible = '▼'$/;"	v	language:Vim
+g:NERDTreeDirArrowExpandable	/home/near/.vim/plugin/00_config.vim	/^   let g:NERDTreeDirArrowExpandable  = '+'$/;"	v	language:Vim
+g:NERDTreeDirArrowExpandable	/home/near/.vim/plugin/00_config.vim	/^   let g:NERDTreeDirArrowExpandable  = '►'$/;"	v	language:Vim
+g:NERDTreeExactMatchHighlightFullName	/home/near/.vim/plugin/00_config.vim	/^let g:NERDTreeExactMatchHighlightFullName    = 1$/;"	v	language:Vim
+g:NERDTreeFileExtensionHighlightFullName	/home/near/.vim/plugin/00_config.vim	/^let g:NERDTreeFileExtensionHighlightFullName = 1$/;"	v	language:Vim
+g:NERDTreeHighlightFolders	/home/near/.vim/plugin/00_config.vim	/^let g:NERDTreeHighlightFolders               = 1 " Enables folder icon highlighting using exact match$/;"	v	language:Vim
+g:NERDTreeHighlightFoldersFullName	/home/near/.vim/plugin/00_config.vim	/^let g:NERDTreeHighlightFoldersFullName       = 1 " Highlights the folder name$/;"	v	language:Vim
+g:NERDTreeMapMenu	/home/near/.vim/plugin/00_config.vim	/^let g:NERDTreeMapMenu        = 'M'                   " Solve conflict with vim-signature$/;"	v	language:Vim
+g:NERDTreePatternMatchHighlightFullName	/home/near/.vim/plugin/00_config.vim	/^let g:NERDTreePatternMatchHighlightFullName  = 1$/;"	v	language:Vim
+g:plug_window	/home/near/.vim/plugin/00_config.vim	/^let g:plug_window = "vertical botright new"$/;"	v	language:Vim
+g:rg_command	/home/near/.vim/plugin/00_config.vim	/^let g:rg_command = '$/;"	v	language:Vim
+g:rooter_silent_chdir	/home/near/.vim/plugin/00_config.vim	/^let g:rooter_silent_chdir = 1$/;"	v	language:Vim
+g:session_autoload	/home/near/.vim/plugin/00_config.vim	/^let g:session_autoload     = 'no'$/;"	v	language:Vim
+g:session_autosave	/home/near/.vim/plugin/00_config.vim	/^let g:session_autosave     = 'yes'$/;"	v	language:Vim
+g:session_autosave_to	/home/near/.vim/plugin/00_config.vim	/^let g:session_autosave_to  = 'AutoSave'$/;"	v	language:Vim
+g:session_command_aliases	/home/near/.vim/plugin/00_config.vim	/^let g:session_command_aliases = 1$/;"	v	language:Vim
+g:session_default_name	/home/near/.vim/plugin/00_config.vim	/^let g:session_default_name = 'Default'$/;"	v	language:Vim
+g:session_directory	/home/near/.vim/plugin/00_config.vim	/^   let g:session_directory    = $HOME.'\/.vim\/session'$/;"	v	language:Vim
+g:session_directory	/home/near/.vim/plugin/00_config.vim	/^   let g:session_directory    = $HOME.'\\vimfiles\\session'$/;"	v	language:Vim
+g:solarized_termcolors	/home/near/.vim/plugin/00_config.vim	/^   let g:solarized_termcolors=&t_Co$/;"	v	language:Vim
+g:solarized_termtrans	/home/near/.vim/plugin/00_config.vim	/^   let g:solarized_termtrans=1$/;"	v	language:Vim
+g:tq_mthesaur_file	/home/near/.vim/plugin/00_config.vim	/^   let g:tq_mthesaur_file           = "C:\/Users\/Near\/Desktop\/.vimrc\/ignore\/thesaurus\/mthesaur.txt"$/;"	v	language:Vim
+g:tq_online_backends_timeout	/home/near/.vim/plugin/00_config.vim	/^   let g:tq_online_backends_timeout = 0.6$/;"	v	language:Vim
+g:tq_python_version	/home/near/.vim/plugin/00_config.vim	/^   let g:tq_python_version          = 3$/;"	v	language:Vim
+g:UltiSnipsEditSplit	/home/near/.vim/plugin/00_config.vim	/^let g:UltiSnipsEditSplit           = 'normal'$/;"	v	language:Vim
+g:UltiSnipsExpandTrigger	/home/near/.vim/plugin/00_config.vim	/^let g:UltiSnipsExpandTrigger       = "<Tab>"$/;"	v	language:Vim
+g:UltiSnipsJumpBackwardTrigger	/home/near/.vim/plugin/00_config.vim	/^let g:UltiSnipsJumpBackwardTrigger = "<A-k>"$/;"	v	language:Vim
+g:UltiSnipsJumpForwardTrigger	/home/near/.vim/plugin/00_config.vim	/^let g:UltiSnipsJumpForwardTrigger  = "<A-j>"$/;"	v	language:Vim
+g:UltiSnipsListSnippets	/home/near/.vim/plugin/00_config.vim	/^let g:UltiSnipsListSnippets        = "<C-e>"$/;"	v	language:Vim
+g:UltiSnipsSnippetDirectories	/home/near/.vim/plugin/00_config.vim	/^let g:UltiSnipsSnippetDirectories  = ["UltiSnips","snippet"]        " Directories list for ultisnips to search$/;"	v	language:Vim
+g:UltiSnipsSnippetsDir	/home/near/.vim/plugin/00_config.vim	/^   let g:UltiSnipsSnippetsDir = $HOME.'\/.vim\/snippet'                 " Custom snippets stored here$/;"	v	language:Vim
+g:UltiSnipsSnippetsDir	/home/near/.vim/plugin/00_config.vim	/^   let g:UltiSnipsSnippetsDir = $HOME.'\\vimfiles\\snippet' " Custom snippets stored here$/;"	v	language:Vim
+g:user_emmet_install_global	/home/near/.vim/plugin/00_config.vim	/^let g:user_emmet_install_global = 0$/;"	v	language:Vim
+g:user_emmet_leader_key	/home/near/.vim/plugin/00_config.vim	/^let g:user_emmet_leader_key    = '<A-o>'$/;"	v	language:Vim
+g:user_emmet_mode	/home/near/.vim/plugin/00_config.vim	/^let g:user_emmet_mode='a'$/;"	v	language:Vim
+g:user_emmet_next_key	/home/near/.vim/plugin/00_config.vim	/^let g:user_emmet_next_key      = '<A-o>n'$/;"	v	language:Vim
+g:user_emmet_prev_key	/home/near/.vim/plugin/00_config.vim	/^let g:user_emmet_prev_key      = '<A-o>p'$/;"	v	language:Vim
+g:user_emmet_removetag_key	/home/near/.vim/plugin/00_config.vim	/^let g:user_emmet_removetag_key = '<A-o>r'$/;"	v	language:Vim
+ga	/home/near/.vim/plugin/00_config.vim	/^nmap ga <Plug>(EasyAlign)$/;"	m	language:Vim
+ga	/home/near/.vim/plugin/00_config.vim	/^vmap ga <Plug>(EasyAlign)$/;"	m	language:Vim
+gc	/home/near/.vim/plugin/00_config.vim	/^map  gc  <Plug>Commentary$/;"	m	language:Vim
+gcc	/home/near/.vim/plugin/00_config.vim	/^nmap gcc <Plug>CommentaryLine$/;"	m	language:Vim
+gCC	/home/near/.vim/plugin/00_config.vim	/^nmap gCC gggcG$/;"	m	language:Vim
+gh	/home/near/.vim/plugin/00_config.vim	/^nnoremap gh  h|                                    "Move 1 character to the right$/;"	m	language:Vim
+gh	/home/near/.vim/plugin/00_config.vim	/^vnoremap gh h$/;"	m	language:Vim
+gl	/home/near/.vim/plugin/00_config.vim	/^nnoremap gl  l|                                    "Move 1 character to the left$/;"	m	language:Vim
+gl	/home/near/.vim/plugin/00_config.vim	/^vnoremap gl l$/;"	m	language:Vim
+gLL	/home/near/.vim/plugin/00_config.vim	/^nmap <silent>gLL ;Limelight!!<CR>$/;"	m	language:Vim
+gLl	/home/near/.vim/plugin/00_config.vim	/^nmap gLl <Plug>(Limelight)|                  "Motion (normal mode)$/;"	m	language:Vim
+go	/home/near/.vim/plugin/00_config.vim	/^nnoremap <silent>go :call near#utils#ToggleGoyo(goyo_enable)<CR>$/;"	m	language:Vim
+gr	/home/near/.vim/plugin/00_config.vim	/^nnoremap gr :Grep<Space>$/;"	m	language:Vim
+Grep	/home/near/.vim/plugin/00_config.vim	/^command! -bang -nargs=* Grep$/;"	c	language:Vim
+gundo_map_move_newer	/home/near/.vim/plugin/00_config.vim	/^let gundo_map_move_newer = ""$/;"	v	language:Vim
+gundo_map_move_older	/home/near/.vim/plugin/00_config.vim	/^let gundo_map_move_older = ""$/;"	v	language:Vim
+gV	/home/near/.vim/plugin/00_config.vim	/^nnoremap gV `[v`]|                                 "Visual select the last inserted text$/;"	m	language:Vim
+H	/home/near/.vim/plugin/00_config.vim	/^nnoremap <silent> H     :call smooth_scroll#up(40, 0, 10)<CR>$/;"	m	language:Vim
+h	/home/near/.vim/plugin/00_config.vim	/^nnoremap h   ,|                                    "Repeat latest f, F, t or T command (backward)$/;"	m	language:Vim
+h	/home/near/.vim/plugin/00_config.vim	/^vnoremap h  ,$/;"	m	language:Vim
+Helptags	/home/near/.vim/plugin/00_config.vim	/^command! -bang Helptags$/;"	c	language:Vim
+History	/home/near/.vim/plugin/00_config.vim	/^command! -bang -nargs=* History$/;"	c	language:Vim
+J	/home/near/.vim/plugin/00_config.vim	/^nnoremap <expr><silent> J near#utils#NmapJ()|                 "In diff mode: go to next change$/;"	m	language:Vim
+j	/home/near/.vim/plugin/00_config.vim	/^nnoremap j gj|                                     "j version that treat wrapped line as another line$/;"	m	language:Vim
+K	/home/near/.vim/plugin/00_config.vim	/^nnoremap <expr><silent> K near#utils#NmapK()|                 "In diff mode: go to previous change$/;"	m	language:Vim
+k	/home/near/.vim/plugin/00_config.vim	/^nnoremap k gk|                                     "k version that treat wrapped line as another line$/;"	m	language:Vim
+Ka	/home/near/.vim/plugin/00_config.vim	/^nnoremap Ka$/;"	m	language:Vim
+Ka	/home/near/.vim/plugin/00_config.vim	/^vnoremap Ka$/;"	m	language:Vim
+Kh	/home/near/.vim/plugin/00_config.vim	/^nnoremap Kh :OpenHelpInTab<CR>|                    "Open help about the word under cursor$/;"	m	language:Vim
+Kh	/home/near/.vim/plugin/00_config.vim	/^vnoremap Kh y:OpenHelpInTab <C-r>"<CR>|           "Open help about the word under cursor$/;"	m	language:Vim
+Kt	/home/near/.vim/plugin/00_config.vim	/^   nnoremap Kt :ThesaurusQueryReplaceCurrentWord<CR>$/;"	m	language:Vim
+Kt	/home/near/.vim/plugin/00_config.vim	/^   vnoremap Kt y:ThesaurusQueryReplace <C-r>"<CR>$/;"	m	language:Vim
+L	/home/near/.vim/plugin/00_config.vim	/^nnoremap <silent> L     :call smooth_scroll#down(40, 0, 10)<CR>$/;"	m	language:Vim
+l	/home/near/.vim/plugin/00_config.vim	/^nnoremap l   ;|                                    "Repeat latest f, F, t or T command (forward)$/;"	m	language:Vim
+l	/home/near/.vim/plugin/00_config.vim	/^vnoremap l  ;$/;"	m	language:Vim
+Lines	/home/near/.vim/plugin/00_config.vim	/^command! -bang -nargs=* Lines$/;"	c	language:Vim
+MakeSymlink	/home/near/.vim/plugin/00_config.vim	/^command! MakeSymlink                            call near#utils#MakeSymlink()$/;"	c	language:Vim
+Man	/home/near/.vim/plugin/00_config.vim	/^command! -nargs=* -bar -complete=customlist,man#completion#run Man  $/;"	c	language:Vim
+mapleader	/home/near/.vim/plugin/00_config.vim	/^let mapleader = "\\<Space>"$/;"	v	language:Vim
+Maps	/home/near/.vim/plugin/00_config.vim	/^command! -bang Maps$/;"	c	language:Vim
+n	/home/near/.vim/plugin/00_config.vim	/^map n  <Plug>(incsearch-nohl-n)zz$/;"	m	language:Vim
+N	/home/near/.vim/plugin/00_config.vim	/^map N  <Plug>(incsearch-nohl-N)zz$/;"	m	language:Vim
+n	/home/near/.vim/plugin/00_config.vim	/^nnoremap n nzz$/;"	m	language:Vim
+N	/home/near/.vim/plugin/00_config.vim	/^nnoremap N Nzz$/;"	m	language:Vim
+NERDTreeAutoDeleteBuffer	/home/near/.vim/plugin/00_config.vim	/^let NERDTreeAutoDeleteBuffer = 1$/;"	v	language:Vim
+NERDTreeBookmarksSort	/home/near/.vim/plugin/00_config.vim	/^let NERDTreeBookmarksSort    = 1                     " Sort the bookmark$/;"	v	language:Vim
+NERDTreeIgnore	/home/near/.vim/plugin/00_config.vim	/^let NERDTreeIgnore           = ['NTUSER.DAT*']$/;"	v	language:Vim
+NERDTreeMapOpenSplit	/home/near/.vim/plugin/00_config.vim	/^let NERDTreeMapOpenSplit     = 'x'                   " hsplit (default was i)$/;"	v	language:Vim
+NERDTreeMapOpenVSplit	/home/near/.vim/plugin/00_config.vim	/^let NERDTreeMapOpenVSplit    = 'v'                   " vsplit (default was s)$/;"	v	language:Vim
+NERDTreeMinimalUI	/home/near/.vim/plugin/00_config.vim	/^let NERDTreeMinimalUI        = 1$/;"	v	language:Vim
+NERDTreeShowBookmarks	/home/near/.vim/plugin/00_config.vim	/^let NERDTreeShowBookmarks    = 1                     " Open Bookmark at startup$/;"	v	language:Vim
+NERDTreeShowHidden	/home/near/.vim/plugin/00_config.vim	/^let NERDTreeShowHidden       = 1$/;"	v	language:Vim
+NERDTreeShowLineNumbers	/home/near/.vim/plugin/00_config.vim	/^let NERDTreeShowLineNumbers  = 1                     " Enable line numbers$/;"	v	language:Vim
+OpenHelpInTab	/home/near/.vim/plugin/00_config.vim	/^command! -nargs=? -complete=help OpenHelpInTab  call near#utils#OpenHelpInTab(<q-args>)$/;"	c	language:Vim
+OpenTagInVSplit	/home/near/.vim/plugin/00_config.vim	/^command! OpenTagInVSplit                        call near#utils#OpenTagInVSplit()$/;"	c	language:Vim
+os	/home/near/.vim/plugin/00_config.vim	/^      let os = 'win'$/;"	v	language:Vim
+os	/home/near/.vim/plugin/00_config.vim	/^      let os = substitute(system('uname'), '\\n', '', '')$/;"	v	language:Vim
+q	/home/near/.vim/plugin/00_config.vim	/^nnoremap <expr><silent> q near#utils#Nmap_q()|                "Quit Key in diff$/;"	m	language:Vim
+Q	/home/near/.vim/plugin/00_config.vim	/^nnoremap Q @q|                                     "Execute macro$/;"	m	language:Vim
+RedirInTab	/home/near/.vim/plugin/00_config.vim	/^command! -nargs=+ -complete=command RedirInTab  call near#utils#RedirInTab(<q-args>)$/;"	c	language:Vim
+Rpdf	/home/near/.vim/plugin/00_config.vim	/^command! -complete=file -nargs=1 Rpdf :r !pdftotext -nopgbrk <q-args> - |fmt -csw78$/;"	c	language:Vim
+Rpdf	/home/near/.vim/plugin/00_config.vim	/^command! -complete=file -nargs=1 Rpdf :r !pdftotext -nopgbrk <q-args> -$/;"	c	language:Vim
+s:pluggedPath	/home/near/.vim/plugin/00_config.vim	/^   let s:pluggedPath = '~\/.vim\/plugged'$/;"	v	language:Vim
+s:pluggedPath	/home/near/.vim/plugin/00_config.vim	/^   let s:pluggedPath = '~\\vimfiles\\plugged'$/;"	v	language:Vim
+s:smoothScrollPath	/home/near/.vim/plugin/00_config.vim	/^   let s:smoothScrollPath = '~\/.vim\/plugged\/vim-smooth-scroll\/autoload\/smooth_scroll.vim'$/;"	v	language:Vim
+s:smoothScrollPath	/home/near/.vim/plugin/00_config.vim	/^   let s:smoothScrollPath = '~\\vimfiles\\plugged\\vim-smooth-scroll\\autoload\\smooth_scroll.vim'$/;"	v	language:Vim
+Tags	/home/near/.vim/plugin/00_config.vim	/^command! -bang Tags$/;"	c	language:Vim
+ToggleHeader	/home/near/.vim/plugin/00_config.vim	/^command! ToggleHeader                           call near#utils#ToggleHeader()$/;"	c	language:Vim
+ToggleMenuBar	/home/near/.vim/plugin/00_config.vim	/^command! ToggleMenuBar                          call near#utils#ToggleMenuBar()$/;"	c	language:Vim
+ToggleVerbose	/home/near/.vim/plugin/00_config.vim	/^command! ToggleVerbose                          call near#utils#ToggleVerbose()$/;"	c	language:Vim
+ToggleWrap	/home/near/.vim/plugin/00_config.vim	/^command! ToggleWrap                             call near#utils#ToggleWrap()$/;"	c	language:Vim
+TrimWhitespace	/home/near/.vim/plugin/00_config.vim	/^command! TrimWhitespace                         call near#utils#TrimWhitespace()$/;"	c	language:Vim
+U	/home/near/.vim/plugin/00_config.vim	/^nnoremap U :later 1f<CR>|                          "Go to the latest change$/;"	m	language:Vim
+Y	/home/near/.vim/plugin/00_config.vim	/^nnoremap Y y$|                                     "Make Y yank to endline (same behaviours as D or R)$/;"	m	language:Vim
+ys	/home/near/.vim/plugin/00_config.vim	/^nmap ys  <Plug>Ysurround$/;"	m	language:Vim
+yS	/home/near/.vim/plugin/00_config.vim	/^nmap yS  <Plug>YSurround$/;"	m	language:Vim
+yss	/home/near/.vim/plugin/00_config.vim	/^nmap yss <Plug>Yssurround$/;"	m	language:Vim
+ySs	/home/near/.vim/plugin/00_config.vim	/^nmap ySs <Plug>YSsurround$/;"	m	language:Vim
+za	/home/near/.vim/plugin/00_config.vim	/^nnoremap za zazz|                                  "Toggle fold and zz$/;"	m	language:Vim
+zc	/home/near/.vim/plugin/00_config.vim	/^nnoremap zc zczz|                                  "Close fold and zz$/;"	m	language:Vim
+zm	/home/near/.vim/plugin/00_config.vim	/^nnoremap zm zmzz|                                  "Toggle fold and zz$/;"	m	language:Vim
+zo	/home/near/.vim/plugin/00_config.vim	/^nnoremap zo zozz|                                  "Open fold and zz$/;"	m	language:Vim
+zp	/home/near/.vim/plugin/00_config.vim	/^nnoremap zp$/;"	m	language:Vim
+z[	/home/near/.vim/plugin/00_config.vim	/^nnoremap z[ zo[z|                                  "Open fold, jump at the start and zz$/;"	m	language:Vim
+z]	/home/near/.vim/plugin/00_config.vim	/^nnoremap z] zo]z|                                  "Open fold, jump at the end and zz$/;"	m	language:Vim
+[c	/home/near/.vim/plugin/00_config.vim	/^nnoremap [c [czz|                                  "Jump backward change and zz$/;"	m	language:Vim
+[Q	/home/near/.vim/plugin/00_config.vim	/^nnoremap [Q :cfirst<CR>|                           "Jump to the previous quickfix item$/;"	m	language:Vim
+[q	/home/near/.vim/plugin/00_config.vim	/^nnoremap [q :cprev<CR>|                            "Jump to the previous quickfix item$/;"	m	language:Vim
+[t	/home/near/.vim/plugin/00_config.vim	/^nnoremap [t :tprevious<CR>|                        "Go to next tag in the tag list$/;"	m	language:Vim
+[z	/home/near/.vim/plugin/00_config.vim	/^nnoremap [z [zzz|                                  "jump at the start and zz$/;"	m	language:Vim
+]c	/home/near/.vim/plugin/00_config.vim	/^nnoremap ]c ]czz|                                  "Jump forward change and zz$/;"	m	language:Vim
+]Q	/home/near/.vim/plugin/00_config.vim	/^nnoremap ]Q :clast<CR>|                            "Jump to the previous quickfix item$/;"	m	language:Vim
+]q	/home/near/.vim/plugin/00_config.vim	/^nnoremap ]q :cnext<CR>|                            "Jump to the next quickfix item$/;"	m	language:Vim
+]t	/home/near/.vim/plugin/00_config.vim	/^nnoremap ]t :tnext<CR>|                            "Go to next tag in the tag list$/;"	m	language:Vim
+]z	/home/near/.vim/plugin/00_config.vim	/^nnoremap ]z ]zzz|                                  "jump at the end and zz$/;"	m	language:Vim
+`	/home/near/.vim/plugin/00_config.vim	/^nnoremap ` '|                                      "` to jump to mark (line)$/;"	m	language:Vim
+{	/home/near/.vim/plugin/00_config.vim	/^nnoremap { {zz|                                    "Jump between paragraph (backward) and zz$/;"	m	language:Vim
+}	/home/near/.vim/plugin/00_config.vim	/^nnoremap } }zz|                                    "Jump between paragraph (forward) and zz$/;"	m	language:Vim

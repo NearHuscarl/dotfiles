@@ -1,0 +1,92 @@
+// vim:ts=4:sw=4:et
+{
+    "border": "none",
+    "current_border_width": 0,
+    "floating": "auto_off",
+    "geometry": {
+        "height": 403,
+        "width": 590,
+        "x": 0,
+        "y": 0
+    },
+    "name": "Noisestorm - Full Focus [Drumstep]",
+    "percent": 0.5,
+    "swallows": [
+        {
+            "class": "^Xfce4\\-terminal$",
+            // "instance": "^xfce4\\-terminal$",
+            "title": "^Music$"
+            // "transient_for": "^$",
+            // "window_role": "^xfce4\\-terminal\\-1503638432\\-\\-1182717953$"
+        }
+    ],
+    "type": "con"
+}
+
+{
+    // splitv split container with 2 children
+    "border": "none",
+    "floating": "auto_off",
+    "layout": "splitv",
+    "percent": 0.5,
+    "type": "con",
+    "nodes": [
+        {
+            "border": "none",
+            "current_border_width": 0,
+            "floating": "auto_off",
+            "geometry": {
+                "height": 403,
+                "width": 590,
+                "x": 0,
+                "y": 0
+            },
+            "name": "Noisestorm - Full Focus [Drumstep]",
+            "percent": 0.5,
+            "swallows": [
+                {
+                    "class": "^Xfce4\\-terminal$",
+                    // "instance": "^xfce4\\-terminal$",
+                    "title": "^Visualizer$"
+                    // "transient_for": "^$",
+                    // "window_role": "^xfce4\\-terminal\\-1503638436\\-1486383507$"
+                }
+            ],
+            "type": "con"
+        },
+        {
+            // splith split container with 1 children
+            "border": "none",
+            "floating": "auto_off",
+            "layout": "splith",
+            "percent": 0.5,
+            "type": "con",
+            "nodes": [
+                {
+                    "border": "none",
+                    "current_border_width": 0,
+                    "floating": "auto_off",
+                    "geometry": {
+                        "height": 403,
+                        "width": 590,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "name": "Noisestorm - Full Focus [Drumstep]",
+                    "percent": 1,
+                    "swallows": [
+                        {
+                            "class": "^Xfce4\\-terminal$",
+                            // "instance": "^xfce4\\-terminal$",
+                            "title": "^Clock$"
+                            // "transient_for": "^$",
+                            // "window_role": "^xfce4\\-terminal\\-1503638447\\-1783957224$"
+                        }
+                    ],
+                    "type": "con"
+                }
+            ]
+        }
+    ]
+}
+

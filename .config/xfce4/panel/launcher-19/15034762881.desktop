@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=GNU Image Manipulation Program
+Comment=Create images and edit photographs
+Exec=gimp-2.8 %U
+Icon=gimp
+Path=
+Terminal=false
+StartupNotify=true
+X-XFCE-Source=file:///home/near/Desktop/GNU%20Image%20Manipulation%20Program.desktop

@@ -1,0 +1,10 @@
+.cache/
+.local/
+.mozilla/
+.vim/undo/
+.vim/session/
+.vim/swapfiles/
+.vim/plugged/
+Music/
+Dropbox/
+Desktop/
