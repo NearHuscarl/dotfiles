@@ -1,0 +1,49 @@
+# ignore case when completing
+set completion-ignore-case on
+# only one tab for completion, even if there is more than one option
+set show-all-if-ambiguous on
+
+set menu-complete-display-prefix on
+
+# how many possibilities before asking to show all
+set completion-query-items 30
+
+set visible-stats on
+set expand-tilde off
+set editing-mode vi
+# show current mode when using with vi
+set show-mode-in-prompt on
+
+$if mode=vi
+   set keymap vi-command
+   # some combination with alt not work in vi command mode
+   # press <C-v> + <A-key> to know if <A-key> works if mapped or not
+   "\ej": history-search-forward
+   "\ek": history-search-backward
+   "\eu": vi-redo
+   "\er": re-read-init-file
+   "gg": beginning-of-history
+   "G": end-of-history
+
+   set keymap vi-insert 
+   "\ei": vi-movement-mode
+   "\t": menu-complete
+   "\en": menu-complete
+   "\ep": menu-complete-backward
+   "\ej": history-search-forward
+   "\ek": history-search-backward
+   "\er": re-read-init-file
+$else
+   "\e.": end-of-line
+   "\e,": beginning-of-line
+   "\e;": backward-word
+   "\e'": forward-word
+   "\ep": previous-history
+   "\en": next-history
+   "\ej": menu-complete
+   "\ek": menu-complete-backward
+   "\ey": yank-pop
+   "\eu": kill-whole-line
+   "\e9": backward-kill-word
+   "\e0": kill-word
+$endif
