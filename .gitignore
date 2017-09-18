@@ -5,11 +5,14 @@
 
 # Then only reinclude necessary files/folders in parent dir
 !/README.md
+!/.vimrc
 !/.bashrc
 !/.inputrc
 !/.gitignore
+!/install.sh
 
 !/bin/
+!/.fonts/
 
 # Repeat the process for subdir
 !/.config/
@@ -25,11 +28,16 @@
 !/.config/xfce4/
 !/.config/zathura/
 
+# Exclude undo/ plugged/ session/ swapfiles/ and some others
 !/.vim/
-/.vim/undo/*
-/.vim/plugged/*
-/.vim/session/*
-/.vim/swapfiles/*
+/.vim/*
+!/.vim/README.md
+!/.vim/autoload/
+!/.vim/colors/
+!/.vim/ftplugin/
+!/.vim/snippet/
 
-
-# Specific exclude
+# Explicit exclude
+/.thumbnails/
+tags
+/.vim/autoload/plug.vim
