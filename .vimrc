@@ -697,10 +697,18 @@ command! -bang FilesAll
          \  'options': g:fzfOpt
          \ })
 
-" will update when more files need to be searched
+" Will update when more files need to be searched
 command! -bang FilesRoot
          \ call fzf#run({
          \  'source': 'rg /etc/systemd --files --no-ignore --hidden --follow --no-messages',
+         \  'sink': 'edit',
+         \  'options': g:fzfOpt
+         \ })
+
+" Unlike fzf#vim#files, respect .gitignore (need vim-rooter to get current dir right)
+command! -bang FilesProject
+         \ call fzf#run({
+         \  'source': 'rg ' .getcwd(). ' --files --hidden --no-messages',
          \  'sink': 'edit',
          \  'options': g:fzfOpt
          \ })
@@ -728,7 +736,8 @@ command! -bang -nargs=? -complete=buffer Buffers
 nnoremap gr :Grep<Space>
 nnoremap <Leader>rg :Grep<CR>
 nnoremap <Leader>e/ :FilesRoot<CR>
-nnoremap <Leader>er :Files<CR>         " when using with vim-rooter, search for files in root project folder
+nnoremap <Leader>er :Files<CR>
+nnoremap <Leader>ep :FilesProject<CR> " when using with vim-rooter, search for files in root project folder
 nnoremap <Leader>eh :Files $HOME<CR>
 nnoremap <Leader>ea :FilesAll<CR>
 nnoremap <Leader>em :History<CR>
@@ -1055,5 +1064,5 @@ if has('gui_running')
 endif
 "||]
 
-command! -complete=file -nargs=1 Rpdf :r !pdftotext -nopgbrk <q-args> -
-command! -complete=file -nargs=1 Rpdf :r !pdftotext -nopgbrk <q-args> - |fmt -csw78
+" command! -complete=file -nargs=1 Rpdf :r !pdftotext -nopgbrk <q-args> -
+" command! -complete=file -nargs=1 Rpdf :r !pdftotext -nopgbrk <q-args> - |fmt -csw78
