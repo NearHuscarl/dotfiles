@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# $HOME/.config/ranger/rifle.conf
+
+if [[ -x /usr/bin/i3 ]]; then
+   vim --remote-silent "${@:-unnamed}" && i3-msg workspace 2 1> /dev/null
+else
+   vim --remote-silent "${@:-unnamed}"
+fi

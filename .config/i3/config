@@ -185,6 +185,7 @@ bindsym $mod+m mode "move"
 # terminal -> propx -> point to the targeted to get window class
 # assign [class="xfce4-terminal"] $ws
 assign [class="Gvim"]          $ws_dev
+assign [title="Vim - Dev"]     $ws_dev
 assign [class="Google-chrome"] $ws_web
 assign [class="Zathura"]       $ws_doc
 assign [class="Caprine"]       $ws_chat
@@ -257,7 +258,6 @@ for_window [title="Floating"]          floating enable
 # for_window [class="XTerm"]             floating enable
 
 # open certain window in fullscreen mode
-# for_window [title="^Developer Tools.*"] fullscreen enable
 # very dirty workaround to make chrome developer tools scratchpad fullscreen
 for_window [title="^Developer Tools.*"] \
  floating enable; \
@@ -269,7 +269,8 @@ for_window [title="^Developer Tools.*"] \
 
 # application launcher shortcut
 bindsym F1 exec xfce4-terminal --disable-server
-bindsym F2 exec gvim; workspace $ws_dev
+# bindsym F2 exec gvim; workspace $ws_dev
+bindsym F2 exec xfce4-terminal --title="Vim - Dev" -e "vim --servername vim"; workspace $ws_dev
 bindsym F3 exec google-chrome-stable; workspace $ws_web
 bindsym F4 exec zathura; workspace $ws_doc
 bindsym F5 exec caprine; workspace $ws_chat
