@@ -20,13 +20,22 @@
 !/.config/compton.conf
 !/.config/i3/
 !/.config/git/
+!/.config/gtk-3.0/
 !/.config/ncmpcpp/
 !/.config/neofetch/
 !/.config/polybar/
-!/.config/ranger/
 !/.config/rofi/
-!/.config/xfce4/
 !/.config/zathura/
+
+!/.config/ranger/
+/.config/ranger/colorschemes/*
+!/.config/ranger/colorschemes/flat.py
+
+!/.config/xfce4/
+/.config/xfce4/*
+!/.config/xfce4/terminal/
+/.config/xfce4/terminal/*
+!/.config/xfce4/terminal/terminalrc
 
 # Exclude undo/ plugged/ session/ swapfiles/ and some others
 !/.vim/
@@ -38,6 +47,7 @@
 !/.vim/snippet/
 
 # Explicit exclude
+**/tags
 /.thumbnails/
-tags
 /.vim/autoload/plug.vim
+/.config/ranger/history
