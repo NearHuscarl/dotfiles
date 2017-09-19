@@ -134,9 +134,6 @@ BLUE="\[$(tput setaf 12)\]"
 RESET="\[$(tput sgr0)\]"
 export PS1="${BOLD}${DBLUE}\u${GRAY}@${BOLD}${CYAN}\h${RESET} ${MAGENTA}\W ${RESET}\$ "
 
-# Add custom script directory to path
-export PATH=$PATH:$HOME/bin/
-
 # run custom alias script in all session
 if [ -f ~/bin/alias ]; then
     source ~/bin/alias
@@ -161,6 +158,9 @@ eval `keychain --eval --agents ssh id_rsa`
 # BROWSER=google-chrome-stable:firefox
 export BROWSER=google-chrome-stable
 export EDITOR=vim
+
+# Add custom script directory to path
+export PATH=$PATH:$HOME/bin/
 
 # ranger
 if [[ -x /usr/bin/ranger && -f $HOME/.config/ranger/rc.conf ]]; then
