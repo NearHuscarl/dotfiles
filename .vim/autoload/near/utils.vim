@@ -2,7 +2,7 @@
 " File:        utils.vim
 " Description: Utility Functions
 " Author:      Near Huscarl <near.huscarl@gmail.com>
-" Last Change: Mon Sep 04 23:01:09 +07 2017
+" Last Change: Tue Sep 19 18:11:54 +07 2017
 " Licence:     BSD 3-Clause license
 " Note:        Miscellaneous functions in autoload/ is put here
 " ============================================================================
@@ -14,14 +14,14 @@ function! near#utils#SetLastChangeBeforeBufWrite()
    "       Mon Aug 14 13:38:15 +07 2017
    "       Mon Aug 14 13:38:15 -07 2017
    echo 1
-   for l:line in range(5, 15)
-      if match(getline(l:line),
+   for line in range(5, 15)
+      if match(getline(line),
                \ '[A-Z][a-z]\{2} [A-Z][a-z]\{2} \d\@<!\d\{2}\d\@! \d\@<!\d\{2}\d\@!:\d\@<!\d\{2}\d\@!:\d\@<!\d\{2}\d\@! [A-Z0-9\+\-]\{2,} \d\@<!\d\{4}\d\@!') != -1
-         let l:view_info = winsaveview()
-         let l:time = strftime('%a %b %d %H:%M:%S %Z %Y')
-         silent! call cursor(l:line, 16)
-         execute "normal! Da" . l:time
-         call winrestview(l:view_info)
+         let view_info = winsaveview()
+         let time = strftime('%a %b %d %H:%M:%S %Z %Y')
+         silent! call cursor(line, 16)
+         execute "normal! Da" . time
+         call winrestview(view_info)
          return
       endif
    endfor
@@ -74,26 +74,26 @@ endfunction
 "||]
 "[||ToggleHeader()
 function! near#utils#ToggleHeader()
-   let l:fileName = expand('%')
-   let l:name = split(l:fileName, '\.')[0]
-   let l:extension = split(l:fileName, '\.')[1]
+   let fileName = expand('%')
+   let name = split(fileName, '\.')[0]
+   let extension = split(fileName, '\.')[1]
 
-   if l:extension == 'cpp'
-      let l:fileNext = join([l:name, 'h'], ".")
+   if extension == 'cpp'
+      let fileNext = join([name, 'h'], ".")
 
-      if filereadable(l:fileNext)
+      if filereadable(fileNext)
          execute "e %<.h"
       else
-         echom join([l:fileNext, 'doenst exist :('])
+         echom join([fileNext, 'doenst exist :('])
       endif
 
-   elseif l:extension == 'h'
-      let l:fileNext = join([l:name, 'cpp'], ".")
+   elseif extension == 'h'
+      let fileNext = join([name, 'cpp'], ".")
 
-      if filereadable(l:fileNext)
+      if filereadable(fileNext)
          execute "e %<.cpp"
       else
-         echom join([l:fileNext, 'doenst exist :('])
+         echom join([fileNext, 'doenst exist :('])
       endif
    endif
 
@@ -220,9 +220,9 @@ endfunction
 "||]
 "[||TrimWhitespace()
 function! near#utils#TrimWhitespace()
-   let l:save = winsaveview()
+   let save = winsaveview()
    %s/\s\+$//e
-   call winrestview(l:save)
+   call winrestview(save)
 endfunction
 "||]
 "[||MakeSymlink()

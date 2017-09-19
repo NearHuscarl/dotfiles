@@ -2,45 +2,45 @@
 " File:        statusline.vim
 " Description: Statusline setup for vim
 " Author:      Near Huscarl <near.huscarl@gmail.com>
-" Last Change: Thu Sep 14 08:56:20 +07 2017
+" Last Change: Tue Sep 19 18:10:42 +07 2017
 " Licence:     BSD 3-Clause license
 " Note:        N/A
 " ============================================================================
 
 "[|| Highlight()
 function! s:Highlight(group, ...)
-   let l:gui   = ['guifg', 'guibg']
-   let l:cterm = ['ctermfg', 'ctermbg']
-   let l:command = 'hi ' . a:group
+   let gui   = ['guifg', 'guibg']
+   let cterm = ['ctermfg', 'ctermbg']
+   let command = 'hi ' . a:group
 
-   if (len(a:000) < 1) || (len(a:000) > (len(l:gui)))
+   if (len(a:000) < 1) || (len(a:000) > (len(gui)))
       echoerr "No colour or too many colours specified"
    else
       for i in range(0, len(a:000)-1)
-         let l:command .= ' ' . l:gui[i]   . '=' . a:000[i].gui
-         let l:command .= ' ' . l:cterm[i] . '=' . a:000[i].cterm
+         let command .= ' ' . gui[i]   . '=' . a:000[i].gui
+         let command .= ' ' . cterm[i] . '=' . a:000[i].cterm
       endfor
-      exe l:command
+      exe command
    endif
 endfunc 
 command! -nargs=+ Hi call Highlight(<f-args>)
 "||]
 "[||InitModeColor()
 function! statusline#InitModeColor()
-   let l:mode = mode()
-   if l:mode ==# 'n'
+   let mode = mode()
+   if mode ==# 'n'
       call s:Highlight("StatusLine", s:normal.fg, s:normal.bg)
-   elseif l:mode ==# 'i'
+   elseif mode ==# 'i'
       call s:Highlight("StatusLine", s:insert.fg, s:insert.bg)
-   elseif l:mode ==# 'v'
+   elseif mode ==# 'v'
       call s:Highlight("StatusLine", s:visual.fg, s:visual.bg)
-   elseif l:mode ==# 'V'
+   elseif mode ==# 'V'
       call s:Highlight("StatusLine", s:vLine.fg, s:vLine.bg)
-   elseif l:mode ==# "\<C-v>"
+   elseif mode ==# "\<C-v>"
       call s:Highlight("StatusLine", s:vBlock.fg, s:vBlock.bg)
-   elseif l:mode =~# '\v(R|Rc|Rv|Rx)'
+   elseif mode =~# '\v(R|Rc|Rv|Rx)'
       call s:Highlight("StatusLine", s:replace.fg, s:replace.bg)
-   elseif l:mode =~# '\v(r|rm|r?)'
+   elseif mode =~# '\v(r|rm|r?)'
       call s:Highlight("StatusLine", s:prompt.fg, s:prompt.bg)
    endif
    return ""
@@ -48,22 +48,22 @@ endfunction
 "||]
 "[||GetMode()]
 function! statusline#GetMode()
-   let l:mode = mode()
-   if l:mode ==# 'n'
+   let mode = mode()
+   if mode ==# 'n'
       return "NORMAL"
-   elseif l:mode ==# 'i'
+   elseif mode ==# 'i'
       " echo "ahahhah"
       " hi User2 ctermfg=1 ctermbg=4
       return "INSERT"
-   elseif l:mode ==# "\<C-v>"
+   elseif mode ==# "\<C-v>"
       return "VBLOCK"
-   elseif l:mode ==# 'v'
+   elseif mode ==# 'v'
       return "VISUAL"
-   elseif l:mode ==# 'V'
+   elseif mode ==# 'V'
       return "VLINE"
-   elseif l:mode =~# '\v(R|Rc|Rv|Rx)'
+   elseif mode =~# '\v(R|Rc|Rv|Rx)'
       return "REPLACE"
-   elseif l:mode =~# '\v(r|rm|r?)'
+   elseif mode =~# '\v(r|rm|r?)'
       return "PROMPT"
    endif
 endfunction
@@ -90,14 +90,14 @@ function! statusline#SetWordCount()
       return g:wordCount
    endif
 
-   let l:old_status = v:statusmsg
+   let old_status = v:statusmsg
    let position = getpos(".")
    exe ":silent normal g\<C-g>"
-   let l:stat = v:statusmsg
+   let stat = v:statusmsg
    let g:wordCount = 0
-   if l:stat != '--No lines in buffer--'
+   if stat != '--No lines in buffer--'
      let g:wordCount = str2nr(split(v:statusmsg)[11]) "CtrlP error here
-     let v:statusmsg = l:old_status
+     let v:statusmsg = old_status
    endif
    call setpos('.', position)
    if g:wordCount == 1
@@ -159,9 +159,9 @@ endfunction
 "[||GitStatus()
 function! s:GitStatus()
    if g:loaded_fugitive
-      let l:gitStatus = fugitive#head()
-      if l:gitStatus != ''
-         return ' ' . l:gitStatus . ' '
+      let gitStatus = fugitive#head()
+      if gitStatus != ''
+         return ' ' . gitStatus . ' '
       endif
       return ''
    endif
