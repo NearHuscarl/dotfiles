@@ -74,19 +74,18 @@ class fzf_select(Command):
     def execute(self):
         import subprocess
         import os.path
+        """ too command is the same but Id better not alter it. Remind me to learn python """
         if self.quantifier:
             # match only directories
-            command="find -L . \( -path '*/\.*' -o -fstype 'dev' -o -fstype 'proc' \) -prune \
-                    -o -type d -print 2> /dev/null | sed 1d | cut -b3- | fzf +m \
+            command="rg $(pwd) --files --no-ignore --hidden --follow --no-messages | fzf +m \
                     --no-mouse \
                     --cycle \
                     --reverse \
                     --color=info:6,bg+:8,hl+:1,hl:3,pointer:6,marker:1,spinner:6 \
                     --bind=alt-k:up,alt-j:down,alt-i:abort,alt-h:backward-char,alt-l:forward-char,alt-n:backward-word,alt-m:forward-word,alt-e:jump,alt-t:kill-line'"
         else:
-                    # match files and directories
-            command="find -L . \( -path '*/\.*' -o -fstype 'dev' -o -fstype 'proc' \) -prune \
-                    -o -print 2> /dev/null | sed 1d | cut -b3- | fzf +m \
+            # match files and directories
+            command="rg $(pwd) --files --no-ignore --hidden --follow --no-messages | fzf +m \
                     --no-mouse \
                     --cycle \
                     --reverse \
