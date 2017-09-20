@@ -1,5 +1,5 @@
 " ============================================================================
-" File:        00_config.vim
+" File:        .vimrc
 " Description: Vim settings
 " Author:      Near Huscarl <near.huscarl@gmail.com>
 " Last Change: Tue Aug 15 15:34:13 Novosibirsk Standard Time 2017
@@ -8,12 +8,7 @@
 "              on your machine
 " ============================================================================
 
-" This is basically a vimrc file with different name
-" Put it into ~/.vim/plugin/ to control easier when using with git
-" File name changed to 00_config.vim because vim files are sourced
-" in alphabetical order
-
-"[||[Basic Setup]
+"{{{[Basic Setup]
 
 autocmd!
 
@@ -28,9 +23,9 @@ endif
 let mapleader = "\<Space>"
 " LN
 if g:os == 'win'
-   let $MYVIMRC = $HOME.'\vimfiles\plugin\00_config.vim'
+   let $MYVIMRC = $HOME.'\_vimrc'
 else
-   let $MYVIMRC = $HOME.'/.vim/plugin/00_config.vim'
+   let $MYVIMRC = $HOME.'/.vimrc'
 endif
 
 set fileformat=unix
@@ -168,8 +163,8 @@ if has('GUI_running') && has('windows')
    set guitablabel=\[%N\]\ %t\ %M                  "Tabs only display file name rather than path+filename
 endif
 let @n = "0f>a\<CR>\<Esc>$F<i\<CR>\<Esc>j"         "Newline per tag if not
-"||]
-"[||[Mappings]
+"}}}
+"{{{[Mappings]
 
 if g:os == 'linux' && !has('gui_running')
    " Fix alt key not working in gnome-terminal
@@ -208,8 +203,8 @@ endif
 
 "Movement
 nnoremap ;   :|                                    "No need to shift ; anymore to enter command mode
-nnoremap l   ;|                                    "Repeat latest f, F, t or T command (forward)
-nnoremap h   ,|                                    "Repeat latest f, F, t or T command (backward)
+" nnoremap l   ;|                                    "Repeat latest f, F, t or T command (forward)
+" nnoremap h   ,|                                    "Repeat latest f, F, t or T command (backward)
 nnoremap gh  h|                                    "Move 1 character to the right
 nnoremap gl  l|                                    "Move 1 character to the left
 nnoremap :   =|                                    "Indent + motion
@@ -452,8 +447,8 @@ command! ToggleWrap                             call near#utils#ToggleWrap()
 command! MakeSymlink                            call near#utils#MakeSymlink()
 command! CscopeLoad                             call near#utils#CscopeLoad()
 command! ToggleVerbose                          call near#utils#ToggleVerbose()
-"||]
-"[||[Vim-plug]
+"}}}
+"{{{[Vim-plug]
 " LN
 if g:os == 'win'
    let s:pluggedPath = '~\vimfiles\plugged'
@@ -463,6 +458,15 @@ endif
 
 call plug#begin(s:pluggedPath)
 Plug 'junegunn/fzf.vim'
+Plug 'justinmk/vim-sneak', {'on': [
+         \ '<Plug>Sneak_s',
+         \ '<Plug>Sneak_S',
+         \ '<Plug>Sneak_f',
+         \ '<Plug>Sneak_F',
+         \ '<Plug>Sneak_t',
+         \ '<Plug>Sneak_T'
+         \ ]}
+
 Plug 'airblade/vim-rooter'
 
 Plug 'haya14busa/incsearch.vim', {'on': [
@@ -509,6 +513,7 @@ Plug 'xolox/vim-easytags'
 Plug 'xolox/vim-session'
 
 Plug 'vim-scripts/OmniCppComplete', {'for': 'cpp'}
+Plug 'suan/vim-instant-markdown'
 
 Plug 'terryma/vim-smooth-scroll'
 
@@ -588,16 +593,16 @@ vnoremap <Leader>pi y:PlugInstall<Space><C-r>"<CR>|    "Install plugin under cur
 nnoremap <Leader>pv :PlugUpgrade<CR>|                  "Update vim-plug
 nnoremap <Leader>pu :PlugUpdate<Space><C-d>|           "Update other plugins
 vnoremap <Leader>pu y:PlugUpdate<Space><C-r>"<CR>|     "Update plugin under cursor
-"||]
-"[||[Auto Pairs]
+"}}}
+"{{{[Auto Pairs]
 autocmd InsertEnter * :silent! all autopairs#AutoPairsTryInit()
 let g:AutoPairsMoveCharacter      = ''
 let g:AutoPairsShortcutJump       = ''
 let g:AutoPairsShortcutToggle     = ''
 let g:AutoPairsShortcutFastWrap   = ''
 let g:AutoPairsShortcutBackInsert = ''
-"||]
-"[||[Smooth Scroll]
+"}}}
+"{{{[Smooth Scroll]
 nnoremap <silent> <A-j> :call smooth_scroll#down(6, 0, 2)<CR>
 nnoremap <silent> <A-k> :call smooth_scroll#up(6, 0, 2)<CR>
 nnoremap <silent> <A-l> :call smooth_scroll#down(15, 0, 3)<CR>
@@ -616,13 +621,13 @@ if empty(glob(s:smoothScrollPath))
    nnoremap <silent><A-l> 10<C-e>10j
    nnoremap <silent><A-h> 10<C-y>10k
 endif
-"||]
-"[||[FastFold]
+"}}}
+"{{{[FastFold]
 let g:fastfold_fold_command_suffixes  = []
 let g:fastfold_fold_movement_commands = []
 let g:fastfold_skip_filetypes         = ['vim', 'py']
-"||]
-"[||[Fugitive]
+"}}}
+"{{{[Fugitive]
 nnoremap <Leader>gst :Gstatus<CR>|                 "Git status in vim!
 nnoremap <Leader>ga  :Git add %:p<CR>|             "Git add in vim!
 nnoremap <Leader>gbl :Gblame<CR>|                  "Git blame in vim!
@@ -649,13 +654,13 @@ nnoremap <Leader>gsc :Glog! --grep= -- %<C-Left><C-Left><Left>| "Search for comm
 nnoremap <Leader>gsd :Glog! -S -- %<C-Left><C-Left><Left>|      "Search content in diffs history
 nnoremap <silent><Leader>gh 
          \ :!"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" "https://github.com/NearHuscarl/.vimrc/commits/master/_vimrc"<CR><CR>
-"||]
-"[||[fzf]
+"}}}
+"{{{[fzf]
 " Recommend: use with vim-rooter
 let g:rg_command = '
   \ rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --color "always"
   \ -g "*.{js,json,php,md,html,config,py,conf,vim}"
-  \ -g "{00_config,config}"
+  \ -g "{.vimrc,config}"
   \ -g "!{.git,node_modules,vendor}/*" '
 
 " let g:fzf_colors =
@@ -715,9 +720,14 @@ command! -bang FilesProject
 
 command! -bang -nargs=* Grep
          \ call fzf#vim#grep(g:rg_command .shellescape(<q-args>), 1, {'options': g:fzfOpt}, <bang>0)
-" use FZF_DEFAULT_COMMAND in bashrc to filter
 command! -bang -nargs=? -complete=dir Files
-         \ call fzf#vim#files(<q-args>, {'options': g:fzfOpt}, <bang>0)
+         \ call fzf#vim#files(<q-args>, {
+         \   'options': g:fzfOpt,
+         \   'source': 'rg --files --no-ignore --hidden --follow --no-messages
+         \     --glob "!undo/*"'
+         \ }, <bang>0)
+" command! -bang -nargs=? -complete=dir Files
+"          \ call fzf#vim#files(<q-args>, {'options': g:fzfOpt}, <bang>0)
 command! -bang Colors
          \ call fzf#vim#colors({'options': g:fzfOpt}, <bang>0)
 command! -bang -nargs=* History
@@ -732,12 +742,14 @@ command! -bang -nargs=* Lines
          \ call fzf#vim#lines({'options': g:fzfOpt}, <bang>0)
 command! -bang -nargs=? -complete=buffer Buffers
          \ call fzf#vim#buffers({'options': g:fzfOpt}, <bang>0)
+command! -bar Root Rooter
 
 nnoremap gr :Grep<Space>
 nnoremap <Leader>rg :Grep<CR>
 nnoremap <Leader>e/ :FilesRoot<CR>
 nnoremap <Leader>er :Files<CR>
-nnoremap <Leader>ep :FilesProject<CR> " when using with vim-rooter, search for files in root project folder
+" Manually call Rooter because sometimes rooter fail to run automatically
+nnoremap <Leader>ep :Root<Bar>FilesProject<CR> " when using with vim-rooter, search for files in root project folder
 nnoremap <Leader>eh :Files $HOME<CR>
 nnoremap <Leader>ea :FilesAll<CR>
 nnoremap <Leader>em :History<CR>
@@ -746,11 +758,11 @@ nnoremap <Leader>j  :Tags<CR>
 nnoremap <Leader>m  :Maps<CR>
 nnoremap <Leader>l  :Lines<CR>
 nnoremap <Leader>b  :Buffers<CR>
-"||]
-"[||[vim-rooter]
+"}}}
+"{{{[vim-rooter]
 let g:rooter_silent_chdir = 1
-"||]
-"[||[Gundo]
+"}}}
+"{{{[Gundo]
 if has('python3') && !has('python')
    let g:gundo_prefer_python3 = 1
 endif
@@ -764,38 +776,38 @@ let g:gundo_right            = 0
 let g:gundo_help             = 0
 let g:gundo_return_on_revert = 0
 let g:gundo_auto_preview     = 1
-"||]
-"[||[Bufferline]
+"}}}
+"{{{[Bufferline]
 let g:bufferline_active_buffer_left  = '['
 let g:bufferline_active_buffer_right = ']'
 let g:bufferline_rotate              = 2
 let g:bufferline_solo_highlight      = 1
-"||]
-"[||[Commentary]
+"}}}
+"{{{[Commentary]
 map  gc  <Plug>Commentary
 nmap gcc <Plug>CommentaryLine
 nmap gCC gggcG
-"||]
-"[||[Syntax Highlight]
+"}}}
+"{{{[Syntax Highlight]
 let g:NERDTreeHighlightFolders               = 1 " Enables folder icon highlighting using exact match
 let g:NERDTreeHighlightFoldersFullName       = 1 " Highlights the folder name
 let g:NERDTreeFileExtensionHighlightFullName = 1
 let g:NERDTreeExactMatchHighlightFullName    = 1
 let g:NERDTreePatternMatchHighlightFullName  = 1
-"||]
-"[||[Easy Align]
+"}}}
+"{{{[Easy Align]
 vmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 let g:easy_align_ignore_groups = []       " Vim Align ignore comment by default
-"||]
-"[||[Easy Tag]
+"}}}
+"{{{[Easy Tag]
 let g:easytags_opts = ['--exclude=*vim/plugged/']
 let g:easytags_async = 1
 let g:easytags_dynamic_files = 2
 let g:easytags_events = ['BufWritePost']
 let g:easytags_auto_highlight = 0
-"||]
-"[||[Emmet]
+"}}}
+"{{{[Emmet]
 let g:user_emmet_install_global = 0
 
 autocmd InsertEnter *.html,*.css EmmetInstall
@@ -804,11 +816,11 @@ let g:user_emmet_leader_key    = '<A-o>'
 let g:user_emmet_next_key      = '<A-o>n'
 let g:user_emmet_prev_key      = '<A-o>p'
 let g:user_emmet_removetag_key = '<A-o>r'
-"||]
-"[||[Eunuch]
+"}}}
+"{{{[Eunuch]
 nnoremap <Leader>- :SudoWrite<CR>
-"||]
-"[||[Incsearch]
+"}}}
+"{{{[Incsearch]
 let g:incsearch#auto_nohlsearch = 1
 map /  <Plug>(incsearch-forward)
 map ?  <Plug>(incsearch-backward)
@@ -820,26 +832,26 @@ map *  <Plug>(incsearch-nohl-*)zz
 map #  <Plug>(incsearch-nohl-#)zz
 map g* <Plug>(incsearch-nohl-g*)zz
 map g# <Plug>(incsearch-nohl-g#)zz
-"||]
-"[||[Fontsize]
+"}}}
+"{{{[Fontsize]
 let g:fontsize#defaultSize = 8
 nmap <silent><A-Up>   <Plug>FontsizeInc
 nmap <silent><A-Down> <Plug>FontsizeDec
-"||]
-"[||[Goyo]
+"}}}
+"{{{[Goyo]
 let g:goyo_width  = 110
 let g:goyo_height = 100
 let g:goyo_enable = 0
 
 nnoremap <silent>go :call near#utils#ToggleGoyo(goyo_enable)<CR>
-"||]
-"[||[Limelight]
+"}}}
+"{{{[Limelight]
 nmap <silent>gLL ;Limelight!!<CR>
 nmap gLl <Plug>(Limelight)|                  "Motion (normal mode)
 xmap gLl <Plug>(Limelight)|                  "Motion (viusal mode)
 let g:limelight_priority = -1                      "Do not overrule hlsearch
-"||]
-"[||[Session]
+"}}}
+"{{{[Session]
 " LN
 if g:os == 'win'
    let g:session_directory    = $HOME.'\vimfiles\session'
@@ -862,8 +874,36 @@ nnoremap <silent><Leader>sc :call near#utils#SCloseLazyLoad()<CR>
 nnoremap <silent><Leader>sd :call near#utils#SDeleteLazyLoad()<CR>
 nnoremap <silent><Leader>sv :call near#utils#SViewLazyLoad()<CR>
 nnoremap <silent><Leader>sV :call near#utils#SVIEWLazyLoad()<CR>
-"||]
-"[||[Surround]
+"}}}
+"{{{[Sneak]
+let g:sneak#s_next = 1              " Press [sS] after invoke sneak to go to next match
+let g:sneak#use_ic_scs = 1          " Case determined by 'ignorecase' and 'smartcase'
+let g:sneak#label_esc = "\<A-i>"
+let g:sneak#absolute_dir = 1        " Movement in sneak not based on sneak search direction
+
+nmap <silent> l <Plug>Sneak_;
+nmap <silent> h <Plug>Sneak_,
+vmap <silent> l <Plug>Sneak_;
+vmap <silent> h <Plug>Sneak_,
+
+nmap s <Plug>Sneak_s
+nmap S <Plug>Sneak_S
+vmap s <Plug>Sneak_s
+vmap S <Plug>Sneak_S
+
+nmap f <Plug>Sneak_f
+nmap F <Plug>Sneak_F
+vmap f <Plug>Sneak_f
+vmap F <Plug>Sneak_F
+
+nmap t <Plug>Sneak_t
+nmap T <Plug>Sneak_T
+vmap t <Plug>Sneak_t
+vmap T <Plug>Sneak_T
+
+hi Sneak guifg=white guibg=magenta ctermfg=15 ctermbg=5
+"}}}
+"{{{[Surround]
 nmap ds  <Plug>Dsurround
 nmap cs  <Plug>Csurround
 nmap cS  <Plug>CSurround
@@ -873,8 +913,8 @@ nmap yss <Plug>Yssurround
 nmap ySs <Plug>YSsurround
 xmap S   <Plug>VSurround
 xmap gS  <Plug>VgSurround
-"||]
-"[||[Thesaurus Query]
+"}}}
+"{{{[Thesaurus Query]
 "Require internet
 if has('python3')
    let g:tq_python_version          = 3
@@ -885,17 +925,17 @@ if has('python3')
    nnoremap Kt :ThesaurusQueryReplaceCurrentWord<CR>
    vnoremap Kt y:ThesaurusQueryReplace <C-r>"<CR>
 endif
-"||]
-"[||[Table Mode]
+"}}}
+"{{{[Table Mode]
 inoremap <A-t> <Esc>:TableModeToggle<CR>a
-"||]
-"[||[Vim-man]
+"}}}
+"{{{[Vim-man]
 " ../vim-man/plugin/man.vim
 command! -nargs=* -bar -complete=customlist,man#completion#run Man  
          \ call plug#load('vim-man')
          \|call man#get_page('horizontal', <f-args>)
-"||]
-"[||[Neocomplete]
+"}}}
+"{{{[Neocomplete]
 let g:neocomplete#enable_at_startup                 = 1 " Use neocomplete.
 let g:neocomplete#enable_smart_case                 = 1 " Use smartcase.
 let g:NeoCompleteAutoCompletionLength               = 3 " Set minimum char to trigger Autocomplete
@@ -909,8 +949,8 @@ autocmd FileType css           setlocal omnifunc=csscomplete#CompleteCSS
 autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
 autocmd FileType javascript    setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType xml           setlocal omnifunc=xmlcomplete#CompleteTags
-"||]
-"[||[NERDTree]
+"}}}
+"{{{[NERDTree]
 nnoremap <silent><Leader>nt :NERDTreeTabsToggle<CR>| "Toggle NERDTree and move cursor back to the last window
 nnoremap <silent><Leader>nf :NERDTreeFind<CR>|       " Press <Leader>Nf to go to the directory where current file is openned
 
@@ -945,8 +985,8 @@ else "Console
    let g:NERDTreeDirArrowExpandable  = '+'
    let g:NERDTreeDirArrowCollapsible = '-'
 endif
-"||]
-"[||[Ultisnips]
+"}}}
+"{{{[Ultisnips]
 nnoremap <Leader>U :UltiSnipsEdit<CR>|                            " Open new file to define snippets
 nnoremap <Leader><Leader>U :UltiSnipsEdit!<CR>|                   " Open all available files to select
 inoremap <silent><Tab> <C-R>=near#utils#UltiSnips_Complete()<CR>
@@ -963,17 +1003,17 @@ let g:UltiSnipsExpandTrigger       = "<Tab>"
 let g:UltiSnipsListSnippets        = "<C-e>"
 let g:UltiSnipsJumpForwardTrigger  = "<A-j>"
 let g:UltiSnipsJumpBackwardTrigger = "<A-k>"
-"||]
-"[||[Function]
-"[||BufferIsEmpty()
+"}}}
+"{{{[Function]
+"{{{BufferIsEmpty()
 function! s:BufferIsEmpty()
     if (line('$') == 1 && getline(1) == '') && (filereadable(@%) == 0)
         return 1
     endif
     return 0
 endfunction
-"||]
-"[||CloseEmptyBuffer()
+"}}}
+"{{{CloseEmptyBuffer()
 function! s:CloseEmptyBuffer()
    let t:NumOfWin = winnr('$')
    while t:NumOfWin >= 1
@@ -987,15 +1027,15 @@ function! s:CloseEmptyBuffer()
       let t:NumOfWin -= 1
    endwhile
 endfunction
-"||]
-"[||Eatchar(pat)
+"}}}
+"{{{Eatchar(pat)
 function! s:Eatchar(pat)
    let c = nr2char(getchar(0))
    return (c =~ a:pat) ? '' : c
 endfunction
-"||]
-"||]
-"[||[Autocmd]
+"}}}
+"}}}
+"{{{[Autocmd]
 highlight ntCursor guifg=NONE guibg=NONE
 let blacklist = ['nerdtree', 'qf', 'gundo', 'fugitiveblame', 'vim-plug']
 
@@ -1062,7 +1102,7 @@ if has('gui_running')
       autocmd GUIEnter * simalt ~x            "Open vim in maximum winow size
    endif
 endif
-"||]
+"}}}
 
 " command! -complete=file -nargs=1 Rpdf :r !pdftotext -nopgbrk <q-args> -
 " command! -complete=file -nargs=1 Rpdf :r !pdftotext -nopgbrk <q-args> - |fmt -csw78
