@@ -53,10 +53,8 @@ map [fullscreen] r recolor
 map [normal]     p print
 map [fullscreen] p print
 
-# map [normal]     gg goto top
-# map [fullscreen] gg goto top
-map [normal]     g goto
-map [fullscreen] g goto
+map [normal]     <Return> goto
+map [fullscreen] <Return> goto
 
 map [normal]     O     jumplist forward
 map [fullscreen] O     jumplist forward
