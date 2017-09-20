@@ -6,10 +6,12 @@
 # Then only reinclude necessary files/folders in parent dir
 !/README.md
 !/.vimrc
+!/.cvimrc
 !/.bashrc
 !/.inputrc
 !/.gitignore
-!/install.sh
+!/.Xmodmap
+!gitignore/install.sh
 
 !/bin/
 !/.fonts/
@@ -48,6 +50,9 @@
 
 # Explicit exclude
 **/tags
+/.cache/
+/.local/
+/.ssh/
 /.thumbnails/
 /.vim/autoload/plug.vim
 /.config/ranger/history

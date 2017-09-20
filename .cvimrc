@@ -1,0 +1,112 @@
+" Remember to set allow access to file URLs in extension setting
+
+let configpath = '/home/near/.cvimrc'
+" Settings
+set localconfig
+set autohidecursor
+set smoothscroll
+set noautofocus
+set typelinkhints
+set cncpcompletion
+let searchlimit = 200
+let scrollstep = 70
+set typelinkhints
+"set scalehints
+let zoomfactor = 0.05
+let hintcharacters = "abcdeghijklmnopqrstuvwxyz,.;'[]1234567890"
+let completionengines = ['google', 'duckduckgo', 'google-image', 'youtube']
+
+let searchalias g     = "google"
+let searchalias d     = "https://duckduckgo.com/"
+let searchalias gm    = "https://mail.google.com"
+let searchalias yt    = "youtube"
+let searchalias rd    = "reddit"
+let searchalias rdr   = "https://www.reddit.com/r/RimWorld"
+let searchalias fb    = "facebook.com"
+let searchalias fcc   = "https://www.freecodecamp.com/"
+let searchalias im    = "http://imgur.com/"
+let searchalias ms    = "https://www.facebook.com/messages"
+let searchalias od    = "http://www.oxfordlearnersdictionaries.com"
+let searchalias daa   = "https://daa.uit.edu.vn"
+let searchalias co    = "https://courses.uit.edu.vn"
+let searchalias gh    = "https://github.com"
+let searchalias ghd   = "https://github.com/NearHuscarl/dotfiles"
+let searchalias ghc   = "https://github.com/NearHuscarl/C-Exercise"
+let searchalias ghfcc = "https://github.com/NearHuscarl/FCC-Exercise-Archive"
+let searchalias ghio  = "https://github.com/NearHuscarl/NearHuscarl.github.io"
+let searchalias gsl   = "https://goo.gl/"
+
+" Mappings
+let mapleader = "<Space>"
+map ; :
+map <Leader>r reloadTabUncached
+map 0 scrollToRight
+map 9 scrollToLeft
+map L scrollFullPageDown
+map H scrollFullPageUp
+map l nextTab
+map h previousTab
+map + zoomPageIn
+map - zoomPageOut
+map <Leader><Tab> :tabnew<Space>
+map <Leader>o :open<Space>
+map <Leader><Leader><Tab> :quit<CR>
+
+map u goUpUrl
+map <Leader>r goToRootUrl
+
+map <Leader>py yankDocumentUrl
+map <Leader>nh clearSearchHighlight
+map <Leader>b :buffer<Space>
+map <Leader><Leader>s :settings<CR>
+map <Leader>s :source /C://Users/Near/Desktop/.vimrc/cvimrc<CR>
+
+map ~n nextSearchResult
+map n :execute ~nzz<CR>
+map ~N previousSearchResult
+map N :execute ~Nzz<CR>
+
+map R resetScrollFocus
+
+"Mute toggle
+map <Leader>m cm
+
+"Misc
+map d :duplicate<CR>
+
+"Search image on google
+map si reverseImage
+
+"Set mark
+map m setMark
+
+" a stronger j and k (half page)
+map <Leader>g :tabnew google<CR>
+" map <Leader>d :open https://duckduckgo.com/<CR>
+map <Leader>d :tabnew duckduckgo<CR>
+map <Leader>i nextFrame
+map J scrollPageDown
+map K scrollPageUp
+map sh :history<Space>
+map sb :bookmarks<Space>
+map b goBack
+map c goForward
+
+" In this case, when pages with a file ending in '.js' are loaded,
+" cVim will pin the tab and then scroll down
+site '*://*/*.pdf' {
+      map j e
+}
+
+" Insert Mappings
+imap <A-n> backwardWord
+imap <A-m> forwardWord
+imap <A-h> backwardChar
+imap <A-l> forwardChar
+imap <A-,> beginningOfLine
+imap <A-.> endOfLine
+imap <A-9> deleteWord
+imap <A-0> deleteForwardWord
+imap <A-e> endOfLine
+imap <A-i> <C-[>
+imap <A-d> deleteToBeginning

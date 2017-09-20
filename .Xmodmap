@@ -1,0 +1,3 @@
+clear lock 
+keycode  66 = Alt_L NoSymbol Alt_L
+keycode 108 = Caps_Lock NoSymbol Caps_Lock
