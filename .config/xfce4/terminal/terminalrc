@@ -26,7 +26,7 @@ MiscSlimTabs=FALSE
 ShortcutsNoMnemonics=TRUE
 ColorForeground=#bdc3c7
 FontName=Inconsolata Bold 10
-BackgroundDarkness=0.850000
+BackgroundDarkness=0.750000
 BackgroundImageFile=/home/near/Desktop/ABP147d.png
 ColorBackground=#1f2d3a
 ScrollingBar=TERMINAL_SCROLLBAR_NONE
@@ -40,4 +40,5 @@ ColorPalette=#1f2d3a;#c0392b;#27ae60;#f39c12;#2980b9;#8e44ad;#16a085;#84888b;#2c
 TabActivityColor=#a6a6e2e22e2e
 ShortcutsNoHelpkey=TRUE
 ShortcutsNoMenukey=TRUE
+BackgroundMode=TERMINAL_BACKGROUND_TRANSPARENT
 
