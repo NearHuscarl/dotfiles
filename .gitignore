@@ -5,6 +5,7 @@
 
 # Then only reinclude necessary files/folders in parent dir
 !/README.md
+!/LICENSE.md
 !/.vimrc
 !/.cvimrc
 !/.bashrc
@@ -16,7 +17,7 @@
 !/bin/
 !/.fonts/
 
-# Repeat the process for subdir
+# Repeat the process for subdir .config
 !/.config/
 /.config/*
 !/.config/compton.conf
@@ -28,6 +29,11 @@
 !/.config/polybar/
 !/.config/rofi/
 !/.config/zathura/
+
+!/.config/mpd/
+/.config/mpd/*
+!/.config/mpd/mpd.conf
+!/.config/mpd/mpd.conf.example
 
 !/.config/ranger/
 /.config/ranger/colorschemes/*
