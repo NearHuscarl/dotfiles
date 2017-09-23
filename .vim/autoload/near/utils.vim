@@ -2,7 +2,7 @@
 " File:        utils.vim
 " Description: Utility Functions
 " Author:      Near Huscarl <near.huscarl@gmail.com>
-" Last Change: Tue Sep 19 18:11:54 +07 2017
+" Last Change: Thu Sep 21 01:05:34 +07 2017
 " Licence:     BSD 3-Clause license
 " Note:        Miscellaneous functions in autoload/ is put here
 " ============================================================================
@@ -13,10 +13,11 @@ function! near#utils#SetLastChangeBeforeBufWrite()
    "Match: Mon Sep 04 22:51:18 ICT 2017
    "       Mon Aug 14 13:38:15 +07 2017
    "       Mon Aug 14 13:38:15 -07 2017
+   "       Tue Aug 15 15:34:13 Novosibirsk Standard Time 2017
    echo 1
    for line in range(5, 15)
       if match(getline(line),
-               \ '[A-Z][a-z]\{2} [A-Z][a-z]\{2} \d\@<!\d\{2}\d\@! \d\@<!\d\{2}\d\@!:\d\@<!\d\{2}\d\@!:\d\@<!\d\{2}\d\@! [A-Z0-9\+\-]\{2,} \d\@<!\d\{4}\d\@!') != -1
+               \ '[A-Z][a-z]\{2} [A-Z][a-z]\{2} \d\@<!\d\{2}\d\@! \d\@<!\d\{2}\d\@!:\d\@<!\d\{2}\d\@!:\d\@<!\d\{2}\d\@! .* \d\@<!\d\{4}\d\@!') != -1
          let view_info = winsaveview()
          let time = strftime('%a %b %d %H:%M:%S %Z %Y')
          silent! call cursor(line, 16)
