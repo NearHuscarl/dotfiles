@@ -4,7 +4,7 @@
 # Description: Bash custom aliases and other alias functions, some alias have
 #              the equivalent completion as the original commands
 # Author:      Near Huscarl <near.huscarl@gmail.com>
-# Last Change: Sat Sep 23 20:50:18 +07 2017
+# Last Change: Sun Sep 24 02:19:04 +07 2017
 # Licence:     BSD 3-Clause license
 # Note:        N/A
 # ============================================================================
@@ -148,6 +148,7 @@ alias i3-conf="$editor $HOME/.config/i3/config"
 alias git-conf="$editor $HOME/.config/git/config"
 alias neofetch-conf="$editor $HOME/.config/neofetch/config"
 alias polybar-conf="$editor $HOME/.config/polybar/config"
+alias dunst-conf="$editor $HOME/.config/dunst/dunstrc"
 alias mp-conf="$editor $HOME/.config/ncmpcpp/config"
 
 alias alias-e="$editor $HOME/bin/alias"
@@ -179,6 +180,7 @@ alias shutoff='shutdown -h now'
 alias size="alias-size"
 alias size-l="alias-size-l"
 alias mkdir='mkdir -pv'
+alias top="vtop"
 if [[ -x /usr/bin/xfce4-terminal ]]; then
    alias term='xfce4-terminal'
 fi
@@ -187,7 +189,6 @@ alias music="ncmpcpp"
 alias clock="tty-clock -s -c -D -C6"
 alias symlink="ln -s"
 alias fuck='sudo $(history -p !!)'
-alias arg="!*"
 alias toggle-tray="alias-toggle-tray"
 alias key-import='gpg --recv-keys'
 # }}}
