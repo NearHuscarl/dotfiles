@@ -18,7 +18,7 @@ visualizer_output_name = "my_fifo"
 visualizer_in_stereo = yes
 visualizer_sync_interval = 30
 visualizer_type = spectrum
-visualizer_color = magenta, blue, cyan, green, 12, yellow, 10, red
+visualizer_color = cyan
 
 mouse_support = "no"
 # now_playing_prefix = "$3>>"
