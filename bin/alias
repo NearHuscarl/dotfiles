@@ -4,20 +4,19 @@
 # Description: Bash custom aliases and other alias functions, some alias have
 #              the equivalent completion as the original commands
 # Author:      Near Huscarl <near.huscarl@gmail.com>
-# Last Change: Mon Sep 18 17:38:41 +07 2017
+# Last Change: Sat Sep 23 20:50:18 +07 2017
 # Licence:     BSD 3-Clause license
 # Note:        N/A
 # ============================================================================
 
-# Variable
-completionPath="/usr/share/bash-completion/completions"
+# Setup {{{
 editor=vim
 
 if [[ -f $HOME/bin/alias-utils ]]; then
    source $HOME/bin/alias-utils
 fi
-
-# Quickly change directory
+# }}}
+# change directory {{{
 alias dkt='cd $HOME/Desktop'
 alias dot='cd $HOME/dotfiles'
 alias cdh='cd $HOME'
@@ -25,8 +24,8 @@ alias cd-pic='cd $HOME/Pictures'
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
-
-# list
+# }}}
+# list {{{
 alias  ls="ls --color=auto"
 alias  la="ls --color=auto -A"
 alias  ll="ls --color=auto -oh"
@@ -36,50 +35,37 @@ alias lss="ls -A    | grep --color=auto -i"
 alias lls="ls -Aoh  | grep --color=auto -i"
 alias lrs="ls -ARoh | grep --color=auto -i"
 alias tree="alias-tree"
-
-# vim
+# }}}
+# vim {{{
 if [[ -x /usr/bin/vim ]]; then
    alias view="vim -R"
-   alias vimrc="vim $HOME/.vim/plugin/00_config.vim"
+   alias vimrc="vim $HOME/.vimrc"
+   alias vir='alias-vir'
    if [[ -x $HOME/bin/viman ]]; then
       alias man="viman"
    fi
 fi
-
-# pacman
+# }}}
+# pacman {{{
 if [[ -x /usr/bin/pacman ]]; then
    alias pac-install="alias-pac-install"
    alias pac-update="alias-pac-update"
    alias pac-remove="sudo pacman -Rs"
    alias pac-search="pacman -Qsq"
    alias pac-Search="pacman -Ssq"
-   # alias pac-export="pacman -Qqe >"
-   # alias pac-import="sudo pacman -S - <"
-
-   # remove unused packages (orphans)
-   alias pac-orphan="sudo pacman -Rns $(pacman -Qtdq)"
-
+   alias pac-orphan="sudo pacman -Rns $(pacman -Qtdq)"                                   # Remove unused packages (orphans)
    alias pac-info="pacman -Si"
    alias pac-desc="expac -S '%d'"
-
-   # show download size of package(s)
-   alias pac-size="expac -S -HM '%k\t%n'"
-
-   # show nth largest download size of package(s)
-   alias pac-size-l="expac -S -HM '%k\t%n' | sort -n | tail -n"
-
-   # list nth last installed packages
-   alias pac-latest="expac -HM --timefmt='%Y-%m-%d %T' '%l\t%-20n\t%m' | sort | tail -n"
-
-   # list nth last explicitly installed packages which is not in base/base-devel group 
-   alias pac-latest-e="alias-pac-latest-e"
-
-   # print package's dependencies
-   alias pac-dep="alias-pac-dep"
+   alias pac-size="expac -S -HM '%k\t%n'"                                                # Show download size of package(s)
+   alias pac-size-l="expac -S -HM '%k\t%n' | sort -n | tail -n"                          # Show nth largest download size of package(s)
+   alias pac-latest="expac -HM --timefmt='%Y-%m-%d %T' '%l\t%-20n\t%m' | sort | tail -n" # List nth last installed packages
+   alias pac-latest-e="alias-pac-latest-e"                                               # List nth last explicitly installed packages which is not in base/base-devel group
+   alias pac-dep="alias-pac-dep"                                                         # Print package's dependencies
 
    # AUR
    if [[ -x /usr/bin/pacaur ]]; then
       alias aur-install="pacaur -Sa"
+      alias aur-clean="pacaur -Sca"
       alias aur-update="pacaur -Syua"
       alias aur-remove="pacaur -Rsa"
       alias aur-search="pacaur -Qsqa"
@@ -90,8 +76,8 @@ if [[ -x /usr/bin/pacman ]]; then
       alias aur-dep="alias-aur-dep"
    fi
 fi
-
-# systemd
+# }}}
+# systemd {{{
 if [[ -x /usr/bin/systemctl ]]; then
    alias sd-start="sudo systemctl start"
    alias sd-stop="sudo systemctl stop"
@@ -105,8 +91,8 @@ if [[ -x /usr/bin/journalctl ]]; then
    alias sd-search="journalctl -b | grep"
    alias sd-clean="journalctl --vacuum-size=100M"
 fi
-
-# git
+# }}}
+# git {{{
 if [[ -x /usr/bin/git ]]; then
    alias gstat='git status'
    alias gadd='git add'
@@ -124,14 +110,13 @@ if [[ -x /usr/bin/git ]]; then
    alias gscommit='git log --grep'
    alias gpull='git pull'
    alias gpush='git push'
-   # fix commit msg without altering its snapshot
-   alias gfixcommit='git commit --amend'
-   # fix commit (staging other files)
-   alias gfixstage='git commit --amend --reuse-message=HEAD'
+   alias gfixcommit='git commit --amend'                     # Fix commit msg without altering its snapshot
+   alias gfixstage='git commit --amend --reuse-message=HEAD' # Fix commit (staging other files)
    alias gunstage='git reset HEAD'
    alias grestore='git checkout --'
    alias gswitch='git checkout'
    alias gnewbranch='git checkout -b'
+   alias gremove='git rm --cached'                           # Remove file in vcs while keeping in the local location
    alias gdelbranch='git branch -d'
    alias gdelremote='git push origin :'
    alias gmerge='git merge'
@@ -143,8 +128,8 @@ if [[ -x /usr/bin/git ]]; then
       alias gdiff="alias-gdiff-old"
    fi
 fi
-
-# trash-cli
+# }}}
+# trash-cli {{{
 if [[ -x /usr/bin/trash-put ]]; then
    alias rm-hard="rm -I"
    alias rm="trash-put"
@@ -155,11 +140,8 @@ if [[ -x /usr/bin/trash-put ]]; then
    alias rm-empty="trash-empty"
    alias rm-rm="trash-rm"
 fi
-
-# Shortcuts to edit config file
-pkgList="compton dunst i3 git neofetch polybar"
-
-# config
+# }}}
+# Edit config file {{{
 alias compton-conf="$editor $HOME/.config/compton.conf"
 alias dunst-conf="$editor $HOME/.config/dunst/dunstrc"
 alias i3-conf="$editor $HOME/.config/i3/config"
@@ -171,53 +153,57 @@ alias mp-conf="$editor $HOME/.config/ncmpcpp/config"
 alias alias-e="$editor $HOME/bin/alias"
 alias bashrc="$editor $HOME/.bashrc"
 alias inputrc="$editor $HOME/.inputrc"
+alias gitignore="$editor $HOME/.gitignore"
 alias todo="$editor $HOME/misc/Todo"
 alias plan="$editor $HOME/misc/plan"
 alias arch="$editor $HOME/misc/Arch.txt"
-
-# xprop
+# }}}
+# xprop {{{
 alias xprop-class="xprop WM_CLASS"
 alias xprop-role="xprop WM_WINDOW_ROLE"
 alias xprop-title="xprop _NET_WM_NAME WM_NAME"
-
-alias size="alias-size"
-alias size-l="alias-size-l"
-
-# picture
+# }}}
+# Picture {{{
 alias wallpaper="nitrogen --random --set-scaled 'Pictures/Low Poly'"
 alias pic-schedule="sxiv -f $HOME/Pictures/misc/schedule.png"
 alias pic-full="sxiv -f"
 alias thumnail="sxiv -f -t -b -r *"
 alias pic="alias-pic"
 alias sxiv="sxiv -b -s h"
-
-# fzf
-alias fz='alias-fzf'
-alias rgr='alias-rgr'
-
-# Other
+# }}}
+# Other {{{
 alias sa='source $HOME/bin/alias'
 alias sb='source $HOME/.bashrc && clear'
 alias reboot='shutdown -r now'
 alias shutoff='shutdown -h now'
-
+alias size="alias-size"
+alias size-l="alias-size-l"
 alias mkdir='mkdir -pv'
-# alias fd='sudo find / | grep'
+if [[ -x /usr/bin/xfce4-terminal ]]; then
+   alias term='xfce4-terminal'
+fi
 alias alsa-fix="sudo /usr/local/bin/alsa-fix.sh"
 alias music="ncmpcpp"
 alias clock="tty-clock -s -c -D -C6"
 alias symlink="ln -s"
-alias fuck="sudo "$(history -p \!\!)""
+alias fuck='sudo $(history -p !!)'
 alias arg="!*"
 alias toggle-tray="alias-toggle-tray"
+alias key-import='gpg --recv-keys'
+# }}}
+# Even shorter aliases {{{
+alias e='exit'
+alias c='clear'
+# }}}
+# Apply completion to aliases {{{
 
-# Apply completion to aliases
 # complete -p <command> -> show completion function of that command
 # note: if not work. try to source the completion script first by typing the original
 # command, then <tab> to trigger to script, and try again
+
 if [ -d /usr/share/bash-completion/completions ]; then
+   # Setup {{{
    completionPath="/usr/share/bash-completion/completions"
-   bin="$HOME/bin"
 
    # source $completionPath/pacman (_completion_loader pacman works too)
    # _completion_loader pacman
@@ -228,8 +214,8 @@ if [ -d /usr/share/bash-completion/completions ]; then
    # source $completionPath/systemctl
    source $HOME/bin/completion-utils.sh
    source $HOME/bin/completion-wrapper.sh
-
-   # Pacman
+   # }}}
+   # pacman {{{
    complete -o default -F _pacman_S pac-install
    complete -o default -F _pacman_Q pac-remove
    complete -o default -F _pacman_Q pac-search
@@ -246,8 +232,8 @@ if [ -d /usr/share/bash-completion/completions ]; then
    complete -o default -F _pacman_Q aur-desc
    complete -o default -F _pacman_Q aur-size
    complete -o default -F _pacman_Q aur-dep
-
-   # systemctl
+   # }}}
+   # systemctl {{{
    completion-wrapper _systemctl _sd-start   systemctl start  1> /dev/null
    completion-wrapper _systemctl _sd-stop    systemctl stop   1> /dev/null
    completion-wrapper _systemctl _sd-enable  systemctl enable 1> /dev/null
@@ -261,8 +247,8 @@ if [ -d /usr/share/bash-completion/completions ]; then
    complete -o default -F _sd-status  sd-status
 
    complete -o default -F _journalctl sd-log
-
-   # git
+   # }}}
+   # git {{{
    # git completion script already have its own function to set up completion
    # for functions or commands, so no need to use complete-wrapper function
    # see https://gist.github.com/JuggoPop/10706934
@@ -285,5 +271,7 @@ if [ -d /usr/share/bash-completion/completions ]; then
    # __git_complete gdelbranch __gitcomp
    complete -o default -F _git_branch_d gdelbranch
    complete -o default -F _git_log_S gscommit
+   # }}}
 fi
 
+# }}}
