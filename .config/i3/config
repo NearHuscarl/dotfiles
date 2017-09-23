@@ -1,3 +1,6 @@
+# vim:ft=conf
+# i3 config
+
 # Workspace name {{{
 set $ws_term  "1"
 set $ws_dev   "2"
@@ -30,29 +33,29 @@ exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 # }}}
 # Basic {{{
 
-set $mod Control                                                                  # Set modifier key, like Leader key in vim
-font pango:monospace 8                                                            # Font for window titles
-floating_modifier $mod                                                            # Use Mouse+$mod to drag floating windows to their wanted position
+set $mod Control
+font pango:monospace 8
+floating_modifier $mod
 
-bindsym $mod+slash kill                                                           # Kill focused window
-bindsym $mod+shift+slash focus parent,focus parent,focus parent,focus parent,kill # Kill all windows the focused workspace
+bindsym $mod+slash kill
+bindsym $mod+shift+slash focus parent,focus parent,focus parent,focus parent,kill
 
-bindsym $mod+Shift+l exec i3lock-fancy -f Roboto-Bold                             # Lock screen
-bindsym $mod+Return exec xfce4-terminal --disable-server                          # Start a terminal
-bindsym $mod+shift+f fullscreen toggle                                            # Enter fullscreen mode for the focused container
+bindsym $mod+Shift+l exec i3lock-fancy -f Roboto-Bold
+bindsym $mod+Return exec xfce4-terminal --disable-server
+bindsym $mod+shift+f fullscreen toggle
 
-bindsym $mod+x split h                                                            # Split in horizontal orientation
-bindsym $mod+v split v                                                            # Split in vertical orientation
-bindsym $mod+g split toggle                                                       # Toggle split
+bindsym $mod+x split h
+bindsym $mod+v split v
+bindsym $mod+g split toggle
 
-bindsym $mod+Shift+space floating toggle                                          # Toggle tiling / floating
-bindsym $mod+space focus mode_toggle                                              # Change focus between tiling / floating windows
+bindsym $mod+Shift+space floating toggle
+bindsym $mod+space focus mode_toggle
 
-bindsym $mod+Shift+r reload                                                       # Reload the configuration file
-bindsym Mod4+r restart                                                            # Restart i3 inplace
+bindsym $mod+Shift+r reload
+bindsym Mod4+r restart
 
-bindsym $mod+shift+minus move scratchpad                                          # Make focused window scratchpad
-bindsym $mod+minus scratchpad show                                                # Show the first scratchpad window
+bindsym $mod+shift+minus move scratchpad
+bindsym $mod+minus scratchpad show
 
 # Change focus
 bindsym $mod+h focus left
@@ -83,14 +86,15 @@ bindsym $mod+period workspace next
 bindsym $mod+comma workspace prev
 # }}}
 # Assign application to specific workspace {{{
-assign [class="Gvim"]          $ws_dev
-assign [title="Vim - Dev"]     $ws_dev
-assign [class="Google-chrome"] $ws_web
-assign [class="Zathura"]       $ws_doc
-assign [class="Caprine"]       $ws_chat
-assign [class="Thunar"]        $ws_file
-assign [title="Ranger"]        $ws_file
-assign [class="Thunderbird"]   $ws_mail
+assign [class="Gvim"]           $ws_dev
+assign [title="Vim - Dev"]      $ws_dev
+assign [class="Google-chrome"]  $ws_web
+assign [class="Vivaldi-stable"] $ws_web
+assign [class="Zathura"]        $ws_doc
+assign [class="Caprine"]        $ws_chat
+assign [class="Thunar"]         $ws_file
+assign [title="Ranger"]         $ws_file
+assign [class="Thunderbird"]    $ws_mail
 # }}}
 # Open certain window in floating mode {{{
 for_window [window_role="pop-up"]      floating enable
@@ -105,6 +109,7 @@ for_window [class="Nitrogen"]          floating enable
 for_window [class="Gucharmap"]         floating enable
 for_window [class="Sxiv"]              floating enable
 for_window [title="Floating"]          floating enable
+for_window [title="Startup Settings"]          floating enable
 
 # Very dirty workaround to make chrome developer tools fullscreen
 for_window [title="^Developer Tools.*"] \
@@ -119,7 +124,8 @@ for_window [title="^Developer Tools.*"] \
 bindsym F1 exec xfce4-terminal --disable-server
 # bindsym F2 exec gvim; workspace $ws_dev
 bindsym F2 exec xfce4-terminal --title="Vim - Dev" -e "vim --servername vim"; workspace $ws_dev
-bindsym F3 exec google-chrome-stable; workspace $ws_web
+# bindsym F3 exec google-chrome-stable; workspace $ws_web
+bindsym F3 exec vivaldi-stable; workspace $ws_web
 bindsym F4 exec xfce4-terminal --title="Ranger" -e "ranger"; workspace $ws_file
 bindsym F5 exec zathura; workspace $ws_doc
 bindsym F6 exec caprine; workspace $ws_chat
@@ -142,15 +148,15 @@ bindsym ctrl+shift+n exec xfce4-terminal -e neofetch \
       --title='Floating'
 # }}}
 # Window border {{{
-# new_window none         # No border on all windows
-new_window pixel 1      # border 1 pixel on all windows
-new_float none          # no border on floating windows
-hide_edge_borders smart # Hide border when there's only one window
+# new_window none
+new_window pixel 1
+new_float none
+hide_edge_borders smart
 # }}}
 # Gaps {{{
 gaps inner 15
 workspace $ws_web gaps inner 0
-# smart_gaps on                  # only use gap when there are more than 1 container
+# smart_gaps on
 # }}}
 # Mode {{{
 
@@ -267,7 +273,7 @@ mode "move" {
 bindsym $mod+m mode "move"
 bindsym $mod+Shift+g mode "$mode_gaps_inner"
 bindsym $mod+r mode "resize"
-bindsym $mod+d mode "launch"                  # dynamic menu (rofi)
+bindsym $mod+d mode "launch"
 # }}}
 
 # }}}
@@ -280,7 +286,8 @@ bindsym $mod+d mode "launch"                  # dynamic menu (rofi)
 # Misc {{{
 
 # reload polybar
-bindsym $mod+shift+p exec --no-startup-id $HOME/bin/reload-polybar.sh
+bindsym $mod+shift+p exec --no-startup-id $HOME/bin/reload-polybar
+bindsym $mod+shift+d exec --no-startup-id $HOME/bin/reload-dunst
 
 # }}}
 # Color {{{
