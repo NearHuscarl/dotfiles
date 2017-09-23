@@ -7,14 +7,16 @@
 ; ;
 ; ;=====================================================
 
+; {{{ [colors]
 [colors]
 ;background = ${xrdb:color0:#222}
 ;foreground = ${xrdb:color7:#222}
 
 background = #ff1F2D3A
 background-alt = #ff2C3E50
-foreground = #ecf0f1
-foreground-alt = #84888B
+foreground-text = #ecf0f1
+foreground-icon = #16A085
+foreground-inactive = #84888B
 primary = #e74c3c
 secondary = #f39c12
 alert = #bd2c40
@@ -25,7 +27,8 @@ yellow     = #f1c40f
 green      = #27AE60
 lightgreen = #2ecc71
 cyan       = #16a085
-
+; }}}
+; {{{ [bar/holybar]
 [bar/holybar]
 ;monitor = ${env:MONITOR:HDMI-1}
 width = 100%
@@ -38,7 +41,7 @@ fixed-center = false
 spacing = 1
 
 background = ${colors.background}
-foreground = ${colors.foreground}
+foreground = ${colors.foreground-text}
 
 line-size = 2
 line-color = #f00
@@ -90,7 +93,7 @@ modules-right = wired-network wireless-network cpu memory filesystem home xbackl
 ; blacklist-0 = num lock
 
 ; format-prefix = " "
-; format-prefix-foreground = ${colors.foreground-alt}
+; format-prefix-foreground = ${colors.foreground-icon}
 ; format-prefix-underline = ${colors.secondary}
 
 ; label-layout = %layout%
@@ -101,17 +104,19 @@ modules-right = wired-network wireless-network cpu memory filesystem home xbackl
 ; label-indicator-background = ${colors.secondary}
 ; label-indicator-underline = ${colors.secondary}
 
+; }}}
+; {{{ [module/filesystem]
 [module/filesystem]
 type = internal/fs
 interval = 10
 
 mount-0 = /
 
-format-mounted-prefix-foreground = ${colors.foreground-alt}
+format-mounted-prefix-foreground = ${colors.foreground-icon}
 format-mounted-prefix = " "
 label-mounted = %used%
 label-unmounted = %mountpoint% not mounted
-label-unmounted-foreground = ${colors.foreground-alt}
+label-unmounted-foreground = ${colors.foreground-icon}
 
 ; Available tags:
 ;   <label-mounted> (default)
@@ -129,18 +134,19 @@ format-unmounted = <label-unmounted>
 ; label-unmounted-underline = ${colors.red}
 ; label-unmounted-padding = 1
 ; format-unmounted-underline = ${colors.red}
-
+; }}}
+; {{{ [module/home]
 [module/home]
 type = internal/fs
 interval = 10
 
 mount-0 = /home
 
-format-mounted-prefix-foreground = ${colors.foreground-alt}
+format-mounted-prefix-foreground = ${colors.foreground-icon}
 format-mounted-prefix = " "
 label-mounted = %used%
 label-unmounted = %mountpoint% not mounted
-label-unmounted-foreground = ${colors.foreground-alt}
+label-unmounted-foreground = ${colors.foreground-icon}
 
 format-mounted = <label-mounted>
 ; label-mounted-underline = ${colors.red}
@@ -153,12 +159,13 @@ format-unmounted = <label-unmounted>
 ; label-unmounted-underline = ${colors.red}
 ; label-unmounted-padding = 1
 ; format-unmounted-underline = ${colors.red}
-
-
+; }}}
+; {{{ [module/bspwm]
 [module/bspwm]
 type = internal/bspwm
 
 label-focused = %icon%
+label-focused-foreground = ${colors.foreground-icon}
 label-focused-background = ${colors.background-alt}
 ; label-focused-underline= ${colors.primary}
 label-focused-padding = 1
@@ -171,9 +178,10 @@ label-urgent-background = ${colors.primary}
 label-urgent-padding = 1
 
 label-empty = %icon%
-label-empty-foreground = ${colors.foreground-alt}
+label-empty-foreground = ${colors.foreground-icon}
 label-empty-padding = 1
-
+; }}}
+; {{{ [module/i3]
 [module/i3]
 type = internal/i3
 format = <label-state> <label-mode>
@@ -189,13 +197,14 @@ label-mode-background = ${colors.orange}
 
 ; focused = Active workspace on focused monitor
 label-focused = %icon%
+label-focused-foreground = ${module/bspwm.label-focused-foreground}
 label-focused-background = ${module/bspwm.label-focused-background}
 ; label-focused-underline = ${module/bspwm.label-focused-underline}
 label-focused-padding = ${module/bspwm.label-focused-padding}
 
 ; unfocused = Inactive workspace on any monitor
 label-unfocused = %icon%
-label-unfocused-foreground = ${colors.foreground-alt}
+label-unfocused-foreground = ${colors.foreground-inactive}
 label-unfocused-padding = ${module/bspwm.label-occupied-padding}
 
 ; visible = Active workspace on unfocused monitor
@@ -216,14 +225,15 @@ ws-icon-default = 
 ws-icon-1 = 1;
 ws-icon-2 = 2;
 ws-icon-3 = 3;
-ws-icon-4 = 4;
-ws-icon-5 = 5;
-ws-icon-6 = 6;
+ws-icon-4 = 4;
+ws-icon-5 = 5;
+ws-icon-6 = 6;
 ws-icon-7 = 7;
 ws-icon-8 = 8; 
 ws-icon-9 = 9;
 ws-icon-0 = 0;
-
+; }}}
+; {{{ [module/mpd]
 [module/mpd]
 type = internal/mpd
 ; <label-song>
@@ -231,26 +241,19 @@ format-online = <icon-prev> <icon-stop> <toggle> <icon-next> <icon-repeat> <icon
 
 icon-prev = 
 icon-stop = 
-icon-stop-foreground = ${colors.red}
+icon-stop-foreground = ${colors.foreground-icon}
 icon-play = 
 icon-pause = 
 icon-next = 
 icon-random = 
 icon-repeat = 
 
-toggle-on-foreground = ${colors.foreground}
-toggle-off-foreground = ${colors.foreground-alt}
+toggle-on-foreground = ${colors.foreground-text}
+toggle-off-foreground = ${colors.foreground-inactive}
 
-label-song-prefix = 
-label-song =  %title:2:25%
+label-song = %title:2:25%
 label-offline =  mpd is offline
-; label-song-foreground = ${colors.foreground-alt}
-
-; icon-prev = 
-; icon-stop = 
-; icon-play = 
-; icon-pause = 
-; icon-next = 
+; label-song-foreground = ${colors.foreground-icon}
 
 label-song-maxlen = 25
 label-song-ellipsis = true
@@ -270,19 +273,21 @@ label-song-ellipsis = true
 ; bar-fill-foreground = #9f78e1
 ; bar-empty = ─
 ; bar-empty-font = 2
-; bar-empty-foreground = ${colors.foreground-alt}
+; bar-empty-foreground = ${colors.foreground-icon}
 
 ; [module/backlight-acpi]
 ; inherit = module/xbacklight
 ; type = internal/backlight
 ; card = intel_backlight
 
+; }}}
+; {{{ [module/cpu]
 [module/cpu]
 type = internal/cpu
 interval = 0.7
-format-prefix-foreground = ${colors.foreground-alt}
+format-prefix-foreground = ${colors.foreground-icon}
 format-prefix = " "
-; format-prefix-foreground = ${colors.foreground-alt}
+; format-prefix-foreground = ${colors.foreground-icon}
 ; format-underline = ${colors.primary}
 ; format-padding = 1
 ; label = %percentage%%
@@ -305,27 +310,26 @@ ramp-coreload-4-foreground = ${colors.orange}
 ramp-coreload-5-foreground = ${colors.orange}
 ramp-coreload-6-foreground = ${colors.red}
 ramp-coreload-7-foreground = ${colors.red}
-
+; }}}
+; {{{ [module/memory]
 [module/memory]
 type = internal/memory
 interval = 2
 
 format-prefix = " "
-format-prefix-foreground = ${colors.foreground-alt}
+format-prefix-foreground = ${colors.foreground-icon}
 
-; format-prefix-foreground = ${colors.foreground-alt}
+; format-prefix-foreground = ${colors.foreground-icon}
 ; format-underline = ${colors.secondary}
 ; format-padding = 1
 label = %percentage_used%%
-
+; }}}
+; {{{ [module/wireless-network]
 [module/wireless-network]
 type = internal/network
 ; $ ip link show
 interface = wlo1
 interval = 3.0
-
-; label-disconnected = " not connected"
-; label-disconnected-foreground = ${colors.foreground-alt}
 
 format-connected = <ramp-signal><label-connected>
 ; format-connected-underline = #9f78e1
@@ -338,18 +342,19 @@ ramp-signal-2 = 
 ramp-signal-3 = 
 ramp-signal-4 = 
 
-ramp-signal-0-foreground = ${colors.background-alt}
-ramp-signal-1-foreground = ${colors.red}
-ramp-signal-2-foreground = ${colors.orange}
-ramp-signal-3-foreground = ${colors.yellow}
-ramp-signal-4-foreground = ${colors.green}
+ramp-signal-0-foreground = ${colors.red}
+ramp-signal-1-foreground = ${colors.foreground-icon}
+ramp-signal-2-foreground = ${colors.foreground-icon}
+ramp-signal-3-foreground = ${colors.foreground-icon}
+ramp-signal-4-foreground = ${colors.foreground-icon}
 
 animation-packetloss-0 = 
 animation-packetloss-0-foreground = #ffa64c
 animation-packetloss-1 = 
-animation-packetloss-1-foreground = ${bar/top.foreground}
+animation-packetloss-1-foreground = ${bar/top.foreground-text}
 animation-packetloss-framerate = 500
-
+; }}}
+; {{{ [module/wired-network]
 [module/wired-network]
 
 type = internal/network
@@ -357,11 +362,12 @@ interface = eno1
 interval = 2.0
 
 ; format-connected-underline = ${colors.primary}
-format-connected-prefix-foreground = ${colors.foreground-alt}
+format-connected-prefix-foreground = ${colors.foreground-icon}
 format-connected-prefix = " "
-; format-connected-prefix-foreground = ${colors.foreground-alt}
+; format-connected-prefix-foreground = ${colors.foreground-icon}
 label-connected = %upspeed% %downspeed%
-
+; }}}
+; {{{ [module/date]
 [module/date]
 type = internal/date
 
@@ -371,11 +377,12 @@ date = " %a, %b %d"
 date-alt = " %d/%m/%Y"
 
 format-prefix = 
-format-prefix-foreground = ${colors.foreground-alt}
+format-prefix-foreground = ${colors.foreground-icon}
 ; format-underline = #0a6cf5
 ; format-padding = 1
 label = %date%
-
+; }}}
+; {{{ [module/time]
 [module/time]
 type = internal/date
 
@@ -385,11 +392,12 @@ time = " %I%{F#84888b}:%{F-}%M %p"
 ; time-alt = " %I:%M:%S %p"
 
 format-prefix = 
-format-prefix-foreground = ${colors.foreground-alt}
+format-prefix-foreground = ${colors.foreground-icon}
 ; format-underline = #0a6cf5
 ; format-padding = 1
 label = %time%
-
+; }}}
+; {{{ [module/volume]
 [module/volume]
 type = internal/volume
 
@@ -400,11 +408,11 @@ headphone-soundcard = default
 
 format-volume = <ramp-volume><label-volume>
 label-volume = %percentage%%
-; label-volume-foreground = ${root.foreground}
+; label-volume-foreground = ${root.foreground-text}
 
 format-muted-prefix = " "
-format-muted-prefix-foreground = ${colors.foreground-alt}
-; format-muted-foreground = ${colors.foreground-alt}
+format-muted-prefix-foreground = ${colors.foreground-icon}
+; format-muted-foreground = ${colors.foreground-icon}
 label-muted = "[M]"
 ; label-muted-underline = ${colors.red}
 
@@ -414,9 +422,9 @@ ramp-volume-0 = 
 ramp-volume-1 = 
 ramp-volume-2 = 
 
-ramp-volume-0-foreground = ${colors.foreground-alt}
-ramp-volume-1-foreground = ${colors.foreground-alt}
-ramp-volume-2-foreground = ${colors.foreground-alt}
+ramp-volume-0-foreground = ${colors.foreground-icon}
+ramp-volume-1-foreground = ${colors.foreground-icon}
+ramp-volume-2-foreground = ${colors.foreground-icon}
 
 ; ramp-volume-0 = 
 ; ramp-volume-1 = 
@@ -428,7 +436,8 @@ ramp-volume-2-foreground = ${colors.foreground-alt}
 ; Only applies if <ramp-volume> is used
 ; ramp-headphones-0 = 
 ; ramp-headphones-1 = 
-
+; }}}
+; {{{ [module/battery]
 [module/battery]
 type = internal/battery
 
@@ -455,15 +464,15 @@ format-charging = <animation-charging> <label-charging>
 format-discharging = <ramp-capacity> <label-discharging>
 ; format-discharging-underline = ${self.format-charging-underline}
 
-; format-full-prefix-foreground = ${colors.foreground-alt}
+; format-full-prefix-foreground = ${colors.foreground-icon}
 ; format-full-underline = ${self.format-charging-underline}
 
-; ramp-capacity-foreground = ${colors.foreground-alt}
+; ramp-capacity-foreground = ${colors.foreground-icon}
 ; label-charging = Charging %percentage%%
 ; label-discharging = Discharging %percentage%%
 ;
 format-full-prefix = " "
-format-full-prefix-foreground = ${colors.foreground-alt}
+format-full-prefix-foreground = ${colors.foreground-icon}
 label-full =  %percentage%%
 
 ; Only applies if <ramp-capacity> is used
@@ -473,7 +482,7 @@ ramp-capacity-2 = 
 ramp-capacity-3 = 
 ramp-capacity-4 = 
 
-ramp-capacity-foreground = ${colors.foreground-alt}
+ramp-capacity-foreground = ${colors.foreground-icon}
 
 ramp-capacity-0-foreground = ${colors.red}
 ; ramp-capacity-1-foreground = ${colors.yellow}
@@ -487,7 +496,7 @@ animation-charging-2 = 
 animation-charging-3 = 
 animation-charging-4 = 
 
-animation-charging-foreground = ${colors.foreground-alt}
+animation-charging-foreground = ${colors.foreground-icon}
 ;
 ; animation-charging-0-foreground = ${colors.foregournd-alt}
 ; animation-charging-1-foreground = ${colors.foregournd-alt}
@@ -496,7 +505,8 @@ animation-charging-foreground = ${colors.foreground-alt}
 ; animation-charging-4-foreground = ${colors.foregournd-alt}
 
 animation-charging-framerate = 750
-
+; }}}
+; {{{ [module/temperature]
 ; [module/temperature]
 ; type = internal/temperature
 ; thermal-zone = 0
@@ -514,19 +524,22 @@ animation-charging-framerate = 750
 ; ramp-0 = 
 ; ramp-1 = 
 ; ramp-2 = 
-; ramp-foreground = ${colors.foreground-alt}
-
+; ramp-foreground = ${colors.foreground-icon}
+; }}}
+; {{{ [module/settings]
 ; [settings]
 ; screenchange-reload = true
 ; ;compositing-background = xor
 ; ;compositing-background = screen
 ; ;compositing-foreground = source
 ; ;compositing-border = over
-
+; }}}
+; {{{ [global/wm]
 ; [global/wm]
 ; margin-top = 5
 ; margin-bottom = 5
-
+; }}}
+; {{{ [module/pac-update]
 [module/pac-update]
 type = custom/script
 interval = 1200
@@ -535,7 +548,8 @@ format = <label>
 label = "%output:0:30%"
 exec = .config/polybar/pac-update.sh
 exec-if = "ping -q -w 2 -c 1 176.34.135.167 > /dev/null"
-
+; }}}
+; {{{ [module/powermenu]
 [module/powermenu]
 type = custom/menu
 expand-right = false
@@ -549,7 +563,7 @@ label-open = 
 label-close = 
 label-close-foreground = ${colors.red}
 label-separator = |
-label-separator-foreground = ${colors.foreground-alt}
+label-separator-foreground = ${colors.foreground-icon}
 
 menu-0-0 = 
 menu-0-0-exec = i3-msg exit
@@ -558,5 +572,6 @@ menu-0-1-exec = systemctl reboot
 menu-0-2 = 
 menu-0-2-exec = systemctl poweroff
 ; modules-left = cpu ram battery
+; }}}
 
 ; vim:ft=dosini
