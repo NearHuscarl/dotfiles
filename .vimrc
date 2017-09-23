@@ -2,7 +2,7 @@
 " File:        .vimrc
 " Description: Vim settings
 " Author:      Near Huscarl <near.huscarl@gmail.com>
-" Last Change: Tue Aug 15 15:34:13 Novosibirsk Standard Time 2017
+" Last Change: Fri Sep 22 00:47:34 +07 2017
 " Licence:     BSD 3-Clause license
 " Note:        This is a personal vim config. therefore most likely not work 
 "              on your machine
@@ -156,7 +156,8 @@ set wildignore+=*.7z,*.bin,*.doc,*.docx,*.exe,*.ico,*.gif,*.jpg,*.jpeg,*.mp3,*.o
 set wildignore+=*.png,*.ppt,*.pptx,*.rar,*.swp,*.sfdm,*.xls,*.xlsx,*.xnb,*.zip
 
 if has('folding')
-   set nofoldenable
+   set foldenable
+   set foldmethod=marker
 endif
 
 if has('GUI_running') && has('windows')
@@ -282,10 +283,6 @@ nnoremap Ka
 nnoremap <Leader>a :Ag<Space>|                     "Ag search (just like grep but faster) (example: Ag <Query> /<Dir>)
 nnoremap <Leader>cp :CtrlP<Space>|                 "CtrlP search
 
-nnoremap zo zozz|                                  "Open fold and zz
-nnoremap zc zczz|                                  "Close fold and zz
-nnoremap za zazz|                                  "Toggle fold and zz
-nnoremap zm zmzz|                                  "Toggle fold and zz
 nnoremap z[ zo[z|                                  "Open fold, jump at the start and zz
 nnoremap z] zo]z|                                  "Open fold, jump at the end and zz
 nnoremap ]z ]zzz|                                  "jump at the end and zz
@@ -818,7 +815,7 @@ let g:user_emmet_prev_key      = '<A-o>p'
 let g:user_emmet_removetag_key = '<A-o>r'
 "}}}
 "{{{[Eunuch]
-nnoremap <Leader>- :SudoWrite<CR>
+nnoremap <silent><Leader>- :SudoWrite<CR>
 "}}}
 "{{{[Incsearch]
 let g:incsearch#auto_nohlsearch = 1
@@ -1104,5 +1101,3 @@ if has('gui_running')
 endif
 "}}}
 
-" command! -complete=file -nargs=1 Rpdf :r !pdftotext -nopgbrk <q-args> -
-" command! -complete=file -nargs=1 Rpdf :r !pdftotext -nopgbrk <q-args> - |fmt -csw78
