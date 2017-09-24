@@ -8,7 +8,6 @@
 !/LICENSE.md
 !/.bashrc
 !/.cvimrc
-!/.icons/
 !/.inputrc
 !/.gitignore
 !/.vimrc
@@ -30,13 +29,8 @@
 !/.config/neofetch/
 !/.config/polybar/
 !/.config/rofi/
+!/.config/surfraw/
 !/.config/zathura/
-
-!/.icons/
-/.icons/*
-!/.icons/Paper
-/.icons/Paper/*
-!/.icons/Paper/16x16/
 
 !/.config/mpd/
 /.config/mpd/*
