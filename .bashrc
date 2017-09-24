@@ -156,7 +156,7 @@ fi
 eval `keychain --eval --agents ssh id_rsa`
 
 # BROWSER=google-chrome-stable:firefox
-export BROWSER=google-chrome-stable
+export BROWSER=vivaldi-stable
 export EDITOR=vim
 
 # Add custom script directory to path

@@ -1,10 +1,8 @@
 #!/bin/bash
 
-if [[ -z $BROWSER ]]; then
-   BROWSER='google-chrome-stable'
-fi
+browser='vivaldi-stable'
 
-surfraw -browser=$BROWSER \
+surfraw -browser=$browser \
    $( \
      sr -elvi | \
      awk -F'-' '{print $1}' | \
