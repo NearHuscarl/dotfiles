@@ -13,7 +13,7 @@ alias fzf='
 # edit file in vim
 fe() {
    file=$(rg $HOME /etc/systemd/ --files --no-ignore --hidden --follow --no-messages \
-      --glob "!undo/*" \
+      --glob "!{undo,.local}/*" \
       | fzf --preview="cat {}") && vim "$file"
 }
 

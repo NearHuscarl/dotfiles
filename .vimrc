@@ -2,7 +2,7 @@
 " File:        .vimrc
 " Description: Vim settings
 " Author:      Near Huscarl <near.huscarl@gmail.com>
-" Last Change: Fri Sep 22 00:47:34 +07 2017
+" Last Change: Sun Sep 24 10:44:10 +07 2017
 " Licence:     BSD 3-Clause license
 " Note:        This is a personal vim config. therefore most likely not work 
 "              on your machine
@@ -658,7 +658,7 @@ let g:rg_command = '
   \ rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --color "always"
   \ -g "*.{js,json,php,md,html,config,py,conf,vim}"
   \ -g "{.vimrc,config}"
-  \ -g "!{.git,node_modules,vendor}/*" '
+  \ -g "!{.git,node_modules,vendor,.local,undo}/*" '
 
 " let g:fzf_colors =
 " \ { 'fg':      ['fg', 'Normal'],
@@ -694,7 +694,7 @@ let g:fzf_action = {
 
 command! -bang FilesAll
          \ call fzf#run({
-         \  'source': 'rg $HOME /etc/systemd --files --no-ignore --hidden --follow --no-messages',
+         \  'source': 'rg $HOME /etc/systemd --files --no-ignore --hidden --follow --no-messages --glob "!{undo,.local}/*"',
          \  'sink': 'edit',
          \  'options': g:fzfOpt
          \ })
@@ -721,7 +721,7 @@ command! -bang -nargs=? -complete=dir Files
          \ call fzf#vim#files(<q-args>, {
          \   'options': g:fzfOpt,
          \   'source': 'rg --files --no-ignore --hidden --follow --no-messages
-         \     --glob "!undo/*"'
+         \     --glob "!{undo,.local}/*"'
          \ }, <bang>0)
 " command! -bang -nargs=? -complete=dir Files
 "          \ call fzf#vim#files(<q-args>, {'options': g:fzfOpt}, <bang>0)
