@@ -6,11 +6,12 @@
 # Then only reinclude necessary files/folders in parent dir
 !/README.md
 !/LICENSE.md
-!/.vimrc
-!/.cvimrc
 !/.bashrc
+!/.cvimrc
+!/.icons/
 !/.inputrc
 !/.gitignore
+!/.vimrc
 !/.Xmodmap
 !gitignore/install.sh
 
@@ -30,6 +31,12 @@
 !/.config/polybar/
 !/.config/rofi/
 !/.config/zathura/
+
+!/.icons/
+/.icons/*
+!/.icons/Paper
+/.icons/Paper/*
+!/.icons/Paper/16x16/
 
 !/.config/mpd/
 /.config/mpd/*
