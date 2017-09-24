@@ -121,7 +121,7 @@ for_window [title="^Developer Tools.*"] \
  move absolute position 0 px 0 px
 # }}}
 # Application launcher shortcut {{{
-bindsym F1 exec xfce4-terminal --disable-server
+bindsym F1 exec xfce4-terminal
 # bindsym F2 exec gvim; workspace $ws_dev
 bindsym F2 exec xfce4-terminal --title="Vim - Dev" -e "vim --servername vim"; workspace $ws_dev
 # bindsym F3 exec google-chrome-stable; workspace $ws_web
@@ -168,7 +168,7 @@ mode "launch" {
         bindsym w exec --no-startup-id rofi -show window; mode "default"
         bindsym i exec --no-startup-id $HOME/bin/rofi-surfraw-websearch.sh; mode "default"
         bindsym b exec --no-startup-id $HOME/bin/rofi-surfraw-bookmarks.sh; mode "default"
-        bindsym l exec --no-startup-id $HOME/bin/rofi-locate.sh; mode "default"
+        bindsym o exec --no-startup-id $HOME/bin/rofi-open.sh; mode "default"
         bindsym shift+1 exec --no-startup-id ~/bin/rofi-bangs.sh; mode "default"
 
         # back to normal: Enter or Escape
