@@ -2,7 +2,7 @@
 " File:        .vimrc
 " Description: Vim settings
 " Author:      Near Huscarl <near.huscarl@gmail.com>
-" Last Change: Sun Sep 24 10:44:10 +07 2017
+" Last Change: Sun Sep 24 19:10:41 +07 2017
 " Licence:     BSD 3-Clause license
 " Note:        This is a personal vim config. therefore most likely not work 
 "              on your machine
@@ -247,7 +247,7 @@ nnoremap <silent><A-_> :resize -5<CR>|             "Decrease window height by 5
 nnoremap <silent><A-+> :resize +5<CR>|             "Increase window height by 5
 
 nnoremap <A-]> g<C-]>zz|                           "Jump to definition (Open tag list if there are more than 1 tag)
-nnoremap <A-t> <C-t>zz|                            "Jump back between tag
+" nnoremap <A-t> <C-t>zz|                            "Jump back between tag
 " nnoremap <S-t> :tag<CR>zz|                         "Jump forward between tag
 nnoremap <A-\> :OpenTagInVSplit<CR>zz|             "Open tag in vertical split
 nnoremap ' `|                                      "' to jump to mark (line and column)
@@ -685,7 +685,8 @@ let g:fzfOpt='--bind=
          \alt-e:jump,
          \alt-t:toggle,
          \alt-d:kill-line
-         \ --color=info:6,bg+:8,hl+:1,hl:3,pointer:6,marker:1,spinner:6'
+         \ --color=info:6,bg+:8,hl+:1,hl:3,pointer:6,marker:1,spinner:6
+         \ --multi'
 
 let g:fzf_action = {
   \ 'alt-enter': 'tab split',
