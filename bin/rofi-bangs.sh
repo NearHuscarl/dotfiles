@@ -23,8 +23,8 @@ COMMANDS["bookmarks"]="~/bin/rofi-surfraw-bookmarks.sh"
 LABELS["bookmarks"]=""
 
 # search local files
-COMMANDS["locate"]="~/bin/rofi-locate.sh"
-LABELS["locate"]=""
+COMMANDS["open"]="~/bin/rofi-open.sh"
+LABELS["open"]=""
 
 # open custom web searches
 COMMANDS["websearch"]="~/bin/rofi-surfraw-websearch.sh"
