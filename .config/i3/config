@@ -68,6 +68,8 @@ bindsym $mod+s layout stacking
 bindsym $mod+t layout tabbed
 bindsym $mod+e layout toggle split
 
+# Open rofi bookmark list
+bindsym $mod+b workspace $ws_web; exec --no-startup-id $HOME/bin/rofi-surfraw-bookmarks.sh; mode "default"
 # }}}
 # Switch to workspace {{{
 bindsym $mod+1 workspace $ws_term
@@ -86,15 +88,16 @@ bindsym $mod+period workspace next
 bindsym $mod+comma workspace prev
 # }}}
 # Assign application to specific workspace {{{
-assign [class="Gvim"]           $ws_dev
-assign [title="Vim - Dev"]      $ws_dev
-assign [class="Google-chrome"]  $ws_web
-assign [class="Vivaldi-stable"] $ws_web
-assign [class="Zathura"]        $ws_doc
-assign [class="Caprine"]        $ws_chat
-assign [class="Thunar"]         $ws_file
-assign [title="Ranger"]         $ws_file
-assign [class="Thunderbird"]    $ws_mail
+assign [class="Gvim"]               $ws_dev
+assign [title="Vim - Dev"]          $ws_dev
+assign [class="Google-chrome"]      $ws_web
+assign [class="Vivaldi-stable"]     $ws_web
+assign [class="Zathura"]            $ws_doc
+assign [class="^libreoffice.*"]     $ws_doc
+assign [class="Caprine"]            $ws_chat
+assign [class="Thunar"]             $ws_file
+assign [title="Ranger"]             $ws_file
+assign [class="Thunderbird"]        $ws_mail
 # }}}
 # Open certain window in floating mode {{{
 for_window [window_role="pop-up"]      floating enable
