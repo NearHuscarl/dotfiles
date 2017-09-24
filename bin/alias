@@ -4,7 +4,7 @@
 # Description: Bash custom aliases and other alias functions, some alias have
 #              the equivalent completion as the original commands
 # Author:      Near Huscarl <near.huscarl@gmail.com>
-# Last Change: Sun Sep 24 02:19:04 +07 2017
+# Last Change: Mon Sep 25 00:28:31 +07 2017
 # Licence:     BSD 3-Clause license
 # Note:        N/A
 # ============================================================================
@@ -40,7 +40,7 @@ alias tree="alias-tree"
 if [[ -x /usr/bin/vim ]]; then
    alias view="vim -R"
    alias vimrc="vim $HOME/.vimrc"
-   alias vir='alias-vir'
+   # vir in $HOME/bin/vir
    if [[ -x $HOME/bin/viman ]]; then
       alias man="viman"
    fi
