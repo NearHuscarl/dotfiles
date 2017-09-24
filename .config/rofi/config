@@ -1,8 +1,8 @@
 rofi.dmenu: true
-rofi.modi: keys,drun,run,window,find:~/bin/finder.sh
+rofi.modi: keys,drun,run,window
 rofi.separator-style: solid
-rofi.font: roboto mono 10
-!rofi.font: inconsolata 10
+!rofi.font: roboto mono 9
+rofi.font: inconsolata 10
 rofi.lines: 8
 rofi.columns: 1
 !rofi.hide-scrollbar: true
@@ -29,12 +29,10 @@ rofi.kb-move-char-back: Alt+h
 rofi.kb-move-char-forward: Alt+l
 rofi.kb-move-end: Alt+period
 rofi.kb-move-front: Alt+comma
-rofi.kb-row-down: Alt+n
-rofi.kb-row-up: Alt+p
-rofi.kb-page-next: Alt+j
-rofi.kb-page-prev: Alt+k
-rofi.kb-move-word-back: Alt+semicolon
-rofi.kb-move-word-forward: Alt+apostrophe
-rofi.kb-cancel: Alt+slash
+rofi.kb-row-down: Alt+j
+rofi.kb-row-up: Alt+k
+rofi.kb-move-word-back: Alt+n
+rofi.kb-move-word-forward: Alt+m
+rofi.kb-cancel: Alt+Return
 
 ! mode: websearch, locale
