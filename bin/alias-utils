@@ -4,7 +4,7 @@
 # File:        alias-utils
 # Description: Function for custom alias script
 # Author:      Near Huscarl <near.huscarl@gmail.com>
-# Last Change: Fri Sep 22 01:13:36 +07 2017
+# Last Change: Mon Sep 25 00:28:22 +07 2017
 # Licence:     BSD 3-Clause license
 # Note:        N/A
 # ============================================================================
@@ -12,13 +12,6 @@
 function alias-tree() { # {{{
    local pwd=${1:-$(pwd)}
    find $pwd -print | sed -e "s;$pwd;\.;g;s;[^/]*\/;|__;g;s;__|; |;g"
-} # }}}
-function alias-vir() { # {{{
-   if [[ -x /usr/bin/i3 ]]; then
-      vim --remote-silent "${@:-unnamed}" && i3-msg workspace 2 1> /dev/null
-   else
-      vim --remote-silent "${@:-unnamed}"
-   fi
 } # }}}
 function alias-pac-install() { # {{{
    sudo pacman -S "$@"
