@@ -1,0 +1,50 @@
+# vim:ft=conf
+# $HOME/.config/surfraw/bookmarks
+
+# Search engine
+google            https://www.google.com.vn/
+duckduckgo        https://duckduckgo.com/
+youtube           https://www.youtube.com/
+
+# Media
+reddit            https://www.reddit.com
+facebook          https://www.facebook.com/
+fb-msg            https://www.facebook.com/messages
+quora             https://www.quora.com/
+
+# Programmer
+arch-wiki         https://wiki.archlinux.org/
+aur               https://aur.archlinux.org/packages/
+freecodecamp      https://www.freecodecamp.org
+github            https://github.com/
+github-dotfiles   https://github.com/NearHuscarl/dotfiles
+regex             https://regexr.com
+r/linux           https://www.reddit.com/r/linux/
+r/unixporn        https://www.reddit.com/r/unixporn/
+r/vim             https://www.reddit.com/r/vim/
+vim-vivify        http://bytefluent.com/vivify/
+
+# Game
+beamng-blog       http://blog.beamng.com/blog/
+cosmoteer         https://cosmoteer.net/history.html
+projectzomboid    https://projectzomboid.com/blog/category/news-development/
+r/rimworld        https://www.reddit.com/r/RimWorld/
+r/starshiptheory  https://www.reddit.com/r/StarshipTheory/
+sfd               http://mythologicinteractive.com
+twitter-ravenfied https://twitter.com/SteelRaven7
+twitter-tynan     https://twitter.com/TynanSylvester
+
+# School
+courses           https://courses.uit.edu.vn/
+ctsv              https://ctsv.uit.edu.vn
+daa               https://daa.uit.edu.vn/
+odic              http://www.oxfordlearnersdictionaries.com/
+udic              http://www.urbandictionary.com/
+
+# Utility
+color-hex         http://www.color-hex.com/popular-colors.php
+mynoise           https://mynoise.net
+
+# Misc
+gmail             https://mail.google.com
+imgur             https://imgur.com/
