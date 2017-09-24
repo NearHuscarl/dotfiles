@@ -1,10 +1,8 @@
 #!/bin/bash
 
-if [[ -z $BROWSER ]]; then
-   BROWSER='google-chrome-stable'
-fi
+browser='vivaldi-stable'
 
-surfraw -browser=$BROWSER \
+surfraw -browser=$browser \
    "$( \
      cat ~/.config/surfraw/bookmarks | \
      sed '/^$/d' | \
@@ -12,6 +10,6 @@ surfraw -browser=$BROWSER \
      sed '/^\//d' | \
      sort -n | \
      rofi -dmenu \
-          -mesg ">> Edit to add new bookmarks at ~/.config/surfraw/bookmarks" \
-          -i -p "rofi-surfraw-bookmarks: " \
+          -mesg "add more bookmark at: ~/.config/surfraw/bookmarks" \
+          -i -p "bookmarks: " \
      )"
