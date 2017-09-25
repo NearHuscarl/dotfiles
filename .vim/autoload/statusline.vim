@@ -2,13 +2,12 @@
 " File:        statusline.vim
 " Description: Statusline setup for vim
 " Author:      Near Huscarl <near.huscarl@gmail.com>
-" Last Change: Tue Sep 19 18:10:42 +07 2017
+" Last Change: Tue Sep 26 00:33:33 +07 2017
 " Licence:     BSD 3-Clause license
 " Note:        N/A
 " ============================================================================
 
-"[|| Highlight()
-function! s:Highlight(group, ...)
+function! s:Highlight(group, ...) " {{{
    let gui   = ['guifg', 'guibg']
    let cterm = ['ctermfg', 'ctermbg']
    let command = 'hi ' . a:group
@@ -22,11 +21,8 @@ function! s:Highlight(group, ...)
       endfor
       exe command
    endif
-endfunc 
-command! -nargs=+ Hi call Highlight(<f-args>)
-"||]
-"[||InitModeColor()
-function! statusline#InitModeColor()
+endfunction " }}}
+function! statusline#InitModeColor() " {{{
    let mode = mode()
    if mode ==# 'n'
       call s:Highlight("StatusLine", s:normal.fg, s:normal.bg)
@@ -44,10 +40,8 @@ function! statusline#InitModeColor()
       call s:Highlight("StatusLine", s:prompt.fg, s:prompt.bg)
    endif
    return ""
-endfunction
-"||]
-"[||GetMode()]
-function! statusline#GetMode()
+endfunction " }}}
+function! statusline#GetMode() " {{{
    let mode = mode()
    if mode ==# 'n'
       return "NORMAL"
@@ -66,10 +60,8 @@ function! statusline#GetMode()
    elseif mode =~# '\v(r|rm|r?)'
       return "PROMPT"
    endif
-endfunction
-"||]
-"[||SetFileSize()
-function! statusline#SetFileSize()
+endfunction " }}}
+function! statusline#SetFileSize() " {{{
     let bytes = getfsize(expand("%:p"))
     if bytes <= 0
         return "0b"
@@ -81,10 +73,8 @@ function! statusline#SetFileSize()
     else
         return (bytes / 1048576) . "Mb"
     endif
-endfunction
-"||]
-"[||SetWordCount()
-function! statusline#SetWordCount()
+endfunction " }}}
+function! statusline#SetWordCount() " {{{
    "CtrlP fucked-up workaround
    if expand('%:t') == 'ControlP' || expand('%:t') == 'LustyExplorer--BufferGrep'
       return g:wordCount
@@ -104,60 +94,46 @@ function! statusline#SetWordCount()
       return g:wordCount . " Word"
    endif
    return g:wordCount . " Words"
-endfunction
-"||]
-"[||Filename()
-function! s:Filename()
+endfunction " }}}
+function! s:Filename() " {{{
    if expand('%:t') != ''
       return expand('%:t')
    endif
    return 'unnamed'
-endfunction
-"||]
-"[||SetModified()
-function! statusline#SetModified()
+endfunction " }}}
+function! statusline#SetModified() " {{{
    if &modified
       call s:Highlight("User1", s:modified.fg, s:modified.bg)
       return '+'
    endif
    call s:Highlight("User1", s:filename.fg, s:filename.bg)
    return ''
-endfunction
-"||]
-"[||IsReadOnly()
-function! s:IsReadOnly()
+endfunction " }}}
+function! s:IsReadOnly() " {{{
    if &readonly
       return '  '
    endif
    return ''
-endfunction
-"||]
-"[||SetLastModified()
-function! statusline#SetLastModified()
+endfunction " }}}
+function! statusline#SetLastModified() " {{{
    if strftime(("%d/%m/%y %T"), getftime(expand('%:t'))) != '(Invalid)'
       return strftime(("%d/%m/%y %T"), getftime(expand('%:t')))
    endif
    return 'No last saved'
-endfunction
-"||]
-"[||Filetype()
-function! s:Filetype()
+endfunction " }}}
+function! s:Filetype() " {{{
    if &filetype != ''
       return &filetype
    endif
    return 'none'
-endfunction
-"||]
-"[||BufferNumber()
-function! s:BufNum()
+endfunction " }}}
+function! s:BufNum() " {{{
    if &filetype != 'help'
       return '  ' . bufnr('%')
    endif
    return '  H'
-endfunction
-"||]
-"[||GitStatus()
-function! s:GitStatus()
+endfunction " }}}
+function! s:GitStatus() " {{{
    if g:loaded_fugitive
       let gitStatus = fugitive#head()
       if gitStatus != ''
@@ -165,10 +141,8 @@ function! s:GitStatus()
       endif
       return ''
    endif
-endfunction
-"||]
-"[||CtrlP_Statusline()
-function! statusline#CtrlPStatusline1(...)
+endfunction " }}}
+function! statusline#CtrlPStatusline1(...) " {{{
    let focus   = '%4* '.a:1.' |'
    let byfname = ' '.a:2.' %*'
    let regex   = a:3 ? ' regex %*' : ''
@@ -178,17 +152,14 @@ function! statusline#CtrlPStatusline1(...)
    let marked  = ' '.a:7.' '
    let dir     = '%=%4*%< ' . getcwd() . ' %*'
    return focus.byfname.regex.prv.item.nxt.marked.dir
-endfunction
-
-function! statusline#CtrlPStatusline2(...)
+endfunction " }}}
+function! statusline#CtrlPStatusline2(...) " {{{
    let len = '%4* ' . a:1 . ' %1*'
    let dir = '%=%<%4* ' . getcwd() . ' %*'
    return len.dir
-endfunction
-"||]
-"[||SetStatusline()
-" This function is called when entering new buffer
-function! statusline#SetStatusline()
+endfunction " }}}
+function! statusline#SetStatusline() " {{{
+   " This function is called when entering new buffer
    if has('statusline')
 
       let g:fileSize     = statusline#SetFileSize()
@@ -230,9 +201,8 @@ function! statusline#SetStatusline()
       setlocal statusline+=\ %03l:%-2v\ |                     "Line number and column number
 
    endif
-endfunction
-"||]
-
+endfunction " }}}
+" Highlight {{{
 let g:statusline_colors = g:colors_name
 try
    call near#themes#{g:colors_name}#isAvailable()
@@ -266,3 +236,6 @@ call s:Highlight("User2",        s:main.fg,     s:main.bg)
 call s:Highlight("User3",        s:branch.fg,   s:branch.bg)
 call s:Highlight("User4",        s:plugin.fg,   s:plugin.bg)
 call s:Highlight("User9",        s:none.fg,     s:none.bg)
+
+command! -nargs=+ Hi call Highlight(<f-args>)
+" }}}
