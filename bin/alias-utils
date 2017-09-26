@@ -4,7 +4,7 @@
 # File:        alias-utils
 # Description: Function for custom alias script
 # Author:      Near Huscarl <near.huscarl@gmail.com>
-# Last Change: Mon Sep 25 00:28:22 +07 2017
+# Last Change: Tue Sep 26 20:43:05 +07 2017
 # Licence:     BSD 3-Clause license
 # Note:        N/A
 # ============================================================================
@@ -21,6 +21,9 @@ function alias-pac-update() { # {{{
    sudo pacman -Syu
    [[ -x $HOME/bin/pacMerge ]] && pacMerge
 } # }}}
+function alias-pac-list() { # {{{
+   pacman -Ql "$1" | grep "${2:-}"
+} #}}}
 function alias-pac-latest-e() { # {{{
    # list nth last explicitly installed packages which is not in base/base-devel group 
    explicitPkgs=$(comm -23 <(pacman -Qqe | sort) <(pacman -Qqg base base-devel | sort))
@@ -101,3 +104,5 @@ function alias-rgr() { # {{{
       rg "$@" $HOME
    fi
 } # }}}
+
+# vim: foldmethod=marker

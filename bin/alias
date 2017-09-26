@@ -4,7 +4,7 @@
 # Description: Bash custom aliases and other alias functions, some alias have
 #              the equivalent completion as the original commands
 # Author:      Near Huscarl <near.huscarl@gmail.com>
-# Last Change: Mon Sep 25 00:28:31 +07 2017
+# Last Change: Tue Sep 26 20:43:29 +07 2017
 # Licence:     BSD 3-Clause license
 # Note:        N/A
 # ============================================================================
@@ -53,6 +53,7 @@ if [[ -x /usr/bin/pacman ]]; then
    alias pac-remove="sudo pacman -Rs"
    alias pac-search="pacman -Qsq"
    alias pac-Search="pacman -Ssq"
+   alias pac-list="alias-pac-list"
    alias pac-orphan="sudo pacman -Rns $(pacman -Qtdq)"                                   # Remove unused packages (orphans)
    alias pac-info="pacman -Si"
    alias pac-desc="expac -S '%d'"
@@ -221,6 +222,7 @@ if [ -d /usr/share/bash-completion/completions ]; then
    complete -o default -F _pacman_Q pac-remove
    complete -o default -F _pacman_Q pac-search
    complete -o default -F _pacman_S pac-Search
+   complete -o default -F _pacman_Q pac-list
    complete -o default -F _pacman_S pac-info
    complete -o default -F _pacman_S pac-desc
    complete -o default -F _pacman_S pac-size
@@ -276,3 +278,5 @@ if [ -d /usr/share/bash-completion/completions ]; then
 fi
 
 # }}}
+
+# vim: foldmethod=marker

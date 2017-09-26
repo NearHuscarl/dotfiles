@@ -574,4 +574,4 @@ menu-0-2-exec = systemctl poweroff
 ; modules-left = cpu ram battery
 ; }}}
 
-; vim:ft=dosini
+; vim:ft=dosini foldmethod=marker

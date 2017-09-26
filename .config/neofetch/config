@@ -717,3 +717,5 @@ image_host="teknik"
 # how to handle backwards compatibility.
 config_version="3.2.0"
 # }}}
+
+# vim: foldmethod=marker

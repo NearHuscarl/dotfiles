@@ -2,7 +2,7 @@
 " File:        statusline.vim
 " Description: Statusline setup for vim
 " Author:      Near Huscarl <near.huscarl@gmail.com>
-" Last Change: Tue Sep 26 00:33:33 +07 2017
+" Last Change: Tue Sep 26 20:45:59 +07 2017
 " Licence:     BSD 3-Clause license
 " Note:        N/A
 " ============================================================================
@@ -239,3 +239,5 @@ call s:Highlight("User9",        s:none.fg,     s:none.bg)
 
 command! -nargs=+ Hi call Highlight(<f-args>)
 " }}}
+
+" vim: foldmethod=marker
