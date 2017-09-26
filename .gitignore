@@ -53,8 +53,10 @@
 !/.vim/README.md
 !/.vim/autoload/
 !/.vim/colors/
+!/.vim/ftdetect/
 !/.vim/ftplugin/
 !/.vim/snippet/
+!/.vim/syntax/
 
 # Explicit exclude
 **/tags
