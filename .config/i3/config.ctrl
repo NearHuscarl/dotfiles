@@ -1,0 +1,309 @@
+# vim:ft=conf
+# i3 config
+
+# Workspace name {{{
+set $ws_term  "1"
+set $ws_dev   "2"
+set $ws_web   "3"
+set $ws_file  "4"
+set $ws_doc   "5"
+set $ws_chat  "6"
+set $ws_mail  "7"
+set $ws_music "8"
+set $ws9      "9"
+set $ws_misc  "10"
+# }}}
+# Startup {{{
+exec --no-startup-id xmodmap ~/.Xmodmap
+exec --no-startup-id nitrogen --random --set-scaled "Pictures/Low Poly"
+exec --no-startup-id compton
+exec --no-startup-id mpd
+exec --no-startup-id xfce4-volumed
+exec --no-startup-id xfce4-power-manager
+exec --no-startup-id xscreensaver -nosplash
+exec --no-startup-id "dropbox start"
+exec --no-startup-id nm-applet
+# exec --no-startup-id i3-msg 'exec /usr/bin/pulseaudio --start'
+
+# xfce4 settings
+exec --no-startup-id xfconfd
+exec --no-startup-id xfsettingsd
+
+exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+# }}}
+# Basic {{{
+
+set $mod Control
+font pango:monospace 8
+floating_modifier $mod
+
+bindsym $mod+slash kill
+bindsym $mod+shift+slash focus parent,focus parent,focus parent,focus parent,kill
+
+bindsym $mod+Shift+l exec i3lock-fancy -f Roboto-Bold
+bindsym $mod+Return exec xfce4-terminal --disable-server
+bindsym $mod+shift+f fullscreen toggle
+
+bindsym $mod+x split h
+bindsym $mod+v split v
+bindsym $mod+g split toggle
+
+bindsym $mod+Shift+space floating toggle
+bindsym $mod+space focus mode_toggle
+
+bindsym $mod+Shift+r reload
+bindsym Mod4+r restart
+
+bindsym $mod+shift+minus move scratchpad
+bindsym $mod+minus scratchpad show
+
+# Change focus
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+
+# Change container layout (stacked, tabbed, toggle split)
+bindsym $mod+s layout stacking
+bindsym $mod+t layout tabbed
+bindsym $mod+e layout toggle split
+# }}}
+# Switch to workspace {{{
+bindsym $mod+1 workspace $ws_term
+bindsym $mod+2 workspace $ws_dev
+bindsym $mod+3 workspace $ws_web
+bindsym $mod+4 workspace $ws_file
+bindsym $mod+5 workspace $ws_doc
+bindsym $mod+6 workspace $ws_chat
+bindsym $mod+7 workspace $ws_mail
+bindsym $mod+8 workspace $ws_music
+bindsym $mod+9 workspace $ws9
+bindsym $mod+0 workspace $ws_misc
+
+bindsym $mod+n workspace back_and_forth
+bindsym $mod+period workspace next
+bindsym $mod+comma workspace prev
+# }}}
+# Assign application to specific workspace {{{
+assign [class="Gvim"]               $ws_dev
+assign [title="Vim - Dev"]          $ws_dev
+assign [class="Google-chrome"]      $ws_web
+assign [class="Vivaldi-stable"]     $ws_web
+assign [class="Zathura"]            $ws_doc
+assign [class="^libreoffice.*"]     $ws_doc
+assign [class="Caprine"]            $ws_chat
+assign [class="Thunar"]             $ws_file
+assign [title="Ranger"]             $ws_file
+assign [class="Thunderbird"]        $ws_mail
+# }}}
+# Open certain window in floating mode {{{
+for_window [window_role="pop-up"]      floating enable
+for_window [window_role="bubble"]      floating enable
+for_window [window_role="task_dialog"] floating enable
+for_window [window_role="Preferences"] floating enable
+for_window [window_type="dialog"]      floating enable
+for_window [window_type="menu"]        floating enable
+for_window [class="Pavucontrol"]       floating enable
+for_window [class="File-roller"]       floating enable
+for_window [class="Nitrogen"]          floating enable
+for_window [class="Gucharmap"]         floating enable
+for_window [class="Sxiv"]              floating enable
+for_window [title="Floating"]          floating enable
+for_window [title="Startup Settings"]          floating enable
+
+# Very dirty workaround to make chrome developer tools fullscreen
+for_window [title="^Developer Tools.*"] \
+ floating enable; \
+ resize shrink width 10000px; \
+ resize shrink height 10000px; \
+ resize grow width 1290px; \
+ resize grow height 718px; \
+ move absolute position 0 px 0 px
+# }}}
+# Application launcher shortcut {{{
+bindsym F1 exec xfce4-terminal
+# bindsym F2 exec gvim; workspace $ws_dev
+bindsym F2 exec xfce4-terminal --title="Vim - Dev" -e "vim --servername vim"; workspace $ws_dev
+# bindsym F3 exec google-chrome-stable; workspace $ws_web
+bindsym F3 exec vivaldi-stable; workspace $ws_web
+bindsym F4 exec xfce4-terminal --title="Ranger" -e "ranger"; workspace $ws_file
+bindsym F5 exec zathura; workspace $ws_doc
+bindsym F6 exec caprine; workspace $ws_chat
+# bindsym F6 exec thunar; workspace $ws_file
+bindsym F7 exec thunderbird; workspace $ws_mail
+bindsym F8 \
+  workspace $ws_music; \
+  append_layout /home/near/.config/i3/ws-music.json; \
+  exec xfce4-terminal -e ncmpcpp                 --title="Music"; \
+  exec xfce4-terminal -e "ncmpcpp -s visualizer" --title="Visualizer"; \
+  exec xfce4-terminal -e "ncmpcpp -s clock"      --title="Clock"
+
+bindsym F9 exec gnome-calculator
+bindsym ctrl+shift+n exec xfce4-terminal -e neofetch \
+      --hide-menubar \
+      --hide-borders \
+      --hide-toolbar \
+      --hide-scrollbar \
+      --hold \
+      --title='Floating'
+# }}}
+# Window border {{{
+# new_window none
+new_window pixel 1
+new_float none
+hide_edge_borders smart
+# }}}
+# Gaps {{{
+gaps inner 15
+workspace $ws_web gaps inner 0
+# smart_gaps on
+# }}}
+# Mode {{{
+
+# Launch {{{
+mode "launch" {
+        bindsym k exec --no-startup-id rofi -show keys; mode "default"
+        bindsym d exec --no-startup-id rofi -show drun; mode "default"
+        bindsym r exec --no-startup-id rofi -show run; mode "default"
+        bindsym w exec --no-startup-id rofi -show window; mode "default"
+        bindsym i exec --no-startup-id $HOME/bin/rofi-surfraw-websearch.sh; mode "default"
+        bindsym b exec --no-startup-id $HOME/bin/rofi-surfraw-bookmarks.sh; mode "default"
+        bindsym o exec --no-startup-id $HOME/bin/rofi-open.sh; mode "default"
+        bindsym shift+1 exec --no-startup-id ~/bin/rofi-bangs.sh; mode "default"
+
+        # back to normal: Enter or Escape
+        bindsym $mod+d mode "default"
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+# }}}
+# Outer/Innder Gaps {{{
+set $mode_gaps_outer Outer Gaps
+set $mode_gaps_inner Inner Gaps
+
+mode "$mode_gaps_inner" {
+        bindsym o     mode "$mode_gaps_outer"
+
+        bindsym plus  gaps inner current plus 5
+        bindsym minus gaps inner current minus 5
+        bindsym 0     gaps inner current set 0
+
+        bindsym Shift+plus  gaps inner all plus 5
+        bindsym Shift+minus gaps inner all minus 5
+        bindsym Shift+0     gaps inner all set 0
+
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+mode "$mode_gaps_outer" {
+        bindsym i     mode "$mode_gaps_inner"
+
+        bindsym plus  gaps outer current plus 5
+        bindsym minus gaps outer current minus 5
+        bindsym 0     gaps outer current set 0
+
+        bindsym Shift+plus  gaps outer all plus 5
+        bindsym Shift+minus gaps outer all minus 5
+        bindsym Shift+0     gaps outer all set 0
+
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+# }}}
+# Resize {{{
+# resize window (you can also use the mouse for that)
+mode "resize" {
+        # change focus
+        bindsym $mod+h focus left
+        bindsym $mod+j focus down
+        bindsym $mod+k focus up
+        bindsym $mod+l focus right
+
+        bindsym h resize shrink width 2 px or 2 ppt
+        bindsym j resize grow height 2 px or 2 ppt
+        bindsym k resize shrink height 2 px or 2 ppt
+        bindsym l resize grow width 2 px or 2 ppt
+
+        bindsym shift+h resize shrink width 8 px or 8 ppt
+        bindsym shift+j resize grow height 8 px or 8 ppt
+        bindsym shift+k resize shrink height 8 px or 8 ppt
+        bindsym shift+l resize grow width 8 px or 8 ppt
+
+        # back to normal: Enter or Escape
+        bindsym $mod+r mode "default"
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+# }}}
+# Move {{{
+mode "move" {
+        bindsym h move left
+        bindsym j move down
+        bindsym k move up
+        bindsym l move right
+
+        bindsym $mod+h focus left
+        bindsym $mod+j focus down
+        bindsym $mod+k focus up
+        bindsym $mod+l focus right
+
+        # move focused container to workspace
+        bindsym 1 mode "default"; move container to workspace $ws_term; workspace $ws_term
+        bindsym 2 mode "default"; move container to workspace $ws_dev; workspace $ws_dev
+        bindsym 3 mode "default"; move container to workspace $ws_web; workspace $ws_web
+        bindsym 4 mode "default"; move container to workspace $ws_file; workspace $ws_file
+        bindsym 5 mode "default"; move container to workspace $ws_doc; workspace $ws_doc
+        bindsym 6 mode "default"; move container to workspace $ws_chat; workspace $ws_chat
+        bindsym 7 mode "default"; move container to workspace $ws_mail; workspace $ws_mail
+        bindsym 8 mode "default"; move container to workspace $ws_music; workspace $ws_music
+        bindsym 9 mode "default"; move container to workspace $ws9; workspace $ws9
+        bindsym 0 mode "default"; move container to workspace $ws_misc; workspace $ws_misc
+
+        # move focused container to next/prev workspace
+        bindsym period move container to workspace next; workspace next
+        bindsym comma  move container to workspace prev; workspace prev
+
+        # back to normal: Enter or Escape
+        bindsym $mod+m mode "default"
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+# }}}
+# Bindings {{{
+bindsym $mod+m mode "move"
+bindsym $mod+Shift+g mode "$mode_gaps_inner"
+bindsym $mod+r mode "resize"
+bindsym $mod+d mode "launch"
+# }}}
+
+# }}}
+# Sound {{{
+# xfce4 already done that
+# bindsym XF86AudioRaiseVolume exec amixer -q set Master 2dB+ unmute
+# bindsym XF86AudioLowerVolume exec amixer -q set Master 2dB- unmute
+# bindsym XF86AudioMute exec amixer -q set Master toggle
+# }}}
+# Misc {{{
+
+# reload polybar
+bindsym $mod+shift+p exec --no-startup-id $HOME/bin/reload-polybar
+bindsym $mod+shift+d exec --no-startup-id $HOME/bin/reload-dunst
+
+# Open rofi bookmark list
+bindsym $mod+b workspace $ws_web; exec --no-startup-id $HOME/bin/rofi-surfraw-bookmarks.sh; mode "default"
+
+# Toggle between config with (ctrl|win) as modifier
+bindsym $mod+i exec --no-startup-id $HOME/bin/toggle-i3-config; reload
+# }}}
+# Color {{{
+
+# class                 border  backgr. text    indicator child_border
+client.focused          #16A085 #285577 #ffffff #8E44AD   #16A085
+client.focused_inactive #1F2D3A #5f676a #ffffff #2C3E50   #1F2D3A
+client.unfocused        #333333 #222222 #888888 #2C3E50   #1F2D3A
+client.urgent           #2f343a #900000 #ffffff #900000   #900000
+client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
+
+client.background       #ffffff
+
+# }}}
