@@ -2,7 +2,7 @@
 " File:        utils.vim
 " Description: Utility Functions
 " Author:      Near Huscarl <near.huscarl@gmail.com>
-" Last Change: Tue Sep 26 00:31:05 +07 2017
+" Last Change: Tue Sep 26 18:53:21 +07 2017
 " Licence:     BSD 3-Clause license
 " Note:        Miscellaneous functions in autoload/ is put here
 " ============================================================================
@@ -93,9 +93,13 @@ endfunction " }}}
 function! near#utils#ToggleWrap() " {{{
    if &wrap
       set nowrap
+      nnoremap 0 0
+      nnoremap $ $
       echo "wrap off"
    else
       set wrap
+      nnoremap 0 g0|    "0 version that treat wrapped line as another line
+      nnoremap $ g$|    "$ version that treat wrapped line as another line
       echo "wrap on"
    endif
 endfunction " }}}

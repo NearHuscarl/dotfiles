@@ -2,7 +2,7 @@
 " File:        .vimrc
 " Description: Vim settings
 " Author:      Near Huscarl <near.huscarl@gmail.com>
-" Last Change: Sun Sep 24 19:10:41 +07 2017
+" Last Change: Tue Sep 26 18:54:19 +07 2017
 " Licence:     BSD 3-Clause license
 " Note:        This is a personal vim config. therefore most likely not work 
 "              on your machine
@@ -254,8 +254,6 @@ nnoremap ' `|                                      "' to jump to mark (line and 
 nnoremap ` '|                                      "` to jump to mark (line)
 nnoremap j gj|                                     "j version that treat wrapped line as another line
 nnoremap k gk|                                     "k version that treat wrapped line as another line
-nnoremap 0 g0|                                     "0 version that treat wrapped line as another line
-nnoremap $ g$|                                     "$ version that treat wrapped line as another line
 
 if has('jumplist')
    nnoremap <A-o> <C-o>zz|                         "Jump back (include non-tag jump)
