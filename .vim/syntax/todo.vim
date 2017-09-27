@@ -2,7 +2,7 @@
 " File:        todo.vim
 " Description: Vim syntax file: todo
 " Author:      Near Huscarl <near.huscarl@gmail.com>
-" Last Change: Tue Sep 26 03:03:42 +07 2017
+" Last Change: Thu Sep 28 02:52:37 +07 2017
 " Licence:     BSD 3-Clause license
 " Note:        todo file used to take note, reminder, and manage daily tasks
 " ============================================================================
@@ -13,7 +13,7 @@ endif
 
 syn keyword todoType contained Archive Reminder Todo
 syn region  todoTag          start=+<[^/]+   end=+>+ contains=todoType
-syn region  todoTaskCategory start="^\["     end="\]"
+syn region  todoTaskCategory start="^\s*\["     end="\]"
 syn match   todoComment      '^\s*#.*$'
 syn match   todoDone         "^\s*\[x\].*$"
 syn match   todoSuspend      "^\s*\[s\].*$"
