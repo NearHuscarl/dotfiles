@@ -40,7 +40,7 @@ if ($TERM =~ '256' || &t_Co >= 256) || has("gui_running")
   hi Normal     ctermbg=none ctermfg=15 guibg=#1f2d3a guifg=#ecf0f1 cterm=NONE gui=NONE
   hi LineNr     ctermbg=none ctermfg=7  guibg=#1f2d3a guifg=#84888b cterm=NONE gui=NONE
   hi FoldColumn ctermbg=0 ctermfg=7  guibg=#1f2d3a guifg=#84888b cterm=NONE gui=NONE
-  hi Folded     ctermbg=0 ctermfg=7  guibg=#1f2d3a guifg=#84888b cterm=NONE gui=NONE
+  hi Folded     ctermbg=none ctermfg=7  guibg=#1f2d3a guifg=#84888b cterm=NONE gui=NONE
   hi MatchParen ctermbg=0 ctermfg=11 guibg=#1f2d3a guifg=#f1c40f cterm=NONE gui=NONE
   hi signColumn ctermbg=0 ctermfg=7  guibg=#1f2d3a guifg=#84888b cterm=NONE gui=NONE
 
@@ -177,7 +177,7 @@ elseif &t_Co == 8 || $TERM !~# '^linux' || &t_Co == 16
   hi VisualNOS     ctermbg=lightgray  ctermfg=white       cterm=NONE
 
   hi FoldColumn    ctermbg=black      ctermfg=darkgray    cterm=NONE
-  hi Folded        ctermbg=black      ctermfg=darkgray    cterm=NONE
+  hi Folded        ctermbg=none      ctermfg=darkgray    cterm=NONE
 
   hi VertSplit     ctermbg=darkgray   ctermfg=darkgray    cterm=NONE
   hi WildMenu      ctermbg=blue       ctermfg=black       cterm=NONE
