@@ -1,13 +1,13 @@
-snippet f "function" b
-function ${1:Function Name}
+snippet fa "function in autoload/" b
+function! `!v substitute( substitute(expand('%:p:r'), '^.*autoload/', '', ''), '/', '#', 'g' )`#${1:Function Name} " {{{
 	${2:Body}
-endfunction
+endfunction " }}}
 endsnippet
 
-snippet f! "function" b
-function! ${1:Function Name}
+snippet f "function" b
+function! ${1:Function Name} " {{{
 	${2:Body}
-endfunction
+endfunction " }}}
 endsnippet
 
 snippet if "if" b
