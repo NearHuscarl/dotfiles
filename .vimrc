@@ -2,7 +2,7 @@
 " File:        .vimrc
 " Description: Vim settings
 " Author:      Near Huscarl <near.huscarl@gmail.com>
-" Last Change: Tue Sep 26 18:54:19 +07 2017
+" Last Change: Mon Oct 02 23:52:26 +07 2017
 " Licence:     BSD 3-Clause license
 " Note:        This is a personal vim config. therefore most likely not work 
 "              on your machine
@@ -61,7 +61,7 @@ set hlsearch                                       "Highlight all search matchs
 set gdefault                                       "Substitute with flag g by default
 
 set cursorline                                     "Highlight current line
-set selection=exclusive                            "Cursor is positioned one character before in visual mode
+set selection=inclusive                            "Last character is included in an operation
 set scrolloff=4                                    "Min lines at 2 ends where cursor start to scroll
 
 set wildmenu                                       "Visual Autocomplete in cmd menu
@@ -256,10 +256,10 @@ nnoremap j gj|                                     "j version that treat wrapped
 nnoremap k gk|                                     "k version that treat wrapped line as another line
 
 if has('jumplist')
-   nnoremap <A-o> <C-o>zz|                         "Jump back (include non-tag jump)
-   nnoremap <S-o> <C-i>zz|                         "Jump forward (include non-tag jump)
-   nnoremap <A-9> g;zz|                            "Jump backward
-   nnoremap <A-0> g,zz|                            "Jump forward
+   nnoremap <A-o> <C-o>|                           "Jump back (include non-tag jump)
+   nnoremap <S-o> <C-i>|                           "Jump forward (include non-tag jump)
+   nnoremap <A-9> g;|                              "Jump backward
+   nnoremap <A-0> g,|                              "Jump forward
 endif
 
 "Create a fold for the paragraph
@@ -400,6 +400,7 @@ nnoremap N Nzz
 
 "Misc Mappings
 nnoremap U :later 1f<CR>|                          "Go to the latest change
+nnoremap << <_|                                    " << not working
 nnoremap <F8> mzggg?G`z|                           "Encrypted with ROT13, just for fun
 nnoremap Q @q|                                     "Execute macro
 vnoremap > >gv|                                    "Make indent easier
@@ -452,18 +453,10 @@ else
 endif
 
 call plug#begin(s:pluggedPath)
+
+" Essential
+Plug 'bling/vim-bufferline'
 Plug 'junegunn/fzf.vim'
-Plug 'justinmk/vim-sneak', {'on': [
-         \ '<Plug>Sneak_s',
-         \ '<Plug>Sneak_S',
-         \ '<Plug>Sneak_f',
-         \ '<Plug>Sneak_F',
-         \ '<Plug>Sneak_t',
-         \ '<Plug>Sneak_T'
-         \ ]}
-
-Plug 'airblade/vim-rooter'
-
 Plug 'haya14busa/incsearch.vim', {'on': [
          \ '<Plug>(incsearch-forward)',
          \ '<Plug>(incsearch-backward)',
@@ -475,8 +468,25 @@ Plug 'haya14busa/incsearch.vim', {'on': [
          \ '<Plug>(incsearch-nohl-g*)',
          \ '<Plug>(incsearch-nohl-g#)'
          \ ]}
-Plug 'bling/vim-bufferline'
+Plug 'vim-utils/vim-man', {'on': []}
+Plug 'tpope/vim-fugitive'
 
+Plug 'xolox/vim-misc'
+Plug 'xolox/vim-shell'
+Plug 'xolox/vim-easytags'
+Plug 'xolox/vim-session'
+
+" Other
+Plug 'justinmk/vim-sneak', {'on': [
+         \ '<Plug>Sneak_s',
+         \ '<Plug>Sneak_S',
+         \ '<Plug>Sneak_f',
+         \ '<Plug>Sneak_F',
+         \ '<Plug>Sneak_t',
+         \ '<Plug>Sneak_T'
+         \ ]}
+
+Plug 'airblade/vim-rooter'
 Plug 'scrooloose/nerdtree', {'on': [
          \ 'NERDTreeTabsToggle',
          \ 'NERDTreeFind'
@@ -486,8 +496,6 @@ Plug 'jistr/vim-nerdtree-tabs', {'on': [
          \ 'NERDTreeFind'
          \ ]}
 
-Plug 'vim-utils/vim-man', {'on': []}
-Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-eunuch', {'on': [
          \ 'Delete',
          \ 'Unlink',
@@ -502,24 +510,19 @@ Plug 'tpope/vim-eunuch', {'on': [
          \ 'SudoEdit'
          \ ]}
 
-Plug 'xolox/vim-misc'
-Plug 'xolox/vim-shell'
-Plug 'xolox/vim-easytags'
-Plug 'xolox/vim-session'
-
-Plug 'vim-scripts/OmniCppComplete', {'for': 'cpp'}
 Plug 'suan/vim-instant-markdown'
 
 Plug 'terryma/vim-smooth-scroll'
+
+" Filetype
+Plug 'othree/html5.vim'
+Plug 'pangloss/vim-javascript', {'on': []}
+Plug 'maksimr/vim-jsbeautify'
 
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight', {'on': [
          \ 'NERDTreeTabsToggle',
          \ 'NERDTreeFind'
          \ ]}
-Plug 'octol/vim-cpp-enhanced-highlight', {'for': 'cpp'}
-Plug 'pangloss/vim-javascript', {'on': []}
-Plug 'flowtype/vim-flow'
-Plug 'othree/html5.vim', {'on': []}
 Plug 'altercation/vim-colors-solarized'
 Plug 'dhruvasagar/vim-table-mode', {'on': 'TableModeToggle'}
 Plug 'ap/vim-css-color'
@@ -584,10 +587,9 @@ nnoremap <Leader>pC :PlugClean!<CR>|                   "Clean directory
 nnoremap <Leader>ps :PlugStatus<CR>|                   "Check plugin status
 nnoremap <Leader>pd :PlugDiff<CR>|                     "Show changes between update
 nnoremap <Leader>pi :PlugInstall<Space><C-d>|          "Install new plugin
-vnoremap <Leader>pi y:PlugInstall<Space><C-r>"<CR>|    "Install plugin under cursor
 nnoremap <Leader>pv :PlugUpgrade<CR>|                  "Update vim-plug
 nnoremap <Leader>pu :PlugUpdate<Space><C-d>|           "Update other plugins
-vnoremap <Leader>pu y:PlugUpdate<Space><C-r>"<CR>|     "Update plugin under cursor
+nnoremap <Leader>pU :PlugUpdate<CR>|                   "Update all plugins
 "}}}
 "{{{[Auto Pairs]
 autocmd InsertEnter * :silent! all autopairs#AutoPairsTryInit()
@@ -602,8 +604,8 @@ nnoremap <silent> <A-j> :call smooth_scroll#down(6, 0, 2)<CR>
 nnoremap <silent> <A-k> :call smooth_scroll#up(6, 0, 2)<CR>
 nnoremap <silent> <A-l> :call smooth_scroll#down(15, 0, 3)<CR>
 nnoremap <silent> <A-h> :call smooth_scroll#up(15, 0, 3)<CR>
-nnoremap <silent> H     :call smooth_scroll#up(40, 0, 10)<CR>
-nnoremap <silent> L     :call smooth_scroll#down(40, 0, 10)<CR>
+" nnoremap <silent> H     :call smooth_scroll#up(40, 0, 10)<CR>
+" nnoremap <silent> L     :call smooth_scroll#down(40, 0, 10)<CR>
 " LN
 if g:os == 'win'
    let s:smoothScrollPath = '~\vimfiles\plugged\vim-smooth-scroll\autoload\smooth_scroll.vim'
