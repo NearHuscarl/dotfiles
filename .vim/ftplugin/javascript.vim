@@ -1,1 +1,1 @@
-call plug#load('vim-javascript')
+nnoremap <silent><buffer> <Leader>B :call JsBeautify()<CR>
