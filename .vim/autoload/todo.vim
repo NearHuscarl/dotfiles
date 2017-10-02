@@ -2,7 +2,7 @@
 " File:        todo.vim
 " Description: functions for local mappings in todo files
 " Author:      Near Huscarl <near.huscarl@gmail.com>
-" Last Change: Mon Oct 02 16:14:31 +07 2017
+" Last Change: Mon Oct 02 23:13:49 +07 2017
 " Licence:     BSD 3-Clause license
 " Note:        N/A
 " ============================================================================
@@ -11,6 +11,9 @@ try
    call plug#load('vim-easy-align')
 endtry
 " {{{ Wrapper Functions
+function! todo#ToggleDoneVisual(type)
+   call todo#ModifyCheckbox('toggle', 'x', '<', '>')
+endfunction
 function! todo#ToggleDone(type)
    call todo#ModifyCheckbox('toggle', 'x', '[', ']')
 endfunction
@@ -49,58 +52,63 @@ function! todo#ModifyCheckbox(action, char, markBegin, markEnd) " {{{
    endif
 
    " Sort archive task. Requrire easy-align
-   let archiveTag = todo#SearchBackward(line('$'), '^<\(Archive\|Reminder\|Todo\)>')
-   let range = archiveTag.lineNum+1 . ',$'
-   execute range . "call easy_align#align(0, 0, 'command', '*/\\[[a-zA-Z ]\\{2,}\\]/ {\"dl\": \"l\", \"lm\": 1, \"rm\": 1}')"
+   let archiveTag = todo#SearchBackward(line('$')+1, '^<\(Archive\|Reminder\|Todo\)>')
+   if archiveTag.lineNum+1 < line('$')
+      let range = archiveTag.lineNum+1 . ',$'
+      execute range . "call easy_align#align(0, 0, 'command', '*/\\[[a-zA-Z ]\\{2,}\\]/ {\"dl\": \"l\", \"lm\": 1, \"rm\": 1}')"
+   endif
 
    call winrestview(viewInfo)
 endfunction " }}}
 function! todo#UntickCheckbox(char) " {{{
    let currentLine = getline('.')
-   let curPos = { 'line': getcurpos()[1], 'col': getcurpos()[2] }
 
-   if match(currentLine, '^\s*\[.\]') != -1
-      " Untick all
-      if a:char == 'a'
+   " Untick all
+   if a:char == 'a'
+      if match(currentLine, '^\s*\[[sx]\]\C') != -1
          execute "normal! ^lr "
-      elseif match(currentLine, '^\s*\[' . a:char . '\]') != -1
-         execute "normal! ^lr "
-      endif 
+      elseif match(currentLine, '^\s*\[[SX]\]\C') != -1
+         execute "normal! ^lr_"
+      endif
       call s:RemoveFromArchive(line('.'))
-   else
-      echo "No checkbox available"
    endif
-   call cursor(curPos.line, curPos.col)
+
+   if match(currentLine, '^\s*\[[xs]\]\C') != -1
+      execute "normal! ^lr "
+      call s:RemoveFromArchive(line('.'))
+   elseif match(currentLine, '^\s*\[[XS]\]\C') != -1
+      execute "normal! ^lr_"
+      call s:RemoveFromArchive(line('.'))
+   endif 
 endfunction " }}}
 function! todo#TickCheckbox(char) " {{{
    let currentLine = getline('.')
-   let curPos = { 'line': getcurpos()[1], 'col': getcurpos()[2] }
 
-   if match(currentLine, '^\s*\[.\]') != -1
-      execute "normal! ^lr" . a:char
-      call s:MoveToArchive(line('.'))
-   else
-      echo "No checkbox available"
+   if match(currentLine, '^\s*\[[^' . a:char . ']\]') != -1
+      if match(currentLine, '^\s*\[[sx ]\]\C') != -1
+         execute "normal! ^lr" . a:char
+         call s:MoveToArchive(line('.'))
+      elseif match(currentLine, '^\s*\[[SX_]\]\C') != -1
+         execute "normal! ^lr" . toupper(a:char)
+         call s:MoveToArchive(line('.'))
+      endif
    endif
-   call cursor(curPos.line, curPos.col)
 endfunction " }}}
 function! todo#ToggleCheckbox(char) " {{{
    let currentLine = getline('.')
-   let curPos = { 'line': getcurpos()[1], 'col': getcurpos()[2] }
-   let result = -1
 
-   if match(currentLine, '^\s*\[ \]') != -1
-      execute "normal! ^lr" . a:char
-      call s:MoveToArchive(line('.'))
-   elseif match(currentLine, '^\s*\[[sx]\]') != -1
-      " Go to the beginning of the line, remove x in checkbox
-      execute "normal! ^lr "
+   if match(currentLine, '^\s*\[.\]') != -1
+      if match(currentLine, '^\s*\[ \]') != -1
+         execute "normal! ^lr" . a:char
+      elseif match(currentLine, '^\s*\[_\]') != -1
+         execute "normal! ^lr" . toupper(a:char)
+      elseif match(currentLine, '^\s*\[[sx]\]\C') != -1
+         execute "normal! ^lr "
+      elseif match(currentLine, '^\s*\[[SX]\]\C') != -1
+         execute "normal! ^lr_"
+      endif
       call s:RemoveFromArchive(line('.'))
-   else
-      echo "No checkbox available"
    endif
-   call cursor(curPos.line, curPos.col)
-   return result
 endfunction " }}}
 function! todo#InsertNewTask(char) " {{{
    let autoindentOld = &autoindent
@@ -241,7 +249,10 @@ endfunction " }}}
 function! s:RemoveFromArchive(lineNumArg) " {{{
    let result = s:SearchArchiveBackward(line('$')+1, getline(a:lineNumArg))
 
-   if result.lineNum == a:lineNumArg
+   if result == -1
+      echom '"' . todo#TrimWhitespace(getline(a:lineNumArg)) . '" is not in archive'
+      return
+   elseif result.lineNum == a:lineNumArg
       echoerr 'Make <Archive> tag at the end of the file'
    else
       let viewInfo  = winsaveview()
