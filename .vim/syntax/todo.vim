@@ -2,7 +2,7 @@
 " File:        todo.vim
 " Description: Vim syntax file: todo
 " Author:      Near Huscarl <near.huscarl@gmail.com>
-" Last Change: Thu Sep 28 17:21:10 +07 2017
+" Last Change: Mon Oct 02 16:43:26 +07 2017
 " Licence:     BSD 3-Clause license
 " Note:        todo file used to take note, reminder, and manage daily tasks
 " ============================================================================
@@ -13,10 +13,12 @@ endif
 
 syn keyword todoType contained Archive Reminder Todo
 syn region todoTag              start=+<[^/]+   end=+>+ contains=todoType
-syn region todoTaskCategory     start="^\s*\["  end="\]" nextgroup=todoTaskCategoryNumber
+syn match todoTaskCategory       "^\s*\[\([xsXS _]\]\)\@![a-zA-Z0-9 ]*\]" nextgroup=todoTaskCategoryNumber
+syn match todoArchiveDate        "^\s*\d\@<!\d\{2}\d\@!:\d\@<!\d\{2}\d\@!:\d\@<!\d\{2}\d\@! \d\@<!\d\{2}\d\@!\/\d\@<!\d\{2}\d\@!\/\d\@<!\d\{4}\d\@! [A-Z][a-z][a-z]" nextgroup=todoArchiveCategory
+syn match todoArchiveCategory    "\[[a-zA-Z ]\{2,}\]" nextgroup=todoTaskCategoryNumber
 syn match todoTaskCategoryNumber "\[[0-9]\]"
 syn match todoComment            '^\s*#.*$'
-syn match todoDone               "^\s*\[[xX]\].*$"
+syn match todoDone               "\[[xX]\] .*$"
 syn match todoSuspend            "^\s*\[[sS]\].*$"
 syn match todoNotDone            "^\s*\[[ _]\].*$"
 
@@ -28,6 +30,8 @@ hi def link todoTaskCategoryNumber Identifier
 hi def link todoNotDone            PreProc
 hi def link todoComment            Comment
 hi def link todoSuspend            Statement
+hi def link todoArchiveDate        Statement
+hi def link todoArchiveCategory    Type
 hi def link todoDone               String
 
 let b:current_syntax = "todo"
