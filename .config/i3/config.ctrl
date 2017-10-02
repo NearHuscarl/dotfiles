@@ -1,4 +1,4 @@
-# vim:ft=conf
+# vim: ft=i3
 # i3 config
 
 # Workspace name {{{
@@ -44,8 +44,8 @@ bindsym $mod+Shift+l exec i3lock-fancy -f Roboto-Bold
 bindsym $mod+Return exec xfce4-terminal --disable-server
 bindsym $mod+shift+f fullscreen toggle
 
-bindsym $mod+x split h
-bindsym $mod+v split v
+# bindsym $mod+x split h
+# bindsym $mod+v split v
 bindsym $mod+g split toggle
 
 bindsym $mod+Shift+space floating toggle
@@ -64,7 +64,7 @@ bindsym $mod+k focus up
 bindsym $mod+l focus right
 
 # Change container layout (stacked, tabbed, toggle split)
-bindsym $mod+s layout stacking
+# bindsym $mod+s layout stacking
 bindsym $mod+t layout tabbed
 bindsym $mod+e layout toggle split
 # }}}
@@ -107,9 +107,10 @@ for_window [class="Pavucontrol"]       floating enable
 for_window [class="File-roller"]       floating enable
 for_window [class="Nitrogen"]          floating enable
 for_window [class="Gucharmap"]         floating enable
+for_window [class="Blueberry.py"]      floating enable
 for_window [class="Sxiv"]              floating enable
 for_window [title="Floating"]          floating enable
-for_window [title="Startup Settings"]          floating enable
+for_window [title="Startup Settings"]  floating enable
 
 # Very dirty workaround to make chrome developer tools fullscreen
 for_window [title="^Developer Tools.*"] \
