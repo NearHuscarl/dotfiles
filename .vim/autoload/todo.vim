@@ -2,11 +2,14 @@
 " File:        todo.vim
 " Description: functions for local mappings in todo files
 " Author:      Near Huscarl <near.huscarl@gmail.com>
-" Last Change: Wed Sep 27 03:40:58 +07 2017
+" Last Change: Mon Oct 02 16:14:31 +07 2017
 " Licence:     BSD 3-Clause license
 " Note:        N/A
 " ============================================================================
 
+try
+   call plug#load('vim-easy-align')
+endtry
 " {{{ Wrapper Functions
 function! todo#ToggleDone(type)
    call todo#ModifyCheckbox('toggle', 'x', '[', ']')
@@ -35,24 +38,21 @@ function! todo#ModifyCheckbox(action, char, markBegin, markEnd) " {{{
    let lineBegin = line("'" . a:markBegin)
    let lineEnd   = line("'" . a:markEnd)
    let lineTotal = lineEnd  - lineBegin + 1
-   let direction = lineBegin < lineEnd ? "down" : "up"
+   let range = lineBegin . ',' . lineEnd
 
-   while lineTotal > 0
-      if a:action == 'tick'
-         call todo#TickCheckbox(a:char)
-      elseif a:action == 'untick'
-         call todo#UntickCheckbox(a:char)
-      elseif a:action == 'toggle'
-         call todo#ToggleCheckbox(a:char)
-      endif
+   if a:action == 'tick'
+      execute range . "call todo#TickCheckbox(a:char)"
+   elseif a:action == 'untick'
+      execute range . "call todo#UntickCheckbox(a:char)"
+   elseif a:action == 'toggle'
+      execute range . 'call todo#ToggleCheckbox(a:char)'
+   endif
 
-      if direction == "down"
-         execute "normal! j"
-      else
-         execute "normal! k"
-      endif
-      let lineTotal -= 1
-   endwhile
+   " Sort archive task. Requrire easy-align
+   let archiveTag = todo#SearchBackward(line('$'), '^<\(Archive\|Reminder\|Todo\)>')
+   let range = archiveTag.lineNum+1 . ',$'
+   execute range . "call easy_align#align(0, 0, 'command', '*/\\[[a-zA-Z ]\\{2,}\\]/ {\"dl\": \"l\", \"lm\": 1, \"rm\": 1}')"
+
    call winrestview(viewInfo)
 endfunction " }}}
 function! todo#UntickCheckbox(char) " {{{
@@ -60,15 +60,13 @@ function! todo#UntickCheckbox(char) " {{{
    let curPos = { 'line': getcurpos()[1], 'col': getcurpos()[2] }
 
    if match(currentLine, '^\s*\[.\]') != -1
+      " Untick all
       if a:char == 'a'
          execute "normal! ^lr "
-      endif
-      if a:char == 'x' && match(currentLine, '^\s*\[x\]') != -1
+      elseif match(currentLine, '^\s*\[' . a:char . '\]') != -1
          execute "normal! ^lr "
-      endif
-      if a:char == 's' && match(currentLine, '^\s*\[s\]') != -1
-         execute "normal! ^lr "
-      endif
+      endif 
+      call s:RemoveFromArchive(line('.'))
    else
       echo "No checkbox available"
    endif
@@ -79,14 +77,8 @@ function! todo#TickCheckbox(char) " {{{
    let curPos = { 'line': getcurpos()[1], 'col': getcurpos()[2] }
 
    if match(currentLine, '^\s*\[.\]') != -1
-      if a:char == 'x'
-         " Go to the beginning of the line, insert x in checkbox
-         execute "normal! ^lrx"
-      elseif a:char == 's'
-         execute "normal! ^lrs"
-      else
-         echoerr "Invalid Parameter"
-      endif
+      execute "normal! ^lr" . a:char
+      call s:MoveToArchive(line('.'))
    else
       echo "No checkbox available"
    endif
@@ -95,57 +87,40 @@ endfunction " }}}
 function! todo#ToggleCheckbox(char) " {{{
    let currentLine = getline('.')
    let curPos = { 'line': getcurpos()[1], 'col': getcurpos()[2] }
+   let result = -1
 
    if match(currentLine, '^\s*\[ \]') != -1
-      if a:char == 'x'
-         " Go to the beginning of the line, insert x in checkbox
-         execute "normal! ^lrx"
-      elseif a:char == 's'
-         execute "normal! ^lrs"
-      else
-         echoerr "Invalid Parameter"
-      endif
+      execute "normal! ^lr" . a:char
+      call s:MoveToArchive(line('.'))
    elseif match(currentLine, '^\s*\[[sx]\]') != -1
       " Go to the beginning of the line, remove x in checkbox
       execute "normal! ^lr "
+      call s:RemoveFromArchive(line('.'))
    else
       echo "No checkbox available"
    endif
    call cursor(curPos.line, curPos.col)
+   return result
 endfunction " }}}
-function! IsInArchive() " {{{
-endfunction " }}}
-function! AddTaskInArchive() " {{{
-endfunction " }}}
-function! RemoveTaskInArchive() " {{{
-endfunction " }}}
-function! todo#InsertNewTask(...) " {{{
+function! todo#InsertNewTask(char) " {{{
    let autoindentOld = &autoindent
    set autoindent
-   let currentLine = getline('.')
-   let aboveLine = getline(line('.') - 1)
-   let text = "[ ] "
-   if a:0 == 0
-      let indent = ""
-   elseif a:1 == 'c'
-      let indent = '	'
-   elseif a:1 == 'p'
-      let indent = ''
+   if a:char ==# 'c'
+      let text = "[ ] "
+   elseif a:char ==# 'p'
+      let text = "[_] "
+      let end = "# END"
+      execute "normal! o\<Tab>" . end . "\<Esc>k"
    endif
 
    " match empty line
-   if match(currentLine, '^\s*$') == 0
-      " line above not empty, new task indented
-      if match(aboveLine, '^\s*$') == -1
-         execute "normal! ko" . indent . text
-      " empty line, new task not indented
-      else
-         execute "normal! 0Da" . text
-      endif
+   if match(getline('.'), '^\s*$') != -1
+      execute "normal! cc" . text
    " not empty line, open newline and insert task
    else
-      execute "normal! o" . indent . text
+      execute "normal! o" . text
    endif
+
    " go to insert mode
    call feedkeys('A', 'n')
    call s:RestoreAutoIndent(autoindentOld)
@@ -175,8 +150,102 @@ function! todo#JumpUpCategory() " {{{
    " Not Match: [x]
    "            [s]
    "            [ ]
-   call search('^\s*\[\([xs ]]\)\@![a-zA-Z0-9 ]*\]', 'b')
+   let line = search('^\s*\[\([xs ]\]\)\@![a-zA-Z0-9 ]*\]', 'nb')
+   " Use G and | instead of search() to add to the jumplist
+   execute "normal! " . line . "G0"
 endfunction " }}}
 function! todo#JumpDownCategory() " {{{
-   call search('^\s*\[\([xs ]]\)\@![a-zA-Z0-9 ]*\]')
+   let line = search('^\s*\[\([xs ]\]\)\@![a-zA-Z0-9 ]*\]', 'n')
+   execute "normal! " . line . "G0"
+endfunction " }}}
+function! todo#JumpToArchive() " {{{
+   let line = search('^<Archive>', 'n')
+   execute "normal! " . line . "G0"
+endfunction " }}}
+function! todo#JumpToTodo() " {{{
+   let line = search('^<Todo>', 'n')
+   execute "normal! " . line . "G0"
+endfunction " }}}
+function! todo#JumpToReminder() " {{{
+   let line = search('^<Reminder>', 'n')
+   execute "normal! " . line . "G0"
+endfunction " }}}
+function! todo#Delete() " {{{
+   let currentLine  = getline('.')
+
+   if match(currentLine, '^\s*\[[XS_]\]') != -1
+      execute "normal! jzcdd"
+   else
+      execute "normal! dd"
+   endif
+endfunction " }}}
+function! todo#TrimWhitespace(lineArg) " {{{
+   let line = substitute(a:lineArg, '\s\+$', '', '')
+   let line = substitute(line, '^\s\+', '', '')
+   return line
+endfunction " }}}
+function! todo#SearchBackward(lineNumArg, ...) " {{{
+   let lineNum = a:lineNumArg
+
+   while lineNum > 0
+      let lineNum = prevnonblank(lineNum - 1)
+      for regex in a:000
+         if getline(lineNum) =~# regex
+            return {'regex': regex, 'lineNum': lineNum}
+         endif
+      endfor
+   endwhile
+   return -1
+endfunction " }}}
+function! s:SearchArchiveBackward(lineNumArg, stringArg) " {{{
+   let lineNum = a:lineNumArg
+   let string = substitute(a:stringArg, '^\s*\[.\]\s*', '', '')
+
+   while lineNum > 0
+      let lineNum = prevnonblank(lineNum - 1)
+      let task = substitute(todo#TrimWhitespace(getline(lineNum)), '^.*\[\([xsXS _]\]\)\@![a-zA-Z0-9 ]*\] \[[0-9]\]\s*\[.\]\s*', '', '')
+      if task ==# string
+         return {'string': string, 'lineNum': lineNum}
+      endif
+   endwhile
+   return -1
+endfunction " }}}
+function! s:GetPrevDateLineNum(lineNumArg) " {{{
+   let dateRegex = '\d\@<!\d\{2}\d\@!:\d\@<!\d\{2}\d\@!:\d\@<!\d\{2}\d\@! \d\@<!\d\{2}\d\@!\/\d\@<!\d\{2}\d\@!\/\d\@<!\d\{4}\d\@!'
+   let tagRegex = '^<\(Archive\|Reminder\|Todo\)>'
+   let result = todo#SearchBackward(a:lineNumArg, dateRegex, tagRegex)
+
+   if result.lineNum == -1
+      echoerr "No <Archive> Tag available"
+   endif
+   return result.lineNum
+endfunction " }}}
+function! s:GetCategory(lineNumArg) " {{{
+   let categoryRegex = '^\s*\[\([xsXS _]\]\)\@![a-zA-Z0-9 ]*\] \[[0-9]\]'
+   let tagRegex = '^<\(Archive\|Reminder\|Todo\)>'
+   let result = todo#SearchBackward(a:lineNumArg, categoryRegex, tagRegex)
+
+   if result.regex == categoryRegex
+      return todo#TrimWhitespace(getline(result.lineNum))
+   endif
+   echoerr "[No Category]"
+endfunction " }}}
+function! s:MoveToArchive(lineNumArg) " {{{
+   let date = strftime('%T %d/%m/%Y %a')
+   let doneTask = todo#TrimWhitespace(getline('.'))
+   let category = s:GetCategory(a:lineNumArg)
+   let lineNum = s:GetPrevDateLineNum(line('$')+1)
+
+   execute "normal! " . lineNum . "Go" . date . ' ' . category . ' ' . doneTask
+endfunction " }}}
+function! s:RemoveFromArchive(lineNumArg) " {{{
+   let result = s:SearchArchiveBackward(line('$')+1, getline(a:lineNumArg))
+
+   if result.lineNum == a:lineNumArg
+      echoerr 'Make <Archive> tag at the end of the file'
+   else
+      let viewInfo  = winsaveview()
+      execute "normal! " . result.lineNum . "Gdd"
+      call winrestview(viewInfo)
+   endif
 endfunction " }}}
