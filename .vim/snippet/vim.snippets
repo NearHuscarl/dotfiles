@@ -1,3 +1,14 @@
+snippet license "LICENSE" b
+" ============================================================================
+" File:        `!v expand("%:t")`
+" Description: ${1:Description}
+" Author:      Near Huscarl <near.huscarl@gmail.com>
+" Last Change: `!v strftime("%a %b %d %H:%M:%S %Z %Y")`
+" Licence:     ${2:BSD 3-Clause license}
+" Note:        ${3:Note}
+" ============================================================================
+endsnippet
+
 snippet fa "function in autoload/" b
 function! `!v substitute( substitute(expand('%:p:r'), '^.*autoload/', '', ''), '/', '#', 'g' )`#${1:Function Name} " {{{
 	${2:Body}
