@@ -2,7 +2,7 @@
 " File:        todo.vim
 " Description: functions for local mappings in todo files
 " Author:      Near Huscarl <near.huscarl@gmail.com>
-" Last Change: Mon Oct 02 23:13:49 +07 2017
+" Last Change: Tue Oct 03 00:58:15 +07 2017
 " Licence:     BSD 3-Clause license
 " Note:        N/A
 " ============================================================================
@@ -97,16 +97,17 @@ endfunction " }}}
 function! todo#ToggleCheckbox(char) " {{{
    let currentLine = getline('.')
 
-   if match(currentLine, '^\s*\[.\]') != -1
-      if match(currentLine, '^\s*\[ \]') != -1
-         execute "normal! ^lr" . a:char
-      elseif match(currentLine, '^\s*\[_\]') != -1
-         execute "normal! ^lr" . toupper(a:char)
-      elseif match(currentLine, '^\s*\[[sx]\]\C') != -1
-         execute "normal! ^lr "
-      elseif match(currentLine, '^\s*\[[SX]\]\C') != -1
-         execute "normal! ^lr_"
-      endif
+   if match(currentLine, '^\s*\[ \]') != -1
+      execute "normal! ^lr" . a:char
+      call s:MoveToArchive(line('.'))
+   elseif match(currentLine, '^\s*\[_\]') != -1
+      execute "normal! ^lr" . toupper(a:char)
+      call s:MoveToArchive(line('.'))
+   elseif match(currentLine, '^\s*\[[sx]\]\C') != -1
+      execute "normal! ^lr "
+      call s:RemoveFromArchive(line('.'))
+   elseif match(currentLine, '^\s*\[[SX]\]\C') != -1
+      execute "normal! ^lr_"
       call s:RemoveFromArchive(line('.'))
    endif
 endfunction " }}}
