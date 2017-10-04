@@ -2,7 +2,7 @@
 " File:        utils.vim
 " Description: Utility Functions
 " Author:      Near Huscarl <near.huscarl@gmail.com>
-" Last Change: Tue Oct 03 19:15:22 +07 2017
+" Last Change: Wed Oct 04 10:35:17 +07 2017
 " Licence:     BSD 3-Clause license
 " Note:        Miscellaneous functions in autoload/ is put here
 " ============================================================================
@@ -197,45 +197,6 @@ function! near#utils#MakeSymlink() " {{{
       endif
       silent !mklink /H \%UserProfile\%\_vsvimrc \%UserProfile\%\Desktop\.vimrc\_vsvimrc
    endif
-endfunction " }}}
-function! s:SetupSessionPlugin() " {{{
-   call plug#load('vim-misc')
-   call plug#load('vim-session')
-   nnoremap <Leader>so :SessionOpen<CR>
-   nnoremap <Leader>ss :SessionSave<CR>
-   nnoremap <Leader>sS :SessionSave<Space><C-d>
-   nnoremap <Leader>sc :SessionClose<CR>
-   nnoremap <Leader>sd :SessionDelete<CR>
-   nnoremap <Leader>sv :SessionView<CR>
-   nnoremap <Leader>sV :SessionView<Space><C-d>
-endfunction " }}}
-function! near#utils#SOpenLazyLoad() " {{{
-   call s:SetupSessionPlugin()
-   execute "SessionOpen"
-endfunction " }}}
-function! near#utils#SSaveLazyLoad() " {{{
-   call s:SetupSessionPlugin()
-   execute "SessionSave"
-endfunction " }}}
-function! near#utils#SSAVELazyLoad() " {{{
-   call s:SetupSessionPlugin()
-   execute "normal! :SessionSave \<C-d>"
-endfunction " }}}
-function! near#utils#SCloseLazyLoad() " {{{
-   call s:SetupSessionPlugin()
-   execute "SessionClose"
-endfunction " }}}
-function! near#utils#SDeleteLazyLoad() " {{{
-   call s:SetupSessionPlugin()
-   execute "SessionDelete"
-endfunction " }}}
-function! near#utils#SViewLazyLoad() " {{{
-   call s:SetupSessionPlugin()
-   execute "SessionView"
-endfunction " }}}
-function! near#utils#SVIEWLazyLoad() " {{{
-   call s:SetupSessionPlugin()
-   execute "normal! :SessionView \<C-d>"
 endfunction " }}}
 function! near#utils#GundoAutoPreviewToggle() " {{{
    if g:gundo_auto_preview == 1

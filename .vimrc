@@ -877,13 +877,13 @@ let g:session_default_name = 'Default'
 "ViewSession -> SessionView 
 let g:session_command_aliases = 1
 
-nnoremap <silent><Leader>so :call near#utils#SOpenLazyLoad()<CR>
-nnoremap <silent><Leader>ss :call near#utils#SSaveLazyLoad()<CR>
-nnoremap <silent><Leader>sS :call near#utils#SSAVELazyLoad()<CR>
-nnoremap <silent><Leader>sc :call near#utils#SCloseLazyLoad()<CR>
-nnoremap <silent><Leader>sd :call near#utils#SDeleteLazyLoad()<CR>
-nnoremap <silent><Leader>sv :call near#utils#SViewLazyLoad()<CR>
-nnoremap <silent><Leader>sV :call near#utils#SVIEWLazyLoad()<CR>
+nnoremap <silent><Leader>so :call lazyload#SessionOpen()<CR>
+nnoremap <silent><Leader>ss :call lazyload#SessionSave()<CR>
+nnoremap <silent><Leader>sS :call lazyload#SessionSAVE()<CR>
+nnoremap <silent><Leader>sc :call lazyload#SessionClose()<CR>
+nnoremap <silent><Leader>sd :call lazyload#SessionDelete()<CR>
+nnoremap <silent><Leader>sv :call lazyload#SessionView()<CR>
+nnoremap <silent><Leader>sV :call lazyload#SessionVIEW()<CR>
 "}}}
 "{{{ Sneak
 let g:sneak#s_next = 1              " Press [sS] after invoke sneak to go to next match
