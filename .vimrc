@@ -2,7 +2,7 @@
 " File:        .vimrc
 " Description: Vim settings
 " Author:      Near Huscarl <near.huscarl@gmail.com>
-" Last Change: Tue Oct 03 19:44:25 +07 2017
+" Last Change: Thu Oct 05 11:50:46 +07 2017
 " Licence:     BSD 3-Clause license
 " Note:        This is a personal vim config. therefore most likely not work 
 "              on your machine
@@ -528,8 +528,9 @@ Plug 'terryma/vim-smooth-scroll'
 
 " Filetype
 Plug 'othree/html5.vim'
-Plug 'pangloss/vim-javascript', {'on': []}
+Plug 'pangloss/vim-javascript', {'for': 'javascript'}
 Plug 'maksimr/vim-jsbeautify'
+Plug 'hdima/python-syntax'
 
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight', {'on': [
          \ 'NERDTreeTabsToggle',
@@ -705,6 +706,7 @@ let g:fzf_action = {
   \ 'alt-h': 'split',
   \ 'alt-v': 'vsplit' }
 
+" Show all except binary
 command! -bang FilesAll
          \ call fzf#run({
          \  'source': 'rg $HOME /etc/systemd --files --no-ignore --hidden --follow --no-messages --glob "!{undo,.local}/*"',
@@ -712,6 +714,7 @@ command! -bang FilesAll
          \  'options': g:fzfOpt
          \ })
 
+" Show all in / except binary
 " Will update when more files need to be searched
 command! -bang FilesRoot
          \ call fzf#run({
@@ -720,10 +723,10 @@ command! -bang FilesRoot
          \  'options': g:fzfOpt
          \ })
 
-" Unlike fzf#vim#files, respect .gitignore (need vim-rooter to get current dir right)
-command! -bang FilesProject
+" Unlike fzf#vim#files, respect .gitignore
+command! -bang -nargs=1 FilesRepo
          \ call fzf#run({
-         \  'source': 'rg ' .getcwd(). ' --files --hidden --no-messages',
+         \  'source': 'rg ' . <args> . ' --files --hidden --no-messages',
          \  'sink': 'edit',
          \  'options': g:fzfOpt
          \ })
@@ -733,11 +736,8 @@ command! -bang -nargs=* Grep
 command! -bang -nargs=? -complete=dir Files
          \ call fzf#vim#files(<q-args>, {
          \   'options': g:fzfOpt,
-         \   'source': 'rg --files --no-ignore --hidden --follow --no-messages
-         \     --glob "!{undo,.local}/*"'
+         \   'source': 'rg --files --no-ignore --hidden --follow --no-messages --glob "!{undo,.local}/*"'
          \ }, <bang>0)
-" command! -bang -nargs=? -complete=dir Files
-"          \ call fzf#vim#files(<q-args>, {'options': g:fzfOpt}, <bang>0)
 command! -bang Colors
          \ call fzf#vim#colors({'options': g:fzfOpt}, <bang>0)
 command! -bang -nargs=* History
@@ -752,14 +752,18 @@ command! -bang -nargs=* Lines
          \ call fzf#vim#lines({'options': g:fzfOpt}, <bang>0)
 command! -bang -nargs=? -complete=buffer Buffers
          \ call fzf#vim#buffers({'options': g:fzfOpt}, <bang>0)
-command! -bar Root Rooter
+
+nnoremap <Leader>ep  :FilesRepo FindRootDirectory()<CR>|                   "Current (p)roject root directory
+nnoremap <Leader>erh :FilesRepo "$HOME/"<CR>
+nnoremap <Leader>erf :FilesRepo "$HOME/Github/FCC-Exercise-Archive/"<CR>
+nnoremap <Leader>erp :FilesRepo "$HOME/Github/LearnPythonTheHardWay/"<CR>
+nnoremap <Leader>erw :FilesRepo "$HOME/Github/NearHuscarl.github.io/"<CR>
 
 nnoremap gr :Grep<Space>
 nnoremap <Leader>rg :Grep<CR>
 nnoremap <Leader>e/ :FilesRoot<CR>
-nnoremap <Leader>er :Files<CR>
+nnoremap <Leader>ef :Files<CR>
 " Manually call Rooter because sometimes rooter fail to run automatically
-nnoremap <Leader>ep :Root<Bar>FilesProject<CR> " when using with vim-rooter, search for files in root project folder
 nnoremap <Leader>eh :Files $HOME<CR>
 nnoremap <Leader>ea :FilesAll<CR>
 nnoremap <Leader>em :History<CR>
@@ -861,6 +865,9 @@ nmap gLl <Plug>(Limelight)|                  "Motion (normal mode)
 xmap gLl <Plug>(Limelight)|                  "Motion (viusal mode)
 let g:limelight_priority = -1                      "Do not overrule hlsearch
 "}}}
+" {{{ Python Syntax
+let python_highlight_all = 1
+" }}}
 "{{{ Session
 " LN
 if g:os == 'win'
