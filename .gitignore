@@ -10,6 +10,7 @@
 !/.cvimrc
 !/.inputrc
 !/.gitignore
+!/.tern-project
 !/.vimrc
 !/.Xmodmap
 !gitignore/install.sh
