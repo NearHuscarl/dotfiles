@@ -1,5 +1,10 @@
 " vim: nofoldenable
 
+function! css#ToggleInsertImportantRange(type) " {{{
+   let range = line("'[") . ',' . line("']")
+   execute range . "call css#ToggleInsertImportant()"
+endfunction " }}}
+
 function! css#ToggleInsertImportant() " {{{
    let curPos = [line('.'), col('.')]
    if match(getline('.'), '!important;$') != -1
