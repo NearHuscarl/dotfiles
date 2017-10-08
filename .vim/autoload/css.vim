@@ -2,7 +2,7 @@
 " File:        css.vim
 " Description: custom functions for mappings specifically to css file
 " Author:      Near Huscarl <near.huscarl@gmail.com>
-" Last Change: Sun Oct 08 13:03:27 +07 2017
+" Last Change: Sun Oct 08 13:31:11 +07 2017
 " Licence:     BSD 3-Clause license
 " Note:        N/A
 " ============================================================================
@@ -51,29 +51,22 @@ endfunction
 " }}}
 function! css#CopyOrCut(action, default) " {{{
    " Extend copy for hex color
-   let curPos = [line('.'), col('.')]
-
    if expand("<cWORD>") =~? '\(#[a-fA-F0-9]\{6}\>\|[a-fA-F0-9]\{3}\>\)'
       if s:GetCharUnderCursor() != '#'
          execute 'normal! B'
       endif
       execute 'normal! ' . a:action . 'E'
-      if a:action == 'c'
-         execute "normal! la"
-         return
-      endif
    elseif match(getline('.'), '\(rgb\|rgba\)(.*)') != -1
       execute "normal! ^"
       call search('\(rgb\|rgba\)(.*)', 'c')
       execute "normal! " . a:action . "f)"
-      if a:action == 'c'
-         execute "normal! la"
-         return
-      endif
    else
       execute "normal! " . a:default
    endif
-   call cursor(curPos[0], curPos[1])
+   if a:action == 'c'
+      execute "normal! l"
+      execute "startinsert"
+   endif
 endfunction
 " }}}
 function! s:Dec2Hex(num) " {{{
