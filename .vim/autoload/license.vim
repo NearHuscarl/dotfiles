@@ -1,3 +1,13 @@
+" ============================================================================
+" File:        license.vim
+" Description: A function to auto update Last Change time, use with autocmd 
+"              BufWrite, and a function for undo/redo mappings to skip
+"              jumping to auto updated timestamp
+" Author:      Near Huscarl <near.huscarl@gmail.com>
+" Last Change: Sun Oct 08 12:57:34 +07 2017
+" Licence:     BSD 3-Clause license
+" Note:        N/A
+" ============================================================================
 
 let s:licenseDateRegex = '[A-Z][a-z]\{2} [A-Z][a-z]\{2} \d\@<!\d\{2}\d\@! \d\@<!\d\{2}\d\@!:\d\@<!\d\{2}\d\@!:\d\@<!\d\{2}\d\@! .* \d\@<!\d\{4}\d\@!'
 
@@ -12,7 +22,7 @@ function! license#SetLastChangeBeforeBufWrite() " {{{
          let view_info = winsaveview()
          let time = strftime('%a %b %d %H:%M:%S %Z %Y')
          silent! call cursor(line, 16)
-         execute "normal! Da" . time
+         execute 'normal! "_Da' . time
          call winrestview(view_info)
          return
       endif
