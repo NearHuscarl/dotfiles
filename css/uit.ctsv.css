@@ -24,70 +24,54 @@ yellow          #f1c40f   rgba(241,196,15,1)
    color: #84888b !important;
 }
 
-textarea,
-#block-search-form .search-query {
-    background-color: #2c3e50 !important;
-}
-
 a {
    color: #2980b9 !important;
 }
 
-a:hover, a:focus {
+a:hover {
    color: #3498db !important;
-   background-color: #2c3e50 !important;
 }
 
 a:visited {
    color: #8e44ad !important;
 }
 
-h2 {
+h1, h2 {
    color: #16a085 !important;
 }
 
-img, a img {
-  filter: brightness(0.6) !important;
+img {
+   background-color: transparent !important;
+   filter: brightness(0.6) !important;
 }
 
-/* undisplay some bullshit */
-.navbar .nav > li.first:nth-child(1),
-.sidebar h2 {
-   background: none !important;
-}
-
-#block-search-form .btn-search {
-   display: none !important;
+/* button|input */
+input.form-submit,
+#block-search-form .search-query {
+   background-color: #2c3e50 !important;
 }
 
 /* menu */
-
-#main-nav a:visited {
+.menu.nav a:visited {
    color: #2980b9 !important;
 }
 
-li.first.leaf {
+/* table-kun */
+thead * {
+   color: #8e44ad !important;
+}
+
+font[color*="blue"] * {
+   color: #2980b9 !important;
+}
+
+font[color*="#dc143c"] * {
+   color: #e74c3c !important;
+}
+
+/* hide search icon */
+#block-search-form .btn-search {
    display: none !important;
-}
-
-/* list in main page */
-.item-list > ul > li {
-   background: none !important;
-   list-style-type: circle !important;
-   list-style-position: inside !important;
-}
-
-/* arrow */
-.caret {
-    border-top: 4px solid #16a085 !important;
-    border-right: 4px solid transparent !important;
-    border-left: 4px solid transparent !important;
-    content: "" !important;
-}
-
-/* read more button */
-ul.links li.node-readmore a {
-   text-shadow: inherit !important;
 }
 
 /* fix Xem them link */
@@ -98,4 +82,9 @@ ul.links li.node-readmore a {
 /* new */
 .marker {
    color: #e74c3c !important;
+}
+
+/* fix ugly uppercase */
+.fieldset-title {
+   text-transform: lowercase !important;
 }
