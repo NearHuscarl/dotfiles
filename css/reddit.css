@@ -1,0 +1,156 @@
+/* flat
+dark            #1f2d3a    rgb(38, 38, 38)       0      background color
+grey            #2c3e50    rgb(88, 88, 88)       8      8
+light grey      #84888b    rgb(10, 10, 10)       7      7
+white           #ecf0f1    rgb(255, 255, 255)    15     15
+purple          #8e44ad    rgb(95, 95, 135)      5      5
+light purple    #9b59b6    rgb(135, 135, 175)    13     13
+green           #27ae60    rgb(95, 135, 95)      2      2
+light green     #2ecc71    rgb(135, 175, 135)    10     10
+aqua            #16a085    rgb(95, 135, 135)     6      6
+light aqua      #2aa198    rgb(95, 175, 175)     14     14
+blue            #2980b9    rgb(95, 135, 175)     4      4
+light blue      #3498db    rgb(143, 175, 215)    12     12
+red             #c0392b    rgb(175, 95, 95)      1      1
+orange          #e74c3c    rgb(255, 135, 0)      9      9
+ocre            #f39c12    rgb(135, 135, 95)     3      3
+yellow          #f1c40f    rgb(255, 255, 175)    11     11
+/*
+
+/* Hide annoying stuff */
+.give-gold-button,
+.promoted, img.img_ad {
+   display: none !important;
+}
+/* .give-gold-button, */
+/* .goldvertisement, */
+/* .embed-comment, */
+/* .nub, */
+/* .sr-list> .separator, */
+/* .sr-list> .separator+ .sr-bar, */
+/* #sr-more-link { */
+/*    display: none !important; */
+/* } */
+
+/* global */
+
+* {
+   border-color: #2c3e50 !important;
+   background-color: transparent !important;
+   color: #84888b !important;
+}
+
+a, #header-bottom-right * {
+   background-color: transparent !important;
+}
+
+button, 
+a.login-required.access-required,
+a.option.active.remove,
+a.option.active.add
+{
+   background-color: #1f2d3a !important;
+   color: #ecf0f1 !important;
+}
+
+/* Default links */
+a {
+   color: #2980B9 !important;
+}
+
+a:visited {
+   color: #8e44ad !important;
+}
+
+a:hover {
+   color: #3498db !important;
+}
+
+/* input */
+
+textarea,
+input {
+   background-color: #1F2D3A !important;
+}
+
+/* Background */
+
+html, body,
+.modal-body {
+   background-color: #2c3e50 !important;
+}
+
+#searchexpando > label {
+   background-color: #1F2D3A !important;
+}
+
+/* Top bar */
+
+#sr-header-area {
+   background-color: rgba(0,0,0,0.4) !important;
+}
+
+#sr-header-area *,
+#header-bottom-left,
+#header-bottom-right,
+.tabmenu,
+.tabmenu * {
+   background-color: transparent !important;
+}
+
+/* sidebar */
+
+.side {
+   padding: 10px !important;
+}
+
+.titlebox::before {
+   color: #ecf0f1 !important;
+}
+
+/* comment */
+
+form.usertext.cloneable {
+   background-color: transparent !important;
+}
+
+.author {
+   color: #2980B9 !important;
+}
+
+div.child {
+   border-left:   solid 4px #16A085 !important;
+}
+
+/* text */
+
+div.md {
+   color: #84888b !important;
+}
+
+div.usertext-body code {
+   border: none !important;
+   background-color: #1f2d3a !important;
+   color: #27AE60 !important;
+}
+
+.md blockquote {
+   border-left: solid #f39c12 !important;
+   background-color: #1f2d3a !important;
+   display: inline-block !important;
+}
+
+.md blockquote p {
+   background-color: transparent !important;
+}
+
+/* cvim */
+.cVim-find-mark {
+   background-color: #f39c12 !important;
+   color: #ecf0f1 !important;
+}
+
+.cVim-find-mark[active] {
+   background-color: #e74c3c !important;
+   color: #ecf0f1 !important;
+}
