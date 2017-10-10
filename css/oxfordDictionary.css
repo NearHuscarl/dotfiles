@@ -41,10 +41,6 @@ html, body,
    background-color: var(--black, #1f2d3a) !important;
 }
 
-.webtop-g {
-   background-color: var(--grey, #2c3e50) !important;
-}
-
 /* logo */
 .old-logo-title,
 /* rightcol */
@@ -105,6 +101,11 @@ html, body,
 #search-form {
    background-color: var(--grey, #2c3e50) !important;
    color: var(--lightgrey, #84888b) !important;
+   border-color: var(--grey, #2c3e50) !important;
+}
+
+#search-form * {
+   border-color: var(--grey, #2c3e50) !important;
 }
 
 .dictionarySelector #select_div {
@@ -126,7 +127,21 @@ input[type="submit"] {
    background-color: transparent !important;
 }
 
+#search-form .inputSuggestions {
+   background-color: var(--grey, #2c3e50) !important;
+   color: var(--lightgrey, #84888b) !important;
+}
+
+#search-form .inputSuggestions * {
+   background-color: var(--grey, #2c3e50) !important;
+   color: var(--lightgrey, #84888b) !important;
+}
+
 /* definition part */
+
+.webtop-g {
+   background-color: var(--grey, #2c3e50) !important;
+}
 
 .audio_play_button.pron-uk {
    filter: brightness(4) !important;
@@ -139,4 +154,8 @@ input[type="submit"] {
 /* list number */
 .sn-g::before {
    color: var(--orange, #f39c12) !important;
+}
+
+.box {
+   background-color: var(--grey, #2c3e50) !important;
 }

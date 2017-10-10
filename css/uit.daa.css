@@ -25,7 +25,7 @@
    --link-hover-color:   var(--lightblue, #3498db);
    --link-visited-color: var(--purple,    #8e44ad); 
    --hl:                 var(--cyan,      #16a085);
-   --alert               var(--red,       #e74c3c);
+   --alert:              var(--red,       #e74c3c);
 
    --img-brightness: 0.6;
 }

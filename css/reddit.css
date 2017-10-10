@@ -1,43 +1,58 @@
-/* flat
-dark            #1f2d3a    rgb(38, 38, 38)       0      background color
-grey            #2c3e50    rgb(88, 88, 88)       8      8
-light grey      #84888b    rgb(10, 10, 10)       7      7
-white           #ecf0f1    rgb(255, 255, 255)    15     15
-purple          #8e44ad    rgb(95, 95, 135)      5      5
-light purple    #9b59b6    rgb(135, 135, 175)    13     13
-green           #27ae60    rgb(95, 135, 95)      2      2
-light green     #2ecc71    rgb(135, 175, 135)    10     10
-aqua            #16a085    rgb(95, 135, 135)     6      6
-light aqua      #2aa198    rgb(95, 175, 175)     14     14
-blue            #2980b9    rgb(95, 135, 175)     4      4
-light blue      #3498db    rgb(143, 175, 215)    12     12
-red             #c0392b    rgb(175, 95, 95)      1      1
-orange          #e74c3c    rgb(255, 135, 0)      9      9
-ocre            #f39c12    rgb(135, 135, 95)     3      3
-yellow          #f1c40f    rgb(255, 255, 175)    11     11
-/*
+:root {
+   --black:        #1f2d3a;
+   --darkgrey:     #2c3e50;
+   --lightgrey:    #84888b;
+   --white:        #ecf0f1;
+   --magenta:      #8e44ad;
+   --lightmagenta: #9b59b6;
+   --green:        #27ae60;
+   --lightgreen:   #2ecc71;
+   --cyan:         #16a085;
+   --lightcyan:    #2aa198;
+   --blue:         #2980b9;
+   --lightblue:    #3498db;
+   --darkred:      #c0392b;
+   --red:          #e74c3c;
+   --orange:       #f39c12;
+   --yellow:       #f1c40f;
+
+   --bg-color:           var(--black,     #1f2d3a);
+   --bg-alt-color:       var(--grey,      #2c3e50);
+   --fg-color:           var(--lightgrey, #84888b);
+   --fg-alt-color:       var(--white,     #ecf0f1);
+   --link-color:         var(--blue,      #2980b9);
+   --link-hover-color:   var(--lightblue, #3498db);
+   --link-visited-color: var(--purple,    #8e44ad); 
+   --hl:                 var(--cyan,      #16a085);
+   --alert:              var(--red,       #e74c3c);
+
+   --img-brightness: 0.6;
+}
 
 /* Hide annoying stuff */
+
+
+.listing-chooser.initialized,        /* annoy  left panel */
+.infobar.subscribebar.onboardingbar, /* banner in   main  page */
+/* buttons under post */
+.flat-list.buttons .share,
+.flat-list.buttons .link-save-button,
+.flat-list.buttons .report-button,
+.flat-list.buttons [action="/post/hide"],
+/* button list below every comment */
+.report-button,
+.comment-save-button,
 .give-gold-button,
+/* ad */
 .promoted, img.img_ad {
    display: none !important;
 }
-/* .give-gold-button, */
-/* .goldvertisement, */
-/* .embed-comment, */
-/* .nub, */
-/* .sr-list> .separator, */
-/* .sr-list> .separator+ .sr-bar, */
-/* #sr-more-link { */
-/*    display: none !important; */
-/* } */
 
 /* global */
-
 * {
-   border-color: #1f2d3a !important;
+   border-color: #2c3e50 !important;
    background-color: transparent !important;
-   color: #84888b !important;
+   color: var(--fg-color, #84888b) !important;
 }
 
 a, #header-bottom-right * {
@@ -49,45 +64,48 @@ a.login-required.access-required,
 a.option.active.remove,
 a.option.active.add
 {
-   background-color: #1f2d3a !important;
-   color: #ecf0f1 !important;
+   background-color: var(--bg-alt-color, #2c3e50) !important;
+   color:            var(--fg-alt-color, #ecf0f1) !important;
 }
 
 /* Default links */
 a {
-   color: #2980B9 !important;
+   color: var(--blue, #2980b9) !important;
 }
 
 a:visited {
-   color: #8e44ad !important;
+   color: var(--purple, #8e44ad)  !important;
 }
 
 a:hover {
-   color: #3498db !important;
+   color: var(--lightblue, #3498db) !important;
 }
 
 /* input */
 
 textarea,
 input {
-   background-color: #1F2D3A !important;
+   background-color: var(--grey, #2c3e50) !important;
 }
 
 /* Background */
 
 html, body,
-.side .titlebox h1.redditname:before,
-.side .usertext-body .md,
-.titlebox .bottom,
+.side *,
+.titlebox *, .titlebox h1.redditname:before,
 .modal-body {
-   background-color: #2c3e50 !important;
+   background-color: var(--black, #1f2d3a) !important;
 }
 
 #searchexpando > label {
-   background-color: #1F2D3A !important;
+   background-color: var(--grey, #2c3e50) !important;
 }
 
 /* Top bar */
+
+#header-img {
+  filter: brightness(1) !important;
+}
 
 #sr-header-area {
    background-color: rgba(0,0,0,0.4) !important;
@@ -101,6 +119,12 @@ html, body,
    background-color: transparent !important;
 }
 
+/* not link */
+h1 a:visited,
+[id*="header"] a {
+   color: var(--fg-alt-color, #ecf0f1) !important;
+}
+
 /* sidebar */
 
 .side {
@@ -108,7 +132,12 @@ html, body,
 }
 
 .titlebox::before {
-   color: #ecf0f1 !important;
+   color: var(--fg-alt-color, #ecf0f1) !important;
+}
+
+/* dropdown */
+.drop-choices {
+   background-color: var(--bg-alt-color, #2c3e50) !important;
 }
 
 /* comment */
@@ -118,28 +147,37 @@ form.usertext.cloneable {
 }
 
 .author {
-   color: #2980B9 !important;
+   color: var(--cyan, #16a085) !important;
+   font-weight: bold !important;
+}
+
+.score {
+   color: var(--fg-alt-color, #ecf0f1) !important;
 }
 
 div.child {
-   border-left:   solid 4px #16A085 !important;
+   border-left:   solid 2px var(--bg-alt-color, #2c3e50) !important;
+}
+
+.thing.noncollapsed.comment {
+   border-style: none !important;
 }
 
 /* text */
 
 div.md {
-   color: #84888b !important;
+   color: var(--lightgrey, #84888b) !important;
 }
 
 div.usertext-body code {
    border: none !important;
-   background-color: #1f2d3a !important;
-   color: #27AE60 !important;
+   background-color: var(--grey, #2c3e50) !important;
+   color: var(--green, #27ae60) !important;
 }
 
 .md blockquote {
-   border-left: solid #f39c12 !important;
-   background-color: #1f2d3a !important;
+   border-left: solid var(--orange, #f39c12) !important;
+   background-color: #2c3e50 !important;
    display: inline-block !important;
 }
 
@@ -149,11 +187,15 @@ div.usertext-body code {
 
 /* cvim */
 .cVim-find-mark {
-   background-color: #f39c12 !important;
-   color: #ecf0f1 !important;
+   background-color: var(--orange, #f39c12) !important;
+   color: var(--white, #ecf0f1) !important;
 }
 
 .cVim-find-mark[active] {
    background-color: #e74c3c !important;
-   color: #ecf0f1 !important;
+   color: var(--white, #ecf0f1) !important;
+}
+
+img {
+  filter: brightness(var(--img-brightness, 0.6)) !important;
 }

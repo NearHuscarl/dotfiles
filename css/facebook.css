@@ -15,17 +15,23 @@ darkred         #c0392b   rgba(192,57,43,1)
 red             #e74c3c   rgba(231,76,60,1) 
 orange          #f39c12   rgba(243,156,18,1) 
 yellow          #f1c40f   rgba(241,196,15,1) 
-/*
+*/
 
-/* find friend button */
-#findFriendsNav,
-/* window to write new status */
-#pagelet_composer,
-/* left sidebar */
-#appsNav, #createNav, #userNav,
+.fbUserStory ._5g-l, /* suggested post */
+/* .fbUserStory < ._14bc, .fbUserStory < ._14bf /* sponsored post */
+[aria-labelledby=js_r], /* sponsored post */
+.pagelet-group.pagelet, .ego_section *,
+#findFriendsNav, /* find friend button */
+#pagelet_composer, /* window to write new status */
+#appsNav, #createNav, #userNav, /* left sidebar */
 /* right side bar */
 #rightCol {
    display: none !important;
+}
+
+.fbUserStory < ._14bc, .fbUserStory < ._14bf {
+   background-color: var(--red, #e74c3c) !important;
+   color: var(--red, #e74c3c) !important;
 }
 
 #leftCol {
