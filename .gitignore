@@ -13,9 +13,10 @@
 !/.tern-project
 !/.vimrc
 !/.Xmodmap
-!gitignore/install.sh
+!/install.sh
 
 !/bin/
+!/css/
 !/.fonts/
 
 # Repeat the process for subdir .config
