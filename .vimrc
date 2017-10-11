@@ -2,7 +2,7 @@
 " File:        .vimrc
 " Description: Vim settings
 " Author:      Near Huscarl <near.huscarl@gmail.com>
-" Last Change: Thu Oct 05 11:50:46 +07 2017
+" Last Change: Thu Oct 12 01:12:18 +07 2017
 " Licence:     BSD 3-Clause license
 " Note:        This is a personal vim config. therefore most likely not work 
 "              on your machine
@@ -94,7 +94,6 @@ set confirm                                        "Confirm to quit when quit wi
 set laststatus=2
 if has('persistent_undo')                          "check if your vim version supports it
    set undofile                                    "turn on the feature
-   " LN
    if g:os == 'win'
       set undodir=$HOME\vimfiles\undo                     "Location to store undo files
    else
@@ -103,7 +102,6 @@ if has('persistent_undo')                          "check if your vim version su
    set undolevels=2000                             "Number of changes that can be undo
    set undoreload=5000                             "Number of max lines to be saved for undo
 endif
-" LN
 if g:os == 'win'
    set directory=$HOME\vimfiles\swapfiles//
 else
@@ -111,7 +109,8 @@ else
 endif
 "Set directory for swap files
 set autoindent                                     "Copy indent from current line when insert newline
-set clipboard^=unnamed
+set clipboard^=unnamed                             "Use * register (use Ctrl+C, Ctrl+X or Ctrl+V)
+set clipboard^=unnamedplus                         "Use + register (use Mouse selection or Middlemouse)
 
 set number                                         "Set line number on startup
 set relativenumber                                 "Choose relave number to make moving between line easier
@@ -170,23 +169,9 @@ if has('GUI_running') && has('windows')
 endif
 let @n = "0f>a\<CR>\<Esc>$F<i\<CR>\<Esc>j"         "Newline per tag if not
 "}}}
-"{{{ Mappings
+" {{{ Mappings
 
-if g:os == 'linux' && !has('gui_running')
-   " Fix alt key not working in gnome-terminal
-   " if \e not work, replace with  (<C-v><C-[>)
-   let charList = [
-            \ 'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o',
-            \ 'p','q','r','s','t','u','v','w','x','y','z','1','2','3','4',
-            \ '5','6','7','8','9','0',',','.','/',';',"'",']','\','-','=']
-   for char in charList
-      exec "set <A-" .char. ">=\e" .char
-      exec "imap \e" .char. " <A-" .char. ">"
-   endfor
-   exec "set <A-[>=<C-[>"
-   exec "inoremap \e[ <C-[>"
-endif
-
+" {{{ Open
 nnoremap <silent><Leader>S
          \ :source $MYVIMRC<Bar>
          \ :nohlsearch<CR><Bar>
@@ -194,7 +179,6 @@ nnoremap <silent><Leader>S
 nnoremap <Leader>tv
          \ :e $MYVIMRC<Bar>
          \ :CloseEmptyBuffer<CR>
-" LN
 if g:os == 'win'
    nnoremap <Leader>ta
             \ :e $HOME\desktop\.vimrc\AutoHotKey.ahk<Bar>
@@ -206,8 +190,8 @@ if g:os == 'win'
             \ :e $HOME\Desktop\.vimrc\.cvimrc<Bar>
             \ :CloseEmptyBuffer<CR>
 endif
-
-"Movement
+" }}}
+" {{{ Movement
 nnoremap ;   :|                                    "No need to shift ; anymore to enter command mode
 " nnoremap l   ;|                                    "Repeat latest f, F, t or T command (forward)
 " nnoremap h   ,|                                    "Repeat latest f, F, t or T command (backward)
@@ -222,16 +206,16 @@ vnoremap gh h
 vnoremap gl l
 vnoremap :  =
 vnoremap :: ==
-
-
-"Buffer
+" }}}
+" {{{ Buffer
 nnoremap <A-'> :bnext<CR>|                         "Go to the next buffer
 nnoremap <A-;> :bprevious<CR>|                     "Go to the previous buffer
 nnoremap <A-e> :enew<CR>|                          "Edit new buffer
+nnoremap <A-b> :buffer#<CR>|                       "Switch between last buffers
 nnoremap <Leader>q :bp <Bar>:bd #<CR>|             "Delete current buffer
 nnoremap <Leader>x :e#<CR>|                        "Open last closed buffer (not really)
-
-"Pane
+" }}}
+" {{{ Pane
 nnoremap <A-m>     <C-w>w|                         "Cycle through panes
 nnoremap <A-n>     <C-w>W|                         "Cycle through panes (backward)
 nnoremap <A-r>     <C-w>r|                         "Rotate pane down/right
@@ -240,17 +224,19 @@ nnoremap <Leader>L <C-w>L|                         "Move current pane to the far
 nnoremap <Leader>H <C-w>H|                         "Move current pane to the far right
 nnoremap <Leader>K <C-w>K|                         "Move current pane to the very top
 nnoremap <Leader>J <C-w>J|                         "Move current pane to the very bottom
-
-"Tab
+" }}}
+" {{{ Tab
 nnoremap <Leader><Tab> :tabnew<CR>|                "Make a new tab
 nnoremap <A-,> :tabprevious<CR>|                   "Go to next tab
 nnoremap <A-.> :tabnext<CR>|                       "Go to previous tab
-
+" }}}
+" {{{ Resize window
 nnoremap <silent><A--> :vert res -5<CR>|           "Decrease window width by 5
 nnoremap <silent><A-=> :vert res +5<CR>|           "Increase window width by 5
 nnoremap <silent><A-_> :resize -5<CR>|             "Decrease window height by 5
 nnoremap <silent><A-+> :resize +5<CR>|             "Increase window height by 5
-
+" }}}
+" {{{ Jump
 nnoremap <A-]> g<C-]>zz|                           "Jump to definition (Open tag list if there are more than 1 tag)
 " nnoremap <A-t> <C-t>zz|                            "Jump back between tag
 " nnoremap <S-t> :tag<CR>zz|                         "Jump forward between tag
@@ -267,6 +253,13 @@ if has('jumplist')
    nnoremap <A-0> g,|                              "Jump forward
 endif
 
+nnoremap { {zz|                                    "Jump between paragraph (backward) and zz
+nnoremap } }zz|                                    "Jump between paragraph (forward) and zz
+nnoremap % %zz|                                    "Jump between curly braces ("{", "}") and zz
+nnoremap n nzz
+nnoremap N Nzz
+" }}}
+" {{{ Fold
 "Create a fold for the paragraph
 nnoremap zp
          \ :set foldmethod=manual<CR><Bar>
@@ -299,8 +292,8 @@ nnoremap ]q :cnext<CR>|                            "Jump to the next quickfix it
 nnoremap [q :cprev<CR>|                            "Jump to the previous quickfix item
 nnoremap ]Q :clast<CR>|                            "Jump to the previous quickfix item
 nnoremap [Q :cfirst<CR>|                           "Jump to the previous quickfix item
-
-"Add more control in insert mode
+" }}}
+" {{{ Insert Mode
 inoremap <A-9> <C-w>|                              "Delete previous word
 inoremap <A-0> <Esc>lmaed`axi|                     "Delete next word
 inoremap <A-Space> <BS>|                           "Delete 1 character
@@ -309,7 +302,8 @@ inoremap <A-'> <C-Right>|                          "Go to the next word
 inoremap <A-r> <C-r>|                              "Insert register ...
 inoremap <A-m> <Esc>zzli|                          "Make current line the center of window
 inoremap <S-Tab> <C-p>|                            "Go to previous selection in comepletion menu
-
+" }}}
+" {{{ Popup
 inoremap <expr><A-n>   pumvisible() ? "\<Down>"        : "\<C-n>"
 inoremap <expr><A-p>   pumvisible() ? "\<Up>"          : ""
 inoremap <expr><A-j>   pumvisible() ? "\<C-x>\<Down>"  : "\<Down>"
@@ -337,16 +331,17 @@ inoremap <expr><A-u>   pumvisible() ? "\<C-x>"         : "\<Esc>0Di"
 " | <A-e> | Choose match                                        |                                 |
 " | <A-u> | Turn off completion menu                            | Delete current line             |
 " |-------+-----------------------------------------------------+---------------------------------|
-
-inoremap <A-r> <C-r>*|                             "Paste in insert mode
-
+" }}}
+" {{{ Change mode
 inoremap <A-i> <Esc><Right>|                       "Switch to normal mode from insert mode
 vnoremap <A-i> <Esc>|                              "Switch to normal mode from visual mode
 snoremap <A-i> <Esc>|                              "Switch to normal mode from select mode
 cnoremap <A-i> <C-c>|                              "Switch to normal mode from command mode
-
-"Visual mappings
+" }}}
+" {{{ Visual mode
 nnoremap gV `[v`]|                                 "Visual select the last inserted text
+
+vnoremap $ $h
 vnoremap <silent> <A-k> 2<C-y>2k2<C-y>2k2<C-y>2k|  "Scroll 2 line above
 vnoremap <silent> <A-j> 2<C-e>2j2<C-e>2j2<C-e>2j|  "Scroll 2 line below
 vnoremap <silent> <A-l> 5<C-e>5j5<C-e>5j5<C-e>5j|  "Scroll 5 line above
@@ -362,8 +357,8 @@ vnoremap ; y:<C-r>"<CR>|                           "Execute selected command in 
 
 nnoremap <A-v> <C-q>|                              "Visual block
 vnoremap <A-v> <C-q>|                              "Visual block (Use to switch to VBlock from Visual)
-
-"Command mode mappings
+" }}}
+" {{{ Command mode
 cnoremap <A-k> <C-r><C-w>|                         "Insert word under cursor
 cnoremap <A-a> <C-r><C-a>|                         "Insert WORD under cursor
 cnoremap <A-9> <C-w>|                              "Delete previous word
@@ -382,12 +377,8 @@ cnoremap <A-,> <Home>|                             "Move to the beginning of the
 cnoremap <A-.> <End>|                              "Move to the end of the line
 cnoremap <silent><A-y> <C-f>yy:q<CR>|              "Copy command content
 cnoremap <A-r> <C-r>*|                             "Paste yanked text in command line
-
-nnoremap { {zz|                                    "Jump between paragraph (backward) and zz
-nnoremap } }zz|                                    "Jump between paragraph (forward) and zz
-nnoremap % %zz|                                    "Jump between curly braces ("{", "}") and zz
-
-"Replace Mappings
+" }}}
+" {{{ Replace
 vnoremap <Leader>rf y:%s/<C-r>"/|                  "Replace in whole file with query is the selected word
 vnoremap <Leader>rb y:bufdo %s/<C-r>"/|            "Replace across opening buffers with query is the selected word
 vnoremap <Leader>rr 
@@ -396,12 +387,8 @@ vnoremap <Leader>rr
 nnoremap <Leader>rf :%s/|                          "Replace in whole file
 nnoremap <Leader>rb :bufdo %s/|                    "Replace across opening buffers
 nnoremap <Leader>rr :.,.+s//<Left><Left><Left>|    "Replace from current line to ...
-
-" Search mappings
-nnoremap n nzz
-nnoremap N Nzz
-
-"Misc Mappings
+" }}}
+" {{{ Misc
 nnoremap U :later 1f<CR>|                          "Go to the latest change
 nnoremap << <_|                                    " << not working
 nnoremap <F8> mzggg?G`z|                           "Encrypted with ROT13, just for fun
@@ -417,6 +404,7 @@ else
    nnoremap <silent> <A-u> <C-r>
 endif
 
+nnoremap <A-p> ciw<C-r>0<esc>|                     "Paste over a word
 nnoremap <A-F1> :ToggleMenuBar<CR>|                "Toggle menu bar
 nnoremap <Leader>N :nohlsearch<CR>|                "diable highlight result
 nnoremap <A-Space> a<Space><Left><esc>|            "Insert a whitespace
@@ -426,8 +414,8 @@ nnoremap <C-w> :ToggleWrap<CR>|                     "Toggle wrap option
 nnoremap <C-o> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
 nnoremap - :w<CR>|                                 "Write changes
 nnoremap <silent><Leader>tV :call near#utils#ToggleVerbose()<CR>
-
-"Abbreviation
+" }}}
+" {{{ Abbreviation
 cabbrev vbnm verbose<Space>nmap
 cabbrev vbim verbose<Space>imap
 cabbrev vbvm verbose<Space>vmap
@@ -439,8 +427,16 @@ cabbrev dprf8 D:\Program Files (x86)<C-r>=s:Eatchar('\m\s\<Bar>/')<CR>
 cabbrev dprfp D:\Program Files\Github\plugged<C-r>=s:Eatchar('\m\s\<Bar>/')<CR>
 cabbrev eprf  E:\Program Files<C-r>=s:Eatchar('\m\s\<Bar>/')<CR>
 cabbrev eprf8 E:\Program Files (x86)<C-r>=s:Eatchar('\m\s\<Bar>/')<CR>
-
-"Command definition
+" }}}
+" {{{ Command difinition
+if g:os == 'win'
+   let stub = "start 'http://devdocs.io/?q="
+elseif g:os == 'Linux'
+   let stub = "xdg-open 'http://devdocs.io/?q="
+endif
+command! -nargs=* DD silent! call system(len(split(<q-args>, ' ')) == 0 ?
+            \ stub . &ft . ' ' . expand('<cword>') . "'" : len(split(<q-args>, ' ')) == 1 ?
+            \ stub . &ft . ' ' . <q-args> . "'" : stub . <q-args> . "'")
 command! ToggleMenuBar                          call near#utils#ToggleMenuBar()
 command! ToggleHeader                           call near#utils#ToggleHeader()
 command! -nargs=? -complete=help OpenHelpInTab  call near#utils#OpenHelpInTab(<q-args>)
@@ -453,9 +449,10 @@ command! ToggleWrap                             call near#utils#ToggleWrap()
 command! MakeSymlink                            call near#utils#MakeSymlink()
 command! CscopeLoad                             call near#utils#CscopeLoad()
 command! ToggleVerbose                          call near#utils#ToggleVerbose()
-"}}}
+" }}}
+
+" }}}
 "{{{ Vim-plug
-" LN
 if g:os == 'win'
    let s:pluggedPath = '~\vimfiles\plugged'
 else
@@ -529,6 +526,7 @@ Plug 'othree/html5.vim'
 Plug 'pangloss/vim-javascript', {'for': 'javascript'}
 Plug 'maksimr/vim-jsbeautify'
 Plug 'hdima/python-syntax'
+Plug 'hail2u/vim-css3-syntax'
 
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight', {'on': [
          \ 'NERDTreeTabsToggle',
@@ -574,10 +572,11 @@ Plug 'Ron89/thesaurus_query.vim', {'on': [
          \ 'ThesaurusQueryReplace'
          \ ]}
 
-Plug 'shougo/neocomplete.vim', {'on': []}
-Plug 'Shougo/neoinclude.vim',  {'on': []}
-Plug 'Shougo/neco-syntax',     {'on': []}
-Plug 'Shougo/neco-vim',        {'on': []}
+Plug 'Valloric/YouCompleteMe'
+" Plug 'shougo/neocomplete.vim', {'on': []}
+" Plug 'Shougo/neoinclude.vim',  {'on': []}
+" Plug 'Shougo/neco-syntax',     {'on': []}
+" Plug 'Shougo/neco-vim',        {'on': []}
 
 Plug 'gioele/vim-autoswap'
 Plug 'Konfekt/FastFold'
@@ -617,7 +616,6 @@ nnoremap <silent> <A-l> :call smooth_scroll#down(15, 0, 3)<CR>
 nnoremap <silent> <A-h> :call smooth_scroll#up(15, 0, 3)<CR>
 " nnoremap <silent> H     :call smooth_scroll#up(40, 0, 10)<CR>
 " nnoremap <silent> L     :call smooth_scroll#down(40, 0, 10)<CR>
-" LN
 if g:os == 'win'
    let s:smoothScrollPath = '~\vimfiles\plugged\vim-smooth-scroll\autoload\smooth_scroll.vim'
 else
@@ -823,7 +821,7 @@ let g:easytags_auto_highlight = 0
 let g:user_emmet_install_global = 0
 
 autocmd InsertEnter *.html,*.css EmmetInstall
-let g:user_emmet_mode='a'
+let g:user_emmet_mode='i'
 let g:user_emmet_leader_key    = '<A-o>'
 let g:user_emmet_next_key      = '<A-o>n'
 let g:user_emmet_prev_key      = '<A-o>p'
@@ -867,7 +865,6 @@ let g:limelight_priority = -1                      "Do not overrule hlsearch
 let python_highlight_all = 1
 " }}}
 "{{{ Session
-" LN
 if g:os == 'win'
    let g:session_directory    = $HOME.'\vimfiles\session'
 else
@@ -937,8 +934,8 @@ if has('python3')
    let g:tq_online_backends_timeout = 0.6
 
    nnoremap <Leader>to :Thesaurus<Space>
-   nnoremap Kt :ThesaurusQueryReplaceCurrentWord<CR>
-   vnoremap Kt y:ThesaurusQueryReplace <C-r>"<CR>
+   " nnoremap Kt :ThesaurusQueryReplaceCurrentWord<CR>
+   " vnoremap Kt y:ThesaurusQueryReplace <C-r>"<CR>
 endif
 "}}}
 "{{{ Table Mode
@@ -958,13 +955,13 @@ let g:neocomplete#sources#syntax#min_keyword_length = 3 " Set minimum syntax key
 let g:neocomplete#enable_auto_delimiter             = 1
 let g:neocomplete#auto_complete_delay               = 100
 let g:neocomplete#sources#omni#functions            = ['cpp']
-
-" Enable omni completion.
-autocmd FileType css           setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType javascript    setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType xml           setlocal omnifunc=xmlcomplete#CompleteTags
 "}}}
+" {{{ Youcompleteme
+let g:ycm_semantic_triggers = {
+    \   'css': [ 're!^\s{3}', 're!:\s+' ],
+    \ }
+let g:ycm_key_list_select_completion = []
+" }}}
 "{{{ NERDTree
 nnoremap <silent><Leader>nt :NERDTreeTabsToggle<CR>| "Toggle NERDTree and move cursor back to the last window
 nnoremap <silent><Leader>nf :NERDTreeFind<CR>|       " Press <Leader>Nf to go to the directory where current file is openned
@@ -1004,9 +1001,7 @@ endif
 "{{{ Ultisnips
 nnoremap <Leader>U :UltiSnipsEdit<CR>|                            " Open new file to define snippets
 nnoremap <Leader><Leader>U :UltiSnipsEdit!<CR>|                   " Open all available files to select
-inoremap <silent><Tab> <C-R>=near#utils#UltiSnips_Complete()<CR>
 
-" LN
 if g:os == 'win'
    let g:UltiSnipsSnippetsDir = $HOME.'\vimfiles\snippet' " Custom snippets stored here
 else
@@ -1104,11 +1099,22 @@ autocmd cursorhold *
 autocmd BufWritePost * let g:lastModified = statusline#SetLastModified()
 autocmd InsertEnter * 
          \ execute "normal! ma"
-         \|call plug#load('neco-vim', 'neco-syntax', 'neoinclude.vim', 'neocomplete.vim', 'ultisnips')
+         \|call plug#load('ultisnips')
          \|execute "normal! g`a"
+         " \|call plug#load('neco-vim', 'neco-syntax', 'neoinclude.vim', 'neocomplete.vim', 'ultisnips')
+
+" Enable omni completion.
+autocmd FileType css           setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType javascript    setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType xml           setlocal omnifunc=xmlcomplete#CompleteTags
  
 autocmd FocusLost * if &modified && filereadable(expand("%:p")) | write | endif
 autocmd BufWritePre * call license#SetLastChangeBeforeBufWrite() 
+autocmd VimEnter * execute "inoremap <silent><Tab> <C-R>=near#utils#UltiSnips_Complete()<CR>"
+" Save fold when leaving vim
+" autocmd BufWinLeave * silent! mkview
+" autocmd BufWinEnter * silent! loadview
 
 if has('gui_running')
    if g:os == 'linux'
@@ -1118,3 +1124,19 @@ if has('gui_running')
    endif
 endif
 "}}}
+
+
+if g:os == 'linux' && !has('gui_running')
+   " Fix alt key not working in gnome-terminal
+   " if \e not work, replace with  (<C-v><C-[>)
+   let charList = [
+            \ 'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o',
+            \ 'p','q','r','s','t','u','v','w','x','y','z','1','2','3','4',
+            \ '5','6','7','8','9','0',',','.','/',';',"'",']','\','-','=']
+   for char in charList
+      exec "set <A-" .char. ">=\e" .char
+      exec "imap \e" .char. " <A-" .char. ">"
+   endfor
+   exec "set <A-[>=<C-[>"
+   exec "inoremap \e[ <C-[>"
+endif
