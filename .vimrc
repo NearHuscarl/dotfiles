@@ -27,6 +27,38 @@ endif
 let mapleader = "\<Space>"
 
 " }}}
+"{{{ Function
+function! ExistsFile(path) " {{{
+   return !empty(glob(a:path))
+endfunction
+" }}}
+function! s:BufferIsEmpty() " {{{
+    if (line('$') == 1 && getline(1) == '') && (filereadable(@%) == 0)
+        return 1
+    endif
+    return 0
+endfunction
+" }}}
+function! s:CloseEmptyBuffer() " {{{
+   let t:NumOfWin = winnr('$')
+   while t:NumOfWin >= 1
+      execute "wincmd p"
+      if s:BufferIsEmpty()
+         while s:BufferIsEmpty() && t:NumOfWin >= 1
+            execute "bdelete"
+            let t:NumOfWin -= 1
+         endwhile
+      endif
+      let t:NumOfWin -= 1
+   endwhile
+endfunction
+" }}}
+function! s:Eatchar(pat) " {{{
+   let c = nr2char(getchar(0))
+   return (c =~ a:pat) ? '' : c
+endfunction
+" }}}
+"}}}
 "{{{ Basic Setup
 
 autocmd!
@@ -278,6 +310,7 @@ nnoremap <silent> q  :call diff#Quit('q')<CR>|         "Quit Key in diff
 " }}}
 " {{{ Help
 nnoremap Kc K|                                     "Help for word under cursor
+nnoremap Kd :GetHelp<Space>|                       "Search for help on (d)evdoc
 nnoremap Kh :OpenHelpInTab<CR>|                    "Open help about the word under cursor
 nnoremap Ka
          \ :grep! "<C-R><C-W>"<CR><Bar>
@@ -429,14 +462,9 @@ cabbrev eprf  E:\Program Files<C-r>=s:Eatchar('\m\s\<Bar>/')<CR>
 cabbrev eprf8 E:\Program Files (x86)<C-r>=s:Eatchar('\m\s\<Bar>/')<CR>
 " }}}
 " {{{ Command difinition
-if g:os == 'win'
-   let stub = "start 'http://devdocs.io/?q="
-elseif g:os == 'Linux'
-   let stub = "xdg-open 'http://devdocs.io/?q="
+if ExistsFile(s:autoload . 'help.vim')
+   command! -nargs=* GetHelp silent! call help#GetHelp(<f-args>)
 endif
-command! -nargs=* DD silent! call system(len(split(<q-args>, ' ')) == 0 ?
-            \ stub . &ft . ' ' . expand('<cword>') . "'" : len(split(<q-args>, ' ')) == 1 ?
-            \ stub . &ft . ' ' . <q-args> . "'" : stub . <q-args> . "'")
 command! ToggleMenuBar                          call near#utils#ToggleMenuBar()
 command! ToggleHeader                           call near#utils#ToggleHeader()
 command! -nargs=? -complete=help OpenHelpInTab  call near#utils#OpenHelpInTab(<q-args>)

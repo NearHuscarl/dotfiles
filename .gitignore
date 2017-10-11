@@ -53,6 +53,7 @@
 !/.vim/
 /.vim/*
 !/.vim/README.md
+!/.vim/after/
 !/.vim/autoload/
 !/.vim/colors/
 !/.vim/ftdetect/
