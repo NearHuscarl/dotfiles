@@ -2,7 +2,7 @@
 " File:        .vimrc
 " Description: Vim settings
 " Author:      Near Huscarl <near.huscarl@gmail.com>
-" Last Change: Thu Oct 12 01:12:18 +07 2017
+" Last Change: Thu Oct 12 03:11:55 +07 2017
 " Licence:     BSD 3-Clause license
 " Note:        This is a personal vim config. therefore most likely not work 
 "              on your machine
@@ -19,9 +19,21 @@ if !exists('os')
 endif
 
 if g:os == 'win'
-   let $MYVIMRC = $HOME.'\_vimrc'
+   let $MYVIMRC   = $HOME.'\_vimrc'
+   let s:autoload = $HOME.'\vimfiles\autoload\'
+   let s:plugged  = $HOME.'\vimfiles\plugged\'
+   let s:session  = $HOME.'\vimfiles\session\'
+   let s:snippet  = $HOME.'\vimfiles\snippet\'
+   let s:swapfile = $HOME.'\vimfiles\swapfiles//'
+   let s:undo     = $HOME.'\vimfiles\undo\'
 else
-   let $MYVIMRC = $HOME.'/.vimrc'
+   let $MYVIMRC   = $HOME.'/.vimrc'
+   let s:autoload = $HOME.'/.vim/autoload/'
+   let s:plugged  = $HOME.'/.vim/plugged/'
+   let s:session  = $HOME.'/.vim/session/'
+   let s:snippet  = $HOME.'/.vim/snippet/'
+   let s:swapfile = $HOME.'/.vim/swapfiles//'
+   let s:undo     = $HOME.'/.vim/undo/'
 endif
 
 let mapleader = "\<Space>"
@@ -126,19 +138,11 @@ set confirm                                        "Confirm to quit when quit wi
 set laststatus=2
 if has('persistent_undo')                          "check if your vim version supports it
    set undofile                                    "turn on the feature
-   if g:os == 'win'
-      set undodir=$HOME\vimfiles\undo                     "Location to store undo files
-   else
-      set undodir=$HOME/.vim/undo                     "Location to store undo files
-   endif
+   let &undodir = s:undo                           "Location to store undo files
    set undolevels=2000                             "Number of changes that can be undo
    set undoreload=5000                             "Number of max lines to be saved for undo
 endif
-if g:os == 'win'
-   set directory=$HOME\vimfiles\swapfiles//
-else
-   set directory=$HOME/.vim/swapfiles//
-endif
+let &directory = s:swapfile
 "Set directory for swap files
 set autoindent                                     "Copy indent from current line when insert newline
 set clipboard^=unnamed                             "Use * register (use Ctrl+C, Ctrl+X or Ctrl+V)
@@ -305,7 +309,7 @@ nnoremap <Leader>z zMzvzz|                         "Open current fold and close 
 " {{{ Diff
 nnoremap <silent> L  :call diff#JumpForward('L')<CR>|  "In diff mode: go to next change
 nnoremap <silent> H  :call diff#JumpBackward('H')<CR>| "In diff mode: go to previous change
-nnoremap <silent> du :call diff#Nmap_du()<CR>|         "Update diff if it doesnt update automatically
+nnoremap <silent> du :call diff#DiffUpdate('')<CR>|    "Update diff if it doesnt update automatically
 nnoremap <silent> q  :call diff#Quit('q')<CR>|         "Quit Key in diff
 " }}}
 " {{{ Help
@@ -430,14 +434,14 @@ vnoremap > >gv|                                    "Make indent easier
 vnoremap < <gv|                                    "Make indent easier
 nnoremap <leader>py :echom expand("%:p")<CR>|      "Echo current file path
 
-if !empty(glob('$HOME/.vim/autoload/license.vim'))
+if ExistsFile(s:autoload . 'license.vim')
    nnoremap <silent> u     :call license#SkipLicenseDate('undo')<CR>
    nnoremap <silent> <A-u> :call license#SkipLicenseDate('redo')<CR>
 else
    nnoremap <silent> <A-u> <C-r>
 endif
 
-nnoremap <A-p> ciw<C-r>0<esc>|                     "Paste over a word
+nnoremap <A-p> ciw<C-r>*<esc>|                     "Paste over a word
 nnoremap <A-F1> :ToggleMenuBar<CR>|                "Toggle menu bar
 nnoremap <Leader>N :nohlsearch<CR>|                "diable highlight result
 nnoremap <A-Space> a<Space><Left><esc>|            "Insert a whitespace
@@ -481,13 +485,7 @@ command! ToggleVerbose                          call near#utils#ToggleVerbose()
 
 " }}}
 "{{{ Vim-plug
-if g:os == 'win'
-   let s:pluggedPath = '~\vimfiles\plugged'
-else
-   let s:pluggedPath = '~/.vim/plugged'
-endif
-
-call plug#begin(s:pluggedPath)
+call plug#begin(s:plugged)
 
 " Essential
 Plug 'bling/vim-bufferline'
@@ -649,7 +647,7 @@ if g:os == 'win'
 else
    let s:smoothScrollPath = '~/.vim/plugged/vim-smooth-scroll/autoload/smooth_scroll.vim'
 endif
-if empty(glob(s:smoothScrollPath))
+if !ExistsFile(s:smoothScrollPath)
    nnoremap <silent><A-j> 3<C-e>3j
    nnoremap <silent><A-k> 3<C-y>3k
    nnoremap <silent><A-l> 10<C-e>10j
@@ -893,11 +891,7 @@ let g:limelight_priority = -1                      "Do not overrule hlsearch
 let python_highlight_all = 1
 " }}}
 "{{{ Session
-if g:os == 'win'
-   let g:session_directory    = $HOME.'\vimfiles\session'
-else
-   let g:session_directory    = $HOME.'/.vim/session'
-endif
+let g:session_directory    = s:session
 let g:session_autoload     = 'no'
 let g:session_autosave     = 'yes'
 let g:session_autosave_to  = 'AutoSave'
@@ -958,12 +952,11 @@ xmap gS  <Plug>VgSurround
 "Require internet
 if has('python3')
    let g:tq_python_version          = 3
-   let g:tq_mthesaur_file           = "C:/Users/Near/Desktop/.vimrc/ignore/thesaurus/mthesaur.txt"
    let g:tq_online_backends_timeout = 0.6
 
    nnoremap <Leader>to :Thesaurus<Space>
-   " nnoremap Kt :ThesaurusQueryReplaceCurrentWord<CR>
-   " vnoremap Kt y:ThesaurusQueryReplace <C-r>"<CR>
+   nnoremap Kt :ThesaurusQueryReplaceCurrentWord<CR>
+   vnoremap Kt y:ThesaurusQueryReplace <C-r>"<CR>
 endif
 "}}}
 "{{{ Table Mode
@@ -1030,48 +1023,13 @@ endif
 nnoremap <Leader>U :UltiSnipsEdit<CR>|                            " Open new file to define snippets
 nnoremap <Leader><Leader>U :UltiSnipsEdit!<CR>|                   " Open all available files to select
 
-if g:os == 'win'
-   let g:UltiSnipsSnippetsDir = $HOME.'\vimfiles\snippet' " Custom snippets stored here
-else
-   let g:UltiSnipsSnippetsDir = $HOME.'/.vim/snippet'                 " Custom snippets stored here
-endif
+let g:UltiSnipsSnippetsDir = s:snippet                             " Custom snippets stored here
 let g:UltiSnipsSnippetDirectories  = ["UltiSnips","snippet"]        " Directories list for ultisnips to search
 let g:UltiSnipsEditSplit           = 'normal'
 let g:UltiSnipsExpandTrigger       = "<Tab>"
 let g:UltiSnipsListSnippets        = "<C-e>"
 let g:UltiSnipsJumpForwardTrigger  = "<A-j>"
 let g:UltiSnipsJumpBackwardTrigger = "<A-k>"
-"}}}
-"{{{ Function
-"{{{BufferIsEmpty()
-function! s:BufferIsEmpty()
-    if (line('$') == 1 && getline(1) == '') && (filereadable(@%) == 0)
-        return 1
-    endif
-    return 0
-endfunction
-"}}}
-"{{{CloseEmptyBuffer()
-function! s:CloseEmptyBuffer()
-   let t:NumOfWin = winnr('$')
-   while t:NumOfWin >= 1
-      execute "wincmd p"
-      if s:BufferIsEmpty()
-         while s:BufferIsEmpty() && t:NumOfWin >= 1
-            execute "bdelete"
-            let t:NumOfWin -= 1
-         endwhile
-      endif
-      let t:NumOfWin -= 1
-   endwhile
-endfunction
-"}}}
-"{{{Eatchar(pat)
-function! s:Eatchar(pat)
-   let c = nr2char(getchar(0))
-   return (c =~ a:pat) ? '' : c
-endfunction
-"}}}
 "}}}
 "{{{ Autocmd
 highlight ntCursor guifg=NONE guibg=NONE
