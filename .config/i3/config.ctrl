@@ -111,15 +111,16 @@ for_window [class="Blueberry.py"]      floating enable
 for_window [class="Sxiv"]              floating enable
 for_window [title="Floating"]          floating enable
 for_window [title="Startup Settings"]  floating enable
+for_window [class="mpv"]               floating enable
 
 # Very dirty workaround to make chrome developer tools fullscreen
-for_window [title="^Developer Tools.*"] \
- floating enable; \
- resize shrink width 10000px; \
- resize shrink height 10000px; \
- resize grow width 1290px; \
- resize grow height 718px; \
- move absolute position 0 px 0 px
+# for_window [title="^Developer Tools.*"] \
+#  floating enable; \
+#  resize shrink width 10000px; \
+#  resize shrink height 10000px; \
+#  resize grow width 1290px; \
+#  resize grow height 718px; \
+#  move absolute position 0 px 0 px
 # }}}
 # Application launcher shortcut {{{
 bindsym F1 exec xfce4-terminal
@@ -276,6 +277,13 @@ bindsym $mod+Shift+g mode "$mode_gaps_inner"
 bindsym $mod+r mode "resize"
 bindsym $mod+d mode "launch"
 # }}}
+
+# }}}
+# {{{ Screenshot
+
+set $screenShot "$HOME/Pictures/$(date +[%Y-%m-%d]-[%H:%M]).png"
+bindsym Print      exec maim --select --delay=1 | xclip -selection clipboard -t image/png
+bindsym $mod+Print exec maim --select --delay=1 $screenShot
 
 # }}}
 # Sound {{{
