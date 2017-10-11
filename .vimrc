@@ -271,28 +271,26 @@ endif
 nnoremap zp
          \ :set foldmethod=manual<CR><Bar>
          \ vapkzf<Bar>
-
-"Diff Mappings
-nnoremap <expr><silent> J near#utils#NmapJ()|                 "In diff mode: go to next change
-nnoremap <expr><silent> K near#utils#NmapK()|                 "In diff mode: go to previous change
-nnoremap <expr><silent> du near#utils#Nmap_du()|              "Update diff if it doesnt update automatically
-nnoremap <expr><silent> q near#utils#Nmap_q()|                "Quit Key in diff
-
-command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|copen 20|redraw!
-nnoremap Kh :OpenHelpInTab<CR>|                    "Open help about the word under cursor
-nnoremap Ka
-         \ :grep! "<C-R><C-W>"<CR><Bar>
-         \ :copen 20<CR>|                          "Find word under cursor in current working directory
-nnoremap <Leader>a :Ag<Space>|                     "Ag search (just like grep but faster) (example: Ag <Query> /<Dir>)
-nnoremap <Leader>cp :CtrlP<Space>|                 "CtrlP search
-
 nnoremap z[ zo[z|                                  "Open fold, jump at the start and zz
 nnoremap z] zo]z|                                  "Open fold, jump at the end and zz
 nnoremap ]z ]zzz|                                  "jump at the end and zz
 nnoremap [z [zzz|                                  "jump at the start and zz
 nnoremap <Leader>z zMzvzz|                         "Open current fold and close all other fold outside
-
-"Pair mappings
+" }}}
+" {{{ Diff
+nnoremap <silent> L  :call diff#JumpForward('L')<CR>|  "In diff mode: go to next change
+nnoremap <silent> H  :call diff#JumpBackward('H')<CR>| "In diff mode: go to previous change
+nnoremap <silent> du :call diff#Nmap_du()<CR>|         "Update diff if it doesnt update automatically
+nnoremap <silent> q  :call diff#Quit('q')<CR>|         "Quit Key in diff
+" }}}
+" {{{ Help
+nnoremap Kc K|                                     "Help for word under cursor
+nnoremap Kh :OpenHelpInTab<CR>|                    "Open help about the word under cursor
+nnoremap Ka
+         \ :grep! "<C-R><C-W>"<CR><Bar>
+         \ :copen 20<CR>|                          "Find word under cursor in current working directory
+" }}}
+" {{{ Pair
 nnoremap ]t :tnext<CR>|                            "Go to next tag in the tag list
 nnoremap [t :tprevious<CR>|                        "Go to next tag in the tag list
 nnoremap ]c ]czz|                                  "Jump forward change and zz

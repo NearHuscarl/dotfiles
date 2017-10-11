@@ -2,24 +2,24 @@
 " File:        utils.vim
 " Description: Utility Functions
 " Author:      Near Huscarl <near.huscarl@gmail.com>
-" Last Change: Wed Oct 04 10:35:17 +07 2017
+" Last Change: Wed Oct 11 23:08:07 +07 2017
 " Licence:     BSD 3-Clause license
 " Note:        Miscellaneous functions in autoload/ is put here
 " ============================================================================
 
 function! near#utils#UltiSnips_Complete() " {{{
-    call UltiSnips#ExpandSnippet()
-    if g:ulti_expand_res == 0
-        if pumvisible()
-            return "\<C-n>\<C-x>"
-        else
-            call UltiSnips#JumpForwards()
-            if g:ulti_jump_forwards_res == 0
-               return "\<Tab>"
-            endif
-        endif
-    endif
-    return ""
+   call UltiSnips#ExpandSnippet()
+   if g:ulti_expand_res == 0
+      if pumvisible()
+         return "\<C-n>\<C-x>"
+      else
+         call UltiSnips#JumpForwards()
+         if g:ulti_jump_forwards_res == 0
+            return "\<Tab>"
+         endif
+      endif
+   endif
+   return ""
 endfunction " }}}
 function! near#utils#UltiSnips_JumpForward() " {{{
    if pumvisible()
@@ -84,34 +84,6 @@ function! near#utils#ToggleWrap() " {{{
       nnoremap $ g$|    "$ version that treat wrapped line as another line
       echo "wrap on"
    endif
-endfunction " }}}
-function! near#utils#NmapJ() " {{{
-   if &diff
-      return "]czz"
-   endif
-   return "J"
-endfunction " }}}
-function! near#utils#NmapK() " {{{
-   if &diff
-      set timeout
-      set timeoutlen=0
-      return "[czz"
-   endif
-   set timeout&
-   set timeoutlen&
-   return "K"
-endfunction " }}}
-function! near#utils#Nmap_du() " {{{
-   if &diff
-      return ":diffupdate\<CR>"
-   endif
-   return ""
-endfunction " }}}
-function! near#utils#Nmap_q() " {{{
-   if &diff
-      return ":q\<CR>"
-   endif
-   return "q"
 endfunction " }}}
 function! near#utils#ToggleMenuBar() " {{{
    if(&guioptions =~# 'm')
