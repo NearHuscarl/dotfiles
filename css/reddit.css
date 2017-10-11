@@ -1,37 +1,4 @@
-:root {
-   --black:        #1f2d3a;
-   --darkgrey:     #2c3e50;
-   --lightgrey:    #84888b;
-   --white:        #ecf0f1;
-   --magenta:      #8e44ad;
-   --lightmagenta: #9b59b6;
-   --green:        #27ae60;
-   --lightgreen:   #2ecc71;
-   --cyan:         #16a085;
-   --lightcyan:    #2aa198;
-   --blue:         #2980b9;
-   --lightblue:    #3498db;
-   --darkred:      #c0392b;
-   --red:          #e74c3c;
-   --orange:       #f39c12;
-   --yellow:       #f1c40f;
-
-   --bg-color:           var(--black,     #1f2d3a);
-   --bg-alt-color:       var(--grey,      #2c3e50);
-   --fg-color:           var(--lightgrey, #84888b);
-   --fg-alt-color:       var(--white,     #ecf0f1);
-   --link-color:         var(--blue,      #2980b9);
-   --link-hover-color:   var(--lightblue, #3498db);
-   --link-visited-color: var(--purple,    #8e44ad); 
-   --hl:                 var(--cyan,      #16a085);
-   --alert:              var(--red,       #e74c3c);
-
-   --img-brightness: 0.6;
-}
-
 /* Hide annoying stuff */
-
-
 .listing-chooser.initialized,        /* annoy  left panel */
 .infobar.subscribebar.onboardingbar, /* banner in   main  page */
 /* buttons under post */
@@ -50,9 +17,9 @@
 
 /* global */
 * {
-   border-color: #2c3e50 !important;
    background-color: transparent !important;
-   color: var(--fg-color, #84888b) !important;
+   color:        var(--fg-color,     #84888b) !important;
+   border-color: var(--bg-alt-color, #2c3e50) !important;
 }
 
 a, #header-bottom-right * {
@@ -70,22 +37,22 @@ a.option.active.add
 
 /* Default links */
 a {
-   color: var(--blue, #2980b9) !important;
+   color: var(--link-color, #2980b9) !important;
 }
 
-a:visited {
-   color: var(--purple, #8e44ad)  !important;
+.thing[data-context="listing"] a:visited {
+   color: var(--link-visited-color, #8e44ad)  !important;
 }
 
 a:hover {
-   color: var(--lightblue, #3498db) !important;
+   color: var(--link-hover-color, #3498db) !important;
 }
 
 /* input */
 
 textarea,
 input {
-   background-color: var(--grey, #2c3e50) !important;
+   background-color: var(--bg-alt-color, #2c3e50) !important;
 }
 
 /* Background */
@@ -94,11 +61,11 @@ html, body,
 .side *,
 .titlebox *, .titlebox h1.redditname:before,
 .modal-body {
-   background-color: var(--black, #1f2d3a) !important;
+   background-color: var(--bg-color, #1f2d3a) !important;
 }
 
 #searchexpando > label {
-   background-color: var(--grey, #2c3e50) !important;
+   background-color: var(--bg-alt-color, #2c3e50) !important;
 }
 
 /* Top bar */
@@ -147,7 +114,7 @@ form.usertext.cloneable {
 }
 
 .author {
-   color: var(--cyan, #16a085) !important;
+   color: var(--hl-color, #16a085) !important;
    font-weight: bold !important;
 }
 
@@ -166,17 +133,17 @@ div.child {
 /* text */
 
 div.md {
-   color: var(--lightgrey, #84888b) !important;
+   color: var(--fg-color, #84888b) !important;
 }
 
 div.usertext-body code {
    border: none !important;
-   background-color: var(--grey, #2c3e50) !important;
-   color: var(--green, #27ae60) !important;
+   background-color: var(--bg-alt-color, #2c3e50) !important;
+   color:            var(--code-color,   #27ae60) !important;
 }
 
 .md blockquote {
-   border-left: solid var(--orange, #f39c12) !important;
+   border-left: solid var(--title-color, #f39c12) !important;
    background-color: #2c3e50 !important;
    display: inline-block !important;
 }
@@ -187,13 +154,13 @@ div.usertext-body code {
 
 /* cvim */
 .cVim-find-mark {
-   background-color: var(--orange, #f39c12) !important;
-   color: var(--white, #ecf0f1) !important;
+   background-color: var(--title-color, #f39c12) !important;
+   color: var(--fg-alt-color, #ecf0f1) !important;
 }
 
 .cVim-find-mark[active] {
-   background-color: #e74c3c !important;
-   color: var(--white, #ecf0f1) !important;
+   background-color: var(--alert-color,  #e74c3c) !important;
+   color:            var(--fg-alt-color, #ecf0f1) !important;
 }
 
 img {

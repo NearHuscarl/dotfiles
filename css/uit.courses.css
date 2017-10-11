@@ -1,48 +1,28 @@
-/* flat
-black           #1f2d3a   rgba(31,45,58,1) 
-grey            #2c3e50   rgba(44,62,80,1) 
-lightgrey       #84888b   rgba(132,136,139,1) 
-white           #ecf0f1   rgba(236,240,241,1) 
-purple          #8e44ad   rgba(142,68,173,1) 
-violet          #9b59b6   rgba(155,89,182,1) 
-green           #27ae60   rgba(39,174,96,1) 
-lightgreen      #2ecc71   rgba(46,204,113,1) 
-cyan            #16a085   rgba(22,160,133,1) 
-lightcyan       #2aa198   rgba(42,161,152,1) 
-blue            #2980b9   rgba(41,128,185,1) 
-lightblue       #3498db   rgba(52,152,219,1) 
-darkred         #c0392b   rgba(192,57,43,1) 
-red             #e74c3c   rgba(231,76,60,1) 
-orange          #f39c12   rgba(243,156,18,1) 
-yellow          #f1c40f   rgba(241,196,15,1) 
-/*
-
 /* global */
 * {
-   border-color: #16a085 !important;
-   color: #84888b !important;
+   border-color: var(--hl-color, #16a085) !important;
+   color:        var(--fg-color, #84888b) !important;
    border-radius: 0 !important;
 }
 
 body, html {
-   background-color: #2c3e50 !important;
-   color: #84888b !important;
+   background-color: var(--bg-alt-color, #2c3e50) !important;
 }
 
 a {
-   color: #2980b9 !important;
+   color: var(--link-color, #2980b9) !important;
 }
 
 a:hover {
-   color: #3498db !important;
+   color: var(--link-hover-color, #3498db) !important;
 }
 
 a:visited {
-   /* color: #8e44ad !important; */
+   /* color: var(--link-visited-color, #8e44ad) !important; */
 }
 
 h2 {
-   color: #f39c12 !important;
+   color: var(--title-color, #f39c12) !important;
 }
 
 /* hide */
@@ -54,38 +34,38 @@ input.moveto.customcommand.requiresjs {
 /* menu */
 #page-header {
    background: none !important;
-   background-color: #1f2d3a !important;
+   background-color: var(--bg-color, #1f2d3a) !important;
 }
 .navbar {
-   background-color: #1f2d3a !important;
+   background-color: var(--bg-color, #1f2d3a) !important;
 }
 
 /* main */
 #page-content,
 .region-content *
 {
-   background-color: #1f2d3a !important;
+   background-color: var(--bg-color, #1f2d3a) !important;
 }
 
 /* dock */
 .dockeditempanel_bd,
 .block_course_overview.block_docked {
-   background-color: #1f2d3a !important;
+   background-color: var(--bg-color, #1f2d3a) !important;
 }
 
 /* footer */
 #page-footer-inner {
    background: none !important;
-   background-color: #1f2d3a !important;
+   background-color: var(--bg-color, #1f2d3a) !important;
 }
 
 /* button|select */
 input[type="button"], input[type="submit"], button, .button {
-   background-color: #2aa198 !important;
-   color: #ecf0f1 !important;
+   background-color: var(--hl-color,     #16a085) !important;
+   color:            var(--fg-alt-color, #ecf0f1) !important;
 }
 
 select {
    border: none !important;
-   background-color: #2c3e50 !important;
+   background-color: var(--bg-alt-color, #2c3e50) !important;
 }
