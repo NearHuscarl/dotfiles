@@ -13,16 +13,26 @@ fb-msg            https://www.facebook.com/messages
 quora             https://www.quora.com/
 
 # Programmer
-arch-wiki         https://wiki.archlinux.org/
 aur               https://aur.archlinux.org/packages/
 freecodecamp      https://www.freecodecamp.org
+
 github            https://github.com/
-github-dotfiles   https://github.com/NearHuscarl/dotfiles
-regex             https://regexr.com
+gh-dotfiles       https://github.com/NearHuscarl/dotfiles
+gh-io             https://github.com/NearHuscarl/NearHuscarl.github.io
+gh-fcc            https://github.com/NearHuscarl/FCC-Exercise-Archive
+gh-python         https://github.com/NearHuscarl/LearnPythonTheHardWay
+
+portfolio         https://nearhuscarl.github.io/Portfolio/portfolio.html
+
 r/linux           https://www.reddit.com/r/linux/
 r/unixporn        https://www.reddit.com/r/unixporn/
 r/vim             https://www.reddit.com/r/vim/
 vim-vivify        http://bytefluent.com/vivify/
+
+# Document
+arch-wiki         https://wiki.archlinux.org/
+regex             https://regexr.com
+devdoc            http://devdocs.io/
 
 # Game
 beamng-blog       http://blog.beamng.com/blog/
@@ -49,6 +59,7 @@ online2pdf        https://online2pdf.com/
 terminal.sexy     http://terminal.sexy
 thesarus          http://www.thesaurus.com/
 zamzar-pdf        http://www.zamzar.com/convert/docx-to-pdf/
+fontawesome       http://fontawesome.io/icons/
 
 # Misc
 gmail             https://mail.google.com
