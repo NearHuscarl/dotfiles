@@ -2,7 +2,7 @@
 " File:        utils.vim
 " Description: Utility Functions
 " Author:      Near Huscarl <near.huscarl@gmail.com>
-" Last Change: Wed Oct 11 23:08:07 +07 2017
+" Last Change: Fri Oct 13 11:19:42 +07 2017
 " Licence:     BSD 3-Clause license
 " Note:        Miscellaneous functions in autoload/ is put here
 " ============================================================================
@@ -20,18 +20,6 @@ function! near#utils#UltiSnips_Complete() " {{{
       endif
    endif
    return ""
-endfunction " }}}
-function! near#utils#UltiSnips_JumpForward() " {{{
-   if pumvisible()
-      return "\<Down>"
-   endif
-   return "\<C-z>"
-endfunction " }}}
-function! near#utils#UltiSnips_JumpBackward() " {{{
-   if pumvisible()
-      return "\<Up>"
-   endif
-   return "\<C-x>"
 endfunction " }}}
 " function! near#utils#UltiSnipsLazyLoad() " {{{
 
@@ -70,26 +58,6 @@ function! near#utils#ToggleHeader() " {{{
 
    if line("'\"") > 1 && line("'\"") <= line("$")
       execute "normal! g`\""
-   endif
-endfunction " }}}
-function! near#utils#ToggleWrap() " {{{
-   if &wrap
-      set nowrap
-      nnoremap 0 0
-      nnoremap $ $
-      echo "wrap off"
-   else
-      set wrap
-      nnoremap 0 g0|    "0 version that treat wrapped line as another line
-      nnoremap $ g$|    "$ version that treat wrapped line as another line
-      echo "wrap on"
-   endif
-endfunction " }}}
-function! near#utils#ToggleMenuBar() " {{{
-   if(&guioptions =~# 'm')
-      set guioptions-=m
-   else
-      set guioptions+=m
    endif
 endfunction " }}}
 function! near#utils#OpenHelpInTab(word) " {{{
@@ -179,22 +147,6 @@ function! near#utils#GundoAutoPreviewToggle() " {{{
       echo "Gundo auto preview on"
    endif
 endfunction " }}}
-function! near#utils#CscopeLoad() " {{{
-   if has('cscope')
-      if filereadable("cscope.out")
-         cscope add cscope.out
-      else
-         if filereadable("cscope.files")
-            silent execute "!cscope -b -i cscope.files -f cscope.out"
-            cscope add cscope.out
-         else
-            silent execute "!dir /b /s *.cpp *.h > cscope.files"
-            silent execute "!cscope -b -i cscope.files -f cscope.out"
-            cscope add cscope.out
-         endif
-      endif
-   endif
-endfunction " }}}
 function! near#utils#ToggleGoyo(on) " {{{
    let ftList = ['cpp', 'py', 'vim']
    if index(ftList, &filetype) != -1
@@ -213,15 +165,4 @@ function! near#utils#ToggleGoyo(on) " {{{
       set noshowcmd
       let g:goyo_enable = 1
    endif
-endfunction " }}}
-function! near#utils#ToggleVerbose() " {{{
-    if !&verbose
-        set verbosefile=~/Desktop/verbose.log
-        set verbose=15
-        echom "Set verbose=15"
-    else
-        set verbose=0
-        set verbosefile=
-        echom "Set verbose=0"
-    endif
 endfunction " }}}
