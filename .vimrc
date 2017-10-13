@@ -2,7 +2,7 @@
 " File:        .vimrc
 " Description: Vim settings
 " Author:      Near Huscarl <near.huscarl@gmail.com>
-" Last Change: Thu Oct 12 03:11:55 +07 2017
+" Last Change: Fri Oct 13 11:45:11 +07 2017
 " Licence:     BSD 3-Clause license
 " Note:        This is a personal vim config. therefore most likely not work 
 "              on your machine
@@ -289,6 +289,20 @@ if has('jumplist')
    nnoremap <A-0> g,|                              "Jump forward
 endif
 
+if &wrap
+   nnoremap 0 g^|    "Go to the first non-blank character of the line, treat wrapped line as another line
+   onoremap 0 g^
+   nnoremap ^ g0|    "Go to the first character of the line, treat wrapped line as another line
+   onoremap ^ g0
+   nnoremap $ g$|    "$ version that treat wrapped line as another line
+else
+   nnoremap 0 ^|     "Go to the first non-blank character of the line
+   onoremap 0 ^
+   nnoremap ^ 0|     "Go to the first character of the line
+   onoremap ^ 0
+endif
+
+
 nnoremap { {zz|                                    "Jump between paragraph (backward) and zz
 nnoremap } }zz|                                    "Jump between paragraph (forward) and zz
 nnoremap % %zz|                                    "Jump between curly braces ("{", "}") and zz
@@ -314,6 +328,7 @@ nnoremap <silent> q  :call diff#Quit('q')<CR>|         "Quit Key in diff
 " }}}
 " {{{ Help
 nnoremap Kc K|                                     "Help for word under cursor
+nnoremap <silent> Ke :call help#GetHelpOxfordDictionary('cursor')<CR>
 nnoremap Kd :GetHelp<Space>|                       "Search for help on (d)evdoc
 nnoremap Kh :OpenHelpInTab<CR>|                    "Open help about the word under cursor
 nnoremap Ka
@@ -450,7 +465,7 @@ nnoremap Y y$|                                     "Make Y yank to endline (same
 nnoremap <C-w> :ToggleWrap<CR>|                     "Toggle wrap option
 nnoremap <C-o> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
 nnoremap - :w<CR>|                                 "Write changes
-nnoremap <silent><Leader>tV :call near#utils#ToggleVerbose()<CR>
+nnoremap <silent><Leader>tV :ToggleVerbose<CR>
 " }}}
 " {{{ Abbreviation
 cabbrev vbnm verbose<Space>nmap
@@ -469,7 +484,11 @@ cabbrev eprf8 E:\Program Files (x86)<C-r>=s:Eatchar('\m\s\<Bar>/')<CR>
 if ExistsFile(s:autoload . 'help.vim')
    command! -nargs=* GetHelp silent! call help#GetHelp(<f-args>)
 endif
-command! ToggleMenuBar                          call near#utils#ToggleMenuBar()
+if ExistsFile(s:autoload . 'toggleOption.vim')
+   command! ToggleMenuBar call toggleOption#MenuBar()
+   command! ToggleVerbose call toggleOption#Verbose()
+   command! ToggleWrap    call toggleOption#Wrap()
+endif
 command! ToggleHeader                           call near#utils#ToggleHeader()
 command! -nargs=? -complete=help OpenHelpInTab  call near#utils#OpenHelpInTab(<q-args>)
 command! CloseEmptyBuffer                       call <SID>CloseEmptyBuffer()
@@ -477,10 +496,7 @@ command! -nargs=+ -complete=command RedirInTab  call near#utils#RedirInTab(<q-ar
 command! -nargs=+ ExistsInTab                   echo near#utils#ExistsInTab(<f-args>)
 command! OpenTagInVSplit                        call near#utils#OpenTagInVSplit()
 command! TrimWhitespace                         call near#utils#TrimWhitespace()
-command! ToggleWrap                             call near#utils#ToggleWrap()
 command! MakeSymlink                            call near#utils#MakeSymlink()
-command! CscopeLoad                             call near#utils#CscopeLoad()
-command! ToggleVerbose                          call near#utils#ToggleVerbose()
 " }}}
 
 " }}}
@@ -989,9 +1005,6 @@ nnoremap <silent><Leader>nf :NERDTreeFind<CR>|       " Press <Leader>Nf to go to
 
 let NERDTreeMapOpenVSplit    = 'v'                   " vsplit (default was s)
 let NERDTreeMapOpenSplit     = 'x'                   " hsplit (default was i)
-let g:NERDTreeMapMenu        = 'M'                   " Solve conflict with vim-signature
-let NERDTreeShowBookmarks    = 1                     " Open Bookmark at startup
-let NERDTreeBookmarksSort    = 1                     " Sort the bookmark
 let NERDTreeShowLineNumbers  = 1                     " Enable line numbers
 let NERDTreeAutoDeleteBuffer = 1
 let NERDTreeMinimalUI        = 1
@@ -999,25 +1012,13 @@ let NERDTreeShowHidden       = 1
 let NERDTreeIgnore           = ['NTUSER.DAT*']
 set ambiwidth=double
 
-" autocmd StdinReadPre * let s:std_in = 1              " Open NERDTree automatically when vim start up on opening a directory
-" autocmd VimEnter *
-"          \ if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in")
-"          \|    execute 'NERDTree' argv()[0]
-"          \|    wincmd p
-"          \|    enew
-"          \|endif
 autocmd BufEnter *
          \ if(winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree())
          \|    q
          \|endif " Close NERDTree automatically if it's the only buffer left
 
-if has('GUI_running')
-   let g:NERDTreeDirArrowExpandable  = '►'
-   let g:NERDTreeDirArrowCollapsible = '▼'
-else "Console
-   let g:NERDTreeDirArrowExpandable  = '+'
-   let g:NERDTreeDirArrowCollapsible = '-'
-endif
+let g:NERDTreeDirArrowExpandable  = '+'
+let g:NERDTreeDirArrowCollapsible = '-'
 "}}}
 "{{{ Ultisnips
 nnoremap <Leader>U :UltiSnipsEdit<CR>|                            " Open new file to define snippets
@@ -1070,11 +1071,6 @@ autocmd BufReadPost *
          \ if line("'\"") >= 1 && line("'\"") <= line("$")
          \|  execute "normal! g`\""
          \|endif
-
-"Retab to convert tab to space
-autocmd BufRead *.cpp,*.py
-         \ silent! execute "normal! gg=G"
-         \|silent! :retab
 
 autocmd QuickFixCmdPost * cwindow
 autocmd cursorhold * 
