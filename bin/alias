@@ -196,6 +196,7 @@ alias key-import='gpg --recv-keys'
 # Even shorter aliases {{{
 alias e='exit'
 alias c='clear'
+alias js='node'
 # }}}
 # Apply completion to aliases {{{
 

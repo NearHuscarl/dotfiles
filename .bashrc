@@ -161,6 +161,7 @@ export EDITOR=vim
 
 # Add custom script directory to path
 export PATH=$PATH:$HOME/bin/
+export PATH=~/.npm-global/bin:$PATH
 
 # ranger
 if [[ -x /usr/bin/ranger && -f $HOME/.config/ranger/rc.conf ]]; then

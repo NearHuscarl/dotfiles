@@ -9,6 +9,8 @@
 !/.bashrc
 !/.cvimrc
 !/.inputrc
+!/.npmrc
+!/.npm-init.js
 !/.gitignore
 !/.tern-project
 !/.vimrc
