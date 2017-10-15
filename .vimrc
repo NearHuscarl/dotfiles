@@ -2,7 +2,7 @@
 " File:        .vimrc
 " Description: Vim settings
 " Author:      Near Huscarl <near.huscarl@gmail.com>
-" Last Change: Fri Oct 13 11:45:11 +07 2017
+" Last Change: Sat Oct 14 07:30:04 +07 2017
 " Licence:     BSD 3-Clause license
 " Note:        This is a personal vim config. therefore most likely not work 
 "              on your machine
@@ -926,7 +926,6 @@ nnoremap <silent><Leader>sv :call lazyload#SessionView()<CR>
 nnoremap <silent><Leader>sV :call lazyload#SessionVIEW()<CR>
 "}}}
 "{{{ Sneak
-let g:sneak#s_next = 1              " Press [sS] after invoke sneak to go to next match
 let g:sneak#use_ic_scs = 1          " Case determined by 'ignorecase' and 'smartcase'
 let g:sneak#label_esc = "\<A-i>"
 let g:sneak#absolute_dir = 1        " Movement in sneak not based on sneak search direction
