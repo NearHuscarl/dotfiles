@@ -5,7 +5,7 @@ let fs = require('fs'),
    name = cwd.split('/').slice(-1).pop();
 
 // name property in package.json only accept lowercase chars and dash
-function TransformName(name)
+function transformName(name)
 {
    return name.toLowerCase().replace(/[^a-z ]/g, '').replace(/\s+/g, '-');
 }
@@ -26,7 +26,7 @@ function getGlobalGitConfig() {
 }
 
 let git = getGlobalGitConfig();
-let name = TransformName(name);
+let name = transformName(name);
 
 const packageConfig = {
    name: name,
