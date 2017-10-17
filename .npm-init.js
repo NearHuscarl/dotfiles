@@ -4,6 +4,12 @@ let fs = require('fs'),
    cwd = process.cwd(),
    name = cwd.split('/').slice(-1).pop();
 
+// name property in package.json only accept lowercase chars and dash
+function TransformName(name)
+{
+   return name.toLowerCase().replace(/[^a-z ]/g, '').replace(/\s+/g, '-');
+}
+
 function getGlobalGitConfig() {
    let configPath = [ path.join(homeDir,  '.gitconfig'), path.join(homeDir, '.config/git/config') ];
 
@@ -19,13 +25,15 @@ function getGlobalGitConfig() {
    console.log('There is no global git config in $HOME');
 }
 
-let git = getGlobalGitConfig()
+let git = getGlobalGitConfig();
+let name = TransformName(name);
 
 const packageConfig = {
    name: name,
+   description: '',
    version: '1.0.0',
    author: `${git.name} <${git.email}>`,
-   license: "BSD-3-Clauses"
+   license: "BSD-3-Clause"
 };
 
 module.exports = packageConfig;
