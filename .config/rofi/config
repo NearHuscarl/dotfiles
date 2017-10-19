@@ -23,6 +23,8 @@ rofi.color-window: #2c3e50, #2980b9, #34495e
 ! shortcuts
 rofi.kb-mode-next: Alt+i
 rofi.kb-mode-previous: Alt+u
+rofi.kb-custom-9:
+rofi.kb-custom-10:
 rofi.kb-remove-word-back: Alt+9
 rofi.kb-remove-word-forward: Alt+0
 rofi.kb-move-char-back: Alt+h
