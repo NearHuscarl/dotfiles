@@ -18,7 +18,7 @@
 !/install.sh
 
 !/bin/
-!/css/
+!/styles/
 !/.fonts/
 
 # Repeat the process for subdir .config
@@ -66,9 +66,11 @@
 
 # Explicit exclude
 **/tags
+**/npm_modules/
 /.cache/
 /.local/
 /.ssh/
 /.thumbnails/
 /.vim/autoload/plug.vim
 /.config/ranger/history
+/.npm-global/
