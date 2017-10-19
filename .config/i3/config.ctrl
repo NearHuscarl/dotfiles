@@ -2,16 +2,16 @@
 # i3 config
 
 # Workspace name {{{
-set $ws_term  "1"
-set $ws_dev   "2"
-set $ws_web   "3"
-set $ws_file  "4"
-set $ws_doc   "5"
-set $ws_chat  "6"
-set $ws_mail  "7"
-set $ws_music "8"
-set $ws9      "9"
-set $ws_misc  "10"
+set $ws_term   "1"
+set $ws_dev    "2"
+set $ws_web    "3"
+set $ws_file   "4"
+set $ws_doc    "5"
+set $ws_design "6"
+set $ws_mail   "7"
+set $ws_music  "8"
+set $ws9       "9"
+set $ws_misc   "10"
 # }}}
 # Startup {{{
 exec --no-startup-id xmodmap ~/.Xmodmap
@@ -74,7 +74,7 @@ bindsym $mod+2 workspace $ws_dev
 bindsym $mod+3 workspace $ws_web
 bindsym $mod+4 workspace $ws_file
 bindsym $mod+5 workspace $ws_doc
-bindsym $mod+6 workspace $ws_chat
+bindsym $mod+6 workspace $ws_design
 bindsym $mod+7 workspace $ws_mail
 bindsym $mod+8 workspace $ws_music
 bindsym $mod+9 workspace $ws9
@@ -90,8 +90,8 @@ assign [title="Vim - Dev"]          $ws_dev
 assign [class="Google-chrome"]      $ws_web
 assign [class="Vivaldi-stable"]     $ws_web
 assign [class="Zathura"]            $ws_doc
-assign [class="^libreoffice.*"]     $ws_doc
-assign [class="Caprine"]            $ws_chat
+assign [title="Libreoffice Writer$"] $ws_doc
+assign [class="Gimp"]               $ws_design
 assign [class="Thunar"]             $ws_file
 assign [title="Ranger"]             $ws_file
 assign [class="Thunderbird"]        $ws_mail
@@ -112,6 +112,8 @@ for_window [class="Sxiv"]              floating enable
 for_window [title="Floating"]          floating enable
 for_window [title="Startup Settings"]  floating enable
 for_window [class="mpv"]               floating enable
+for_window [class="Gimp"]              floating enable
+# for_window [title="libreoffice"]       floating enable
 
 # Very dirty workaround to make chrome developer tools fullscreen
 # for_window [title="^Developer Tools.*"] \
@@ -130,8 +132,9 @@ bindsym F2 exec xfce4-terminal --title="Vim - Dev" -e "vim --servername vim"; wo
 bindsym F3 exec vivaldi-stable; workspace $ws_web
 bindsym F4 exec xfce4-terminal --title="Ranger" -e "ranger"; workspace $ws_file
 bindsym F5 exec zathura; workspace $ws_doc
-bindsym F6 exec caprine; workspace $ws_chat
+# bindsym F6 exec caprine; workspace $ws_design
 # bindsym F6 exec thunar; workspace $ws_file
+bindsym F6 exec gimp; workspace $ws_design
 bindsym F7 exec thunderbird; workspace $ws_mail
 bindsym F8 \
   workspace $ws_music; \
@@ -250,16 +253,16 @@ mode "move" {
         bindsym $mod+l focus right
 
         # move focused container to workspace
-        bindsym 1 mode "default"; move container to workspace $ws_term; workspace $ws_term
-        bindsym 2 mode "default"; move container to workspace $ws_dev; workspace $ws_dev
-        bindsym 3 mode "default"; move container to workspace $ws_web; workspace $ws_web
-        bindsym 4 mode "default"; move container to workspace $ws_file; workspace $ws_file
-        bindsym 5 mode "default"; move container to workspace $ws_doc; workspace $ws_doc
-        bindsym 6 mode "default"; move container to workspace $ws_chat; workspace $ws_chat
-        bindsym 7 mode "default"; move container to workspace $ws_mail; workspace $ws_mail
-        bindsym 8 mode "default"; move container to workspace $ws_music; workspace $ws_music
-        bindsym 9 mode "default"; move container to workspace $ws9; workspace $ws9
-        bindsym 0 mode "default"; move container to workspace $ws_misc; workspace $ws_misc
+        bindsym 1 mode "default"; move container to workspace $ws_term;   workspace $ws_term
+        bindsym 2 mode "default"; move container to workspace $ws_dev;    workspace $ws_dev
+        bindsym 3 mode "default"; move container to workspace $ws_web;    workspace $ws_web
+        bindsym 4 mode "default"; move container to workspace $ws_file;   workspace $ws_file
+        bindsym 5 mode "default"; move container to workspace $ws_doc;    workspace $ws_doc
+        bindsym 6 mode "default"; move container to workspace $ws_design; workspace $ws_design
+        bindsym 7 mode "default"; move container to workspace $ws_mail;   workspace $ws_mail
+        bindsym 8 mode "default"; move container to workspace $ws_music;  workspace $ws_music
+        bindsym 9 mode "default"; move container to workspace $ws9;       workspace $ws9
+        bindsym 0 mode "default"; move container to workspace $ws_misc;   workspace $ws_misc
 
         # move focused container to next/prev workspace
         bindsym period move container to workspace next; workspace next
