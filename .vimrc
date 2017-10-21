@@ -2,7 +2,7 @@
 " File:        .vimrc
 " Description: Vim settings
 " Author:      Near Huscarl <near.huscarl@gmail.com>
-" Last Change: Sat Oct 14 07:30:04 +07 2017
+" Last Change: Sat Oct 21 21:34:51 +07 2017
 " Licence:     BSD 3-Clause license
 " Note:        This is a personal vim config. therefore most likely not work 
 "              on your machine
@@ -324,7 +324,7 @@ nnoremap <Leader>z zMzvzz|                         "Open current fold and close 
 nnoremap <silent> L  :call diff#JumpForward('L')<CR>|  "In diff mode: go to next change
 nnoremap <silent> H  :call diff#JumpBackward('H')<CR>| "In diff mode: go to previous change
 nnoremap <silent> du :call diff#DiffUpdate('')<CR>|    "Update diff if it doesnt update automatically
-nnoremap <silent> q  :call diff#Quit('q')<CR>|         "Quit Key in diff
+" nnoremap <silent> q  :call diff#Quit('q')<CR>|         "Quit Key in diff
 " }}}
 " {{{ Help
 nnoremap Kc K|                                     "Help for word under cursor
@@ -994,7 +994,8 @@ let g:neocomplete#sources#omni#functions            = ['cpp']
 "}}}
 " {{{ Youcompleteme
 let g:ycm_semantic_triggers = {
-    \   'css': [ 're!^\s{3}', 're!:\s+' ],
+    \   'css':  [ 're!^\s{3}',  're!:\s+' ],
+    \   'scss': [ 're!^\s{3,}', 're!:\s+' ],
     \ }
 let g:ycm_key_list_select_completion = []
 " }}}
