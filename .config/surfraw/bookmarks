@@ -12,7 +12,7 @@ facebook          https://www.facebook.com/
 fb-msg            https://www.facebook.com/messages
 quora             https://www.quora.com/
 
-# Programmer
+# Dev
 aur               https://aur.archlinux.org/packages/
 freecodecamp      https://www.freecodecamp.org
 
@@ -29,6 +29,13 @@ r/unixporn        https://www.reddit.com/r/unixporn/
 r/vim             https://www.reddit.com/r/vim/
 vim-vivify        http://bytefluent.com/vivify/
 
+# Browser extension options
+tampermonkey      chrome-extension://dhdgffkkebhmkfjojejmpbldmpobfkfo/options.html#nav=dashboard
+cvim              chrome-extension://ihlenndgcmojhcghmfjfneahoeklbjjh/pages/options.html
+stylish           chrome-extension://fjnbnpbmkenffdnngjfgmeleoegfcffe/manage.html
+adblock           chrome-extension://gighmmpiobklfepjocnamgkkbiglidom/options.html
+videospeed        chrome-extension://nffaoalbilbmmfgbnbgppjihopabppdk/options.html
+
 # Document
 arch-wiki         https://wiki.archlinux.org/
 regex             https://regexr.com
@@ -39,6 +46,7 @@ csslayout         http://learnlayout.com/
 beamng-blog       http://blog.beamng.com/blog/
 cosmoteer         https://cosmoteer.net/history.html
 projectzomboid    https://projectzomboid.com/blog/category/news-development/
+rwdevtracker      https://rimworlddevtracker.com/
 r/rimworld        https://www.reddit.com/r/RimWorld/
 r/starshiptheory  https://www.reddit.com/r/StarshipTheory/
 sfd               http://mythologicinteractive.com
