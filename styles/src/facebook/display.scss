@@ -1,0 +1,29 @@
+.fbUserStory ._5g-l, // suggested post
+[aria-labelledby=js_r], // sponsored post
+.pagelet-group.pagelet, .ego_section *,
+#findFriendsNav, // find friend button
+#pagelet_composer, // window to write new status
+#appsNav, #createNav, #userNav, // left sidebar
+#pagelet_rhc_footer, // bottom pane of left sidebar
+// right side bar
+#rightCol {
+   display: none !important;
+}
+
+#leftCol {
+   left: -20px !important;
+}
+
+// main feed
+// move to center, increase width
+#contentArea {
+   left: 60px !important;
+   width: 700px !important;
+}
+
+// fix image not fill container
+.fbUserStory {
+   .uiScaledImageContainer {
+      display: inline !important;
+   }
+}

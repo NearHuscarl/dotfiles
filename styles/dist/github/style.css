@@ -1,0 +1,16 @@
+/* flat */
+.diff-view .blob-code-inner,
+td.blob-num,
+td.blob-code {
+  font-family: "Inconsolata", monospace !important;
+  font-weight: bold !important;
+  font-size: 12px !important;
+  line-height: 110% !important; }
+
+.markdown-body pre,
+.markdown-body pre *,
+.markdown-body .highlight pre {
+  font-family: "Inconsolata", monospace !important;
+  font-weight: bold !important;
+  font-size: 15px !important;
+  line-height: 120% !important; }

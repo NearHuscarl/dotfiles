@@ -1,0 +1,12 @@
+#mainEditorPanel {
+   font-family: 'Inconsolata', monospace !important;
+   font-weight: bold !important;
+   span {
+      line-height: 120% !important;
+      font-size: 13px !important;
+   }
+   .CodeMirror-linenumber {
+      line-height: 120% !important;
+      font-size: 13px !important;
+   }
+}

@@ -1,0 +1,153 @@
+* {
+   color: $fg-color !important;
+}
+
+// main
+html, body,
+#rightcolumn,
+.top-container,
+.responsive_entry_center_wrap {
+   background-color: $bg-color !important;
+}
+
+// logo
+.old-logo-title,
+// rightcol
+.responsive_entry_center_right.responsive_hide_on_smartphone.share-this-entry,
+.premium-box.premium_english,
+.responsive_row.topic,
+// header text
+.definition-title,
+#ad_topslot_a,
+// ad in right column
+#ad_houseslot1_a,
+// add to word list button
+.btn.icon-left-colapse.wl-add,
+// ad
+#ad_closed_panel,
+#ad_btmslot_a,
+#ad_leftslot_a,
+// bottom stuff
+.responsive_footer_top,
+.versionSelector {
+   display: none !important;
+}
+
+// main nav/footer
+.responsive_row.flush-below.top,
+#ox-footer {
+   background-color: $bg-alt-color !important;
+}
+
+// top nav
+.main_nav {
+   .menu {
+      a:hover {
+         background-color: $bg-color !important;
+      }
+      a.top-toolbar-active {
+         border: unset !important;
+         background-color: $hl-color !important;
+         color: $fg-alt-color !important;
+      }
+   }
+}
+
+// right column
+#rightcolumn {
+   top: -30px !important;
+   position: relative !important;
+}
+
+.accordion.ui-grad {
+   dt {
+      box-shadow: unset !important;
+      background-color: $bg-alt-color !important;
+      border-color:     $bg-alt-color !important;
+   }
+   dd {
+      border-color: $bg-alt-color !important;
+   }
+}
+
+// right column main page
+table.quickLinks {
+   tr {
+      th {
+         background-color: $bg-color !important; // first row of the table
+         border: unset !important;
+      }
+      background-color: $bg-alt-color !important;
+      border: unset !important;
+   }
+}
+
+// selected link
+.selected {
+   background-color: $bg-alt-color !important;
+}
+
+// search bar
+#search-form {
+   background-color: $bg-alt-color !important;
+   color:            $fg-color !important;
+   border-color:     $bg-alt-color !important;
+
+   * {
+      border-color: $bg-alt-color !important;
+   }
+}
+
+.dictionarySelector #select_div {
+   background-color: $bg-alt-color !important;
+}
+
+input {
+   background-color: $bg-color !important;
+   padding-left: 5px !important;
+}
+
+// search button
+#search-btn {
+   background-color: $hl-color !important;
+   color:            $fg-alt-color !important;
+}
+
+input[type="submit"] {
+   background-color: transparent !important;
+}
+
+#search-form  {
+   .inputSuggestions {
+      z-index: 99 !important;
+      background-color: $bg-alt-color !important;
+      color:            $fg-color !important;
+      * {
+         background-color: $bg-alt-color !important;
+         color:            $fg-color !important;
+      }
+   }
+}
+
+// definition part
+
+.webtop-g {
+   background-color: $bg-alt-color !important;
+}
+
+.audio_play_button.pron-uk {
+   filter: brightness(4) !important;
+}
+
+.sound.audio_play_button.pron-us {
+   filter: brightness(5) !important;
+}
+
+/* list number */
+.sn-g::before {
+   color: $title-color !important;
+}
+
+.box {
+   background-color: $bg-alt-color !important;
+}

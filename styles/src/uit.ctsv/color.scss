@@ -1,0 +1,72 @@
+* {
+   border-color:     $bg-alt-color !important;
+   background-color: $bg-color !important;
+   color:            $fg-color !important;
+}
+
+a {
+   color: $link-color !important;
+
+   &:hover {
+      color: $link-hover-color !important;
+   }
+   &:visited {
+      color: $link-visited-color !important;
+   }
+
+   /* fix Xem them link */
+   .more-link &:after,
+   &.more-link:after,
+   .page-search .node-readmore &:after {
+      content: ">>" !important;
+   }
+}
+
+h1, h2 {
+   color: $hl-color !important;
+}
+
+img {
+   background-color: transparent !important;
+   filter: brightness($img-brightness) !important;
+}
+
+/* button|input */
+input.form-submit,
+#block-search-form .search-query {
+   background-color: $bg-alt-color !important;
+}
+
+/* menu */
+.menu.nav a:visited {
+   color: $link-color !important;
+}
+
+/* table-kun */
+font[color*="blue"] * {
+   color: $link-color !important;
+}
+
+font[color*="#dc143c"] * {
+   color: $alert-color !important;
+}
+
+/* hide search icon */
+#block-search-form .btn-search {
+   display: none !important;
+}
+
+/* new */
+.marker {
+   color: $alert-color !important;
+}
+
+/* fix ugly uppercase */
+.fieldset-title {
+   text-transform: lowercase !important;
+}
+
+/* cvim fix */
+#cVim-link-container {
+   background-color: transparent !important;
+}

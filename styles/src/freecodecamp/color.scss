@@ -1,0 +1,88 @@
+.navbar {
+   background-color: $bg-alt-color !important;
+   .nav {
+      background-color: $bg-alt-color !important;
+      a {
+         color: $fg-color !important;
+      }
+      a:hover {
+         background-color: $hl-color !important;
+         color: $fg-alt-color !important;
+      }
+   }
+}
+
+h1, h4 {
+   color: $fg-color !important;
+}
+
+body, html {
+   background-color: $bg-color !important;
+   color: $fg-color !important;
+}
+
+dfn {
+   color: $hl-color !important;
+   background-color: $bg-alt-color !important;
+}
+
+code {
+   color: $code-color !important;
+   background-color: $bg-alt-color !important;
+}
+
+a[class*=btn-],
+button {
+   border: unset !important;
+   background-color: $bg-alt-color !important;
+   color: $fg-alt-color !important;
+
+   &:hover {
+      background-color: $hl-color !important;
+   }
+}
+
+a {
+   color: $link-color !important;
+   &:hover {
+      color: $link-hover-color !important;
+   }
+}
+
+// history table
+svg.cal-heatmap-container {
+   background-color: $bg-color !important;
+   rect {
+      // each day box
+      &.graph-rect, &.r1 {
+         fill: $bg-alt-color !important;
+      }
+      &.r2 {
+         fill: $blue !important;
+      }
+      &.r3 {
+         fill: $yellow !important;
+      }
+      &.r4 {
+         fill: $red !important;
+      }
+      // day with 0-4+ item(s)
+   }
+}
+
+// solution list
+table * {
+   background-color: $bg-color !important;
+   border-color: $bg-alt-color !important;
+}
+
+// icon
+.ion-checkmark-circled {
+   color: $hl-color !important;
+}
+
+// map right panel
+.mapWrapper * {
+   background-color: $bg-color !important;
+   border-color: $bg-alt-color !important;
+}

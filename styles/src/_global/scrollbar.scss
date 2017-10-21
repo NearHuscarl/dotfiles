@@ -1,0 +1,17 @@
+// scrollbar
+
+*::-webkit-scrollbar {
+   width: 10px! important;
+   height: 10px! important;
+   background: $bg-color !important;
+}
+
+*::-webkit-scrollbar-thumb {
+   min-height: 18px !important;
+   background: $bg-alt-color !important;
+}
+
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-corner {
+   background: $bg-color !important;
+}

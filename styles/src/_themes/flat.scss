@@ -1,0 +1,30 @@
+/* flat */
+
+$black:        #1f2d3a;
+$darkgrey:     #2c3e50;
+$lightgrey:    #84888b;
+$white:        #ecf0f1;
+$magenta:      #8e44ad;
+$lightmagenta: #9b59b6;
+$green:        #27ae60;
+$lightgreen:   #2ecc71;
+$cyan:         #16a085;
+$lightcyan:    #2aa198;
+$blue:         #2980b9;
+$lightblue:    #3498db;
+$darkred:      #c0392b;
+$red:          #e74c3c;
+$orange:       #f39c12;
+$yellow:       #f1c40f;
+
+$bg-color:           $black;
+$bg-alt-color:       $darkgrey;
+$fg-color:           $lightgrey;
+$fg-alt-color:       $white;
+$link-color:         $blue;
+$link-hover-color:   $lightblue;
+$link-visited-color: $magenta;
+$hl-color:           $cyan;
+$code-color:         $green;
+$title-color:        $orange;
+$alert-color:        $red;
