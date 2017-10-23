@@ -12,6 +12,7 @@
 !/.npmrc
 !/.npm-init.js
 !/.gitignore
+!/.scss-lint.yml
 !/.tern-project
 !/.vimrc
 !/.Xmodmap
