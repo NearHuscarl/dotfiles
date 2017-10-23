@@ -15,6 +15,7 @@ quora             https://www.quora.com/
 # Dev
 aur               https://aur.archlinux.org/packages/
 freecodecamp      https://www.freecodecamp.org
+pep8              https://www.python.org/dev/peps/pep-0008/
 
 github            https://github.com/
 gh-dotfiles       https://github.com/NearHuscarl/dotfiles
@@ -29,7 +30,11 @@ r/unixporn        https://www.reddit.com/r/unixporn/
 r/vim             https://www.reddit.com/r/vim/
 vim-vivify        http://bytefluent.com/vivify/
 
+lintJs            https://github.com/eslint/eslint/tree/master/docs/rules
+lintScss          https://github.com/brigade/scss-lint/blob/master/lib/scss_lint/linter/README.md
+
 # Browser extension options
+extension         https://chrome.google.com/webstore/category/extensions?hl=en
 tampermonkey      chrome-extension://dhdgffkkebhmkfjojejmpbldmpobfkfo/options.html#nav=dashboard
 cvim              chrome-extension://ihlenndgcmojhcghmfjfneahoeklbjjh/pages/options.html
 stylish           chrome-extension://fjnbnpbmkenffdnngjfgmeleoegfcffe/manage.html
@@ -54,7 +59,7 @@ twitter-ravenfied https://twitter.com/SteelRaven7
 twitter-tynan     https://twitter.com/TynanSylvester
 
 # School
-biboo-uit         https://tuts.biboo.vn/uit/https://tuts.biboo.vn/uit/
+biboo-uit         https://tuts.biboo.vn/uit/
 courses           https://courses.uit.edu.vn/
 ctsv              https://ctsv.uit.edu.vn
 daa               https://daa.uit.edu.vn/
