@@ -285,7 +285,7 @@ bindsym $mod+d mode "launch"
 # {{{ Screenshot
 
 set $screenShot "$HOME/Pictures/$(date +[%Y-%m-%d]-[%H:%M]).png"
-bindsym Print      exec maim --select --delay=1 | xclip -selection clipboard -t image/png
+bindsym Print      exec maim --select --delay=1 | xclip -in -selection clipboard -target image/png
 bindsym $mod+Print exec maim --select --delay=1 $screenShot
 
 # }}}
