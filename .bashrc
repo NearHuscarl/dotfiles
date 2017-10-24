@@ -161,7 +161,9 @@ export EDITOR=vim
 
 # Add custom script directory to path
 export PATH=$PATH:$HOME/bin/
-export PATH=~/.npm-global/bin:$PATH
+export PATH=$HOME/.npm-global/bin:$PATH
+# Temp fix for scss_lint
+export PATH=$PATH:$HOME/.gem/ruby/2.4.0/bin/
 
 # ranger
 if [[ -x /usr/bin/ranger && -f $HOME/.config/ranger/rc.conf ]]; then
