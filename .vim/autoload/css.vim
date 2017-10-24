@@ -2,7 +2,7 @@
 " File:        css.vim
 " Description: custom functions for mappings specifically to css file
 " Author:      Near Huscarl <near.huscarl@gmail.com>
-" Last Change: Sun Oct 08 13:31:11 +07 2017
+" Last Change: Tue Oct 10 14:27:31 +07 2017
 " Licence:     BSD 3-Clause license
 " Note:        N/A
 " ============================================================================
@@ -31,17 +31,19 @@ function! css#Paste() " {{{
    " Extend paste for hex color
    let curPos = [line('.'), col('.')]
 
-   if @+ =~? '^\(#[a-fA-F0-9]\{6}\>\|[a-fA-F0-9]\{3}\>\)$' || @+ =~? '^\(rgb\|rgba\)(.*)$'
-      if expand("<cWORD>") =~? '\(#[a-fA-F0-9]\{6}\>\|[a-fA-F0-9]\{3}\>\)'
+   if @+ =~? '^\(#[a-fA-F0-9]\{6}\>\|#[a-fA-F0-9]\{3}\>\)$' || @+ =~? '^\(rgb\|rgba\)(.*)$'
+      if expand("<cWORD>") =~? '\(#[a-fA-F0-9]\{6}\>\|#[a-fA-F0-9]\{3}\>\)'
          if s:GetCharUnderCursor() == '#'
-            execute 'normal! "_dei' . @+
+            execute 'normal! "_dehp'
          else
-            execute 'normal! B"_dei' . @+
+            execute 'normal! B"_dehp'
          endif
       elseif match(getline('.'), '\(rgb\|rgba\)(.*)') != -1
          execute "normal! ^"
          call search('\(rgb\|rgba\)(.*)', 'c')
-         execute 'normal! "_df)i' . @+
+         execute 'normal! "_df)hp'
+      else
+         execute "normal! p"
       endif
    else
       execute "normal! p"
@@ -51,7 +53,8 @@ endfunction
 " }}}
 function! css#CopyOrCut(action, default) " {{{
    " Extend copy for hex color
-   if expand("<cWORD>") =~? '\(#[a-fA-F0-9]\{6}\>\|[a-fA-F0-9]\{3}\>\)'
+   let curPos = [line('.'), col('.')]
+   if expand("<cWORD>") =~? '\(#[a-fA-F0-9]\{6}\>\|#[a-fA-F0-9]\{3}\>\)'
       if s:GetCharUnderCursor() != '#'
          execute 'normal! B'
       endif
@@ -63,10 +66,7 @@ function! css#CopyOrCut(action, default) " {{{
    else
       execute "normal! " . a:default
    endif
-   if a:action == 'c'
-      execute "normal! l"
-      execute "startinsert"
-   endif
+   call cursor(curPos[0], curPos[1])
 endfunction
 " }}}
 function! s:Dec2Hex(num) " {{{
