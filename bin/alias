@@ -4,7 +4,7 @@
 # Description: Bash custom aliases and other alias functions, some alias have
 #              the equivalent completion as the original commands
 # Author:      Near Huscarl <near.huscarl@gmail.com>
-# Last Change: Tue Sep 26 20:43:29 +07 2017
+# Last Change: Tue Oct 24 13:36:07 +07 2017
 # Licence:     BSD 3-Clause license
 # Note:        N/A
 # ============================================================================
@@ -20,6 +20,8 @@ fi
 alias dkt='cd $HOME/Desktop'
 alias dot='cd $HOME/dotfiles'
 alias cdh='cd $HOME'
+alias cdw='cd $HOME/Github/NearHuscarl.github.io/'
+alias cdp='cd $HOME/Github/LearnPythonTheHardWay/'
 alias cd-pic='cd $HOME/Pictures'
 alias ..='cd ..'
 alias ...='cd ../..'
@@ -40,6 +42,7 @@ alias tree="alias-tree"
 if [[ -x /usr/bin/vim ]]; then
    alias view="vim -R"
    alias vimrc="vim $HOME/.vimrc"
+   alias vim-startup="vim --startuptime $HOME/misc/log -c q && vim $HOME/misc/log"
    # vir in $HOME/bin/vir
    if [[ -x $HOME/bin/viman ]]; then
       alias man="viman"
@@ -156,7 +159,7 @@ alias alias-e="$editor $HOME/bin/alias"
 alias bashrc="$editor $HOME/.bashrc"
 alias inputrc="$editor $HOME/.inputrc"
 alias gitignore="$editor $HOME/.gitignore"
-alias todo="$editor $HOME/misc/Todo"
+alias todo="vim -c 'SessionOpen todo'"
 alias plan="$editor $HOME/misc/plan"
 alias arch="$editor $HOME/misc/Arch.txt"
 # }}}
@@ -166,7 +169,7 @@ alias xprop-role="xprop WM_WINDOW_ROLE"
 alias xprop-title="xprop _NET_WM_NAME WM_NAME"
 # }}}
 # Picture {{{
-alias wallpaper="nitrogen --random --set-scaled 'Pictures/Low Poly'"
+alias wallpaper='nitrogen --random --set-scaled "$HOME/Pictures/Low Poly"'
 alias pic-schedule="sxiv -f $HOME/Pictures/misc/schedule.png"
 alias pic-full="sxiv -f"
 alias thumnail="sxiv -f -t -b -r *"
