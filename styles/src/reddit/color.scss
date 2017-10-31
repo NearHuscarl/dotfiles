@@ -1,20 +1,3 @@
-// Hide annoying stuff
-.listing-chooser.initialized,        // annoy  left panel
-.infobar.subscribebar.onboardingbar, // banner in main page
-// buttons under post
-.flat-list.buttons .share,
-.flat-list.buttons .link-save-button,
-.flat-list.buttons .report-button,
-.flat-list.buttons [action="/post/hide"],
-// button list below every comment
-.report-button,
-.comment-save-button,
-.give-gold-button,
-// ad
-.promoted, img.img_ad {
-   display: none !important;
-}
-
 /* global */
 * {
    background-color: transparent !important;
