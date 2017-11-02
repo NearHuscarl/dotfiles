@@ -15,22 +15,16 @@ snippet e "element" b
 <${1:Element-Name}>$2</${1/(\w+).*/$1/}>
 endsnippet
 
-snippet style "css style" b
-<style>
-   $1
-</style>
-endsnippet
-
 snippet en "element and newline" b
-
 <${1:Element-Name}>
 	$2
 </${1/(\w+).*/$1/}>
-
 endsnippet
 
-snippet { "{} pairing" b
-{
-   $1
-}
+snippet div "div wrapper" i
+<div>${VISUAL}</div>
+endsnippet
+
+snippet 'sp(ace)?' "Insert Space" ir
+&nbsp
 endsnippet

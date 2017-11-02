@@ -10,22 +10,22 @@ snippet license "LICENSE" b
 endsnippet
 
 snippet fa "function in autoload/" b
-function! `!v substitute( substitute(expand('%:p:r'), '^.*autoload/', '', ''), '/', '#', 'g' )`#${1:Function Name} " {{{
+function! `!v substitute( substitute(expand('%:p:r'), '^.*autoload/', '', ''), '/', '#', 'g' )`#${1:FuncName} " {{{
 	${2:Body}
 endfunction
 " }}}
 endsnippet
 
 snippet f "function" b
-function! ${1:Function Name} " {{{
-	${2:Body}
+function! ${1:FuncName} " {{{
+	$2
 endfunction
 " }}}
 endsnippet
 
 snippet if "if" b
-if ${1:Condition}
-	${2:Statement(s)}
+if $1
+	$2
 endif
 endsnippet
 
