@@ -119,6 +119,16 @@ fi
 
 # custom settings
 
+TERMINAL=''
+
+for terminal in "$TERMINAL" x-terminal-emulator urxvt rxvt termit terminator Eterm aterm uxterm xterm gnome-terminal roxterm xfce4-terminal termite lxterminal mate-terminal terminology st qterminal lilyterm tilix terminix konsole;
+do
+   if command -v "$terminal" > /dev/null 2>&1; then
+      TERMINAL=$terminal
+   fi
+done
+
+
 shopt -s autocd
 shopt -s extglob
 
@@ -155,13 +165,21 @@ fi
 # eval $(keychain --eval --quiet id_ed25519 id_rsa ~/keys/my_custom_key)
 eval `keychain --eval --agents ssh id_rsa`
 
+# Export variables
+
+if [[ $TERMINAL != '' ]]; then
+   export TERMINAL
+else
+   echo 'TERMINAL variable is not set'
+fi
+
 # BROWSER=google-chrome-stable:firefox
 export BROWSER=vivaldi-stable
 export EDITOR=vim
 
 # Add custom script directory to path
 export PATH=$PATH:$HOME/bin/
-export PATH=$HOME/.npm-global/bin:$PATH
+export PATH=$PATH:$HOME/.npm-global/bin
 # Temp fix for scss_lint
 export PATH=$PATH:$HOME/.gem/ruby/2.4.0/bin/
 
