@@ -2,7 +2,7 @@
 " File:        .vimrc
 " Description: Vim settings
 " Author:      Near Huscarl <near.huscarl@gmail.com>
-" Last Change: Sat Oct 21 21:34:51 +07 2017
+" Last Change: Fri Nov 03 03:16:42 +07 2017
 " Licence:     BSD 3-Clause license
 " Note:        This is a personal vim config. therefore most likely not work 
 "              on your machine
@@ -208,24 +208,8 @@ let @n = "0f>a\<CR>\<Esc>$F<i\<CR>\<Esc>j"         "Newline per tag if not
 " {{{ Mappings
 
 " {{{ Open
-nnoremap <silent><Leader>S
-         \ :source $MYVIMRC<Bar>
-         \ :nohlsearch<CR><Bar>
-         \ zi
-nnoremap <Leader>tv
-         \ :e $MYVIMRC<Bar>
-         \ :CloseEmptyBuffer<CR>
-if g:os == 'win'
-   nnoremap <Leader>ta
-            \ :e $HOME\desktop\.vimrc\AutoHotKey.ahk<Bar>
-            \ :CloseEmptyBuffer<CR>
-   nnoremap <Leader>tV
-            \ :e $HOME\desktop\.vimrc\_vsvimrc<Bar>
-            \ :CloseEmptyBuffer<CR>
-   nnoremap <Leader>tc
-            \ :e $HOME\Desktop\.vimrc\.cvimrc<Bar>
-            \ :CloseEmptyBuffer<CR>
-endif
+nnoremap <silent><Leader>S :source $MYVIMRC<Bar>nohlsearch<Bar>YcmRestartServer<CR>
+nnoremap <Leader>tv :edit $MYVIMRC<Bar>CloseEmptyBuffer<CR>
 " }}}
 " {{{ Movement
 nnoremap ;   :|                                    "No need to shift ; anymore to enter command mode
@@ -310,15 +294,11 @@ nnoremap n nzz
 nnoremap N Nzz
 " }}}
 " {{{ Fold
-"Create a fold for the paragraph
-nnoremap zp
-         \ :set foldmethod=manual<CR><Bar>
-         \ vapkzf<Bar>
 nnoremap z[ zo[z|                                  "Open fold, jump at the start and zz
 nnoremap z] zo]z|                                  "Open fold, jump at the end and zz
 nnoremap ]z ]zzz|                                  "jump at the end and zz
 nnoremap [z [zzz|                                  "jump at the start and zz
-nnoremap <Leader>z zMzvzz|                         "Open current fold and close all other fold outside
+nnoremap <Leader>z zMzv|                           "Open current fold and close all other fold outside
 " }}}
 " {{{ Diff
 nnoremap <silent> L  :call diff#JumpForward('L')<CR>|  "In diff mode: go to next change
@@ -519,6 +499,8 @@ Plug 'haya14busa/incsearch.vim', {'on': [
          \ ]}
 Plug 'vim-utils/vim-man', {'on': []}
 Plug 'tpope/vim-fugitive'
+Plug 'skywind3000/asyncrun.vim'
+Plug 'w0rp/ale'
 
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-shell'
@@ -643,6 +625,19 @@ nnoremap <Leader>pv :PlugUpgrade<CR>|                  "Update vim-plug
 nnoremap <Leader>pu :PlugUpdate<Space><C-d>|           "Update other plugins
 nnoremap <Leader>pU :PlugUpdate<CR>|                   "Update all plugins
 "}}}
+" {{{ Ale
+let g:ale_fixers            = {}
+let g:ale_fixers.javascript = ['eslint']
+let g:ale_fixers.python     = ['pylint']
+let g:ale_fixers.scss       = ['scsslint']
+let g:ale_sign_error           = '!!'
+let g:ale_sign_warning         = '>>'
+let g:ale_lint_on_text_changed = 0
+
+nmap [a <Plug>(ale_previous_wrap)zz
+nmap ]a <Plug>(ale_next_wrap)zz
+
+" }}}
 "{{{ Auto Pairs
 autocmd InsertEnter * :silent! all autopairs#AutoPairsTryInit()
 let g:AutoPairsMoveCharacter      = ''
@@ -1094,13 +1089,32 @@ autocmd FileType xml           setlocal omnifunc=xmlcomplete#CompleteTags
 autocmd FocusLost * if &modified && filereadable(expand("%:p")) | write | endif
 autocmd BufWritePre * call license#SetLastChangeBeforeBufWrite() 
 autocmd VimEnter * execute "inoremap <silent><Tab> <C-R>=near#utils#UltiSnips_Complete()<CR>"
+
 " Save fold when leaving vim
 " autocmd BufWinLeave * silent! mkview
 " autocmd BufWinEnter * silent! loadview
 
+" autocmd CmdlineEnter [/\?] call s:ToggleHlsearch(1)
+" autocmd CmdlineLeave [/\?] call s:ToggleHlsearch(0)
+
+" function! s:ToggleHlsearch(state) abort
+"    if a:state
+"       let s:hlSearchOld = &hlsearch
+"       set hlsearch
+"    else
+"       if exists('s:hlSearchOld')
+"          execute 'set ' . s:hlSearchOld ? 'hlsearch' : 'nohls'
+"          unlet! s:hlSearchOld
+"       endif
+"    endif
+" endfunction
+
 if has('gui_running')
    if g:os == 'linux'
-      autocmd VimEnter * call system('wmctrl -i -b add,maximized_vert,maximized_horz -r '.v:windowid)
+      autocmd VimEnter * 
+               \ if executable('wmctrl')
+               \|   call system('wmctrl -i -b add,maximized_vert,maximized_horz -r '.v:windowid)
+               \|endif
    elseif g:os == 'win'
       autocmd GUIEnter * simalt ~x            "Open vim in maximum winow size
    endif
