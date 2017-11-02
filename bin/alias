@@ -159,7 +159,7 @@ alias alias-e="$editor $HOME/bin/alias"
 alias bashrc="$editor $HOME/.bashrc"
 alias inputrc="$editor $HOME/.inputrc"
 alias gitignore="$editor $HOME/.gitignore"
-alias todo="vim -c 'SessionOpen todo'"
+alias todo="i3-sensible-terminal -e 'vim --servername todo -c \"silent SessionOpen todo\"' --title=Todo"
 alias plan="$editor $HOME/misc/plan"
 alias arch="$editor $HOME/misc/Arch.txt"
 # }}}
@@ -180,7 +180,7 @@ alias sxiv="sxiv -b -s h"
 alias sa='source $HOME/bin/alias'
 alias sb='source $HOME/.bashrc && clear'
 alias reboot='shutdown -r now'
-alias shutoff='shutdown -h now'
+alias shutoff='$HOME/bin/shutdown'
 alias size="alias-size"
 alias size-l="alias-size-l"
 alias mkdir='mkdir -pv'
