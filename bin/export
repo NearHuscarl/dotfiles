@@ -1,0 +1,26 @@
+#!/bin/bash
+
+TERMINAL=''
+
+for terminal in "$TERMINAL" x-terminal-emulator urxvt rxvt termit terminator Eterm aterm uxterm xterm gnome-terminal roxterm xfce4-terminal termite lxterminal mate-terminal terminology st qterminal lilyterm tilix terminix konsole;
+do
+   if command -v "$terminal" > /dev/null 2>&1; then
+      TERMINAL=$terminal
+   fi
+done
+
+if [[ $TERMINAL != '' ]]; then
+   export TERMINAL
+fi
+
+# custom bash script
+export PATH=$PATH:$HOME/bin/
+# global node_modules (see $HOME/.npmrc)
+export PATH=$PATH:$HOME/.npm-global/bin
+# custom python script
+export PATH=$PATH:$HOME/script/
+# Temp fix for scss_lint
+export PATH=$PATH:$HOME/.gem/ruby/2.4.0/bin/
+
+export BROWSER=vivaldi-stable
+export EDITOR=vim

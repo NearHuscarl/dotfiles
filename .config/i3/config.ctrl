@@ -138,7 +138,7 @@ for_window [title="Todo"]              $SCRATCHPAD
 # Application launcher shortcut {{{
 bindsym F1 exec $terminal
 # bindsym F2 exec gvim; workspace $ws_dev
-bindsym F2 exec $terminal --title="Vim - Dev" -e "vim --servername vim"; workspace $ws_dev
+bindsym F2 exec $terminal --title="Vim - Dev" -e "bash --login -c 'vim --servername vim'"; workspace $ws_dev
 # bindsym F3 exec google-chrome-stable; workspace $ws_web
 bindsym F3 exec vivaldi-stable; workspace $ws_web
 bindsym F4 exec $terminal --title="Ranger" -e "ranger"; workspace $ws_file
