@@ -2,7 +2,7 @@
 " File:        statusline.vim
 " Description: Statusline setup for vim
 " Author:      Near Huscarl <near.huscarl@gmail.com>
-" Last Change: Tue Sep 26 20:45:59 +07 2017
+" Last Change: Fri Nov 03 17:59:52 +07 2017
 " Licence:     BSD 3-Clause license
 " Note:        N/A
 " ============================================================================
@@ -157,49 +157,60 @@ function! statusline#CtrlPStatusline2(...) " {{{
    let len = '%4* ' . a:1 . ' %1*'
    let dir = '%=%<%4* ' . getcwd() . ' %*'
    return len.dir
-endfunction " }}}
+endfunction
+" }}}
+function! statusline#GetLinterStatus() " {{{
+   let l:counts = ale#statusline#Count(bufnr(''))
+
+   let l:all_errors = l:counts.error + l:counts.style_error
+   let l:all_non_errors = l:counts.total - l:all_errors
+
+   return l:counts.total == 0 ? 'OK' : printf('%dW %dE', all_non_errors, all_errors)
+endfunction
+" }}}
+function! statusline#UpdateStatuslineInfo() " {{{
+      let g:statuslineFileSize     = statusline#SetFileSize()
+      let g:statuslineWordCount    = statusline#SetWordCount()
+      let g:statuslineLastModified = statusline#SetLastModified()
+
+      if exists('g:loaded_fugitive')
+         let g:statuslineGitStatus = s:GitStatus()
+      else
+         let g:statuslineGitStatus = ''
+      endif
+      let g:statuslineFilename     = s:Filename()
+      let g:statuslineFiletype     = s:Filetype()
+      let g:statuslineBufnumber    = s:BufNum()
+      let g:statuslineIsReadOnly   = s:IsReadOnly()
+endfunction
+" }}}
 function! statusline#SetStatusline() " {{{
    " This function is called when entering new buffer
    if has('statusline')
-
-      let g:fileSize     = statusline#SetFileSize()
-      let g:wordCount    = statusline#SetWordCount()
-      let g:lastModified = statusline#SetLastModified()
-
-      if exists('g:loaded_fugitive')
-         let g:gitStatus = s:GitStatus()
-      else
-         let g:gitStatus = ''
-      endif
-      let g:filename     = s:Filename()
-      let g:filetype     = s:Filetype()
-      let g:bufnumber    = s:BufNum()
-      let g:isReadOnly   = s:IsReadOnly()
-
       "http://got-ravings.blogspot.com/2008/08/vim-pr0n-making-statuslines-that-own.html
       "https://vi.stackexchange.com/questions/6505/how-to-cut-trim-line-in-statusline/6506
       "Statusline (requires Powerline font, with highlight groups using Solarized theme)
-      setlocal statusline=
-      setlocal statusline+=%{g:bufnumber}\ \|\ |              "Buffer number
-      setlocal statusline+=%{statusline#InitModeColor()} "Initiate mode color
-      setlocal statusline+=%{statusline#GetMode()}\ |    "Show Current mode
-      setlocal statusline+=%1*\ |                             "Switch to User1 highlight
-      setlocal statusline+=%{g:filename}                      "Filename
-      setlocal statusline+=%{statusline#SetModified()}   "Append "+" after filename if modified
-      setlocal statusline+=%{g:isReadOnly}\ |                 "Is modificable or not
-      setlocal statusline+=%2*\|\ |                           "Switch to User2 highlight
-      setlocal statusline+=%{g:lastModified}\ |               "Last save time
-      setlocal statusline+=%=                                 "Switch to the right side
-      setlocal statusline+=%<                                 "Where to truncate line
-      setlocal statusline+=%{g:filetype}\ \|\ |               "Filetype
-      setlocal statusline+=%{g:fileSize}\ \|\ |               "Current file size
-      setlocal statusline+=%{g:wordCount}\ |                  "Total words in a file
-      setlocal statusline+=%3*                                "Switch to User3 highlight
-      setlocal statusline+=%{g:gitStatus}                     "Show current git branch
-      setlocal statusline+=%*                                 "Switch back to statusline highlight
-      setlocal statusline+=\ %2p%%\ \|                        "Percentage through file in lines as in |CTRL-G|
-      setlocal statusline+=\ %03l:%-2v\ |                     "Line number and column number
-
+      set statusline=
+      set statusline+=%{g:statuslineBufnumber}\ \|\ |    " Buffer number
+      set statusline+=%{statusline#InitModeColor()}      " Initiate mode color
+      set statusline+=%{statusline#GetMode()}\ |         " Show Current mode
+      set statusline+=%1*\ |                             " Switch to User1 highlight
+      set statusline+=%{g:statuslineFilename}            " Filename
+      set statusline+=%{statusline#SetModified()}        " Append "+" after filename if modified
+      set statusline+=%{g:statuslineIsReadOnly}\ |       " Is modificable or not
+      set statusline+=%2*\|\ |                           " Switch to User2 highlight
+      set statusline+=%{g:statuslineLastModified}\ |     " Last save time
+      set statusline+=%=                                 " Switch to the right side
+      set statusline+=%<                                 " Where to truncate line
+      set statusline+=%{g:statuslineFiletype}\ \|\ |     " Filetype
+      set statusline+=%{g:statuslineFileSize}\ \|\ |     " Current file size
+      set statusline+=%{g:statuslineWordCount}\ \|\ |    " Total words in a file
+      set statusline+=%{statusline#GetLinterStatus()}\ | " Total words in a file
+      set statusline+=%3*                                " Switch to User3 highlight
+      set statusline+=%{g:statuslineGitStatus}           " Show current git branch
+      set statusline+=%*                                 " Switch back to statusline highlight
+      set statusline+=\ %2p%%\ \|                        " Percentage through file in lines as in |CTRL-G|
+      set statusline+=\ %03l:%-2v\ |                     " Line number and column number
    endif
 endfunction " }}}
 " Highlight {{{

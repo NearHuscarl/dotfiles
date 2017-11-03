@@ -2,7 +2,7 @@
 " File:        .vimrc
 " Description: Vim settings
 " Author:      Near Huscarl <near.huscarl@gmail.com>
-" Last Change: Fri Nov 03 03:16:42 +07 2017
+" Last Change: Fri Nov 03 18:10:29 +07 2017
 " Licence:     BSD 3-Clause license
 " Note:        This is a personal vim config. therefore most likely not work 
 "              on your machine
@@ -422,6 +422,8 @@ nnoremap <Leader>rr :.,.+s//<Left><Left><Left>|    "Replace from current line to
 " }}}
 " {{{ Misc
 nnoremap U :later 1f<CR>|                          "Go to the latest change
+imap < <|                                          "Pathetic attempt to fixing < map
+cmap < <
 nnoremap << <_|                                    " << not working
 nnoremap <F8> mzggg?G`z|                           "Encrypted with ROT13, just for fun
 nnoremap Q @q|                                     "Execute macro
@@ -567,9 +569,9 @@ Plug 'junegunn/goyo.vim',       {'on': 'Goyo'}
 Plug 'junegunn/vim-easy-align', {'on': '<Plug>(EasyAlign)'}
 
 Plug 'tpope/vim-commentary', {'on': [
-         \ '<Plug>Commentary',
-         \ '<Plug>CommentaryLine'
-         \ ]}
+       \ '<Plug>Commentary',
+       \ '<Plug>CommentaryLine'
+       \ ]}
 Plug 'honza/vim-snippets'
 Plug 'sirver/ultisnips', {'on': [
          \ 'UltiSnipsEdit',
@@ -1031,60 +1033,55 @@ let g:UltiSnipsJumpBackwardTrigger = "<A-k>"
 highlight ntCursor guifg=NONE guibg=NONE
 let blacklist = ['nerdtree', 'qf', 'gundo', 'fugitiveblame', 'vim-plug']
 
+call statusline#SetStatusline()
+augroup Statusline
+   autocmd!
+   autocmd BufEnter * silent! call statusline#UpdateStatuslineInfo()
+   autocmd BufWritePost * let g:statuslineLastModified = statusline#SetLastModified()
+   autocmd CursorHold * let g:statuslineFileSize  = statusline#SetFileSize()
+   autocmd CursorHold * let g:statuslineWordCount = statusline#SetWordCount()
+augroup END
+
+augroup SaveView
+   autocmd!
+   " Save view when switch buffer
+   autocmd BufEnter * if exists('b:winView') | call winrestview(b:winView) | endif
+   autocmd BufLeave * let b:winView = winsaveview()
+   " Save cursor position when open new file
+   autocmd BufReadPost *
+            \ if line("'\"") >= 1 && line("'\"") <= line("$")
+            \|  execute "normal! g`\""
+            \|endif
+augroup END
+
+augroup SwitchBuffer
+   autocmd!
+   autocmd BufEnter * set cursorline
+   autocmd BufEnter * set number relativenumber
+   autocmd BufLeave * set nocursorline
+   autocmd BufLeave * set norelativenumber
+augroup END
+
 autocmd BufEnter *
          \ if(index(blacklist, &filetype) < 0)
          \|    silent! lcd %:p:h
          \|    execute "set guicursor&"
          \|else | set guicursor=c-n-ve-i-r:ntCursor | endif
-         \|if(&filetype == 'help')     | execute "CloseEmptyBuffer" | endif
          \|if(&diff || &ft == 'gundo') | set timeout timeoutlen=0   | endif
-         \|set cursorline
-         \|set number
-         \|set relativenumber
-         \|if exists('b:winView') | call winrestview(b:winView) | endif
-         \|call statusline#SetStatusline()
 
-autocmd BufLeave *
-         \ set foldcolumn=0
-         \|setlocal statusline=\ %{bufnr('%')}\ \|\ %{expand('%:t')}
-         \|set nocursorline
-         \|set norelativenumber
-         \|let b:winView = winsaveview()
-         \|if (&diff || &ft == 'gundo') | set timeout& timeoutlen& | endif
+autocmd BufLeave * if (&diff || &ft == 'gundo') | set timeout& timeoutlen& | endif
 
-autocmd BufLeave *.cpp        normal! mC
-autocmd BufLeave *.h          normal! mH
-autocmd BufLeave _vimrc,*.vim normal! mV
-autocmd BufLeave *.md         normal! mM
-
-if exists('AutoPairs')
-   autocmd BufEnter *.html let g:AutoPairs["<"] = '>'
-   autocmd BufLeave *.html unlet g:AutoPairs["<"]
-endif
-
-autocmd BufReadPost *
-         \ if line("'\"") >= 1 && line("'\"") <= line("$")
-         \|  execute "normal! g`\""
-         \|endif
+autocmd BufEnter *.html let g:AutoPairs["<"] = '>'
+autocmd BufLeave *.html unlet g:AutoPairs["<"]
 
 autocmd QuickFixCmdPost * cwindow
-autocmd cursorhold * 
-         \ nohlsearch
-         \|let g:fileSize  = statusline#SetFileSize()
-         \|let g:wordCount = statusline#SetWordCount()
+autocmd CursorHold * nohlsearch
 
-autocmd BufWritePost * let g:lastModified = statusline#SetLastModified()
 autocmd InsertEnter * 
          \ execute "normal! ma"
          \|call plug#load('ultisnips')
          \|execute "normal! g`a"
          " \|call plug#load('neco-vim', 'neco-syntax', 'neoinclude.vim', 'neocomplete.vim', 'ultisnips')
-
-" Enable omni completion.
-autocmd FileType css           setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType javascript    setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType xml           setlocal omnifunc=xmlcomplete#CompleteTags
  
 autocmd FocusLost * if &modified && filereadable(expand("%:p")) | write | endif
 autocmd BufWritePre * call license#SetLastChangeBeforeBufWrite() 
@@ -1128,7 +1125,7 @@ if g:os == 'linux' && !has('gui_running')
    let charList = [
             \ 'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o',
             \ 'p','q','r','s','t','u','v','w','x','y','z','1','2','3','4',
-            \ '5','6','7','8','9','0',',','.','/',';',"'",']','\','-','=']
+            \ '5','6','7','8','9','0', ',', '.', '/', ';',"'",']','\','-','=']
    for char in charList
       exec "set <A-" .char. ">=\e" .char
       exec "imap \e" .char. " <A-" .char. ">"
