@@ -2,7 +2,7 @@
 " File:        .vimrc
 " Description: Vim settings
 " Author:      Near Huscarl <near.huscarl@gmail.com>
-" Last Change: Fri Nov 03 18:10:29 +07 2017
+" Last Change: Sun Nov 05 01:42:02 +07 2017
 " Licence:     BSD 3-Clause license
 " Note:        This is a personal vim config. therefore most likely not work 
 "              on your machine
@@ -118,16 +118,16 @@ set completeopt=menu,longest
 set complete-=i                                    "An attempt to make YCM faster
 
 if has('GUI_running')
-  " :put =&guifont
-  if g:os == 'win'
-     set guifont=Fura_Code_Light:h8:cANSI:qDRAFT,Andale_Mono:h10,Menlo:h10,Consolas:h10,Courier_New:h10
-  else
-     set guifont=DejaVu\ Sans\ Mono\ Bold\ 8
-  endif
-  set guioptions-=m                               "Remove menu bar
-  set guioptions-=T                               "Remove toolbar
-  set guioptions-=r                               "Remove right-hand scroll bar
-  set guioptions-=L                               "Remove left-hand scroll bar
+   " :put =&guifont
+   if g:os == 'win'
+      set guifont=Fura_Code_Light:h8:cANSI:qDRAFT,Andale_Mono:h10,Menlo:h10,Consolas:h10,Courier_New:h10
+   else
+      set guifont=DejaVu\ Sans\ Mono\ Bold\ 8
+   endif
+   set guioptions-=m                               "Remove menu bar
+   set guioptions-=T                               "Remove toolbar
+   set guioptions-=r                               "Remove right-hand scroll bar
+   set guioptions-=L                               "Remove left-hand scroll bar
 endif
 
 set selectmode=mouse                               "Trigger select mode when using mouse
@@ -170,10 +170,12 @@ endif
 set synmaxcol=228                                  "Maximum column for syntax highlighting
 set lazyredraw                                     "An attempt to make scrolling smoother
 
+set list                                           "Enable listchars option
+set listchars=tab:\|\ ,extends:»,precedes:«,trail:¥,nbsp:_
+" set expandtab                                      "When press tab, convert into n spaces
 set tabstop=3                                      "Set how many columns a tab count for
 set shiftwidth=3                                   "Set how many column is indented with >> and <<
 set softtabstop=3                                  "How many column insert when press tab
-set expandtab                                      "Convert tab into n corresponding space
 set smarttab                                       "Insert tab according to shiftwidth
 set backspace=2                                    "Backspace normal behaviour
 
@@ -208,7 +210,7 @@ let @n = "0f>a\<CR>\<Esc>$F<i\<CR>\<Esc>j"         "Newline per tag if not
 " {{{ Mappings
 
 " {{{ Open
-nnoremap <silent><Leader>S :source $MYVIMRC<Bar>nohlsearch<Bar>YcmRestartServer<CR>
+nnoremap <silent><Leader>S :call source#SourceAuto()<CR>
 nnoremap <Leader>tv :edit $MYVIMRC<Bar>CloseEmptyBuffer<CR>
 " }}}
 " {{{ Movement
@@ -334,6 +336,7 @@ inoremap <A-'> <C-Right>|                          "Go to the next word
 inoremap <A-r> <C-r>|                              "Insert register ...
 inoremap <A-m> <Esc>zzli|                          "Make current line the center of window
 inoremap <S-Tab> <C-p>|                            "Go to previous selection in comepletion menu
+inoremap <A-v> <C-v>|                              "Insert special character
 " }}}
 " {{{ Popup
 inoremap <expr><A-n>   pumvisible() ? "\<Down>"        : "\<C-n>"
@@ -385,7 +388,7 @@ vnoremap Ka
          \ :copen 20<CR>|                          "Find word under cursor in current working directory
 vnoremap <Leader>a y:Ag <C-r>"<Space>|             "Ag search (just like grep but faster)
 vnoremap <Leader>c y:CtrlP <C-r>"<CR>|             "CtrlP search
-vnoremap ; y:<C-r>"<CR>|                           "Execute selected command in visual block
+vnoremap ; <Esc>:'<,'>|                            "Execute command in visual range
 
 nnoremap <A-v> <C-q>|                              "Visual block
 vnoremap <A-v> <C-q>|                              "Visual block (Use to switch to VBlock from Visual)
@@ -479,6 +482,9 @@ command! -nargs=+ ExistsInTab                   echo near#utils#ExistsInTab(<f-a
 command! OpenTagInVSplit                        call near#utils#OpenTagInVSplit()
 command! TrimWhitespace                         call near#utils#TrimWhitespace()
 command! MakeSymlink                            call near#utils#MakeSymlink()
+command! -range=% Space2Tab      <line1>,<line2>call retab#Space2Tab()
+command! -range=% Space2TabAll   <line1>,<line2>call retab#Space2TabAll()
+command! -range=% Tab2SpaceAll   <line1>,<line2>call retab#Tab2SpaceAll()
 " }}}
 
 " }}}
@@ -507,7 +513,7 @@ Plug 'w0rp/ale'
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-shell'
 Plug 'xolox/vim-easytags'
-Plug 'xolox/vim-session'
+Plug 'xolox/vim-session', {'on': []}
 
 " Other
 Plug 'justinmk/vim-sneak', {'on': [
@@ -638,7 +644,6 @@ let g:ale_lint_on_text_changed = 0
 
 nmap [a <Plug>(ale_previous_wrap)zz
 nmap ]a <Plug>(ale_next_wrap)zz
-
 " }}}
 "{{{ Auto Pairs
 autocmd InsertEnter * :silent! all autopairs#AutoPairsTryInit()
@@ -648,6 +653,10 @@ let g:AutoPairsShortcutToggle     = ''
 let g:AutoPairsShortcutFastWrap   = ''
 let g:AutoPairsShortcutBackInsert = ''
 "}}}
+" {{{ AsyncRun
+" Async with Fugitive
+command! -bang -nargs=* -complete=file Make AsyncRun -program=make @ <args>
+" }}}
 "{{{ Smooth Scroll
 nnoremap <silent> <A-j> :call smooth_scroll#down(6, 0, 2)<CR>
 nnoremap <silent> <A-k> :call smooth_scroll#up(6, 0, 2)<CR>
@@ -1020,6 +1029,7 @@ let g:NERDTreeDirArrowCollapsible = '-'
 "{{{ Ultisnips
 nnoremap <Leader>U :UltiSnipsEdit<CR>|                            " Open new file to define snippets
 nnoremap <Leader><Leader>U :UltiSnipsEdit!<CR>|                   " Open all available files to select
+inoremap <silent><Tab> <C-r>=lazyload#UltiSnips()<CR>
 
 let g:UltiSnipsSnippetsDir = s:snippet                             " Custom snippets stored here
 let g:UltiSnipsSnippetDirectories  = ["UltiSnips","snippet"]        " Directories list for ultisnips to search
@@ -1077,15 +1087,10 @@ autocmd BufLeave *.html unlet g:AutoPairs["<"]
 autocmd QuickFixCmdPost * cwindow
 autocmd CursorHold * nohlsearch
 
-autocmd InsertEnter * 
-         \ execute "normal! ma"
-         \|call plug#load('ultisnips')
-         \|execute "normal! g`a"
-         " \|call plug#load('neco-vim', 'neco-syntax', 'neoinclude.vim', 'neocomplete.vim', 'ultisnips')
- 
+" call plug#load('neco-vim', 'neco-syntax', 'neoinclude.vim', 'neocomplete.vim', 'ultisnips')
+
 autocmd FocusLost * if &modified && filereadable(expand("%:p")) | write | endif
 autocmd BufWritePre * call license#SetLastChangeBeforeBufWrite() 
-autocmd VimEnter * execute "inoremap <silent><Tab> <C-R>=near#utils#UltiSnips_Complete()<CR>"
 
 " Save fold when leaving vim
 " autocmd BufWinLeave * silent! mkview
@@ -1133,3 +1138,11 @@ if g:os == 'linux' && !has('gui_running')
    exec "set <A-[>=<C-[>"
    exec "inoremap \e[ <C-[>"
 endif
+
+" let s:async = ''
+" if ExistsFile(s:plugged . 'asyncrun.vim')
+"    let s:async = 'AsyncRun '
+" else
+"    let s:async = '!'
+" endif
+" execute s:async . 'eval `keychain --eval --agents ssh id_rsa`'

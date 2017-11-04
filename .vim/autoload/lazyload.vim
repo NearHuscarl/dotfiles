@@ -2,7 +2,7 @@
 " File:        lazyload.vim
 " Description: Functions to lazyload some plugins
 " Author:      Near Huscarl <near.huscarl@gmail.com>
-" Last Change: Wed Oct 04 10:13:47 +07 2017
+" Last Change: Sun Nov 05 00:35:42 +07 2017
 " Licence:     BSD 3-Clause license
 " Note:        Need vim-plug
 " ============================================================================
@@ -52,5 +52,15 @@ endfunction
 function! lazyload#SessionVIEW() " {{{
    call s:SetupSessionPlugin()
    execute "normal! :SessionView \<C-d>"
+endfunction
+" }}}
+function! lazyload#UltiSnips() " {{{
+   " lazyload ultisnips make cursor move -> restore cursor pos
+   let viewInfo  = winsaveview()
+   call plug#load('ultisnips')
+   call winrestview(viewInfo)
+
+   inoremap <silent><Tab> <C-R>=ultisnips#Expand()<CR>
+   return ultisnips#Expand()
 endfunction
 " }}}

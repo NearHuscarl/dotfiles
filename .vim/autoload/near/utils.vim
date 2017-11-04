@@ -2,36 +2,11 @@
 " File:        utils.vim
 " Description: Utility Functions
 " Author:      Near Huscarl <near.huscarl@gmail.com>
-" Last Change: Fri Oct 13 11:19:42 +07 2017
+" Last Change: Sun Nov 05 00:29:23 +07 2017
 " Licence:     BSD 3-Clause license
 " Note:        Miscellaneous functions in autoload/ is put here
 " ============================================================================
 
-function! near#utils#UltiSnips_Complete() " {{{
-   call UltiSnips#ExpandSnippet()
-   if g:ulti_expand_res == 0
-      if pumvisible()
-         return "\<C-n>\<C-x>"
-      else
-         call UltiSnips#JumpForwards()
-         if g:ulti_jump_forwards_res == 0
-            return "\<Tab>"
-         endif
-      endif
-   endif
-   return ""
-endfunction " }}}
-" function! near#utils#UltiSnipsLazyLoad() " {{{
-
-"   " Fix cursor move to random position (:(
-"   execute "normal! ma"
-"   call plug#load('ultisnips')
-"   execute "normal! g`a"
-"   call feedkeys("\<Right>", 'i')
-
-"   inoremap <silent><Tab> <C-R>=near#utils#UltiSnips_Complete()<CR>
-"   return "\<Tab>"
-" endfunction " }}}
 function! near#utils#ToggleHeader() " {{{
    let fileName = expand('%')
    let name = split(fileName, '\.')[0]
