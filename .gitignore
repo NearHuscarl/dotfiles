@@ -13,6 +13,7 @@
 !/.npm-init.js
 !/.gitignore
 !/.profile
+!/.pylintrc
 !/.scss-lint.yml
 !/.tern-project
 !/.vimrc
@@ -20,6 +21,8 @@
 !/install.sh
 
 !/bin/
+!/screenshot/
+!/script/
 !/styles/
 !/.fonts/
 

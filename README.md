@@ -41,7 +41,7 @@ Config Files
 
  * [vim](https://github.com/NearHuscarl/dotfiles/blob/master/.vimrc)
  * [compton](https://github.com/NearHuscarl/dotfiles/blob/master/.config/compton.conf)
- * [i3](https://github.com/NearHuscarl/dotfiles/blob/master/.config/i3/config)
+ * [i3](https://github.com/NearHuscarl/dotfiles/blob/master/.config/i3/config.ctrl)
  * [polybar](https://github.com/NearHuscarl/dotfiles/blob/master/.config/polybar/config)
  * [ranger](https://github.com/NearHuscarl/dotfiles/blob/master/.config/ranger/rc.conf)
  * [zathura](https://github.com/NearHuscarl/dotfiles/blob/master/.config/zathura/zathurarc)
