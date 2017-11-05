@@ -2,7 +2,7 @@
 " File:        .vimrc
 " Description: Vim settings
 " Author:      Near Huscarl <near.huscarl@gmail.com>
-" Last Change: Sun Nov 05 01:42:02 +07 2017
+" Last Change: Sun Nov 05 13:29:17 +07 2017
 " Licence:     BSD 3-Clause license
 " Note:        This is a personal vim config. therefore most likely not work 
 "              on your machine
@@ -11,29 +11,29 @@
 " {{{ Variables
 
 if !exists('os')
-   if has('win32') || has('win64')
-      let os = 'win'
-   else
-      let os = substitute(system('uname'), '\n', '', '')
-   endif
+	if has('win32') || has('win64')
+		let os = 'win'
+	else
+		let os = substitute(system('uname'), '\n', '', '')
+	endif
 endif
 
 if g:os == 'win'
-   let $MYVIMRC   = $HOME.'\_vimrc'
-   let s:autoload = $HOME.'\vimfiles\autoload\'
-   let s:plugged  = $HOME.'\vimfiles\plugged\'
-   let s:session  = $HOME.'\vimfiles\session\'
-   let s:snippet  = $HOME.'\vimfiles\snippet\'
-   let s:swapfile = $HOME.'\vimfiles\swapfiles//'
-   let s:undo     = $HOME.'\vimfiles\undo\'
+	let $MYVIMRC   = $HOME.'\_vimrc'
+	let s:autoload = $HOME.'\vimfiles\autoload\'
+	let s:plugged  = $HOME.'\vimfiles\plugged\'
+	let s:session  = $HOME.'\vimfiles\session\'
+	let s:snippet  = $HOME.'\vimfiles\snippet\'
+	let s:swapfile = $HOME.'\vimfiles\swapfiles//'
+	let s:undo     = $HOME.'\vimfiles\undo\'
 else
-   let $MYVIMRC   = $HOME.'/.vimrc'
-   let s:autoload = $HOME.'/.vim/autoload/'
-   let s:plugged  = $HOME.'/.vim/plugged/'
-   let s:session  = $HOME.'/.vim/session/'
-   let s:snippet  = $HOME.'/.vim/snippet/'
-   let s:swapfile = $HOME.'/.vim/swapfiles//'
-   let s:undo     = $HOME.'/.vim/undo/'
+	let $MYVIMRC   = $HOME.'/.vimrc'
+	let s:autoload = $HOME.'/.vim/autoload/'
+	let s:plugged  = $HOME.'/.vim/plugged/'
+	let s:session  = $HOME.'/.vim/session/'
+	let s:snippet  = $HOME.'/.vim/snippet/'
+	let s:swapfile = $HOME.'/.vim/swapfiles//'
+	let s:undo     = $HOME.'/.vim/undo/'
 endif
 
 let mapleader = "\<Space>"
@@ -41,33 +41,33 @@ let mapleader = "\<Space>"
 " }}}
 "{{{ Function
 function! ExistsFile(path) " {{{
-   return !empty(glob(a:path))
+	return !empty(glob(a:path))
 endfunction
 " }}}
 function! s:BufferIsEmpty() " {{{
-    if (line('$') == 1 && getline(1) == '') && (filereadable(@%) == 0)
-        return 1
-    endif
-    return 0
+	 if (line('$') == 1 && getline(1) == '') && (filereadable(@%) == 0)
+		  return 1
+	 endif
+	 return 0
 endfunction
 " }}}
 function! s:CloseEmptyBuffer() " {{{
-   let t:NumOfWin = winnr('$')
-   while t:NumOfWin >= 1
-      execute "wincmd p"
-      if s:BufferIsEmpty()
-         while s:BufferIsEmpty() && t:NumOfWin >= 1
-            execute "bdelete"
-            let t:NumOfWin -= 1
-         endwhile
-      endif
-      let t:NumOfWin -= 1
-   endwhile
+	let t:NumOfWin = winnr('$')
+	while t:NumOfWin >= 1
+		execute "wincmd p"
+		if s:BufferIsEmpty()
+			while s:BufferIsEmpty() && t:NumOfWin >= 1
+				execute "bdelete"
+				let t:NumOfWin -= 1
+			endwhile
+		endif
+		let t:NumOfWin -= 1
+	endwhile
 endfunction
 " }}}
 function! s:Eatchar(pat) " {{{
-   let c = nr2char(getchar(0))
-   return (c =~ a:pat) ? '' : c
+	let c = nr2char(getchar(0))
+	return (c =~ a:pat) ? '' : c
 endfunction
 " }}}
 "}}}
@@ -86,17 +86,17 @@ filetype plugin on
 filetype indent on
 
 if has('gui_running')
-   try
-      color flat
-      " colorscheme gotham
-   catch /E185/
-      colorscheme evening
-   endtry
+	try
+		color flat
+		" colorscheme gotham
+	catch /E185/
+		colorscheme evening
+	endtry
 else
-   let g:solarized_termcolors=&t_Co
-   let g:solarized_termtrans=1
-   " color solarized8_dark
-   color flat
+	let g:solarized_termcolors=&t_Co
+	let g:solarized_termtrans=1
+	" color solarized8_dark
+	color flat
 endif
 
 set hidden                                         "Make buffer hidden once modified
@@ -118,16 +118,16 @@ set completeopt=menu,longest
 set complete-=i                                    "An attempt to make YCM faster
 
 if has('GUI_running')
-   " :put =&guifont
-   if g:os == 'win'
-      set guifont=Fura_Code_Light:h8:cANSI:qDRAFT,Andale_Mono:h10,Menlo:h10,Consolas:h10,Courier_New:h10
-   else
-      set guifont=DejaVu\ Sans\ Mono\ Bold\ 8
-   endif
-   set guioptions-=m                               "Remove menu bar
-   set guioptions-=T                               "Remove toolbar
-   set guioptions-=r                               "Remove right-hand scroll bar
-   set guioptions-=L                               "Remove left-hand scroll bar
+	" :put =&guifont
+	if g:os == 'win'
+		set guifont=Fura_Code_Light:h8:cANSI:qDRAFT,Andale_Mono:h10,Menlo:h10,Consolas:h10,Courier_New:h10
+	else
+		set guifont=DejaVu\ Sans\ Mono\ Bold\ 8
+	endif
+	set guioptions-=m                               "Remove menu bar
+	set guioptions-=T                               "Remove toolbar
+	set guioptions-=r                               "Remove right-hand scroll bar
+	set guioptions-=L                               "Remove left-hand scroll bar
 endif
 
 set selectmode=mouse                               "Trigger select mode when using mouse
@@ -137,10 +137,10 @@ set confirm                                        "Confirm to quit when quit wi
 
 set laststatus=2
 if has('persistent_undo')                          "check if your vim version supports it
-   set undofile                                    "turn on the feature
-   let &undodir = s:undo                           "Location to store undo files
-   set undolevels=2000                             "Number of changes that can be undo
-   set undoreload=5000                             "Number of max lines to be saved for undo
+	set undofile                                    "turn on the feature
+	let &undodir = s:undo                           "Location to store undo files
+	set undolevels=2000                             "Number of changes that can be undo
+	set undoreload=5000                             "Number of max lines to be saved for undo
 endif
 let &directory = s:swapfile
 "Set directory for swap files
@@ -163,8 +163,8 @@ set formatoptions+=j                               "Remove a comment leader when
 set wrap                                           "Turn off auto wrap
 set showbreak=>>\                                  "Characters at the start of wrapped lines
 if has('linebreak')
-   set linebreak                                   "Wrap long lines at last words instead of the last characters
-   set breakindent                                 "Keep the indent level after wrapping
+	set linebreak                                   "Wrap long lines at last words instead of the last characters
+	set breakindent                                 "Keep the indent level after wrapping
 endif
 
 set synmaxcol=228                                  "Maximum column for syntax highlighting
@@ -188,7 +188,7 @@ set t_vb=                                          "Disable error beep in termin
 set belloff=all                                    "Just shut the fuck up
 
 if has('mksession')
-   set sessionoptions-=options                     "Do not store settings and mappings in session
+	set sessionoptions-=options                     "Do not store settings and mappings in session
 endif
 
 set history=10000                                  "Set number of commands and search to be remembered
@@ -198,12 +198,12 @@ set wildignore+=*.7z,*.bin,*.doc,*.docx,*.exe,*.ico,*.gif,*.jpg,*.jpeg,*.mp3,*.o
 set wildignore+=*.png,*.ppt,*.pptx,*.rar,*.swp,*.sfdm,*.xls,*.xlsx,*.xnb,*.zip
 
 if has('folding')
-   set foldenable
-   set foldmethod=marker
+	set foldenable
+	set foldmethod=marker
 endif
 
 if has('GUI_running') && has('windows')
-   set guitablabel=\[%N\]\ %t\ %M                  "Tabs only display file name rather than path+filename
+	set guitablabel=\[%N\]\ %t\ %M                  "Tabs only display file name rather than path+filename
 endif
 let @n = "0f>a\<CR>\<Esc>$F<i\<CR>\<Esc>j"         "Newline per tag if not
 "}}}
@@ -269,23 +269,23 @@ nnoremap j gj|                                     "j version that treat wrapped
 nnoremap k gk|                                     "k version that treat wrapped line as another line
 
 if has('jumplist')
-   nnoremap <A-o> <C-o>|                           "Jump back (include non-tag jump)
-   nnoremap <S-o> <C-i>|                           "Jump forward (include non-tag jump)
-   nnoremap <A-9> g;|                              "Jump backward
-   nnoremap <A-0> g,|                              "Jump forward
+	nnoremap <A-o> <C-o>|                           "Jump back (include non-tag jump)
+	nnoremap <S-o> <C-i>|                           "Jump forward (include non-tag jump)
+	nnoremap <A-9> g;|                              "Jump backward
+	nnoremap <A-0> g,|                              "Jump forward
 endif
 
 if &wrap
-   nnoremap 0 g^|    "Go to the first non-blank character of the line, treat wrapped line as another line
-   onoremap 0 g^
-   nnoremap ^ g0|    "Go to the first character of the line, treat wrapped line as another line
-   onoremap ^ g0
-   nnoremap $ g$|    "$ version that treat wrapped line as another line
+	nnoremap 0 g^|    "Go to the first non-blank character of the line, treat wrapped line as another line
+	onoremap 0 g^
+	nnoremap ^ g0|    "Go to the first character of the line, treat wrapped line as another line
+	onoremap ^ g0
+	nnoremap $ g$|    "$ version that treat wrapped line as another line
 else
-   nnoremap 0 ^|     "Go to the first non-blank character of the line
-   onoremap 0 ^
-   nnoremap ^ 0|     "Go to the first character of the line
-   onoremap ^ 0
+	nnoremap 0 ^|     "Go to the first non-blank character of the line
+	onoremap 0 ^
+	nnoremap ^ 0|     "Go to the first character of the line
+	onoremap ^ 0
 endif
 
 
@@ -314,8 +314,8 @@ nnoremap <silent> Ke :call help#GetHelpOxfordDictionary('cursor')<CR>
 nnoremap Kd :GetHelp<Space>|                       "Search for help on (d)evdoc
 nnoremap Kh :OpenHelpInTab<CR>|                    "Open help about the word under cursor
 nnoremap Ka
-         \ :grep! "<C-R><C-W>"<CR><Bar>
-         \ :copen 20<CR>|                          "Find word under cursor in current working directory
+			\ :grep! "<C-R><C-W>"<CR><Bar>
+			\ :copen 20<CR>|                          "Find word under cursor in current working directory
 " }}}
 " {{{ Pair
 nnoremap ]t :tnext<CR>|                            "Go to next tag in the tag list
@@ -384,8 +384,8 @@ vnoremap <silent> <A-h> 5<C-y>5k5<C-y>5k5<C-y>5k|  "Scroll 5 line below
 
 vnoremap Kh y:OpenHelpInTab <C-r>"<CR>|           "Open help about the word under cursor
 vnoremap Ka
-         \ y:grep! "<C-R>""<CR><Bar>
-         \ :copen 20<CR>|                          "Find word under cursor in current working directory
+			\ y:grep! "<C-R>""<CR><Bar>
+			\ :copen 20<CR>|                          "Find word under cursor in current working directory
 vnoremap <Leader>a y:Ag <C-r>"<Space>|             "Ag search (just like grep but faster)
 vnoremap <Leader>c y:CtrlP <C-r>"<CR>|             "CtrlP search
 vnoremap ; <Esc>:'<,'>|                            "Execute command in visual range
@@ -417,8 +417,8 @@ cnoremap <A-r> <C-r>*|                             "Paste yanked text in command
 vnoremap <Leader>rf y:%s/<C-r>"/|                  "Replace in whole file with query is the selected word
 vnoremap <Leader>rb y:bufdo %s/<C-r>"/|            "Replace across opening buffers with query is the selected word
 vnoremap <Leader>rr 
-         \y:.,.+s/<C-r>"/<Home>
-         \<Right><Right><Right><Right>|            "Replace from current line to ... with query is the selected word
+			\y:.,.+s/<C-r>"/<Home>
+			\<Right><Right><Right><Right>|            "Replace from current line to ... with query is the selected word
 nnoremap <Leader>rf :%s/|                          "Replace in whole file
 nnoremap <Leader>rb :bufdo %s/|                    "Replace across opening buffers
 nnoremap <Leader>rr :.,.+s//<Left><Left><Left>|    "Replace from current line to ...
@@ -435,10 +435,10 @@ vnoremap < <gv|                                    "Make indent easier
 nnoremap <leader>py :echom expand("%:p")<CR>|      "Echo current file path
 
 if ExistsFile(s:autoload . 'license.vim')
-   nnoremap <silent> u     :call license#SkipLicenseDate('undo')<CR>
-   nnoremap <silent> <A-u> :call license#SkipLicenseDate('redo')<CR>
+	nnoremap <silent> u     :call license#SkipLicenseDate('undo')<CR>
+	nnoremap <silent> <A-u> :call license#SkipLicenseDate('redo')<CR>
 else
-   nnoremap <silent> <A-u> <C-r>
+	nnoremap <silent> <A-u> <C-r>
 endif
 
 nnoremap <A-p> ciw<C-r>*<esc>|                     "Paste over a word
@@ -447,9 +447,10 @@ nnoremap <Leader>N :nohlsearch<CR>|                "diable highlight result
 nnoremap <A-Space> a<Space><Left><esc>|            "Insert a whitespace
 nnoremap <Enter> o<Esc>|                           "Make new line
 nnoremap Y y$|                                     "Make Y yank to endline (same behaviours as D or R)
-nnoremap <C-w> :ToggleWrap<CR>|                     "Toggle wrap option
+nnoremap <C-w> :ToggleWrap<CR>|                    "Toggle wrap option
 nnoremap <C-o> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
-nnoremap - :w<CR>|                                 "Write changes
+nnoremap <silent>- :w<CR>|                         "Write changes
+nnoremap <silent><Leader>- :SudoWrite<CR>|         "Write changes with sudo
 nnoremap <silent><Leader>tV :ToggleVerbose<CR>
 " }}}
 " {{{ Abbreviation
@@ -467,12 +468,12 @@ cabbrev eprf8 E:\Program Files (x86)<C-r>=s:Eatchar('\m\s\<Bar>/')<CR>
 " }}}
 " {{{ Command difinition
 if ExistsFile(s:autoload . 'help.vim')
-   command! -nargs=* GetHelp silent! call help#GetHelp(<f-args>)
+	command! -nargs=* GetHelp silent! call help#GetHelp(<f-args>)
 endif
 if ExistsFile(s:autoload . 'toggleOption.vim')
-   command! ToggleMenuBar call toggleOption#MenuBar()
-   command! ToggleVerbose call toggleOption#Verbose()
-   command! ToggleWrap    call toggleOption#Wrap()
+	command! ToggleMenuBar call toggleOption#MenuBar()
+	command! ToggleVerbose call toggleOption#Verbose()
+	command! ToggleWrap    call toggleOption#Wrap()
 endif
 command! ToggleHeader                           call near#utils#ToggleHeader()
 command! -nargs=? -complete=help OpenHelpInTab  call near#utils#OpenHelpInTab(<q-args>)
@@ -485,6 +486,7 @@ command! MakeSymlink                            call near#utils#MakeSymlink()
 command! -range=% Space2Tab      <line1>,<line2>call retab#Space2Tab()
 command! -range=% Space2TabAll   <line1>,<line2>call retab#Space2TabAll()
 command! -range=% Tab2SpaceAll   <line1>,<line2>call retab#Tab2SpaceAll()
+command! SudoWrite                              w !sudo tee > /dev/null %
 " }}}
 
 " }}}
@@ -495,16 +497,16 @@ call plug#begin(s:plugged)
 Plug 'bling/vim-bufferline'
 Plug 'junegunn/fzf.vim'
 Plug 'haya14busa/incsearch.vim', {'on': [
-         \ '<Plug>(incsearch-forward)',
-         \ '<Plug>(incsearch-backward)',
-         \ '<Plug>(incsearch-stay)',
-         \ '<Plug>(incsearch-nohl-n)',
-         \ '<Plug>(incsearch-nohl-N)',
-         \ '<Plug>(incsearch-nohl-*)',
-         \ '<Plug>(incsearch-nohl-#)',
-         \ '<Plug>(incsearch-nohl-g*)',
-         \ '<Plug>(incsearch-nohl-g#)'
-         \ ]}
+			\ '<Plug>(incsearch-forward)',
+			\ '<Plug>(incsearch-backward)',
+			\ '<Plug>(incsearch-stay)',
+			\ '<Plug>(incsearch-nohl-n)',
+			\ '<Plug>(incsearch-nohl-N)',
+			\ '<Plug>(incsearch-nohl-*)',
+			\ '<Plug>(incsearch-nohl-#)',
+			\ '<Plug>(incsearch-nohl-g*)',
+			\ '<Plug>(incsearch-nohl-g#)'
+			\ ]}
 Plug 'vim-utils/vim-man', {'on': []}
 Plug 'tpope/vim-fugitive'
 Plug 'skywind3000/asyncrun.vim'
@@ -517,37 +519,23 @@ Plug 'xolox/vim-session', {'on': []}
 
 " Other
 Plug 'justinmk/vim-sneak', {'on': [
-         \ '<Plug>Sneak_s',
-         \ '<Plug>Sneak_S',
-         \ '<Plug>Sneak_f',
-         \ '<Plug>Sneak_F',
-         \ '<Plug>Sneak_t',
-         \ '<Plug>Sneak_T'
-         \ ]}
+			\ '<Plug>Sneak_s',
+			\ '<Plug>Sneak_S',
+			\ '<Plug>Sneak_f',
+			\ '<Plug>Sneak_F',
+			\ '<Plug>Sneak_t',
+			\ '<Plug>Sneak_T'
+			\ ]}
 
 Plug 'airblade/vim-rooter'
 Plug 'scrooloose/nerdtree', {'on': [
-         \ 'NERDTreeTabsToggle',
-         \ 'NERDTreeFind'
-         \ ]}
+			\ 'NERDTreeTabsToggle',
+			\ 'NERDTreeFind'
+			\ ]}
 Plug 'jistr/vim-nerdtree-tabs', {'on': [
-         \ 'NERDTreeTabsToggle',
-         \ 'NERDTreeFind'
-         \ ]}
-
-Plug 'tpope/vim-eunuch', {'on': [
-         \ 'Delete',
-         \ 'Unlink',
-         \ 'Move',
-         \ 'Rename',
-         \ 'Chmod',
-         \ 'Mkdir',
-         \ 'Find',
-         \ 'Locate',
-         \ 'Wall',
-         \ 'SudoWrite',
-         \ 'SudoEdit'
-         \ ]}
+			\ 'NERDTreeTabsToggle',
+			\ 'NERDTreeFind'
+			\ ]}
 
 Plug 'suan/vim-instant-markdown'
 
@@ -561,9 +549,9 @@ Plug 'hdima/python-syntax'
 Plug 'hail2u/vim-css3-syntax'
 
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight', {'on': [
-         \ 'NERDTreeTabsToggle',
-         \ 'NERDTreeFind'
-         \ ]}
+			\ 'NERDTreeTabsToggle',
+			\ 'NERDTreeFind'
+			\ ]}
 Plug 'altercation/vim-colors-solarized'
 Plug 'dhruvasagar/vim-table-mode', {'on': 'TableModeToggle'}
 Plug 'ap/vim-css-color'
@@ -575,34 +563,34 @@ Plug 'junegunn/goyo.vim',       {'on': 'Goyo'}
 Plug 'junegunn/vim-easy-align', {'on': '<Plug>(EasyAlign)'}
 
 Plug 'tpope/vim-commentary', {'on': [
-       \ '<Plug>Commentary',
-       \ '<Plug>CommentaryLine'
-       \ ]}
+		 \ '<Plug>Commentary',
+		 \ '<Plug>CommentaryLine'
+		 \ ]}
 Plug 'honza/vim-snippets'
 Plug 'sirver/ultisnips', {'on': [
-         \ 'UltiSnipsEdit',
-         \ 'UltiSnipsEdit!'
-         \ ]}
+			\ 'UltiSnipsEdit',
+			\ 'UltiSnipsEdit!'
+			\ ]}
 Plug 'mattn/emmet-vim', {'on': ['EmmetInstall']}
 Plug 'jiangmiao/auto-pairs' ", {'on': []}
 Plug 'tpope/vim-surround', {'on': [
-         \ '<Plug>Ysurround',
-         \ '<Plug>Dsurround',
-         \ '<Plug>Csurround',
-         \ '<Plug>CSurround',
-         \ '<Plug>Ysurround',
-         \ '<Plug>YSurround',
-         \ '<Plug>Yssurround',
-         \ '<Plug>YSsurround',
-         \ '<Plug>YSsurround',
-         \ '<Plug>VSurround',
-         \ '<Plug>VgSurround'
-         \ ]}
+			\ '<Plug>Ysurround',
+			\ '<Plug>Dsurround',
+			\ '<Plug>Csurround',
+			\ '<Plug>CSurround',
+			\ '<Plug>Ysurround',
+			\ '<Plug>YSurround',
+			\ '<Plug>Yssurround',
+			\ '<Plug>YSsurround',
+			\ '<Plug>YSsurround',
+			\ '<Plug>VSurround',
+			\ '<Plug>VgSurround'
+			\ ]}
 Plug 'Ron89/thesaurus_query.vim', {'on': [
-         \ 'ThesaurusQueryReplaceCurrentWord',
-         \ 'Thesaurus',
-         \ 'ThesaurusQueryReplace'
-         \ ]}
+			\ 'ThesaurusQueryReplaceCurrentWord',
+			\ 'Thesaurus',
+			\ 'ThesaurusQueryReplace'
+			\ ]}
 
 Plug 'Valloric/YouCompleteMe'
 " Plug 'shougo/neocomplete.vim', {'on': []}
@@ -616,9 +604,9 @@ Plug 'Konfekt/FastFold'
 Plug 'NearHuscarl/gundo.vim', {'on': 'GundoToggle'}
 
 Plug 'drmikehenry/vim-fontsize', {'on': [
-         \ '<Plug>FontsizeInc',
-         \ '<Plug>FontsizeDec'
-         \ ]}
+			\ '<Plug>FontsizeInc',
+			\ '<Plug>FontsizeDec'
+			\ ]}
 " Plug 'powerline/fonts'
 call plug#end()
 
@@ -665,15 +653,15 @@ nnoremap <silent> <A-h> :call smooth_scroll#up(15, 0, 3)<CR>
 " nnoremap <silent> H     :call smooth_scroll#up(40, 0, 10)<CR>
 " nnoremap <silent> L     :call smooth_scroll#down(40, 0, 10)<CR>
 if g:os == 'win'
-   let s:smoothScrollPath = '~\vimfiles\plugged\vim-smooth-scroll\autoload\smooth_scroll.vim'
+	let s:smoothScrollPath = '~\vimfiles\plugged\vim-smooth-scroll\autoload\smooth_scroll.vim'
 else
-   let s:smoothScrollPath = '~/.vim/plugged/vim-smooth-scroll/autoload/smooth_scroll.vim'
+	let s:smoothScrollPath = '~/.vim/plugged/vim-smooth-scroll/autoload/smooth_scroll.vim'
 endif
 if !ExistsFile(s:smoothScrollPath)
-   nnoremap <silent><A-j> 3<C-e>3j
-   nnoremap <silent><A-k> 3<C-y>3k
-   nnoremap <silent><A-l> 10<C-e>10j
-   nnoremap <silent><A-h> 10<C-y>10k
+	nnoremap <silent><A-j> 3<C-e>3j
+	nnoremap <silent><A-k> 3<C-y>3k
+	nnoremap <silent><A-l> 10<C-e>10j
+	nnoremap <silent><A-h> 10<C-y>10k
 endif
 "}}}
 "{{{ FastFold
@@ -701,13 +689,13 @@ nnoremap <Leader>gbr :Gbrowse<CR>|                 "Open current file on github
 nnoremap <Leader>gBR :Gbrowse<Space><C-d>|         "Open current file on github
 nnoremap <Leader>gg  :Ggrep! <C-r><C-w><CR><CR>|   "Find word under cursor in repo
 nnoremap <Leader>gl
-         \ :Glog!<CR><Bar>
-         \ :bot copen<CR>|                         "Load all version before
+			\ :Glog!<CR><Bar>
+			\ :bot copen<CR>|                         "Load all version before
 nnoremap <Leader>gL  :Glog!<Space><C-d>|           "Load all version before
 nnoremap <Leader>gsc :Glog! --grep= -- %<C-Left><C-Left><Left>| "Search for commit message
 nnoremap <Leader>gsd :Glog! -S -- %<C-Left><C-Left><Left>|      "Search content in diffs history
 nnoremap <silent><Leader>gh 
-         \ :!"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" "https://github.com/NearHuscarl/.vimrc/commits/master/_vimrc"<CR><CR>
+			\ :!"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" "https://github.com/NearHuscarl/.vimrc/commits/master/_vimrc"<CR><CR>
 "}}}
 "{{{ fzf
 " Recommend: use with vim-rooter
@@ -732,18 +720,18 @@ let g:rg_command = '
 "   \ 'header':  ['fg', 'Comment'] }
 
 let g:fzfOpt='--bind=
-         \alt-k:up,
-         \alt-j:down,
-         \alt-i:abort,
-         \alt-h:backward-char,
-         \alt-l:forward-char,
-         \alt-n:backward-word,
-         \alt-m:forward-word,
-         \alt-e:jump,
-         \alt-t:toggle,
-         \alt-d:kill-line
-         \ --color=info:6,bg+:8,hl+:1,hl:3,pointer:6,marker:1,spinner:6
-         \ --multi'
+			\alt-k:up,
+			\alt-j:down,
+			\alt-i:abort,
+			\alt-h:backward-char,
+			\alt-l:forward-char,
+			\alt-n:backward-word,
+			\alt-m:forward-word,
+			\alt-e:jump,
+			\alt-t:toggle,
+			\alt-d:kill-line
+			\ --color=info:6,bg+:8,hl+:1,hl:3,pointer:6,marker:1,spinner:6
+			\ --multi'
 
 let g:fzf_action = {
   \ 'alt-enter': 'tab split',
@@ -752,50 +740,50 @@ let g:fzf_action = {
 
 " Show all except binary
 command! -bang FilesAll
-         \ call fzf#run({
-         \  'source': 'rg $HOME /etc/systemd --files --no-ignore --hidden --follow --no-messages --glob "!{undo,.local}/*"',
-         \  'sink': 'edit',
-         \  'options': g:fzfOpt
-         \ })
+			\ call fzf#run({
+			\  'source': 'rg $HOME /etc/systemd --files --no-ignore --hidden --follow --no-messages --glob "!{undo,.local}/*"',
+			\  'sink': 'edit',
+			\  'options': g:fzfOpt
+			\ })
 
 " Show all in / except binary
 " Will update when more files need to be searched
 command! -bang FilesRoot
-         \ call fzf#run({
-         \  'source': 'rg /etc/systemd --files --no-ignore --hidden --follow --no-messages',
-         \  'sink': 'edit',
-         \  'options': g:fzfOpt
-         \ })
+			\ call fzf#run({
+			\  'source': 'rg /etc/systemd --files --no-ignore --hidden --follow --no-messages',
+			\  'sink': 'edit',
+			\  'options': g:fzfOpt
+			\ })
 
 " Unlike fzf#vim#files, respect .gitignore
 command! -bang -nargs=1 FilesRepo
-         \ call fzf#run({
-         \  'source': 'rg ' . <args> . ' --files --hidden --no-messages',
-         \  'sink': 'edit',
-         \  'options': g:fzfOpt
-         \ })
+			\ call fzf#run({
+			\  'source': 'rg ' . <args> . ' --files --hidden --no-messages',
+			\  'sink': 'edit',
+			\  'options': g:fzfOpt
+			\ })
 
 command! -bang -nargs=* Grep
-         \ call fzf#vim#grep(g:rg_command .shellescape(<q-args>), 1, {'options': g:fzfOpt}, <bang>0)
+			\ call fzf#vim#grep(g:rg_command .shellescape(<q-args>), 1, {'options': g:fzfOpt}, <bang>0)
 command! -bang -nargs=? -complete=dir Files
-         \ call fzf#vim#files(<q-args>, {
-         \   'options': g:fzfOpt,
-         \   'source': 'rg --files --no-ignore --hidden --follow --no-messages --glob "!{undo,.local}/*"'
-         \ }, <bang>0)
+			\ call fzf#vim#files(<q-args>, {
+			\   'options': g:fzfOpt,
+			\   'source': 'rg --files --no-ignore --hidden --follow --no-messages --glob "!{undo,.local}/*"'
+			\ }, <bang>0)
 command! -bang Colors
-         \ call fzf#vim#colors({'options': g:fzfOpt}, <bang>0)
+			\ call fzf#vim#colors({'options': g:fzfOpt}, <bang>0)
 command! -bang -nargs=* History
-         \ call fzf#vim#history({'options': g:fzfOpt}, <bang>0)
+			\ call fzf#vim#history({'options': g:fzfOpt}, <bang>0)
 command! -bang Helptags
-         \ call fzf#vim#helptags({'options': g:fzfOpt}, <bang>0)
+			\ call fzf#vim#helptags({'options': g:fzfOpt}, <bang>0)
 command! -bang Tags
-         \ call fzf#vim#tags(<q-args>, {'options': g:fzfOpt}, <bang>0)
+			\ call fzf#vim#tags(<q-args>, {'options': g:fzfOpt}, <bang>0)
 command! -bang Maps
-         \ call fzf#vim#maps(<q-args>, {'options': g:fzfOpt}, <bang>0)
+			\ call fzf#vim#maps(<q-args>, {'options': g:fzfOpt}, <bang>0)
 command! -bang -nargs=* Lines
-         \ call fzf#vim#lines({'options': g:fzfOpt}, <bang>0)
+			\ call fzf#vim#lines({'options': g:fzfOpt}, <bang>0)
 command! -bang -nargs=? -complete=buffer Buffers
-         \ call fzf#vim#buffers({'options': g:fzfOpt}, <bang>0)
+			\ call fzf#vim#buffers({'options': g:fzfOpt}, <bang>0)
 
 nnoremap <Leader>ep  :FilesRepo FindRootDirectory()<CR>|                   "Current (p)roject root directory
 nnoremap <Leader>erh :FilesRepo "$HOME/"<CR>
@@ -822,7 +810,7 @@ let g:rooter_silent_chdir = 1
 "}}}
 "{{{ Gundo
 if has('python3') && !has('python')
-   let g:gundo_prefer_python3 = 1
+	let g:gundo_prefer_python3 = 1
 endif
 
 nnoremap <Leader>u :GundoToggle<CR>
@@ -874,9 +862,6 @@ let g:user_emmet_leader_key    = '<A-o>'
 let g:user_emmet_next_key      = '<A-o>n'
 let g:user_emmet_prev_key      = '<A-o>p'
 let g:user_emmet_removetag_key = '<A-o>r'
-"}}}
-"{{{ Eunuch
-nnoremap <silent><Leader>- :SudoWrite<CR>
 "}}}
 "{{{ Incsearch
 let g:incsearch#auto_nohlsearch = 1
@@ -972,12 +957,12 @@ xmap gS  <Plug>VgSurround
 "{{{ Thesaurus Query
 "Require internet
 if has('python3')
-   let g:tq_python_version          = 3
-   let g:tq_online_backends_timeout = 0.6
+	let g:tq_python_version          = 3
+	let g:tq_online_backends_timeout = 0.6
 
-   nnoremap <Leader>to :Thesaurus<Space>
-   nnoremap Kt :ThesaurusQueryReplaceCurrentWord<CR>
-   vnoremap Kt y:ThesaurusQueryReplace <C-r>"<CR>
+	nnoremap <Leader>to :Thesaurus<Space>
+	nnoremap Kt :ThesaurusQueryReplaceCurrentWord<CR>
+	vnoremap Kt y:ThesaurusQueryReplace <C-r>"<CR>
 endif
 "}}}
 "{{{ Table Mode
@@ -986,8 +971,8 @@ inoremap <A-t> <Esc>:TableModeToggle<CR>a
 "{{{ Vim-man
 " ../vim-man/plugin/man.vim
 command! -nargs=* -bar -complete=customlist,man#completion#run Man  
-         \ call plug#load('vim-man')
-         \|call man#get_page('horizontal', <f-args>)
+			\ call plug#load('vim-man')
+			\|call man#get_page('horizontal', <f-args>)
 "}}}
 "{{{ Neocomplete
 let g:neocomplete#enable_at_startup                 = 1 " Use neocomplete.
@@ -1000,9 +985,9 @@ let g:neocomplete#sources#omni#functions            = ['cpp']
 "}}}
 " {{{ Youcompleteme
 let g:ycm_semantic_triggers = {
-    \   'css':  [ 're!^\s{3}',  're!:\s+' ],
-    \   'scss': [ 're!^\s{3,}', 're!:\s+' ],
-    \ }
+	 \   'css':  [ 're!^\s{3}',  're!:\s+' ],
+	 \   'scss': [ 're!^\s{3,}', 're!:\s+' ],
+	 \ }
 let g:ycm_key_list_select_completion = []
 " }}}
 "{{{ NERDTree
@@ -1019,9 +1004,9 @@ let NERDTreeIgnore           = ['NTUSER.DAT*']
 set ambiwidth=double
 
 autocmd BufEnter *
-         \ if(winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree())
-         \|    q
-         \|endif " Close NERDTree automatically if it's the only buffer left
+			\ if(winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree())
+			\|    q
+			\|endif " Close NERDTree automatically if it's the only buffer left
 
 let g:NERDTreeDirArrowExpandable  = '+'
 let g:NERDTreeDirArrowCollapsible = '-'
@@ -1045,39 +1030,39 @@ let blacklist = ['nerdtree', 'qf', 'gundo', 'fugitiveblame', 'vim-plug']
 
 call statusline#SetStatusline()
 augroup Statusline
-   autocmd!
-   autocmd BufEnter * silent! call statusline#UpdateStatuslineInfo()
-   autocmd BufWritePost * let g:statuslineLastModified = statusline#SetLastModified()
-   autocmd CursorHold * let g:statuslineFileSize  = statusline#SetFileSize()
-   autocmd CursorHold * let g:statuslineWordCount = statusline#SetWordCount()
+	autocmd!
+	autocmd BufEnter * silent! call statusline#UpdateStatuslineInfo()
+	autocmd BufWritePost * let g:statuslineLastModified = statusline#SetLastModified()
+	autocmd CursorHold * let g:statuslineFileSize  = statusline#SetFileSize()
+	autocmd CursorHold * let g:statuslineWordCount = statusline#SetWordCount()
 augroup END
 
 augroup SaveView
-   autocmd!
-   " Save view when switch buffer
-   autocmd BufEnter * if exists('b:winView') | call winrestview(b:winView) | endif
-   autocmd BufLeave * let b:winView = winsaveview()
-   " Save cursor position when open new file
-   autocmd BufReadPost *
-            \ if line("'\"") >= 1 && line("'\"") <= line("$")
-            \|  execute "normal! g`\""
-            \|endif
+	autocmd!
+	" Save view when switch buffer
+	autocmd BufEnter * if exists('b:winView') | call winrestview(b:winView) | endif
+	autocmd BufLeave * let b:winView = winsaveview()
+	" Save cursor position when open new file
+	autocmd BufReadPost *
+				\ if line("'\"") >= 1 && line("'\"") <= line("$")
+				\|  execute "normal! g`\""
+				\|endif
 augroup END
 
 augroup SwitchBuffer
-   autocmd!
-   autocmd BufEnter * set cursorline
-   autocmd BufEnter * set number relativenumber
-   autocmd BufLeave * set nocursorline
-   autocmd BufLeave * set norelativenumber
+	autocmd!
+	autocmd BufEnter * set cursorline
+	autocmd BufEnter * set number relativenumber
+	autocmd BufLeave * set nocursorline
+	autocmd BufLeave * set norelativenumber
 augroup END
 
 autocmd BufEnter *
-         \ if(index(blacklist, &filetype) < 0)
-         \|    silent! lcd %:p:h
-         \|    execute "set guicursor&"
-         \|else | set guicursor=c-n-ve-i-r:ntCursor | endif
-         \|if(&diff || &ft == 'gundo') | set timeout timeoutlen=0   | endif
+			\ if(index(blacklist, &filetype) < 0)
+			\|    silent! lcd %:p:h
+			\|    execute "set guicursor&"
+			\|else | set guicursor=c-n-ve-i-r:ntCursor | endif
+			\|if(&diff || &ft == 'gundo') | set timeout timeoutlen=0   | endif
 
 autocmd BufLeave * if (&diff || &ft == 'gundo') | set timeout& timeoutlen& | endif
 
@@ -1112,31 +1097,31 @@ autocmd BufWritePre * call license#SetLastChangeBeforeBufWrite()
 " endfunction
 
 if has('gui_running')
-   if g:os == 'linux'
-      autocmd VimEnter * 
-               \ if executable('wmctrl')
-               \|   call system('wmctrl -i -b add,maximized_vert,maximized_horz -r '.v:windowid)
-               \|endif
-   elseif g:os == 'win'
-      autocmd GUIEnter * simalt ~x            "Open vim in maximum winow size
-   endif
+	if g:os == 'linux'
+		autocmd VimEnter * 
+					\ if executable('wmctrl')
+					\|   call system('wmctrl -i -b add,maximized_vert,maximized_horz -r '.v:windowid)
+					\|endif
+	elseif g:os == 'win'
+		autocmd GUIEnter * simalt ~x            "Open vim in maximum winow size
+	endif
 endif
 "}}}
 
 
 if g:os == 'linux' && !has('gui_running')
-   " Fix alt key not working in gnome-terminal
-   " if \e not work, replace with  (<C-v><C-[>)
-   let charList = [
-            \ 'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o',
-            \ 'p','q','r','s','t','u','v','w','x','y','z','1','2','3','4',
-            \ '5','6','7','8','9','0', ',', '.', '/', ';',"'",']','\','-','=']
-   for char in charList
-      exec "set <A-" .char. ">=\e" .char
-      exec "imap \e" .char. " <A-" .char. ">"
-   endfor
-   exec "set <A-[>=<C-[>"
-   exec "inoremap \e[ <C-[>"
+	" Fix alt key not working in gnome-terminal
+	" if \e not work, replace with  (<C-v><C-[>)
+	let charList = [
+				\ 'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o',
+				\ 'p','q','r','s','t','u','v','w','x','y','z','1','2','3','4',
+				\ '5','6','7','8','9','0', ',', '.', '/', ';',"'",']','\','-','=']
+	for char in charList
+		exec "set <A-" .char. ">=\e" .char
+		exec "imap \e" .char. " <A-" .char. ">"
+	endfor
+	exec "set <A-[>=<C-[>"
+	exec "inoremap \e[ <C-[>"
 endif
 
 " let s:async = ''
