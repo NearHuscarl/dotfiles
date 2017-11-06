@@ -154,8 +154,8 @@ if [ -f ~/bin/fzf-script ]; then
     source ~/bin/fzf-script
 fi
 
-# eval $(keychain --eval --quiet id_ed25519 id_rsa ~/keys/my_custom_key)
-eval `keychain --eval --agents ssh id_rsa`
+# start ssh-agent
+eval `keychain --eval --quiet --agents ssh id_rsa`
 
 # ranger
 if [[ -x /usr/bin/ranger && -f $HOME/.config/ranger/rc.conf ]]; then
