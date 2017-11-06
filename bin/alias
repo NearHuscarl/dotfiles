@@ -4,7 +4,7 @@
 # Description: Bash custom aliases and other alias functions, some alias have
 #              the equivalent completion as the original commands
 # Author:      Near Huscarl <near.huscarl@gmail.com>
-# Last Change: Tue Oct 24 13:36:07 +07 2017
+# Last Change: Sun Nov 05 18:04:22 +07 2017
 # Licence:     BSD 3-Clause license
 # Note:        N/A
 # ============================================================================
@@ -41,6 +41,7 @@ alias tree="alias-tree"
 # vim {{{
 if [[ -x /usr/bin/vim ]]; then
    alias view="vim -R"
+   alias vim0="vim -u NONE"
    alias vimrc="vim $HOME/.vimrc"
    alias vim-startup="vim --startuptime $HOME/misc/log -c q && vim $HOME/misc/log"
    # vir in $HOME/bin/vir
@@ -179,6 +180,7 @@ alias sxiv="sxiv -b -s h"
 # Other {{{
 alias sa='source $HOME/bin/alias'
 alias sb='source $HOME/.bashrc && clear'
+alias xmod='xmodmap ~/.Xmodmap'
 alias reboot='shutdown -r now'
 alias shutoff='$HOME/bin/shutdown'
 alias size="alias-size"
@@ -188,7 +190,8 @@ alias top="vtop"
 if [[ -x /usr/bin/xfce4-terminal ]]; then
    alias term='xfce4-terminal'
 fi
-alias alsa-fix="sudo /usr/local/bin/alsa-fix.sh"
+alias internet="$editor $HOME/misc/Internet.txt"
+alias alsa-fix="sudo /usr/local/bin/fix_headphones_audio.sh"
 alias music="ncmpcpp"
 alias clock="tty-clock -s -c -D -C6"
 alias symlink="ln -s"
@@ -197,9 +200,11 @@ alias toggle-tray="alias-toggle-tray"
 alias key-import='gpg --recv-keys'
 # }}}
 # Even shorter aliases {{{
+alias r='fc -s'
 alias e='exit'
 alias c='clear'
 alias js='node'
+alias py='python'
 # }}}
 # Apply completion to aliases {{{
 
