@@ -29,7 +29,7 @@ exec $no_loading xfce4-power-manager
 exec $no_loading xscreensaver -nosplash
 exec $no_loading "dropbox start"
 exec $no_loading nm-applet
-exec $no_loading workspace $ws_web; exec $terminal -e 'vim -c "silent SessionOpen todo"' --title=Todo; workspace 1
+exec $no_loading $HOME/bin/start-todo
 # exec $no_loading i3-msg 'exec /usr/bin/pulseaudio --start'
 
 # xfce4 settings
@@ -119,6 +119,7 @@ for_window [class="Nitrogen"]          $FLOAT
 for_window [class="Gucharmap"]         $FLOAT
 for_window [class="Blueberry.py"]      $FLOAT
 for_window [class="Sxiv"]              $FLOAT
+for_window [class="feh"]               $FLOAT
 for_window [title="Floating"]          $FLOAT
 for_window [title="Startup Settings"]  $FLOAT
 for_window [class="mpv"]               $FLOAT
@@ -141,7 +142,7 @@ bindsym F1 exec $terminal
 bindsym F2 exec $terminal --title="Vim - Dev" -e "bash --login -c 'vim --servername vim'"; workspace $ws_dev
 # bindsym F3 exec google-chrome-stable; workspace $ws_web
 bindsym F3 exec vivaldi-stable; workspace $ws_web
-bindsym F4 exec $terminal --title="Ranger" -e "ranger"; workspace $ws_file
+bindsym F4 exec $terminal --title="Ranger" -e "bash --login -c ranger"; workspace $ws_file
 bindsym F5 exec zathura; workspace $ws_doc
 # bindsym F6 exec caprine; workspace $ws_design
 # bindsym F6 exec thunar; workspace $ws_file

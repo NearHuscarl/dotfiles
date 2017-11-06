@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# $TERMINAL from ~/bin/export
+# Because vim-session only open on demand (lazyload)
+# to open session todo, use vim-plug to load it first
+# Dependencies:
+#  vim-plug
+#  vim-session
+vim_command='silent call plug#load("vim-session") | SessionOpen todo'
+$TERMINAL -e "vim --servername todo -c '$vim_command' --title=Todo"
