@@ -15,7 +15,7 @@ set $ws_misc   "10"
 
 set $terminal   i3-sensible-terminal
 set $lock_font  Roboto-Bold
-set $mod        Control
+set $mod        Mod4
 set $super      Mod4
 set $no_loading --no-startup-id
 # }}}
