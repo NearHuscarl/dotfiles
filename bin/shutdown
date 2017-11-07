@@ -4,6 +4,8 @@
 vim --servername todo --remote-send '<Esc>:wqa<CR>'
 # close main vim
 vim --servername vim --remote-send '<Esc>:wqa<CR>'
+# Wait until the processes have been shut down
+while pgrep -x vim >/dev/null; do sleep 1; done
 
 # now shutdown
 shutdown -h now
