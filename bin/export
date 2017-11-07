@@ -21,6 +21,14 @@ export PATH=$PATH:$HOME/.npm-global/bin
 export PATH=$PATH:$HOME/script/
 # Temp fix for scss_lint
 export PATH=$PATH:$HOME/.gem/ruby/2.4.0/bin/
-
+# python linter
+export PYLINTRC=$HOME/.pylintrc
 export BROWSER=vivaldi-stable
 export EDITOR=vim
+
+# theme
+export THEME_BG='#1F2D3A'
+export THEME_BG_ALT='#2C3E50'
+export THEME_FG='#ecf0f1'
+export THEME_HL='#16A085'
+export THEME_FG_ALT='#84888B'

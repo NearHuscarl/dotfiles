@@ -8,6 +8,6 @@ while pgrep -x polybar >/dev/null; do sleep 1; done
 
 # Launch bar1 and bar2
 polybar holybar &
+polybar molybar &
 
-
-echo "Bars launched..."
+echo "holy and moly launched..."

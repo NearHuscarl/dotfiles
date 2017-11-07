@@ -80,3 +80,5 @@
 /.vim/autoload/plug.vim
 /.config/ranger/history
 /.npm-global/
+# api
+weather_api.txt

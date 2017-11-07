@@ -33,19 +33,14 @@ cyan       = #16a085
 ; {{{ [bar/holybar]
 [bar/holybar]
 width = 100%
-height = 27
+height = 25
 fixed-center = false
 
+; space between elements in a module
 spacing = 1
 
 background = ${colors.background}
 foreground = ${colors.foreground-text}
-
-line-size = 2
-line-color = #f00
-
-border-size = 0
-border-color = #00000000
 
 padding-left = 2
 padding-right = 2
@@ -53,15 +48,46 @@ padding-right = 2
 module-margin-left = 0
 module-margin-right = 3
 
-font-0 = "roboto mono:bold:pixelsize=8;2"
 ; font-0 = Inconsolata:mono:bold:pixelsize=9;2
+font-0 = "roboto mono:bold:pixelsize=8;2"
 font-1 = MaterialIcons:size=12;3
 font-2 = fontawesome:pixelsize=10;1
 font-3 = "DejaVu Math TeX Gyre:pixelsize=10;1"
 font-4 = "DejaVu Sans:pixelsize=10;1"
 
-modules-left = bspwm i3 mpd
-modules-right = wired-network wireless-network cpu memory filesystem home xbacklight volume xkeyboard battery temperature date time pac-update powermenu
+modules-left = i3 mpd
+modules-right = wired-network wireless-network cpu memory filesystem home volume battery date time powermenu
+; }}}
+; {{{ [bar/molybar]
+[bar/molybar]
+bottom = true
+
+width = ${bar/holybar.width}
+height = ${bar/holybar.height}
+fixed-center = false
+
+spacing = ${bar/holybar.spacing}
+
+border-top-size = 1
+border-top-color = ${colors.background-alt}
+
+background = ${bar/holybar.background}
+foreground = ${bar/holybar.foreground}
+
+padding-left  = ${bar/holybar.padding-left}
+padding-right = ${bar/holybar.padding-right}
+
+module-margin-left  = ${bar/holybar.module-margin-left}
+module-margin-right = ${bar/holybar.module-margin-right}
+
+font-0 = ${bar/holybar.font-0}
+font-1 = ${bar/holybar.font-1}
+font-2 = ${bar/holybar.font-2}
+font-3 = ${bar/holybar.font-3}
+font-4 = ${bar/holybar.font-4}
+
+modules-left = weather
+modules-right = gmail pac-update
 ; }}}
 ; {{{ [module/filesystem]
 [module/filesystem]
@@ -166,6 +192,7 @@ label-song-foreground = ${colors.foreground-icon}
 
 label-song = %title:2:25:...%
 label-offline =  mpd is offline
+; }}}
 ; {{{ [module/cpu]
 [module/cpu]
 type = internal/cpu
@@ -324,16 +351,6 @@ animation-charging-4 = 
 animation-charging-foreground = ${colors.foreground-icon}
 animation-charging-framerate = 750
 ; }}}
-; {{{ [module/pac-update]
-; [module/pac-update]
-; type = custom/script
-; interval = 1200
-
-; format = <label>
-; label = "%output:0:30%"
-; exec = .config/polybar/pac-update.sh
-; exec-if = "ping -q -w 2 -c 1 176.34.135.167 > /dev/null"
-; ; }}}
 ; {{{ [module/powermenu]
 [module/powermenu]
 type = custom/menu
@@ -353,5 +370,33 @@ menu-0-1-exec = systemctl reboot
 menu-0-2 = 
 menu-0-2-exec = systemctl poweroff
 ; }}}
+
+; {{{ [module/temperature]
+[module/weather]
+type = custom/script
+interval = 600
+
+exec = bash -l -c '$HOME/.config/polybar/weather.py metric'
+exec-if = "ping -q -w 2 -c 1 176.34.135.167 > /dev/null"
+; }}}
+; {{{ [module/gmail]
+[module/gmail]
+type = custom/script
+interval = 700
+
+exec = bash -l -c '$HOME/.config/polybar/gmail.py'
+exec-if = "ping -q -w 2 -c 1 176.34.135.167 > /dev/null"
+; }}}
+; {{{ [module/pac-update]
+[module/pac-update]
+type = custom/script
+interval = 1200
+
+format = <label>
+label = "%output:0:30%"
+exec = bash -l -c $HOME/.config/polybar/pac-update.sh
+exec-if = "ping -q -w 2 -c 1 176.34.135.167 > /dev/null"
+; }}}
+
 
 ; vim:ft=dosini foldmethod=marker
