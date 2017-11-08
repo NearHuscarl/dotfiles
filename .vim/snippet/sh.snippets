@@ -50,6 +50,18 @@ endsnippet
 # => my_array = (|)
 snippet "arr(ay)?( (\S+))?" "array declaration" br
 `!p
-snip.rv = match.group(3) if match.group(2) is not None else "arr"
+snip.rv = match.group(3) if match.group(2) is not None else 'arr'
 ` = ($2)
+endsnippet
+
+snippet "f(unc)?( (\S+))?" "function declaration" br
+${1:`!p snip.rv = match.group(3) if match.group(2) is not None else ''`}() {
+	$2
+}
+endsnippet
+
+snippet "F(unc)?( (\S+))?" "function declaration" br
+function ${1:`!p snip.rv = match.group(3) if match.group(2) is not None else ''`}() {
+	$2
+}
 endsnippet
