@@ -12,6 +12,9 @@
 ; <i class="material-icons">&#xE8FC;</i>
 ; => type <C-v>ue8fc in insert mode
 
+; {{{ [base]
+TERMINAL = ${env:TERMINAL:xfce4-terminal}
+; }}}
 ; {{{ [colors]
 [colors]
 background = #ff1F2D3A
@@ -57,37 +60,6 @@ font-4 = "DejaVu Sans:pixelsize=10;1"
 
 modules-left = i3 mpd
 modules-right = wired-network wireless-network cpu memory filesystem home volume battery date time powermenu
-; }}}
-; {{{ [bar/molybar]
-[bar/molybar]
-bottom = true
-
-width = ${bar/holybar.width}
-height = ${bar/holybar.height}
-fixed-center = false
-
-spacing = ${bar/holybar.spacing}
-
-border-top-size = 1
-border-top-color = ${colors.background-alt}
-
-background = ${bar/holybar.background}
-foreground = ${bar/holybar.foreground}
-
-padding-left  = ${bar/holybar.padding-left}
-padding-right = ${bar/holybar.padding-right}
-
-module-margin-left  = ${bar/holybar.module-margin-left}
-module-margin-right = ${bar/holybar.module-margin-right}
-
-font-0 = ${bar/holybar.font-0}
-font-1 = ${bar/holybar.font-1}
-font-2 = ${bar/holybar.font-2}
-font-3 = ${bar/holybar.font-3}
-font-4 = ${bar/holybar.font-4}
-
-modules-left = weather
-modules-right = gmail pac-update
 ; }}}
 ; {{{ [module/filesystem]
 [module/filesystem]
@@ -371,10 +343,41 @@ menu-0-2 = 
 menu-0-2-exec = systemctl poweroff
 ; }}}
 
-; {{{ [module/temperature]
+; {{{ [bar/molybar]
+[bar/molybar]
+bottom = true
+
+width = ${bar/holybar.width}
+height = ${bar/holybar.height}
+fixed-center = false
+
+spacing = ${bar/holybar.spacing}
+
+border-top-size = 1
+border-top-color = ${colors.background-alt}
+
+background = ${bar/holybar.background}
+foreground = ${bar/holybar.foreground}
+
+padding-left  = ${bar/holybar.padding-left}
+padding-right = ${bar/holybar.padding-right}
+
+module-margin-left  = ${bar/holybar.module-margin-left}
+module-margin-right = ${bar/holybar.module-margin-right}
+
+font-0 = ${bar/holybar.font-0}
+font-1 = ${bar/holybar.font-1}
+font-2 = ${bar/holybar.font-2}
+font-3 = ${bar/holybar.font-3}
+font-4 = ${bar/holybar.font-4}
+
+modules-left = weather
+modules-right = gmail pac_update
+; }}}
+; {{{ [module/weather]
 [module/weather]
 type = custom/script
-interval = 600
+interval = 700
 
 exec = bash -l -c '$HOME/.config/polybar/weather.py metric'
 exec-if = "ping -q -w 2 -c 1 176.34.135.167 > /dev/null"
@@ -382,20 +385,21 @@ exec-if = "ping -q -w 2 -c 1 176.34.135.167 > /dev/null"
 ; {{{ [module/gmail]
 [module/gmail]
 type = custom/script
-interval = 700
+interval = 600
 
 exec = bash -l -c '$HOME/.config/polybar/gmail.py'
-exec-if = "ping -q -w 2 -c 1 176.34.135.167 > /dev/null"
+click-left = xdg-open https://mail.google.com
 ; }}}
-; {{{ [module/pac-update]
-[module/pac-update]
+; {{{ [module/pac_update]
+[module/pac_update]
 type = custom/script
 interval = 1200
 
-format = <label>
-label = "%output:0:30%"
-exec = bash -l -c $HOME/.config/polybar/pac-update.sh
+exec = bash -l -c $HOME/.config/polybar/pac_update.sh
 exec-if = "ping -q -w 2 -c 1 176.34.135.167 > /dev/null"
+
+click-left  = bash -l -c '$HOME/.config/polybar/pac_update.sh update_pac'
+click-right = bash -l -c '$HOME/.config/polybar/pac_update.sh update_aur'
 ; }}}
 
 

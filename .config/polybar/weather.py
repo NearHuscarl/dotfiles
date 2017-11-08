@@ -1,11 +1,13 @@
 #!/bin/env python
 
+""" Module to display weather info on polybar """
+
 # -*- coding: utf-8 -*-
 
 import datetime
 import os
-import requests
 import sys
+import requests
 
 def get_weather_icon(weather_id):
 	""" Get weather icon based on weather condition """
@@ -82,40 +84,56 @@ def convert_temp_unit(temp_value, temp_unit):
 	elif temp_unit == 'F':
 		return round(temp_value * 1.8 + 32)
 
-def color_string(string):
-	""" Print output in color in polybar format """
+def color_string(string, color_envron_var):
+	"""
+	Print output in color in polybar format, second argument
+	is environment variable from $HOME/bin/export
+	"""
 
 	# Environment variables in $HOME/bin/export
-	color_begin = '%{F' + os.environ['THEME_HL'] +  '}'
+	color_begin = '%{F' + os.environ[color_envron_var] +  '}'
 	color_end = '%{F-}'
 	return color_begin + string + color_end
 
+
+region_code = {
+		'TPHCM': 1580578,
+		'TPHCM2': 1566083,
+		'Hai Duong': 1581326,
+		'Tan An': 1567069
+		}
 home_dir = os.environ['HOME']
 api_path = os.path.join(home_dir, '.config/polybar/weather_api.txt')
 
 with open(api_path, 'r') as file:
 	api_key = file.read().replace('\n', '')
 
-city_id = '1587923'
+city_id = region_code['Hai Duong']
 units = 'metric' if sys.argv[1] == 'metric' else 'imperial'
 temp_unit = 'C' if units == 'metric' else 'K'
-
 url = 'http://api.openweathermap.org/data/2.5/weather?id={}&appid={}&units={}'
-req = requests.get(url.format(city_id, api_key, units))
 
-try:
-	if req.status_code == 200:
-		description = req.json()['weather'][0]['description'].capitalize()
+def update_weather():
+	""" Update weather by using openweather api """
 
-		temp_value = round(req.json()['main']['temp'])
-		temp = str(temp_value) + '°' + temp_unit
-		thermo_icon = color_string(get_thermo_icon(temp_value))
+	req = requests.get(url.format(city_id, api_key, units))
+	error_icon = color_string('', 'THEME_ALERT')
 
-		weather_id = req.json()['weather'][0]['id']
-		weather_icon = color_string(get_weather_icon(weather_id))
+	try:
+		if req.status_code == 200:
+			description = req.json()['weather'][0]['description'].capitalize()
 
-		print('{} {} {} {}'.format(weather_icon, description, thermo_icon, temp))
-	else:
-		print('Error ' + str(req.status_code))
-except(ValueError, OSError):
-	print('Error: Unable print the data')
+			temp_value = round(req.json()['main']['temp'])
+			temp = str(temp_value) + '°' + temp_unit
+			thermo_icon = color_string(get_thermo_icon(temp_value), 'THEME_HL')
+
+			weather_id = req.json()['weather'][0]['id']
+			weather_icon = color_string(get_weather_icon(weather_id), 'THEME_HL')
+
+			print('{} {} {} {}'.format(weather_icon, description, thermo_icon, temp))
+		else:
+			print(error_icon + ' Error ' + str(req.status_code))
+	except(ValueError, OSError):
+		print(error_icon + ' Error')
+
+update_weather()
