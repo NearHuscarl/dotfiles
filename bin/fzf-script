@@ -41,7 +41,7 @@ fh() {
 # kill process
 fk() {
   local pid
-  pid=$(ps -ef | sed 1d | fzf -m | awk '{print $2}')
+  pid=$(ps -Af | sed 1d | fzf -m | awk '{print $2}')
 
   if [ "x$pid" != "x" ]
   then
