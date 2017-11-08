@@ -2,7 +2,7 @@
 " File:        .vimrc
 " Description: Vim settings
 " Author:      Near Huscarl <near.huscarl@gmail.com>
-" Last Change: Sun Nov 05 13:29:17 +07 2017
+" Last Change: Tue Nov 07 11:44:16 +07 2017
 " Licence:     BSD 3-Clause license
 " Note:        This is a personal vim config. therefore most likely not work 
 "              on your machine
@@ -402,10 +402,10 @@ cnoremap <A-Space> <BS>|                           "Delete 1 character
 cnoremap <A-u> <End><C-u>|                         "Delete current line
 cnoremap <A-;> <C-Left>|                           "Backward one word
 cnoremap <A-'> <C-Right>|                          "Forward one nail word
-cnoremap <A-n> <C-n>|                              "Go to the next command in history
-cnoremap <A-p> <C-p>|                              "Go to the previous command in history
 cnoremap <A-j> <C-n>|                              "Go to the next command in history
 cnoremap <A-k> <C-p>|                              "Go to the previous command in history
+cnoremap <A-n> <C-g>|                              "Next search in command mode
+cnoremap <A-p> <C-t>|                              "Previous search in command mode
 cnoremap <A-h> <Left>|                             "Go to the left one character
 cnoremap <A-l> <Right>|                            "Go to the right one character
 cnoremap <A-,> <Home>|                             "Move to the beginning of the line
@@ -507,6 +507,14 @@ Plug 'haya14busa/incsearch.vim', {'on': [
 			\ '<Plug>(incsearch-nohl-g*)',
 			\ '<Plug>(incsearch-nohl-g#)'
 			\ ]}
+" Plug 'haya14busa/is.vim', {'on': [
+" 			\ '<Plug>(is-n)',
+" 			\ '<Plug>(is-N)',
+" 			\ '<Plug>(is-*)',
+" 			\ '<Plug>(is-#)',
+" 			\ '<Plug>(is-scroll-f)',
+" 			\ '<Plug>(is-scroll-b)'
+" 			\ ]}
 Plug 'vim-utils/vim-man', {'on': []}
 Plug 'tpope/vim-fugitive'
 Plug 'skywind3000/asyncrun.vim'
@@ -645,24 +653,14 @@ let g:AutoPairsShortcutBackInsert = ''
 " Async with Fugitive
 command! -bang -nargs=* -complete=file Make AsyncRun -program=make @ <args>
 " }}}
-"{{{ Smooth Scroll
-nnoremap <silent> <A-j> :call smooth_scroll#down(6, 0, 2)<CR>
-nnoremap <silent> <A-k> :call smooth_scroll#up(6, 0, 2)<CR>
-nnoremap <silent> <A-l> :call smooth_scroll#down(15, 0, 3)<CR>
-nnoremap <silent> <A-h> :call smooth_scroll#up(15, 0, 3)<CR>
-" nnoremap <silent> H     :call smooth_scroll#up(40, 0, 10)<CR>
-" nnoremap <silent> L     :call smooth_scroll#down(40, 0, 10)<CR>
-if g:os == 'win'
-	let s:smoothScrollPath = '~\vimfiles\plugged\vim-smooth-scroll\autoload\smooth_scroll.vim'
-else
-	let s:smoothScrollPath = '~/.vim/plugged/vim-smooth-scroll/autoload/smooth_scroll.vim'
-endif
-if !ExistsFile(s:smoothScrollPath)
-	nnoremap <silent><A-j> 3<C-e>3j
-	nnoremap <silent><A-k> 3<C-y>3k
-	nnoremap <silent><A-l> 10<C-e>10j
-	nnoremap <silent><A-h> 10<C-y>10k
-endif
+"{{{ Bufferline
+let g:bufferline_rotate              = 2
+let g:bufferline_solo_highlight      = 1
+"}}}
+"{{{ Commentary
+map  gc  <Plug>Commentary
+nmap gcc <Plug>CommentaryLine
+nmap gCC gggcG
 "}}}
 "{{{ FastFold
 let g:fastfold_fold_command_suffixes  = []
@@ -808,6 +806,25 @@ nnoremap <Leader>b  :Buffers<CR>
 "{{{ vim-rooter
 let g:rooter_silent_chdir = 1
 "}}}
+"{{{ Incsearch
+let g:incsearch#auto_nohlsearch = 1
+map /  <Plug>(incsearch-forward)
+map ?  <Plug>(incsearch-backward)
+map g/ <Plug>(incsearch-stay)
+
+map n  <Plug>(incsearch-nohl-n)zz
+map N  <Plug>(incsearch-nohl-N)zz
+map *  <Plug>(incsearch-nohl-*)zz
+map #  <Plug>(incsearch-nohl-#)zz
+map g* <Plug>(incsearch-nohl-g*)zz
+map g# <Plug>(incsearch-nohl-g#)zz
+"}}}
+"{{{ is.vim
+" nmap n <Plug>(is-n)zozz
+" nmap N <Plug>(is-N)zozz
+" nmap * <Plug>(is-*)zozz
+" nmap # <Plug>(is-#)zozz
+"}}}
 "{{{ Gundo
 if has('python3') && !has('python')
 	let g:gundo_prefer_python3 = 1
@@ -822,17 +839,6 @@ let g:gundo_right            = 0
 let g:gundo_help             = 0
 let g:gundo_return_on_revert = 0
 let g:gundo_auto_preview     = 1
-"}}}
-"{{{ Bufferline
-let g:bufferline_active_buffer_left  = '['
-let g:bufferline_active_buffer_right = ']'
-let g:bufferline_rotate              = 2
-let g:bufferline_solo_highlight      = 1
-"}}}
-"{{{ Commentary
-map  gc  <Plug>Commentary
-nmap gcc <Plug>CommentaryLine
-nmap gCC gggcG
 "}}}
 "{{{ Syntax Highlight
 let g:NERDTreeHighlightFolders               = 1 " Enables folder icon highlighting using exact match
@@ -862,19 +868,6 @@ let g:user_emmet_leader_key    = '<A-o>'
 let g:user_emmet_next_key      = '<A-o>n'
 let g:user_emmet_prev_key      = '<A-o>p'
 let g:user_emmet_removetag_key = '<A-o>r'
-"}}}
-"{{{ Incsearch
-let g:incsearch#auto_nohlsearch = 1
-map /  <Plug>(incsearch-forward)
-map ?  <Plug>(incsearch-backward)
-map g/ <Plug>(incsearch-stay)
-
-map n  <Plug>(incsearch-nohl-n)zz
-map N  <Plug>(incsearch-nohl-N)zz
-map *  <Plug>(incsearch-nohl-*)zz
-map #  <Plug>(incsearch-nohl-#)zz
-map g* <Plug>(incsearch-nohl-g*)zz
-map g# <Plug>(incsearch-nohl-g#)zz
 "}}}
 "{{{ Fontsize
 let g:fontsize#defaultSize = 8
@@ -909,12 +902,32 @@ let g:session_default_name = 'Default'
 let g:session_command_aliases = 1
 
 nnoremap <silent><Leader>so :call lazyload#SessionOpen()<CR>
+nnoremap <silent><Leader>sO :call lazyload#SessionOPEN()<CR>
 nnoremap <silent><Leader>ss :call lazyload#SessionSave()<CR>
 nnoremap <silent><Leader>sS :call lazyload#SessionSAVE()<CR>
 nnoremap <silent><Leader>sc :call lazyload#SessionClose()<CR>
 nnoremap <silent><Leader>sd :call lazyload#SessionDelete()<CR>
 nnoremap <silent><Leader>sv :call lazyload#SessionView()<CR>
 nnoremap <silent><Leader>sV :call lazyload#SessionVIEW()<CR>
+"}}}
+"{{{ Smooth Scroll
+nnoremap <silent> <A-j> :call smooth_scroll#down(6, 0, 2)<CR>
+nnoremap <silent> <A-k> :call smooth_scroll#up(6, 0, 2)<CR>
+nnoremap <silent> <A-l> :call smooth_scroll#down(15, 0, 3)<CR>
+nnoremap <silent> <A-h> :call smooth_scroll#up(15, 0, 3)<CR>
+" nnoremap <silent> H     :call smooth_scroll#up(40, 0, 10)<CR>
+" nnoremap <silent> L     :call smooth_scroll#down(40, 0, 10)<CR>
+if g:os == 'win'
+	let s:smoothScrollPath = '~\vimfiles\plugged\vim-smooth-scroll\autoload\smooth_scroll.vim'
+else
+	let s:smoothScrollPath = '~/.vim/plugged/vim-smooth-scroll/autoload/smooth_scroll.vim'
+endif
+if !ExistsFile(s:smoothScrollPath)
+	nnoremap <silent><A-j> 3<C-e>3j
+	nnoremap <silent><A-k> 3<C-y>3k
+	nnoremap <silent><A-l> 10<C-e>10j
+	nnoremap <silent><A-h> 10<C-y>10k
+endif
 "}}}
 "{{{ Sneak
 let g:sneak#use_ic_scs = 1          " Case determined by 'ignorecase' and 'smartcase'
@@ -1019,7 +1032,7 @@ inoremap <silent><Tab> <C-r>=lazyload#UltiSnips()<CR>
 let g:UltiSnipsSnippetsDir = s:snippet                             " Custom snippets stored here
 let g:UltiSnipsSnippetDirectories  = ["UltiSnips","snippet"]        " Directories list for ultisnips to search
 let g:UltiSnipsEditSplit           = 'normal'
-let g:UltiSnipsExpandTrigger       = "<Tab>"
+" let g:UltiSnipsExpandTrigger       = "<Tab>"
 let g:UltiSnipsListSnippets        = "<C-e>"
 let g:UltiSnipsJumpForwardTrigger  = "<A-j>"
 let g:UltiSnipsJumpBackwardTrigger = "<A-k>"
@@ -1077,28 +1090,13 @@ autocmd CursorHold * nohlsearch
 autocmd FocusLost * if &modified && filereadable(expand("%:p")) | write | endif
 autocmd BufWritePre * call license#SetLastChangeBeforeBufWrite() 
 
-" Save fold when leaving vim
+" " Save fold when leaving vim
 " autocmd BufWinLeave * silent! mkview
 " autocmd BufWinEnter * silent! loadview
 
-" autocmd CmdlineEnter [/\?] call s:ToggleHlsearch(1)
-" autocmd CmdlineLeave [/\?] call s:ToggleHlsearch(0)
-
-" function! s:ToggleHlsearch(state) abort
-"    if a:state
-"       let s:hlSearchOld = &hlsearch
-"       set hlsearch
-"    else
-"       if exists('s:hlSearchOld')
-"          execute 'set ' . s:hlSearchOld ? 'hlsearch' : 'nohls'
-"          unlet! s:hlSearchOld
-"       endif
-"    endif
-" endfunction
-
 if has('gui_running')
 	if g:os == 'linux'
-		autocmd VimEnter * 
+		autocmd VimEnter *
 					\ if executable('wmctrl')
 					\|   call system('wmctrl -i -b add,maximized_vert,maximized_horz -r '.v:windowid)
 					\|endif
@@ -1107,7 +1105,6 @@ if has('gui_running')
 	endif
 endif
 "}}}
-
 
 if g:os == 'linux' && !has('gui_running')
 	" Fix alt key not working in gnome-terminal
@@ -1121,13 +1118,8 @@ if g:os == 'linux' && !has('gui_running')
 		exec "imap \e" .char. " <A-" .char. ">"
 	endfor
 	exec "set <A-[>=<C-[>"
-	exec "inoremap \e[ <C-[>"
+	exec "inoremap \e[ <c-[>"
 endif
 
-" let s:async = ''
-" if ExistsFile(s:plugged . 'asyncrun.vim')
-"    let s:async = 'AsyncRun '
-" else
-"    let s:async = '!'
-" endif
-" execute s:async . 'eval `keychain --eval --agents ssh id_rsa`'
+" feh --hide-pointer --geometry 1000x600 --zoom fill
+" feh --hide-pointer --thumbnails --thumb-height 60 --thumb-width 100 --index-info "" --geometry 1000x600 --image-bg black
