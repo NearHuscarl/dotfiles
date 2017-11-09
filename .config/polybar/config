@@ -12,9 +12,6 @@
 ; <i class="material-icons">&#xE8FC;</i>
 ; => type <C-v>ue8fc in insert mode
 
-; {{{ [base]
-TERMINAL = ${env:TERMINAL:xfce4-terminal}
-; }}}
 ; {{{ [colors]
 [colors]
 background = #ff1F2D3A
@@ -231,7 +228,7 @@ animation-packetloss-1 = 
 animation-packetloss-1-foreground = ${colors.red}
 animation-packetloss-framerate = 500
 ; }}}
-; {{{ [module/wired-network-upload]
+; {{{ [module/wired-network]
 [module/wired-network]
 type = internal/network
 interval = 2.0
@@ -240,7 +237,7 @@ interface = eno1
 format-connected-prefix-foreground = ${colors.foreground-icon}
 label-connected = %{F#16A085}%{F-} %upspeed% %{F#16A085}%{F-} %downspeed%
 ; }}}
-; {{{ [module/wired-network-download]
+; {{{ [module/date]
 [module/date]
 type = internal/date
 interval = 60
@@ -387,7 +384,7 @@ exec-if = "ping -q -w 2 -c 1 176.34.135.167 > /dev/null"
 type = custom/script
 interval = 600
 
-exec = bash -l -c '$HOME/.config/polybar/gmail.py'
+exec = bash -l -c '$HOME/.config/polybar/gmail/gmail.py'
 click-left = xdg-open https://mail.google.com
 ; }}}
 ; {{{ [module/pac_update]
