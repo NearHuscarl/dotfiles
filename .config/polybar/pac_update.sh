@@ -20,5 +20,5 @@ elif [[ "$1" == 'update_pac' ]]; then
 	# set title to Floating for i3 to regconize and make it a float window
 	$TERMINAL --title="Floating" -e 'sudo pacman -Syu'
 elif [[ "$1" == 'update_aur' ]]; then
-	$TERMINAL --title="Floating" -e 'sudo pacaur -Syua'
+	$TERMINAL --title="Floating" -e 'pacaur -Syua'
 fi
