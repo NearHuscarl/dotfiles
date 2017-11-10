@@ -4,7 +4,7 @@
 # File:        alias-utils
 # Description: Function for custom alias script
 # Author:      Near Huscarl <near.huscarl@gmail.com>
-# Last Change: Tue Sep 26 20:43:05 +07 2017
+# Last Change: Thu Nov 09 00:35:31 +07 2017
 # Licence:     BSD 3-Clause license
 # Note:        N/A
 # ============================================================================
@@ -19,7 +19,7 @@ function alias-pac-install() { # {{{
 } # }}}
 function alias-pac-update() { # {{{
    sudo pacman -Syu
-   [[ -x $HOME/bin/pacMerge ]] && pacMerge
+   [[ -x $HOME/bin/pac_merge ]] && pac_merge
 } # }}}
 function alias-pac-list() { # {{{
    pacman -Ql "$1" | grep "${2:-}"
