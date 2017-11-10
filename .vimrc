@@ -2,7 +2,7 @@
 " File:        .vimrc
 " Description: Vim settings
 " Author:      Near Huscarl <near.huscarl@gmail.com>
-" Last Change: Tue Nov 07 11:44:16 +07 2017
+" Last Change: Fri Nov 10 23:51:39 +07 2017
 " Licence:     BSD 3-Clause license
 " Note:        This is a personal vim config. therefore most likely not work 
 "              on your machine
@@ -200,6 +200,7 @@ set wildignore+=*.png,*.ppt,*.pptx,*.rar,*.swp,*.sfdm,*.xls,*.xlsx,*.xnb,*.zip
 if has('folding')
 	set foldenable
 	set foldmethod=marker
+	set foldopen=all
 endif
 
 if has('GUI_running') && has('windows')
@@ -215,8 +216,6 @@ nnoremap <Leader>tv :edit $MYVIMRC<Bar>CloseEmptyBuffer<CR>
 " }}}
 " {{{ Movement
 nnoremap ;   :|                                    "No need to shift ; anymore to enter command mode
-" nnoremap l   ;|                                    "Repeat latest f, F, t or T command (forward)
-" nnoremap h   ,|                                    "Repeat latest f, F, t or T command (backward)
 nnoremap gh  h|                                    "Move 1 character to the right
 nnoremap gl  l|                                    "Move 1 character to the left
 nnoremap :   =|                                    "Indent + motion
@@ -291,11 +290,12 @@ endif
 
 nnoremap { {zz|                                    "Jump between paragraph (backward) and zz
 nnoremap } }zz|                                    "Jump between paragraph (forward) and zz
-nnoremap % %zz|                                    "Jump between curly braces ("{", "}") and zz
 nnoremap n nzz
 nnoremap N Nzz
 " }}}
 " {{{ Fold
+nnoremap <A-j> zjzz
+nnoremap <A-k> zk[zzz
 nnoremap z[ zo[z|                                  "Open fold, jump at the start and zz
 nnoremap z] zo]z|                                  "Open fold, jump at the end and zz
 nnoremap ]z ]zzz|                                  "jump at the end and zz
@@ -555,6 +555,7 @@ Plug 'pangloss/vim-javascript', {'for': 'javascript'}
 Plug 'maksimr/vim-jsbeautify'
 Plug 'hdima/python-syntax'
 Plug 'hail2u/vim-css3-syntax'
+Plug 'tmhedberg/SimpylFold'
 
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight', {'on': [
 			\ 'NERDTreeTabsToggle',
@@ -848,7 +849,7 @@ let g:NERDTreeExactMatchHighlightFullName    = 1
 let g:NERDTreePatternMatchHighlightFullName  = 1
 "}}}
 "{{{ Easy Align
-vmap ga <Plug>(EasyAlign)
+vnoremap ga <Esc>:'<,'>EasyAlign // dl<Left><Left><Left><Left>| " Align with delimiter aligned left
 nmap ga <Plug>(EasyAlign)
 let g:easy_align_ignore_groups = []       " Vim Align ignore comment by default
 "}}}
@@ -911,8 +912,6 @@ nnoremap <silent><Leader>sv :call lazyload#SessionView()<CR>
 nnoremap <silent><Leader>sV :call lazyload#SessionVIEW()<CR>
 "}}}
 "{{{ Smooth Scroll
-nnoremap <silent> <A-j> :call smooth_scroll#down(6, 0, 2)<CR>
-nnoremap <silent> <A-k> :call smooth_scroll#up(6, 0, 2)<CR>
 nnoremap <silent> <A-l> :call smooth_scroll#down(15, 0, 3)<CR>
 nnoremap <silent> <A-h> :call smooth_scroll#up(15, 0, 3)<CR>
 " nnoremap <silent> H     :call smooth_scroll#up(40, 0, 10)<CR>
@@ -923,8 +922,6 @@ else
 	let s:smoothScrollPath = '~/.vim/plugged/vim-smooth-scroll/autoload/smooth_scroll.vim'
 endif
 if !ExistsFile(s:smoothScrollPath)
-	nnoremap <silent><A-j> 3<C-e>3j
-	nnoremap <silent><A-k> 3<C-y>3k
 	nnoremap <silent><A-l> 10<C-e>10j
 	nnoremap <silent><A-h> 10<C-y>10k
 endif
@@ -934,15 +931,15 @@ let g:sneak#use_ic_scs = 1          " Case determined by 'ignorecase' and 'smart
 let g:sneak#label_esc = "\<A-i>"
 let g:sneak#absolute_dir = 1        " Movement in sneak not based on sneak search direction
 
-nmap <silent> l <Plug>Sneak_;
-nmap <silent> h <Plug>Sneak_,
-vmap <silent> l <Plug>Sneak_;
-vmap <silent> h <Plug>Sneak_,
-
-nmap s <Plug>Sneak_s
-nmap S <Plug>Sneak_S
-vmap s <Plug>Sneak_s
-vmap S <Plug>Sneak_S
+if ExistsFile(s:plugged . 'vim-sneak')
+	nmap <silent> l <Plug>Sneak_;
+	nmap <silent> h <Plug>Sneak_,
+	vmap <silent> l <Plug>Sneak_;
+	vmap <silent> h <Plug>Sneak_,
+else
+	nnoremap l   ;|                                    "Repeat latest f, F, t or T command (forward)
+	nnoremap h   ,|                                    "Repeat latest f, F, t or T command (backward)
+endif
 
 nmap f <Plug>Sneak_f
 nmap F <Plug>Sneak_F
@@ -954,6 +951,13 @@ nmap T <Plug>Sneak_T
 vmap t <Plug>Sneak_t
 vmap T <Plug>Sneak_T
 
+" 3 characters search instead
+nnoremap <silent> s :<C-U>call sneak#wrap('',           3, 0, 2, 1)<CR>
+nnoremap <silent> S :<C-U>call sneak#wrap('',           3, 1, 2, 1)<CR>
+xnoremap <silent> s :<C-U>call sneak#wrap(visualmode(), 3, 0, 2, 1)<CR>
+xnoremap <silent> S :<C-U>call sneak#wrap(visualmode(), 3, 1, 2, 1)<CR>
+onoremap <silent> s :<C-U>call sneak#wrap(v:operator,   3, 0, 2, 1)<CR>
+onoremap <silent> S :<C-U>call sneak#wrap(v:operator,   3, 1, 2, 1)<CR>
 hi Sneak guifg=white guibg=magenta ctermfg=15 ctermbg=5
 "}}}
 "{{{ Surround
@@ -1123,3 +1127,5 @@ endif
 
 " feh --hide-pointer --geometry 1000x600 --zoom fill
 " feh --hide-pointer --thumbnails --thumb-height 60 --thumb-width 100 --index-info "" --geometry 1000x600 --image-bg black
+let g:SimpylFold_fold_docstring = 0
+let b:SimpylFold_fold_docstring = 0
