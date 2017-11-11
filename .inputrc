@@ -13,6 +13,8 @@ set expand-tilde off
 set editing-mode vi
 # show current mode when using with vi
 set show-mode-in-prompt on
+set vi-cmd-mode-string [n]
+set vi-ins-mode-string [i]
 
 $if mode=vi
    set keymap vi-command

@@ -3,12 +3,6 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-PS1='[\u@\h \W]\$ '
-
-# ~/.bashrc: executed by bash(1) for non-login shells.
-# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
-# for examples
-
 # If not running interactively, don't do anything
 case $- in
     *i*) ;;
@@ -74,27 +68,6 @@ else
 fi
 unset color_prompt force_color_prompt
 
-# If this is an xterm set the title to user@host:dir
-case "$TERM" in
-xterm*|rxvt*)
-    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h \w\a\]$PS1"
-    ;;
-*)
-    ;;
-esac
-
-# enable color support of ls and also add handy aliases
-if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls='ls --color=auto'
-    #alias dir='dir --color=auto'
-    #alias vdir='vdir --color=auto'
-
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
-fi
-
 # colored GCC warnings and errors
 #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
@@ -126,15 +99,20 @@ shopt -s extglob
 
 BOLD="\[$(tput bold)\]"
 BLACK="\[$(tput setaf 0)\]"
-RED="\[$(tput setaf 2)\]"
+RED="\[$(tput setaf 1)\]"
+GREEN="\[$(tput setaf 2)\]"
 YELLOW="\[$(tput setaf 3)\]"
-DBLUE="\[$(tput setaf 4)\]"
+BLUE="\[$(tput setaf 4)\]"
 MAGENTA="\[$(tput setaf 5)\]"
 CYAN="\[$(tput setaf 6)\]"
 GRAY="\[$(tput setaf 8)\]"
 BLUE="\[$(tput setaf 12)\]"
 RESET="\[$(tput sgr0)\]"
-export PS1="${BOLD}${DBLUE}\u${GRAY}@${BOLD}${CYAN}\h${RESET} ${MAGENTA}\W ${RESET}\$ "
+
+# FONT_AWESOME="$(fc-list | grep --perl-regexp '(font-awesome|fontawesome)')"
+
+export PS1="${BLUE}[\u${CYAN} \h]${RESET}${MAGENTA} [\W] \$${RESET} "
+export PS2=" ${CYAN}${RESET} "
 
 # MPD daemon start (if no other user instance exists)
 [ ! -s ~/.config/mpd/pid ] && mpd
