@@ -4,17 +4,20 @@
 # Description: Bash custom aliases and other alias functions, some alias have
 #              the equivalent completion as the original commands
 # Author:      Near Huscarl <near.huscarl@gmail.com>
-# Last Change: Sun Nov 05 18:04:22 +07 2017
+# Last Change: Sun Nov 12 01:20:01 +07 2017
 # Licence:     BSD 3-Clause license
 # Note:        N/A
 # ============================================================================
 
-# Setup {{{
-editor=vim
+source $HOME/bin/alias-utils
 
-if [[ -f $HOME/bin/alias-utils ]]; then
-   source $HOME/bin/alias-utils
-fi
+# color {{{
+alias dir='dir --color=auto'
+alias vdir='vdir --color=auto'
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+alias  ls="ls --color=auto"
 # }}}
 # change directory {{{
 alias dkt='cd $HOME/Desktop'
@@ -28,7 +31,6 @@ alias ...='cd ../..'
 alias ....='cd ../../..'
 # }}}
 # list {{{
-alias  ls="ls --color=auto"
 alias  la="ls --color=auto -A"
 alias  ll="ls --color=auto -oh"
 alias lla="ls --color=auto -ohA"
@@ -50,6 +52,18 @@ if [[ -x /usr/bin/vim ]]; then
    fi
 fi
 # }}}
+# NetworkManager {{{
+if [[ -x /usr/bin/NetworkManager ]]; then
+	alias nm-connect="alias-nm-connect"
+	alias nm-disconnect="nmcli dev disconnect $(nmcli device status | awk '/wifi/ {print $1}')"
+	alias nm-list="nmcli connection show"
+	alias nm-delete="nmcli connection delete"
+	alias nm-avail="nmcli dev wifi"
+	alias nm-active="nmcli connection show --active"
+	# info of active connection
+	alias nm-info="nmcli connection show $(nmcli connection show --active | awk 'NR == 2 {print $1}')"
+fi
+# }}}
 # pacman {{{
 if [[ -x /usr/bin/pacman ]]; then
    alias pac-install="alias-pac-install"
@@ -62,9 +76,9 @@ if [[ -x /usr/bin/pacman ]]; then
    alias pac-info="pacman -Si"
    alias pac-desc="expac -S '%d'"
    alias pac-size="expac -S -HM '%k\t%n'"                                                # Show download size of package(s)
-   alias pac-size-l="expac -S -HM '%k\t%n' | sort -n | tail -n"                          # Show nth largest download size of package(s)
-   alias pac-latest="expac -HM --timefmt='%Y-%m-%d %T' '%l\t%-20n\t%m' | sort | tail -n" # List nth last installed packages
-   alias pac-latest-e="alias-pac-latest-e"                                               # List nth last explicitly installed packages which is not in base/base-devel group
+   alias pac-Size="expac -S -HM '%k\t%n' | sort -n | tail -n20"                          # Show nth largest download size of package(s)
+   alias pac-latest="expac -HM --timefmt='%Y-%m-%d %T' '%l\t%-20n\t%m' | sort | tail -n20" # List nth last installed packages
+   alias pac-Latest="alias-pac-latest-e"                                                 # List nth last explicitly installed packages which is not in base/base-devel group
    alias pac-dep="alias-pac-dep"                                                         # Print package's dependencies
 
    # AUR
@@ -147,22 +161,21 @@ if [[ -x /usr/bin/trash-put ]]; then
 fi
 # }}}
 # Edit config file {{{
-alias compton-conf="$editor $HOME/.config/compton.conf"
-alias dunst-conf="$editor $HOME/.config/dunst/dunstrc"
-alias i3-conf="$editor $HOME/.config/i3/config"
-alias git-conf="$editor $HOME/.config/git/config"
-alias neofetch-conf="$editor $HOME/.config/neofetch/config"
-alias polybar-conf="$editor $HOME/.config/polybar/config"
-alias dunst-conf="$editor $HOME/.config/dunst/dunstrc"
-alias mp-conf="$editor $HOME/.config/ncmpcpp/config"
+alias compton-conf="$EDITOR $HOME/.config/compton.conf"
+alias dunst-conf="$EDITOR $HOME/.config/dunst/dunstrc"
+alias i3-conf="$EDITOR $HOME/.config/i3/config"
+alias git-conf="$EDITOR $HOME/.config/git/config"
+alias neofetch-conf="$EDITOR $HOME/.config/neofetch/config"
+alias polybar-conf="$EDITOR $HOME/.config/polybar/config"
+alias dunst-conf="$EDITOR $HOME/.config/dunst/dunstrc"
+alias mp-conf="$EDITOR $HOME/.config/ncmpcpp/config"
 
-alias alias-e="$editor $HOME/bin/alias"
-alias bashrc="$editor $HOME/.bashrc"
-alias inputrc="$editor $HOME/.inputrc"
-alias gitignore="$editor $HOME/.gitignore"
+alias bashrc="$EDITOR $HOME/.bashrc"
+alias inputrc="$EDITOR $HOME/.inputrc"
+alias gitignore="$EDITOR $HOME/.gitignore"
 alias todo="i3-sensible-terminal -e 'vim --servername todo -c \"silent SessionOpen todo\"' --title=Todo"
-alias plan="$editor $HOME/misc/plan"
-alias arch="$editor $HOME/misc/Arch.txt"
+alias plan="$EDITOR $HOME/misc/plan"
+alias arch="$EDITOR $HOME/misc/Arch.txt"
 # }}}
 # xprop {{{
 alias xprop-class="xprop WM_CLASS"
@@ -171,26 +184,22 @@ alias xprop-title="xprop _NET_WM_NAME WM_NAME"
 # }}}
 # Picture {{{
 alias wallpaper='nitrogen --random --set-scaled "$HOME/Pictures/Low Poly"'
-alias pic-schedule="sxiv -f $HOME/Pictures/misc/schedule.png"
-alias pic-full="sxiv -f"
+alias schedule="sxiv -f $HOME/Pictures/misc/schedule.png"
 alias thumnail="sxiv -f -t -b -r *"
 alias pic="alias-pic"
 alias sxiv="sxiv -b -s h"
 # }}}
 # Other {{{
-alias sa='source $HOME/bin/alias'
-alias sb='source $HOME/.bashrc && clear'
 alias xmod='xmodmap ~/.Xmodmap'
 alias reboot='shutdown -r now'
 alias shutoff='$HOME/bin/shutdown'
 alias size="alias-size"
-alias size-l="alias-size-l"
 alias mkdir='mkdir -pv'
 alias top="vtop"
 if [[ -x /usr/bin/xfce4-terminal ]]; then
    alias term='xfce4-terminal'
 fi
-alias internet="$editor $HOME/misc/Internet.txt"
+alias internet="$EDITOR $HOME/misc/Internet.txt"
 alias alsa-fix="sudo /usr/local/bin/fix_headphones_audio.sh"
 alias music="ncmpcpp"
 alias clock="tty-clock -s -c -D -C6"
@@ -205,6 +214,9 @@ alias e='exit'
 alias c='clear'
 alias js='node'
 alias py='python'
+alias ae="$EDITOR $HOME/bin/alias"
+alias sa='source $HOME/bin/alias'
+alias sb='source $HOME/.bashrc && clear'
 # }}}
 # Apply completion to aliases {{{
 
