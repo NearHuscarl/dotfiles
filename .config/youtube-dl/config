@@ -1,0 +1,8 @@
+# Output filename template, see the "OUTPUT TEMPLATE" for all the info
+--output '~/Music/_%(title)s.%(ext)s'
+
+# Convert video files to audio-only files (requires ffmpeg or avconv and ffprobe or avprobe)
+--extract-audio
+
+# Specify audio format: "best", "aac", "flac", "mp3", "m4a", "opus", "vorbis", or "wav";
+--audio-format mp3
