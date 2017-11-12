@@ -1,9 +1,12 @@
 #!/bin/bash
 
 # $HOME/.config/ranger/rifle.conf
+# Open vim and connect to server Vim (keep one instance), then move to workspace 3 (i3)
 
 if [[ -x /usr/bin/i3 ]]; then
    vim --remote-silent "${@:-unnamed}" && i3-msg workspace 2 1> /dev/null
 else
    vim --remote-silent "${@:-unnamed}"
 fi
+
+i3-msg workspace 2 1> /dev/null
