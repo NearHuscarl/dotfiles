@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# ============================================================================
+# File:        flat
+# Description: flat theme
+# Author:      Near Huscarl <near.huscarl@gmail.com>
+# Last Change: Sun Nov 12 17:01:20 +07 2017
+# Licence:     BSD 3-Clause license
+# Note:        N/A
+# ============================================================================
+
+# flat theme
+export THEME_ALERT='#E74C3C'
+export THEME_HL='#16A085'
+export THEME_BG='#1F2D3A'
+export THEME_BG_ALT='#2C3E50'
+export THEME_FG='#ECF0F1'
+export THEME_FG_ALT='#84888B'
+
+export THEME_BLACK='#1F2D3A'
+export THEME_DARKGREY='#2C3E50'
+export THEME_RED='#E74C3C'
+export THEME_GREEN='#27AE60'
+export THEME_YELLOW='#F39C12'
+export THEME_BLUE='#2980B9'
+export THEME_MAGENTA='#8E44AD'
+export THEME_CYAN='#16A085'
+export THEME_LIGHTGREY='#84888B'
+export THEME_WHITE='#ECF0F1'
