@@ -4,20 +4,34 @@
 
 # -*- coding: utf-8 -*-
 
+import argparse
 import datetime
 import os
-import sys
+import time
 import requests
 
-def get_weather_icon(weather_id):
-	""" Get weather icon based on weather condition """
+from requests import exceptions
+
+parser = argparse.ArgumentParser(description='Display number of files in trash for polybar')
+parser.add_argument('-u', '--unit', default='metric', nargs='?',
+		help='unit: metric or imperial. Default: metric')
+arg = parser.parse_args()
+
+def get_time():
+	""" return 'day' or 'night' based on current hour """
 
 	hour = int(datetime.datetime.now().strftime('%H'))
 
 	if hour >= 18 or hour <= 5:
-		time = 'night'
-	else:
-		time = 'day'
+		return 'night'
+
+	return 'day'
+
+
+def get_weather_icon(weather_id):
+	""" Get weather icon based on weather condition """
+
+	time = get_time()
 
 	weather = {
 			'thunderstorm':   200 <= weather_id <= 232,
@@ -59,7 +73,7 @@ def get_weather_icon(weather_id):
 	elif weather['hail']:
 		return ''
 
-def get_thermo_icon(temp_value):
+def get_thermo_icon(temp_value, temp_unit):
 	""" Get thermometer icon based on temperature """
 
 	if temp_unit == 'F':
@@ -87,7 +101,7 @@ def convert_temp_unit(temp_value, temp_unit):
 def color_string(string, color_envron_var):
 	"""
 	Print output in color in polybar format, second argument
-	is environment variable from $HOME/bin/export
+	is environment variable from $HOME/themes/current_theme
 	"""
 
 	# Environment variables in $HOME/bin/export
@@ -95,45 +109,67 @@ def color_string(string, color_envron_var):
 	color_end = '%{F-}'
 	return color_begin + string + color_end
 
-
-region_code = {
-		'TPHCM': 1580578,
-		'TPHCM2': 1566083,
-		'Hai Duong': 1581326,
-		'Tan An': 1567069
-		}
-home_dir = os.environ['HOME']
-api_path = os.path.join(home_dir, '.config/polybar/weather_api.txt')
-
-with open(api_path, 'r') as file:
-	api_key = file.read().replace('\n', '')
-
-city_id = region_code['Hai Duong']
-units = 'metric' if sys.argv[1] == 'metric' else 'imperial'
-temp_unit = 'C' if units == 'metric' else 'K'
-url = 'http://api.openweathermap.org/data/2.5/weather?id={}&appid={}&units={}'
-
-def update_weather():
+def update_weather(city_id, units, api_key):
 	""" Update weather by using openweather api """
 
-	req = requests.get(url.format(city_id, api_key, units))
+	url = 'http://api.openweathermap.org/data/2.5/weather?id={}&appid={}&units={}'
+	temp_unit = 'C' if units == 'metric' else 'K'
 	error_icon = color_string('', 'THEME_ALERT')
 
 	try:
-		if req.status_code == 200:
-			description = req.json()['weather'][0]['description'].capitalize()
+		req = requests.get(url.format(city_id, api_key, units))
 
-			temp_value = round(req.json()['main']['temp'])
-			temp = str(temp_value) + '°' + temp_unit
-			thermo_icon = color_string(get_thermo_icon(temp_value), 'THEME_HL')
+		description = req.json()['weather'][0]['description'].capitalize()
 
-			weather_id = req.json()['weather'][0]['id']
-			weather_icon = color_string(get_weather_icon(weather_id), 'THEME_HL')
+		temp_value = round(req.json()['main']['temp'])
+		temp = str(temp_value) + '°' + temp_unit
+		thermo_icon = color_string(get_thermo_icon(temp_value, units), 'THEME_HL')
 
-			print('{} {} {} {}'.format(weather_icon, description, thermo_icon, temp))
+		weather_id = req.json()['weather'][0]['id']
+		weather_icon = color_string(get_weather_icon(weather_id), 'THEME_HL')
+
+		print('{} {} {} {}'.format(weather_icon, description, thermo_icon, temp), flush=True)
+		return 0
+	except (exceptions.ConnectionError, exceptions.Timeout, exceptions.HTTPError):
+		print(error_icon, flush=True)
+		return 1
+
+def main():
+	""" main function """
+
+	region_code = {
+			'TPHCM': 1580578,
+			'TPHCM2': 1566083,
+			'Hai Duong': 1581326,
+			'Tan An': 1567069
+			}
+
+	hour = int(datetime.datetime.now().strftime('%H'))
+	weekday = datetime.datetime.now().strftime('%a')
+
+	# 5pm Fri to 5pm Sun: Tan An, else Hai Duong
+	if (hour >= 17 and weekday == 'Fri') or weekday == 'Sat' or (hour < 17 and weekday == 'Sun'):
+		city_id = region_code['Tan An']
+	else:
+		city_id = region_code['Hai Duong']
+
+	paren_dir = os.path.dirname(os.path.realpath(__file__))
+	api_path = os.path.join(paren_dir, 'weather_api.txt')
+
+	with open(api_path, 'r') as file:
+		api_key = file.read().replace('\n', '')
+
+	units = arg.unit
+	result = update_weather(city_id, units, api_key)
+
+	while True:
+		if result == 0:
+			time.sleep(700)
+			result = update_weather(city_id, units, api_key)
 		else:
-			print(error_icon + ' Error ' + str(req.status_code))
-	except(ValueError, OSError):
-		print(error_icon + ' Error')
+			time.sleep(3)
+			result = update_weather(city_id, units, api_key)
 
-update_weather()
+main()
+
+# vim: nofoldenable

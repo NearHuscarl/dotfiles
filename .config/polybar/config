@@ -57,6 +57,9 @@ font-4 = "DejaVu Sans:pixelsize=10;1"
 
 modules-left = i3 mpd
 modules-right = wired-network wireless-network cpu memory filesystem home volume battery date time powermenu
+
+; tray-position = right
+; tray-padding = 2
 ; }}}
 ; {{{ [module/filesystem]
 [module/filesystem]
@@ -369,21 +372,20 @@ font-3 = ${bar/holybar.font-3}
 font-4 = ${bar/holybar.font-4}
 
 modules-left = weather
-modules-right = gmail pac_update
+modules-right = gmail pac_update trash
 ; }}}
 ; {{{ [module/weather]
 [module/weather]
 type = custom/script
-interval = 700
 
-exec = bash -l -c '$HOME/.config/polybar/weather.py metric'
-exec-if = "ping -q -w 2 -c 1 176.34.135.167 > /dev/null"
+tail = true
+exec = bash -l -c '$HOME/.config/polybar/weather/weather.py'
 ; }}}
 ; {{{ [module/gmail]
 [module/gmail]
 type = custom/script
-interval = 600
 
+tail = true
 exec = bash -l -c '$HOME/.config/polybar/gmail/gmail.py'
 click-left = xdg-open https://mail.google.com
 ; }}}
@@ -398,6 +400,17 @@ exec-if = "ping -q -w 2 -c 1 176.34.135.167 > /dev/null"
 click-left  = bash -l -c '$HOME/.config/polybar/pac_update.sh update_pac'
 click-right = bash -l -c '$HOME/.config/polybar/pac_update.sh update_aur'
 ; }}}
+; {{{ [module/trash]
+[module/trash]
+type = custom/script
+interval = 3
 
+format-prefix-foreground = ${colors.foreground-icon}
+format-prefix = " "
+exec = bash -l -c '$HOME/.config/polybar/trash/trash.sh'
+
+click-left  = bash -l -c '$HOME/.config/polybar/trash/trash.sh open'
+click-right = bash -l -c '$HOME/.config/polybar/trash/trash.sh clean'
+; }}}
 
 ; vim:ft=dosini foldmethod=marker

@@ -7,6 +7,7 @@ Dependencies: google-api-python-client
 """
 
 import os
+import time
 import httplib2
 
 from apiclient import discovery, errors
@@ -51,18 +52,21 @@ def update_unread_gmail_count():
 		result = gmail.users().messages().list(userId='me', q='in:inbox is:unread').execute()
 		unread_count = result['resultSizeEstimate']
 
-		print(color_string(' ', 'THEME_HL') + str(unread_count))
+		print(color_string(' ', 'THEME_HL') + str(unread_count), flush=True)
+		return 0
 
 	except (errors.HttpError, httplib2.ServerNotFoundError):
-		print(color_string(' ', 'THEME_ALERT') + 'E(1)')
+		print(color_string(' ', 'THEME_ALERT'), flush=True)
+		return 1
 
 	except client.AccessTokenRefreshError:
-		print(color_string(' ', 'THEME_ALERT') + 'E(2)')
+		print(color_string(' ', 'THEME_ALERT'), flush=True)
+		return 2
 
 def color_string(string, color_envron_var):
 	"""
 	Print output in color in polybar format, second argument
-	is environment variable from $HOME/bin/export
+	is environment variable from $HOME/themes/current_theme
 	"""
 
 	# Environment variables in $HOME/bin/export
@@ -70,6 +74,19 @@ def color_string(string, color_envron_var):
 	color_end = '%{F-}'
 	return color_begin + string + color_end
 
-update_unread_gmail_count()
+def main():
+	""" main function """
+
+	result = update_unread_gmail_count()
+
+	while True:
+		if result == 0:
+			time.sleep(600)
+			result = update_unread_gmail_count()
+		else:
+			time.sleep(3)
+			result = update_unread_gmail_count()
+
+main()
 
 # vim: nofoldenable

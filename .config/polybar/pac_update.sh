@@ -7,8 +7,6 @@ function check_update() {
 	check=$((pac + aur))
 	if [[ "$check" != "0" ]]; then
 		echo ""$pac" %{F$THEME_HL}%{F-} "$aur""
-	elif [[ $? != 0 ]]; then
-		echo "%{F$THEME_ALERT}%{F-} [pac_update]"
 	else
 		echo "0 %{F$THEME_HL}%{F-} 0"
 	fi
