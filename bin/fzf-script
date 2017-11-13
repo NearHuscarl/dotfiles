@@ -2,49 +2,49 @@
 
 # wrapper alias to set up fzf
 alias fzf="
-   fzf \
-      --multi \
-      --no-mouse \
-      --cycle \
-      --reverse \
-      --color=info:6,bg+:8,hl+:1,hl:3,pointer:6,marker:1,spinner:6 \
-      --bind=alt-k:up,alt-j:down,alt-i:abort,alt-h:backward-char,alt-l:forward-char,alt-n:backward-word,alt-m:forward-word,alt-e:jump,alt-d:kill-line,alt-t:toggle"
+fzf \
+	--multi \
+	--no-mouse \
+	--cycle \
+	--reverse \
+	--color=info:$THEME_MAIN,bg+:$THEME_BG_ALT,hl+:$THEME_HL,hl:$THEME_HL2 \
+	--color=pointer:$THEME_MAIN,marker:$THEME_MAIN2,spinner:$THEME_MAIN,border:$THEME_MAIN \
+	--bind=alt-k:up,alt-j:down,alt-i:abort,alt-h:backward-char,alt-l:forward-char,alt-n:backward-word,alt-m:forward-word,alt-e:jump,alt-d:kill-line,alt-t:toggle"
 
 # edit file in vim
 fe() {
-   file=$(rg $HOME /etc/systemd/ --files --no-ignore --hidden --follow --no-messages \
-      --glob "!{undo,.local}/*" \
-      | fzf --preview="cat {}") && vim "$file"
+	file=$(rg --files --glob "!*.{ttf,png}" --hidden --follow --no-messages \
+		| fzf --preview="cat {}") && start-vim "$file"
 }
 
-# open file in $HOME
+# open file using rifle. only follow $HOME/.ripignore, do not follow .gitignore
 fo() {
-   file=$(find $HOME -type f \( \
-      ! -iname "*.dbx" \
-      ! -iname "*.db" \
-      ! -path "*vim/undo/*" \
-      \) | fzf --preview="cat {}") && rifle "$file"
+	cd $HOME
+	file=$(rg --files --ignore-file '.ripignore' --no-ignore-vcs --hidden --follow --no-messages \
+		| fzf --preview="cat {}") && rifle "$file"
 }
 
-# fzf + cd
+# # fzf + cd
 fd() {
-  local dir
-  dir=$(find ${1:-$HOME} -type d -print 2> /dev/null | fzf +m --preview="ls {}") &&
-  cd "$dir"
+	cd $HOME
+	dir=$(rg --files --ignore-file '.ripignore' --no-ignore-vcs --hidden --follow --no-messages \
+		| sed 's/\/[^\/]*$//' | awk '!x[$0]++' \
+		| fzf --preview="ls {}") \
+		&& cd "$dir" 2> /dev/null
 }
 
 # command history
 fh() {
-  eval $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac | sed 's/ *[0-9]* *//')
+	eval $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf --tac --no-sort | sed 's/ *[0-9]* *//')
 }
 
 # kill process
 fk() {
-  local pid
-  pid=$(ps -Af | sed 1d | fzf -m | awk '{print $2}')
+	local pid
+	pid=$(ps -Af | sed 1d | fzf -m | awk '{print $2}')
 
-  if [ "x$pid" != "x" ]
-  then
-    echo $pid | xargs kill -${1:-9}
-  fi
+	if [ "x$pid" != "x" ]
+	then
+		echo $pid | xargs kill -${1:-9}
+	fi
 }

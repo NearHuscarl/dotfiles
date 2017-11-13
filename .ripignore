@@ -1,9 +1,27 @@
-# https://stackoverflow.com/questions/987142/make-gitignore-ignore-everything-except-a-few-files
+# Spcieal ignore file for rg
+#
+# When using standard filename like .ignore or .rgignore there is no way to
+# tell rg to only follow .ignore or .rgignore and not following .gitignore
+# (from what I see so far) the opposite can be achieved by using --ignore-vsc
+# to tell rg to only follow .gitignore and not follow (.ignore|.rgignore)
+#
+# So the workaround is using an unknown ignore filename to rg (like .ripignore)
+# and add --ignore-file /path/to/.ripignore and you're done
 
-# Exclude parent directory ($HOME/)
+# Exclude parent directory (~/)
 /*
 
 # Then only reinclude necessary files/folders in parent dir
+# -- ripignore --
+!/Downloads/
+!/Documents/
+!/Github/
+!/Music/
+!/Pictures/
+!/misc/
+*.ttf
+# -- ripignore --
+
 !/README.md
 !/LICENSE.md
 !/.bashrc
@@ -14,7 +32,6 @@
 !/.gitignore
 !/.profile
 !/.pylintrc
-!/.ripignore
 !/.scss-lint.yml
 !/.tern-project
 !/.vimrc
@@ -88,3 +105,5 @@
 weather_api.txt
 gmail_pass.txt
 credentials.json
+
+# vim: conf
