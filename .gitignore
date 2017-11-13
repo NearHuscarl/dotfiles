@@ -18,12 +18,14 @@
 !/.tern-project
 !/.vimrc
 !/.Xmodmap
+!/.zshrc
 !/install.sh
 
 !/bin/
 !/screenshot/
 !/script/
 !/styles/
+!/themes/
 !/.fonts/
 
 # Repeat the process for subdir .config
@@ -39,6 +41,7 @@
 !/.config/polybar/
 !/.config/rofi/
 !/.config/surfraw/
+!/.config/youtube-dl/
 !/.config/zathura/
 
 !/.config/mpd/
@@ -82,3 +85,5 @@
 /.npm-global/
 # api
 weather_api.txt
+gmail_pass.txt
+credentials.json
