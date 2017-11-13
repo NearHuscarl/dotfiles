@@ -92,6 +92,7 @@ fi
 
 # custom settings
 
+# Export custom environment variables
 [[ -f ~/bin/export ]] && . ~/bin/export
 
 shopt -s autocd
@@ -114,8 +115,8 @@ RESET="\[$(tput sgr0)\]"
 export PS1="${BLUE}[\u${CYAN} \h]${RESET}${MAGENTA} [\W] \$${RESET} "
 export PS2=" ${CYAN}${RESET} "
 
-# MPD daemon start (if no other user instance exists)
-[ ! -s ~/.config/mpd/pid ] && mpd
+# # MPD daemon start (if no other user instance exists)
+# [ ! -s ~/.config/mpd/pid ] && mpd
 
 # run custom alias script in all session
 if [ -f ~/bin/alias ]; then
@@ -145,3 +146,9 @@ if [[ -x /usr/bin/rg ]]; then
       --glob "!undo/*"'
    export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 fi
+
+# mkvirtualenv rmvirtualenv workon ... commands to manage python virtualenv
+source $HOME/bin/virtualenvwrapper_lazyload
+
+# python interactive prompt
+export PYTHONSTARTUP=$HOME/.pythonrc.py

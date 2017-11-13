@@ -4,7 +4,7 @@
 # Description: Bash custom aliases and other alias functions, some alias have
 #              the equivalent completion as the original commands
 # Author:      Near Huscarl <near.huscarl@gmail.com>
-# Last Change: Sun Nov 12 01:20:01 +07 2017
+# Last Change: Mon Nov 13 17:50:19 +07 2017
 # Licence:     BSD 3-Clause license
 # Note:        N/A
 # ============================================================================
@@ -31,181 +31,182 @@ alias ...='cd ../..'
 alias ....='cd ../../..'
 # }}}
 # list {{{
-alias  la="ls --color=auto -A"
-alias  ll="ls --color=auto -oh"
-alias lla="ls --color=auto -ohA"
-alias  lr="ls --color=auto -R"
-alias lss="ls -A    | grep --color=auto -i"
-alias lls="ls -Aoh  | grep --color=auto -i"
-alias lrs="ls -ARoh | grep --color=auto -i"
-alias tree="alias-tree"
+alias  la='ls --color=auto -A'
+alias  ll='ls --color=auto -oh'
+alias lla='ls --color=auto -ohA'
+alias  lr='ls --color=auto -R'
+alias lss='ls -A    | grep --color=auto -i'
+alias lls='ls -Aoh  | grep --color=auto -i'
+alias lrs='ls -ARoh | grep --color=auto -i'
+alias tree='alias-tree'
 # }}}
 # vim {{{
 if [[ -x /usr/bin/vim ]]; then
-   alias view="vim -R"
-   alias vim0="vim -u NONE"
-   alias vimrc="vim $HOME/.vimrc"
-   alias vim-startup="vim --startuptime $HOME/misc/log -c q && vim $HOME/misc/log"
-   # vir in $HOME/bin/vir
-   if [[ -x $HOME/bin/viman ]]; then
-      alias man="viman"
-   fi
+	alias view='vim -R'
+	alias vim0='vim -u NONE'
+	alias vimrc='vim $HOME/.vimrc'
+	alias vim-startup='vim --startuptime $HOME/misc/log -c q && vim $HOME/misc/log'
+	# vir in $HOME/bin/vir
+	if [[ -x $HOME/bin/viman ]]; then
+		alias man='viman'
+	fi
 fi
 # }}}
 # NetworkManager {{{
 if [[ -x /usr/bin/NetworkManager ]]; then
-	alias nm-connect="alias-nm-connect"
-	alias nm-disconnect="nmcli dev disconnect $(nmcli device status | awk '/wifi/ {print $1}')"
-	alias nm-list="nmcli connection show"
-	alias nm-delete="nmcli connection delete"
-	alias nm-avail="nmcli dev wifi"
-	alias nm-active="nmcli connection show --active"
+	alias nm-connect='alias-nm-connect'
+	alias nm-disconnect='nmcli dev disconnect $(nmcli device status | awk "/wifi/ {print $1}")'
+	alias nm-list='nmcli connection show'
+	alias nm-delete='nmcli connection delete'
+	alias nm-avail='nmcli dev wifi'
+	alias nm-active='nmcli connection show --active'
 	# info of active connection
-	alias nm-info="nmcli connection show $(nmcli connection show --active | awk 'NR == 2 {print $1}')"
+	alias nm-info='nmcli connection show $(nmcli connection show --active | awk "NR == 2 {print $1}")'
 fi
 # }}}
 # pacman {{{
 if [[ -x /usr/bin/pacman ]]; then
-   alias pac-install="alias-pac-install"
-   alias pac-update="alias-pac-update"
-   alias pac-remove="sudo pacman -Rs"
-   alias pac-search="pacman -Qsq"
-   alias pac-Search="pacman -Ssq"
-   alias pac-list="alias-pac-list"
-   alias pac-orphan="sudo pacman -Rns $(pacman -Qtdq)"                                   # Remove unused packages (orphans)
-   alias pac-info="pacman -Si"
-   alias pac-desc="expac -S '%d'"
-   alias pac-size="expac -S -HM '%k\t%n'"                                                # Show download size of package(s)
-   alias pac-Size="expac -S -HM '%k\t%n' | sort -n | tail -n20"                          # Show nth largest download size of package(s)
-   alias pac-latest="expac -HM --timefmt='%Y-%m-%d %T' '%l\t%-20n\t%m' | sort | tail -n20" # List nth last installed packages
-   alias pac-Latest="alias-pac-latest-e"                                                 # List nth last explicitly installed packages which is not in base/base-devel group
-   alias pac-dep="alias-pac-dep"                                                         # Print package's dependencies
+	alias pac-install='alias-pac-install'
+	alias pac-update='alias-pac-update'
+	alias pac-remove='sudo pacman -Rs'
+	alias pac-search='pacman -Qsq'
+	alias pac-Search='pacman -Ssq'
+	alias pac-list='alias-pac-list'
+	alias pac-orphan='sudo pacman -Rns $(pacman -Qtdq)'                                   # Remove unused packages (orphans)
+	alias pac-info='pacman -Si'
+	alias pac-desc='expac -S "%d"'
+	alias pac-size='expac -S -HM "%k\t%n"'                                                # Show download size of package(s)
+	alias pac-Size='expac -S -HM "%k\t%n" | sort -n | tail -n20'                          # Show nth largest download size of package(s)
+	alias pac-latest='expac -HM --timefmt="%Y-%m-%d %T" "%l\t%-20n\t%m" | sort | tail -n20' # List nth last installed packages
+	alias pac-Latest='alias-pac-latest-e'                                                 # List nth last explicitly installed packages which is not in base/base-devel group
+	alias pac-dep='alias-pac-dep'                                                         # Print package's dependencies
 
-   # AUR
-   if [[ -x /usr/bin/pacaur ]]; then
-      alias aur-install="pacaur -Sa"
-      alias aur-clean="pacaur -Sca"
-      alias aur-update="pacaur -Syua"
-      alias aur-remove="pacaur -Rsa"
-      alias aur-search="pacaur -Qsqa"
-      alias aur-Search="pacaur -Ssqa"
-      alias aur-info="pacaur -Sia"
-      alias aur-desc="alias-aur-desc"
-      alias aur-size="alias-aur-size"
-      alias aur-dep="alias-aur-dep"
-   fi
+	# AUR
+	if [[ -x /usr/bin/pacaur ]]; then
+		alias aur-install='pacaur -Sa'
+		alias aur-clean='pacaur -Sca'
+		alias aur-update='pacaur -Syua'
+		alias aur-remove='pacaur -Rsa'
+		alias aur-search='pacaur -Qsqa'
+		alias aur-Search='pacaur -Ssqa'
+		alias aur-list='pacman -Qm'
+		alias aur-info='pacaur -Sia'
+		alias aur-desc='alias-aur-desc'
+		alias aur-size='alias-aur-size'
+		alias aur-dep='alias-aur-dep'
+	fi
 fi
 # }}}
 # systemd {{{
 if [[ -x /usr/bin/systemctl ]]; then
-   alias sd-start="sudo systemctl start"
-   alias sd-stop="sudo systemctl stop"
-   alias sd-enable="sudo systemctl enable"
-   alias sd-disable="sudo systemctl disable"
-   alias sd-status="sudo systemctl status"
+	alias sd-start='sudo systemctl start'
+	alias sd-stop='sudo systemctl stop'
+	alias sd-enable='sudo systemctl enable'
+	alias sd-disable='sudo systemctl disable'
+	alias sd-status='sudo systemctl status'
 fi
 
 if [[ -x /usr/bin/journalctl ]]; then
-   alias sd-log="journalctl -b"
-   alias sd-search="journalctl -b | grep"
-   alias sd-clean="journalctl --vacuum-size=100M"
+	alias sd-log='journalctl -b'
+	alias sd-search='journalctl -b | grep'
+	alias sd-clean='journalctl --vacuum-size=100M'
 fi
 # }}}
 # git {{{
 if [[ -x /usr/bin/git ]]; then
-   alias gstat='git status'
-   alias gadd='git add'
-   alias gcommit="git commit"
-   alias gCommit='git commit -a'
-   alias gclone='git clone'
-   alias glog='git log \
-      --color \
-      --graph \
-      --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" \
-      --abbrev-commit'
-   alias glogstat='glog --stat'
-   alias glogdiff='glog --stat -p'
-   alias gschange='git log --patch -S'
-   alias gscommit='git log --grep'
-   alias gpull='git pull'
-   alias gpush='git push'
-   alias gfixcommit='git commit --amend'                     # Fix commit msg without altering its snapshot
-   alias gfixstage='git commit --amend --reuse-message=HEAD' # Fix commit (staging other files)
-   alias gunstage='git reset HEAD'
-   alias grestore='git checkout --'
-   alias gswitch='git checkout'
-   alias gnewbranch='git checkout -b'
-   alias gremove='git rm --cached'                           # Remove file in vcs while keeping in the local location
-   alias gdelbranch='git branch -d'
-   alias gdelremote='git push origin :'
-   alias gmerge='git merge'
+	alias gstat='git status'
+	alias gadd='git add'
+	alias gcommit='git commit'
+	alias gCommit='git commit -a'
+	alias gclone='git clone'
+	alias glog='git log \
+		--color \
+		--graph \
+		--pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" \
+		--abbrev-commit'
+	alias glogstat='glog --stat'
+	alias glogdiff='glog --stat -p'
+	alias gschange='git log --patch -S'
+	alias gscommit='git log --grep'
+	alias gpull='git pull'
+	alias gpush='git push'
+	alias gfixcommit='git commit --amend'                     # Fix commit msg without altering its snapshot
+	alias gfixstage='git commit --amend --reuse-message=HEAD' # Fix commit (staging other files)
+	alias gunstage='git reset HEAD'
+	alias grestore='git checkout --'
+	alias gswitch='git checkout'
+	alias gnewbranch='git checkout -b'
+	alias gremove='git rm --cached'                           # Remove file in vcs while keeping in the local location
+	alias gdelbranch='git branch -d'
+	alias gdelremote='git push origin :'
+	alias gmerge='git merge'
 
-   # gdiff [num] where num is commit [num]nth
-   if [[ -x /usr/bin/vim && -f $HOME/.vim/plugged/vim-fugitive/plugin/fugitive.vim ]]; then
-      alias gdiff="alias-gdiff"
-   else
-      alias gdiff="alias-gdiff-old"
-   fi
+	# gdiff [num] where num is commit [num]nth
+	if [[ -x /usr/bin/vim && -f $HOME/.vim/plugged/vim-fugitive/plugin/fugitive.vim ]]; then
+		alias gdiff='alias-gdiff'
+	else
+		alias gdiff='alias-gdiff-old'
+	fi
 fi
 # }}}
 # trash-cli {{{
 if [[ -x /usr/bin/trash-put ]]; then
-   alias rm-hard="rm -I"
-   alias rm="trash-put"
-   alias rm-ls="trash-list"
-   alias rm-ls-latest="trash-list | sort | tail -n"
-   alias rm-search="trash-list | grep"
-   alias rm-restore="trash-restore"
-   alias rm-empty="trash-empty"
-   alias rm-rm="trash-rm"
+	alias rm-hard='rm -I'
+	alias rm='trash-put'
+	alias rm-ls='trash-list'
+	alias rm-ls-latest='trash-list | sort | tail -n'
+	alias rm-search='trash-list | grep'
+	alias rm-restore='trash-restore'
+	alias rm-empty='trash-empty'
+	alias rm-rm='trash-rm'
 fi
 # }}}
 # Edit config file {{{
-alias compton-conf="$EDITOR $HOME/.config/compton.conf"
-alias dunst-conf="$EDITOR $HOME/.config/dunst/dunstrc"
-alias i3-conf="$EDITOR $HOME/.config/i3/config"
-alias git-conf="$EDITOR $HOME/.config/git/config"
-alias neofetch-conf="$EDITOR $HOME/.config/neofetch/config"
-alias polybar-conf="$EDITOR $HOME/.config/polybar/config"
-alias dunst-conf="$EDITOR $HOME/.config/dunst/dunstrc"
-alias mp-conf="$EDITOR $HOME/.config/ncmpcpp/config"
+alias compton-conf='$EDITOR $HOME/.config/compton.conf'
+alias dunst-conf='$EDITOR $HOME/.config/dunst/dunstrc'
+alias i3-conf='$EDITOR $HOME/.config/i3/config'
+alias git-conf='$EDITOR $HOME/.config/git/config'
+alias neofetch-conf='$EDITOR $HOME/.config/neofetch/config'
+alias polybar-conf='$EDITOR $HOME/.config/polybar/config'
+alias dunst-conf='$EDITOR $HOME/.config/dunst/dunstrc'
+alias mp-conf='$EDITOR $HOME/.config/ncmpcpp/config'
 
-alias bashrc="$EDITOR $HOME/.bashrc"
-alias inputrc="$EDITOR $HOME/.inputrc"
-alias gitignore="$EDITOR $HOME/.gitignore"
-alias todo="i3-sensible-terminal -e 'vim --servername todo -c \"silent SessionOpen todo\"' --title=Todo"
-alias plan="$EDITOR $HOME/misc/plan"
-alias arch="$EDITOR $HOME/misc/Arch.txt"
+alias bashrc='$EDITOR $HOME/.bashrc'
+alias inputrc='$EDITOR $HOME/.inputrc'
+alias gitignore='$EDITOR $HOME/.gitignore'
+alias todo='start-todo'
+alias plan='$EDITOR $HOME/misc/plan'
+alias arch='$EDITOR $HOME/misc/Arch.txt'
 # }}}
 # xprop {{{
-alias xprop-class="xprop WM_CLASS"
-alias xprop-role="xprop WM_WINDOW_ROLE"
-alias xprop-title="xprop _NET_WM_NAME WM_NAME"
+alias xprop-class='xprop WM_CLASS'
+alias xprop-role='xprop WM_WINDOW_ROLE'
+alias xprop-title='xprop _NET_WM_NAME WM_NAME'
 # }}}
 # Picture {{{
 alias wallpaper='nitrogen --random --set-scaled "$HOME/Pictures/Low Poly"'
-alias schedule="sxiv -f $HOME/Pictures/misc/schedule.png"
-alias thumnail="sxiv -f -t -b -r *"
-alias pic="alias-pic"
-alias sxiv="sxiv -b -s h"
+alias schedule='sxiv -f $HOME/Pictures/misc/schedule.png'
+alias thumnail='sxiv -f -t -b -r *'
+alias pic='alias-pic'
+alias sxiv='sxiv -b -s h'
 # }}}
 # Other {{{
 alias xmod='xmodmap ~/.Xmodmap'
 alias reboot='shutdown -r now'
 alias shutoff='$HOME/bin/shutdown'
-alias size="alias-size"
+alias size='alias-size'
 alias mkdir='mkdir -pv'
-alias top="vtop"
+alias top='vtop'
 if [[ -x /usr/bin/xfce4-terminal ]]; then
-   alias term='xfce4-terminal'
+	alias term='xfce4-terminal'
 fi
-alias internet="$EDITOR $HOME/misc/Internet.txt"
-alias alsa-fix="sudo /usr/local/bin/fix_headphones_audio.sh"
-alias music="ncmpcpp"
-alias clock="tty-clock -s -c -D -C6"
-alias symlink="ln -s"
+alias internet='$EDITOR $HOME/misc/Internet.txt'
+alias alsa-fix='sudo /usr/local/bin/fix_headphones_audio.sh'
+alias music='ncmpcpp'
+alias clock='tty-clock -s -c -D -C6'
+alias symlink='ln -s'
 alias fuck='sudo $(history -p !!)'
-alias toggle-tray="alias-toggle-tray"
+alias toggle-tray='alias-toggle-tray'
 alias key-import='gpg --recv-keys'
 # }}}
 # Even shorter aliases {{{
@@ -214,7 +215,7 @@ alias e='exit'
 alias c='clear'
 alias js='node'
 alias py='python'
-alias ae="$EDITOR $HOME/bin/alias"
+alias ae='$EDITOR $HOME/bin/alias'
 alias sa='source $HOME/bin/alias'
 alias sb='source $HOME/.bashrc && clear'
 # }}}
@@ -225,77 +226,77 @@ alias sb='source $HOME/.bashrc && clear'
 # command, then <tab> to trigger to script, and try again
 
 if [ -d /usr/share/bash-completion/completions ]; then
-   # Setup {{{
-   completionPath="/usr/share/bash-completion/completions"
+	# Setup {{{
+	completionPath='/usr/share/bash-completion/completions'
 
-   # source $completionPath/pacman (_completion_loader pacman works too)
-   # _completion_loader pacman
-   source $completionPath/pacman
-   source $completionPath/journalctl
-   source $completionPath/systemctl
-   source $completionPath/git
-   # source $completionPath/systemctl
-   source $HOME/bin/completion-utils.sh
-   source $HOME/bin/completion-wrapper.sh
-   # }}}
-   # pacman {{{
-   complete -o default -F _pacman_S pac-install
-   complete -o default -F _pacman_Q pac-remove
-   complete -o default -F _pacman_Q pac-search
-   complete -o default -F _pacman_S pac-Search
-   complete -o default -F _pacman_Q pac-list
-   complete -o default -F _pacman_S pac-info
-   complete -o default -F _pacman_S pac-desc
-   complete -o default -F _pacman_S pac-size
-   complete -o default -F _pacman_S pac-dep
+	# source $completionPath/pacman (_completion_loader pacman works too)
+	# _completion_loader pacman
+	source $completionPath/pacman
+	source $completionPath/journalctl
+	source $completionPath/systemctl
+	source $completionPath/git
+	# source $completionPath/systemctl
+	source $HOME/bin/completion-utils.sh
+	source $HOME/bin/completion-wrapper.sh
+	# }}}
+	# pacman {{{
+	complete -o default -F _pacman_S pac-install
+	complete -o default -F _pacman_Q pac-remove
+	complete -o default -F _pacman_Q pac-search
+	complete -o default -F _pacman_S pac-Search
+	complete -o default -F _pacman_Q pac-list
+	complete -o default -F _pacman_S pac-info
+	complete -o default -F _pacman_S pac-desc
+	complete -o default -F _pacman_S pac-size
+	complete -o default -F _pacman_S pac-dep
 
-   complete -o default -F _pacman_S aur-install
-   complete -o default -F _pacman_Q aur-remove
-   complete -o default -F _pacman_Q aur-search
-   complete -o default -F _pacman_Q aur-info
-   complete -o default -F _pacman_Q aur-desc
-   complete -o default -F _pacman_Q aur-size
-   complete -o default -F _pacman_Q aur-dep
-   # }}}
-   # systemctl {{{
-   completion-wrapper _systemctl _sd-start   systemctl start  1> /dev/null
-   completion-wrapper _systemctl _sd-stop    systemctl stop   1> /dev/null
-   completion-wrapper _systemctl _sd-enable  systemctl enable 1> /dev/null
-   completion-wrapper _systemctl _sd-disable systemctl enable 1> /dev/null
-   completion-wrapper _systemctl _sd-status  systemctl status 1> /dev/null
+	complete -o default -F _pacman_S aur-install
+	complete -o default -F _pacman_Q aur-remove
+	complete -o default -F _pacman_Q aur-search
+	complete -o default -F _pacman_Q aur-info
+	complete -o default -F _pacman_Q aur-desc
+	complete -o default -F _pacman_Q aur-size
+	complete -o default -F _pacman_Q aur-dep
+	# }}}
+	# systemctl {{{
+	completion-wrapper _systemctl _sd-start   systemctl start  1> /dev/null
+	completion-wrapper _systemctl _sd-stop    systemctl stop   1> /dev/null
+	completion-wrapper _systemctl _sd-enable  systemctl enable 1> /dev/null
+	completion-wrapper _systemctl _sd-disable systemctl enable 1> /dev/null
+	completion-wrapper _systemctl _sd-status  systemctl status 1> /dev/null
 
-   complete -o default -F _sd-start   sd-start
-   complete -o default -F _sd-stop    sd-stop
-   complete -o default -F _sd-enable  sd-enable
-   complete -o default -F _sd-disable sd-disable
-   complete -o default -F _sd-status  sd-status
+	complete -o default -F _sd-start   sd-start
+	complete -o default -F _sd-stop    sd-stop
+	complete -o default -F _sd-enable  sd-enable
+	complete -o default -F _sd-disable sd-disable
+	complete -o default -F _sd-status  sd-status
 
-   complete -o default -F _journalctl sd-log
-   # }}}
-   # git {{{
-   # git completion script already have its own function to set up completion
-   # for functions or commands, so no need to use complete-wrapper function
-   # see https://gist.github.com/JuggoPop/10706934
-   __git_complete gstat      _git_status
-   __git_complete gadd       _git_add
-   __git_complete gcommit    _git_commit
-   __git_complete glog       _git_log
-   __git_complete glogstat   _git_log
-   __git_complete glogdiff   _git_log
-   __git_complete gpull      _git_pull
-   __git_complete gpush      _git_push
-   __git_complete gfixcommit _git_commit
-   __git_complete gfixstage  _git_commit
-   __git_complete gunstage   _git_reset
-   __git_complete gswitch    _git_checkout
-   __git_complete gnewbranch _git_branch
-   __git_complete gmerge     _git_merge
-   # __git_complete gdiff      _git_diff
+	complete -o default -F _journalctl sd-log
+	# }}}
+	# git {{{
+	# git completion script already have its own function to set up completion
+	# for functions or commands, so no need to use complete-wrapper function
+	# see https://gist.github.com/JuggoPop/10706934
+	__git_complete gstat      _git_status
+	__git_complete gadd       _git_add
+	__git_complete gcommit    _git_commit
+	__git_complete glog       _git_log
+	__git_complete glogstat   _git_log
+	__git_complete glogdiff   _git_log
+	__git_complete gpull      _git_pull
+	__git_complete gpush      _git_push
+	__git_complete gfixcommit _git_commit
+	__git_complete gfixstage  _git_commit
+	__git_complete gunstage   _git_reset
+	__git_complete gswitch    _git_checkout
+	__git_complete gnewbranch _git_branch
+	__git_complete gmerge     _git_merge
+	# __git_complete gdiff      _git_diff
 
-   # __git_complete gdelbranch __gitcomp
-   complete -o default -F _git_branch_d gdelbranch
-   complete -o default -F _git_log_S gscommit
-   # }}}
+	# __git_complete gdelbranch __gitcomp
+	complete -o default -F _git_branch_d gdelbranch
+	complete -o default -F _git_log_S gscommit
+	# }}}
 fi
 
 # }}}
