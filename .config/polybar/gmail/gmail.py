@@ -52,15 +52,15 @@ def update_unread_gmail_count():
 		result = gmail.users().messages().list(userId='me', q='in:inbox is:unread').execute()
 		unread_count = result['resultSizeEstimate']
 
-		print(color_string(' ', 'THEME_HL') + str(unread_count), flush=True)
+		print(color_string('', 'THEME_MAIN') + ' ' + str(unread_count), flush=True)
 		return 0
 
 	except (errors.HttpError, httplib2.ServerNotFoundError):
-		print(color_string(' ', 'THEME_ALERT'), flush=True)
+		print(color_string('', 'THEME_ALERT'), flush=True)
 		return 1
 
 	except client.AccessTokenRefreshError:
-		print(color_string(' ', 'THEME_ALERT'), flush=True)
+		print(color_string('', 'THEME_ALERT'), flush=True)
 		return 2
 
 def color_string(string, color_envron_var):

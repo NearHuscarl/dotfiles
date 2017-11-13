@@ -6,9 +6,9 @@ function check_update() {
 
 	check=$((pac + aur))
 	if [[ "$check" != "0" ]]; then
-		echo ""$pac" %{F$THEME_HL}%{F-} "$aur""
+		echo ""$pac" %{F$THEME_MAIN}%{F-} "$aur""
 	else
-		echo "0 %{F$THEME_HL}%{F-} 0"
+		echo "0 %{F$THEME_MAIN}%{F-} 0"
 	fi
 }
 

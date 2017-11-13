@@ -9,7 +9,7 @@ def color_string(string):
 	""" Print output in color in polybar format """
 
 	# Environment variables in $HOME/bin/export
-	color_begin = '%{F' + os.environ['THEME_HL'] +  '}'
+	color_begin = '%{F' + os.environ['THEME_MAIN'] +  '}'
 	color_end = '%{F-}'
 	return color_begin + string + color_end
 

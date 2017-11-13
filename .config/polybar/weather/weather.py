@@ -123,10 +123,10 @@ def update_weather(city_id, units, api_key):
 
 		temp_value = round(req.json()['main']['temp'])
 		temp = str(temp_value) + '°' + temp_unit
-		thermo_icon = color_string(get_thermo_icon(temp_value, units), 'THEME_HL')
+		thermo_icon = color_string(get_thermo_icon(temp_value, units), 'THEME_MAIN')
 
 		weather_id = req.json()['weather'][0]['id']
-		weather_icon = color_string(get_weather_icon(weather_id), 'THEME_HL')
+		weather_icon = color_string(get_weather_icon(weather_id), 'THEME_MAIN')
 
 		print('{} {} {} {}'.format(weather_icon, description, thermo_icon, temp), flush=True)
 		return 0
