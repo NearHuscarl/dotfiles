@@ -14,6 +14,7 @@
 !/.gitignore
 !/.profile
 !/.pylintrc
+!/.pythonrc.py
 !/.ripignore
 !/.scss-lint.yml
 !/.tern-project
@@ -73,7 +74,18 @@
 !/.vim/snippet/
 !/.vim/syntax/
 
-# Explicit exclude
+# Only include some custom scripts in .virtualenvs/projectX/bin/
+!/.virtualenvs/
+/.virtualenvs/*
+!/.virtualenvs/*/
+/.virtualenvs/*/*
+!/.virtualenvs/*/bin/
+/.virtualenvs/*/bin/*
+
+!/.virtualenvs/*/bin/postactivate
+!/.virtualenvs/*/bin/postdeactivate
+
+# Explicitly exclude
 **/tags
 **/node_modules/
 **/package-lock.json

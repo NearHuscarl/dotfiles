@@ -1,0 +1,4 @@
+#!/bin/bash
+# This hook is sourced after this virtualenv is deactivated.
+
+PYTHONSTARTUP="$HOME/.pythonrc.py"
