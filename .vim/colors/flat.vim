@@ -37,12 +37,12 @@ let colors_name = "flat"
 
 if ($TERM =~ '256' || &t_Co >= 256) || has("gui_running")
   " Set ctermbg=NONE to Normal group for transparent terminal
-  hi Normal     ctermbg=none ctermfg=15 guibg=#1f2d3a guifg=#ecf0f1 cterm=NONE gui=NONE
-  hi LineNr     ctermbg=none ctermfg=7  guibg=#1f2d3a guifg=#84888b cterm=NONE gui=NONE
-  hi FoldColumn ctermbg=0 ctermfg=7  guibg=#1f2d3a guifg=#84888b cterm=NONE gui=NONE
-  hi Folded     ctermbg=none ctermfg=7  guibg=#1f2d3a guifg=#84888b cterm=NONE gui=NONE
-  hi MatchParen ctermbg=0 ctermfg=11 guibg=#1f2d3a guifg=#f1c40f cterm=NONE gui=NONE
-  hi signColumn ctermbg=0 ctermfg=7  guibg=#1f2d3a guifg=#84888b cterm=NONE gui=NONE
+  hi Normal     ctermbg=NONE ctermfg=15 guibg=#1f2d3a guifg=#ecf0f1 cterm=NONE gui=NONE
+  hi LineNr     ctermbg=NONE ctermfg=7  guibg=#1f2d3a guifg=#84888b cterm=NONE gui=NONE
+  hi FoldColumn ctermbg=0    ctermfg=7  guibg=#1f2d3a guifg=#84888b cterm=NONE gui=NONE
+  hi Folded     ctermbg=NONE ctermfg=7  guibg=#1f2d3a guifg=#84888b cterm=NONE gui=NONE
+  hi MatchParen ctermbg=0    ctermfg=11 guibg=#1f2d3a guifg=#f1c40f cterm=NONE gui=NONE
+  hi signColumn ctermbg=NONE ctermfg=7  guibg=#1f2d3a guifg=#84888b cterm=NONE gui=NONE
 
   set background=dark
 
@@ -60,7 +60,7 @@ if ($TERM =~ '256' || &t_Co >= 256) || has("gui_running")
   hi Type       ctermbg=NONE ctermfg=13   guibg=NONE guifg=#9b59b6 cterm=NONE      gui=NONE
   hi Underlined ctermbg=NONE ctermfg=6    guibg=NONE guifg=#16a085 cterm=underline gui=underline
 
-  hi NonText       ctermbg=NONE ctermfg=8    guibg=NONE    guifg=#2c3e50 cterm=NONE      gui=NONE
+  hi NonText       ctermbg=NONE ctermfg=7    guibg=NONE    guifg=#84888b cterm=NONE      gui=NONE
 
   hi Pmenu         ctermbg=8    ctermfg=15   guibg=#2c3e50 guifg=#ecf0f1 cterm=NONE      gui=NONE
   hi PmenuSbar     ctermbg=8    ctermfg=NONE guibg=#2c3e50 guifg=NONE    cterm=NONE      gui=NONE
@@ -95,7 +95,7 @@ if ($TERM =~ '256' || &t_Co >= 256) || has("gui_running")
   hi WildMenu      ctermbg=12   ctermfg=0    guibg=#3498db guifg=#1f2d3a cterm=NONE      gui=NONE
 
   hi Function      ctermbg=NONE ctermfg=12   guibg=NONE    guifg=#f1c40f cterm=NONE      gui=NONE
-  hi SpecialKey    ctermbg=NONE ctermfg=8    guibg=NONE    guifg=#2c3e50 cterm=NONE      gui=NONE
+  hi SpecialKey    ctermbg=NONE ctermfg=7    guibg=NONE    guifg=#84888b cterm=NONE      gui=NONE
   hi Title         ctermbg=NONE ctermfg=15   guibg=NONE    guifg=#ecf0f1 cterm=NONE      gui=NONE
 
   hi DiffAdd       ctermbg=15   ctermfg=6    guibg=#ecf0f1 guifg=#16a085 cterm=reverse   gui=reverse
@@ -104,7 +104,7 @@ if ($TERM =~ '256' || &t_Co >= 256) || has("gui_running")
   hi DiffText      ctermbg=0    ctermfg=3    guibg=#1f2d3a guifg=#f39c12 cterm=reverse   gui=reverse
 
   hi IncSearch     ctermbg=1    ctermfg=0    guibg=#c0392b guifg=#1f2d3a cterm=NONE      gui=NONE
-  hi Search        ctermbg=11   ctermfg=0    guibg=#f1c40f guifg=#1f2d3a cterm=NONE      gui=NONE
+  hi Search        ctermbg=6    ctermfg=15   guibg=#16a085 guifg=#ecf0f1 cterm=NONE      gui=NONE
 
   hi Directory     ctermbg=NONE ctermfg=14   guibg=NONE    guifg=#2aa198 cterm=NONE      gui=NONE
 
@@ -191,7 +191,7 @@ elseif &t_Co == 8 || $TERM !~# '^linux' || &t_Co == 16
   hi DiffText      ctermbg=white      ctermfg=red         cterm=reverse
 
   hi IncSearch     ctermbg=darkred    ctermfg=black       cterm=NONE
-  hi Search        ctermbg=yellow     ctermfg=black       cterm=NONE
+  hi Search        ctermbg=cyan       ctermfg=white       cterm=NONE
 
   hi Directory     ctermbg=NONE       ctermfg=cyan        cterm=NONE
   hi MatchParen    ctermbg=black      ctermfg=yellow      cterm=NONE
@@ -202,7 +202,7 @@ elseif &t_Co == 8 || $TERM !~# '^linux' || &t_Co == 16
   hi SpellRare     ctermbg=NONE       ctermfg=darkmagenta cterm=undercurl
 
   hi ColorColumn   ctermbg=black      ctermfg=NONE        cterm=NONE
-  hi SignColumn    ctermbg=black      ctermfg=darkgray    cterm=NONE
+  hi SignColumn    ctermbg=NONE       ctermfg=darkgray    cterm=NONE
 endif
 
 hi link Boolean                  Constant
