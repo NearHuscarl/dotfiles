@@ -7,13 +7,11 @@ from various websites and put them on polybar
 
 import random
 import time
-import re
-import urllib.request
-import sys
 import os
 from pprint import pprint as p
-
 from threading import Thread
+
+import requests
 from bs4 import BeautifulSoup as soup
 
 def color_string(string, color_envron_var):
@@ -36,8 +34,8 @@ class News(object):
 	def __init__(self, data):
 		"""
 		Assign data to self.cache
-		data is a dictionary which store info about a specific webpage
-		to be able to fetch it later using self.update()
+		self.cache is a dictionary which store info about a specific
+		webpage to extract title later using self.display()
 		"""
 		self.cache = data
 		self.index = -1
@@ -61,69 +59,6 @@ class News(object):
 				return True
 		return False
 
-	def __retrieve_elem_info(self, element):
-		""" Extract value from element info
-		parameter: a[href=link]
-		return: a, href, link
-		"""
-		elem_comp = element.strip(']').split('[')
-
-		if '=' in elem_comp[1]:
-			attr_name, attr_val = elem_comp[1].split('=')
-		else:
-			attr_name, attr_val = None, None
-
-		return elem_comp[0], attr_name, attr_val
-
-	def __search_element(self, elem, paren_elem_inner):
-		""" Search element and return inner content in string
-		parameters:
-			elem: 'a[href=link]'
-			paren_elem_inner: string of inner parent element content
-			that contain one or more elements to search for
-		return: list of inner child element content
-		"""
-		elem, attr_name, attr_val = self.__retrieve_elem_info(elem)
-		attr = {attr_name: re.compile(attr_val)}
-		elem_inner = paren_elem_inner.find_all(elem, **attr)
-
-		return elem_inner
-
-	def __search_specific_element(self, elem, paren):
-		""" Search elements and return inner content in string
-		like __search_element() but can use nested element
-		parameters:
-			elem: 'li[class=list] a[href=link]'
-			paren_elem_inner: string of inner parent element content
-			that contain one or more elements to search for
-		return: list of inner child element content
-		"""
-	
-		target_elem_inner_list = []
-		elem_prop = elem.split()
-
-		if len(elem_prop) > 1:
-			elem_inner = [None] * len(elem_prop)
-			elem_inner[0] = self.__search_element(elem_prop[0], paren)
-
-			elem = list(zip(elem_prop, elem_inner))
-			paren_elem_inner_list = elem.pop(0)[1]
-
-			for elem_prop, elem_inner in elem:
-				child_elem_inner_list = []
-
-				for paren_elem_inner in paren_elem_inner_list:
-					elem_inner = self.__search_element(elem_prop, paren_elem_inner)
-					if len(elem_inner) != 0:
-						child_elem_inner_list.extend(elem_inner)
-
-				paren_elem_inner_list = child_elem_inner_list
-				target_elem_inner_list = child_elem_inner_list
-		else:
-			target_elem_inner_list = self.__search_element(elem_prop[0], paren)
-
-		return target_elem_inner_list
-
 	def update_all(self):
 		""" Update all. use for debugging """
 
@@ -131,14 +66,14 @@ class News(object):
 			print('fetch...')
 
 			try:
-				html = urllib.request.urlopen(page['url']).read()
+				html = requests.get(page['url'], headers = {'User-agent': 'news'}).text
 				soup_html = soup(html, 'html.parser')
-				elem_list = self.__search_specific_element(page['element'], soup_html)
+				elem_list = soup_html.select(page['selector'])
 
 				self.cache[index]['content'] = [elem.text.strip() for elem in elem_list]
-			except urllib.error.HTTPError:
+			except Exception as e:
+				print(e)
 				print('Bad connection')
-				pass
 
 		return 0 if self.is_content_avail() else 1
 
@@ -151,15 +86,15 @@ class News(object):
 		# print('update...')
 
 		try:
-			html = urllib.request.urlopen(self.cache[index]['url']).read()
+			html = requests.get(self.cache[index]['url'], headers = {'User-agent': 'news'}).text
 			soup_html = soup(html, 'html.parser')
-			elem_list = self.__search_specific_element(self.cache[index]['element'], soup_html)
+			elem_list = soup_html.select(self.cache[index]['selector'])
 
 			self.cache[index]['content'] = [elem.text.strip() for elem in elem_list]
 			# print('update successfully!')
 			return 0
-		except urllib.error.HTTPError:
-			# print('update failed!')
+		except Exception as e:
+			print(e)
 			return 1
 
 	def display(self):
@@ -178,6 +113,10 @@ class News(object):
 		title = self.cache[rand_index]['content'][rand_content_index]
 		print('{} {}: {}'.format(icon, name, title), flush=True)
 		return 0
+
+	def display_all(self):
+		""" Debug """
+		p(self.cache)
 
 def update_news(news):
 	"""
@@ -211,20 +150,15 @@ def main():
 		'name': short name of the website to put on polybar along with content like
 			<website_name>: <website_title>
 		'url': url of the page to get the info
-		'element': sample value: 'a[href=link]'
-		 'a': element name that store the title text to retrieve from
-		 'href' and 'link': attribute name and its value of the element to identify
-			the exact element to fetch from (usually an element name alone is not enough)
-			Note: value is a string of regex to search for attribute's value
-		'content': list of titles which is the string inside the inspected elements
-			to put on polybar
+		'selector': 'a string of css selector to get the text from'
+		'content': list of string titles inside the inspected elements to put on polybar
 		'last_time': max time (day) since the first time it get the data to display
 	"""
 	data = [
 			{
 				'name': 'mythologicinteractive',
 				'url': 'http://mythologicinteractive.com/',
-				'element': 'a[href=Blog/]',
+				'selector': 'a[href*=Blog/]',
 				'content': [],
 				'icon': '',
 				'format': '',
@@ -233,7 +167,7 @@ def main():
 			{
 				'name': '/r/RimWorld',
 				'url': 'https://www.reddit.com/r/RimWorld/new',
-				'element': 'a[data-event-action=title]',
+				'selector': 'a[data-event-action=title]',
 				'content': [],
 				'icon': '',
 				'format': '',
@@ -242,7 +176,7 @@ def main():
 			{
 				'name': 'daa',
 				'url': 'https://daa.uit.edu.vn/',
-				'element': 'div[class=view-hien-thi-bai-viet-moi] a[href=thongbao]',
+				'selector': 'div.view-hien-thi-bai-viet-moi a[href*=thongbao]',
 				'content': [],
 				'icon': '',
 				'format': '',
@@ -252,20 +186,20 @@ def main():
 
 	news = News(data)
 
-	update = Thread(target=lambda: update_news(news))
-	display = Thread(target=lambda: display_news(news))
+	# update = Thread(target=lambda: update_news(news))
+	# display = Thread(target=lambda: display_news(news))
 
-	update.start()
+	# update.start()
 
-	# Only display if there is at least one page fetch successfully
-	# because display thread will keep dicing for another page if
-	# the last one is not successful
-	while not news.is_content_avail():
-		time.sleep(3)
-	display.start()
+	# # Only display if there is at least one page fetch successfully
+	# # because display thread will keep dicing for another page if
+	# # the last one is not successful
+	# while not news.is_content_avail():
+	# 	time.sleep(3)
+	# display.start()
 
-	# news.update_all()
-	# news.display()
+	news.update_all()
+	news.display_all()
 
 main()
 
