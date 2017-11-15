@@ -16,9 +16,9 @@
 [colors]
 background = #ff1F2D3A
 background-alt = #ff2C3E50
-foreground-text = #ecf0f1
-foreground-icon = #16A085
-foreground-inactive = #84888B
+foreground-text = ${env:THEME_FG}
+foreground-icon = ${env:THEME_MAIN}
+foreground-inactive = ${env:THEME_FG_ALT}
 primary = #e74c3c
 secondary = #f39c12
 alert = #bd2c40
@@ -372,6 +372,7 @@ font-3 = ${bar/holybar.font-3}
 font-4 = ${bar/holybar.font-4}
 
 modules-left = weather
+modules-center = news
 modules-right = gmail pac_update trash
 ; }}}
 ; {{{ [module/weather]
@@ -386,7 +387,7 @@ exec = bash -l -c '$HOME/.config/polybar/weather/weather.py'
 type = custom/script
 
 tail = true
-exec = bash -l -c '$HOME/.config/polybar/gmail/gmail.py'
+exec = bash -l -c '$HOME/.config/polybar/gmail/launch.sh'
 click-left = xdg-open https://mail.google.com
 ; }}}
 ; {{{ [module/pac_update]
@@ -411,6 +412,16 @@ exec = bash -l -c '$HOME/.config/polybar/trash/trash.sh'
 
 click-left  = bash -l -c '$HOME/.config/polybar/trash/trash.sh open'
 click-right = bash -l -c '$HOME/.config/polybar/trash/trash.sh clean'
+; }}}
+; {{{ [module/news]
+[module/news]
+type = custom/script
+
+tail = true
+exec = bash -l -c '$HOME/.config/polybar/news/launch.sh'
+
+; click-left  = bash -l -c '$HOME/.config/polybar/trash/trash.sh open'
+; click-right = bash -l -c '$HOME/.config/polybar/trash/trash.sh clean'
 ; }}}
 
 ; vim:ft=dosini foldmethod=marker
