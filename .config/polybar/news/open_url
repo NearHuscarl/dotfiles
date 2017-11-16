@@ -1,0 +1,7 @@
+#!/bin/bash
+
+cd $(dirname "$0")
+xdg-open $(cat ""$(pwd)"/news_url")
+
+# $ws_web (web workspace)
+i3-msg workspace 3

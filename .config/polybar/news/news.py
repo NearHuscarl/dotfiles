@@ -43,7 +43,7 @@ class News(object):
 	def __get_current_index(self):
 		"""
 		Get current index for cache list to update the
-		current element to avoid update all webpages at once
+		webpage content to avoid updating all webpages at once
 		"""
 
 		self.index += 1
@@ -55,9 +55,34 @@ class News(object):
 		""" return True if there is content in one of the pages """
 
 		for page in self.cache:
-			if len(page['content']) != 0:
+			if len(page['title']) != 0:
 				return True
 		return False
+
+	def __get_title_url(self, url, href, href_offset=''):
+		""" Get title url
+		Example:
+			url: 'https://www.reddit.com/r/RimWorld/new/'
+			href: '/r/RimWorld/comments/7d7lrp/hexagon_20/'
+			href_offset: '/r/RimWorld/new/'
+			return: 'https://www.reddit.com/r/RimWorld/comments/7d7lrp/hexagon_20/'
+		"""
+		url = url.strip('/')
+		href_offset = href_offset.strip('/')
+
+		url = url.replace(href_offset, '').strip('/')
+
+		return url + '/' + href
+
+	def __export_link(self, link):
+		""" Export link of current title displayed on polybar
+		to $(pwd)/news_url file
+		"""
+		dirname = os.path.dirname(os.path.realpath(__file__))
+		link_file = os.path.join(dirname, 'news_url')
+
+		with open(link_file, 'w') as file:
+			file.write(link)
 
 	def update_all(self):
 		""" Update all. use for debugging """
@@ -66,11 +91,13 @@ class News(object):
 			print('fetch...')
 
 			try:
-				html = requests.get(page['url'], headers = {'User-agent': 'news'}).text
+				html = requests.get(page['url'], headers={'User-agent': 'news'}).text
 				soup_html = soup(html, 'html.parser')
 				elem_list = soup_html.select(page['selector'])
 
-				self.cache[index]['content'] = [elem.text.strip() for elem in elem_list]
+				title = [elem.text.strip() for elem in elem_list]
+				href = [elem['href'] for elem in elem_list]
+				self.cache[index]['title'] = list(zip(title, href))
 			except Exception as e:
 				print(e)
 				print('Bad connection')
@@ -86,11 +113,13 @@ class News(object):
 		# print('update...')
 
 		try:
-			html = requests.get(self.cache[index]['url'], headers = {'User-agent': 'news'}).text
+			html = requests.get(self.cache[index]['url'], headers={'User-agent': 'news'}).text
 			soup_html = soup(html, 'html.parser')
 			elem_list = soup_html.select(self.cache[index]['selector'])
 
-			self.cache[index]['content'] = [elem.text.strip() for elem in elem_list]
+			title = [elem.text.strip() for elem in elem_list]
+			href = [elem['href'] for elem in elem_list]
+			self.cache[index]['title'] = list(zip(title, href))
 			# print('update successfully!')
 			return 0
 		except Exception as e:
@@ -102,15 +131,21 @@ class News(object):
 
 		rand_index = random.randint(0, len(self.cache) - 1)
 
-		if len(self.cache[rand_index]['content']) == 0:
-			# print('content is empty. Nothing to print')
+		if len(self.cache[rand_index]['title']) == 0:
+			# print('title is empty. Nothing to print')
 			return 1
 
-		rand_content_index = random.randint(0, len(self.cache[rand_index]['content']) - 1)
-	
+		rand_title_index = random.randint(0, len(self.cache[rand_index]['title']) - 1)
+
 		name = self.cache[rand_index]['name']
 		icon = color_string(self.cache[rand_index]['icon'], 'THEME_MAIN')
-		title = self.cache[rand_index]['content'][rand_content_index]
+		title, href = self.cache[rand_index]['title'][rand_title_index]
+		url = self.cache[rand_index]['url']
+		href_offset = self.cache[rand_index]['href_offset']
+
+		title_link = self.__get_title_url(url, href, href_offset)
+		self.__export_link(title_link)
+
 		print('{} {}: {}'.format(icon, name, title), flush=True)
 		return 0
 
@@ -147,28 +182,31 @@ def main():
 	"""
 	data is a list of webpage info use to fetch titles on the internet
 	every element is a dictionary with additional keywords:
-		'name': short name of the website to put on polybar along with content like
+		'name': short name of the website to put on polybar along with title like
 			<website_name>: <website_title>
 		'url': url of the page to get the info
+		'href_offset': see News.__get_title_url() doctring
 		'selector': 'a string of css selector to get the text from'
-		'content': list of string titles inside the inspected elements to put on polybar
+		'title': list of string titles inside the inspected elements to put on polybar
 		'last_time': max time (day) since the first time it get the data to display
 	"""
 	data = [
 			{
 				'name': 'mythologicinteractive',
 				'url': 'http://mythologicinteractive.com/',
+				'href_offset': '',
 				'selector': 'a[href*=Blog/]',
-				'content': [],
+				'title': [],
 				'icon': '',
 				'format': '',
 				'last_time': 20
 				},
 			{
 				'name': '/r/RimWorld',
-				'url': 'https://www.reddit.com/r/RimWorld/new',
+				'url': 'https://www.reddit.com/r/RimWorld/new/',
+				'href_offset': '/r/RimWorld/new/',
 				'selector': 'a[data-event-action=title]',
-				'content': [],
+				'title': [],
 				'icon': '',
 				'format': '',
 				'last_time': 1.5
@@ -177,7 +215,8 @@ def main():
 				'name': 'daa',
 				'url': 'https://daa.uit.edu.vn/',
 				'selector': 'div.view-hien-thi-bai-viet-moi a[href*=thongbao]',
-				'content': [],
+				'href_offset': '',
+				'title': [],
 				'icon': '',
 				'format': '',
 				'last_time': 5
@@ -186,20 +225,20 @@ def main():
 
 	news = News(data)
 
-	# update = Thread(target=lambda: update_news(news))
-	# display = Thread(target=lambda: display_news(news))
+	update = Thread(target=lambda: update_news(news))
+	display = Thread(target=lambda: display_news(news))
 
-	# update.start()
+	update.start()
 
-	# # Only display if there is at least one page fetch successfully
-	# # because display thread will keep dicing for another page if
-	# # the last one is not successful
-	# while not news.is_content_avail():
-	# 	time.sleep(3)
-	# display.start()
+	# Only display if there is at least one page fetch successfully
+	# because display thread will keep dicing for another page if
+	# the last one is not successful
+	while not news.is_content_avail():
+		time.sleep(3)
+	display.start()
 
-	news.update_all()
-	news.display_all()
+	# news.update_all()
+	# news.display_all()
 
 main()
 

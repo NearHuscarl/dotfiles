@@ -420,8 +420,7 @@ type = custom/script
 tail = true
 exec = bash -l -c '$HOME/.config/polybar/news/launch.sh'
 
-; click-left  = bash -l -c '$HOME/.config/polybar/trash/trash.sh open'
-; click-right = bash -l -c '$HOME/.config/polybar/trash/trash.sh clean'
+click-left = $HOME/.config/polybar/news/open_url
 ; }}}
 
 ; vim:ft=dosini foldmethod=marker
