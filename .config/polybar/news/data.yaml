@@ -1,0 +1,36 @@
+# - name: 'mythologicinteractive'
+#   short_name: 'SFD'
+#   url: 'http://mythologicinteractive.com/'
+#   href_offset: ''
+#   selector: 'a[href*=Blog/]'
+#   title: []
+#   icon: ''
+#   format: ''
+#   last_time: 20
+# - name: '/r/RimWorld'
+#   short_name: 'Rimworld'
+#   url: 'https://www.reddit.com/r/RimWorld/new/'
+#   href_offset: '/r/RimWorld/new/'
+#   selector: 'a[data-event-action=title]'
+#   title: []
+#   icon: ''
+#   format: ''
+#   last_time: 1.5
+# - name: '/r/vim'
+#   short_name: 'Vim'
+#   url: 'https://www.reddit.com/r/vim/new/'
+#   href_offset: '/r/vim/new/'
+#   selector: 'a[data-event-action=title]'
+#   title: []
+#   icon: ''
+#   format: ''
+#   last_time: 3
+- name: 'Thông báo uit'
+  short_name: 'daa'
+  url: 'https://daa.uit.edu.vn/'
+  selector: 'div.view-hien-thi-bai-viet-moi a[href*=thongbao]'
+  href_offset: ''
+  title: []
+  icon: ''
+  format: ''
+  last_time: 5

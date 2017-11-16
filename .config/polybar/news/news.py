@@ -8,6 +8,7 @@ from various websites and put them on polybar
 import random
 import time
 import os
+import yaml
 from pprint import pprint as p
 from threading import Thread
 
@@ -78,6 +79,7 @@ class News(object):
 		""" Export link of current title displayed on polybar
 		to $(pwd)/news_url file
 		"""
+
 		dirname = os.path.dirname(os.path.realpath(__file__))
 		link_file = os.path.join(dirname, 'news_url')
 
@@ -153,6 +155,26 @@ class News(object):
 		""" Debug """
 		p(self.cache)
 
+def get_data():
+	"""
+	Get yaml file that store data - a list of webpages info used to fetch titles on the internet
+	every element is a dictionary with additional keywords:
+		'name': short name of the website to put on polybar along with title like
+			<website_name>: <website_title>
+		'url': url of the page to get the info
+		'href_offset': see News.__get_title_url() doctring
+		'selector': 'a string of css selector to get the text from'
+		'title': list of string titles inside the inspected elements to put on polybar
+		'last_time': max time (day) since the first time it get the data to display
+	"""
+	dirname = os.path.dirname(os.path.realpath(__file__))
+	data_file = os.path.join(dirname, 'data.yaml')
+
+	with open(data_file, 'r') as file:
+		data = yaml.load(file)
+
+	return data
+
 def update_news(news):
 	"""
 	Update news periodically, endless loop,
@@ -179,50 +201,7 @@ def display_news(news):
 def main():
 	""" main function """
 
-	"""
-	data is a list of webpage info use to fetch titles on the internet
-	every element is a dictionary with additional keywords:
-		'name': short name of the website to put on polybar along with title like
-			<website_name>: <website_title>
-		'url': url of the page to get the info
-		'href_offset': see News.__get_title_url() doctring
-		'selector': 'a string of css selector to get the text from'
-		'title': list of string titles inside the inspected elements to put on polybar
-		'last_time': max time (day) since the first time it get the data to display
-	"""
-	data = [
-			{
-				'name': 'mythologicinteractive',
-				'url': 'http://mythologicinteractive.com/',
-				'href_offset': '',
-				'selector': 'a[href*=Blog/]',
-				'title': [],
-				'icon': '',
-				'format': '',
-				'last_time': 20
-				},
-			{
-				'name': '/r/RimWorld',
-				'url': 'https://www.reddit.com/r/RimWorld/new/',
-				'href_offset': '/r/RimWorld/new/',
-				'selector': 'a[data-event-action=title]',
-				'title': [],
-				'icon': '',
-				'format': '',
-				'last_time': 1.5
-				},
-			{
-				'name': 'daa',
-				'url': 'https://daa.uit.edu.vn/',
-				'selector': 'div.view-hien-thi-bai-viet-moi a[href*=thongbao]',
-				'href_offset': '',
-				'title': [],
-				'icon': '',
-				'format': '',
-				'last_time': 5
-				}
-			]
-
+	data = get_data()
 	news = News(data)
 
 	update = Thread(target=lambda: update_news(news))
