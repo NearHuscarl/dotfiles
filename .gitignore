@@ -40,11 +40,14 @@
 !/.config/gtk-3.0/
 !/.config/ncmpcpp/
 !/.config/neofetch/
-!/.config/polybar/
 !/.config/rofi/
 !/.config/surfraw/
 !/.config/youtube-dl/
 !/.config/zathura/
+
+!/.config/polybar/
+/.config/polybar/pac_update/package_list
+/.config/polybar/news/news_url
 
 !/.config/mpd/
 /.config/mpd/*
