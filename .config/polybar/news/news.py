@@ -5,13 +5,14 @@ News module for polybar that fetch news title
 from various websites and put them on polybar
 """
 
+from copy import deepcopy
 import random
 import time
 import os
-import yaml
 from pprint import pprint as p
 from threading import Thread
 
+import yaml
 import requests
 from bs4 import BeautifulSoup as soup
 
@@ -35,11 +36,14 @@ class News(object):
 	def __init__(self, data):
 		"""
 		Assign data to self.cache
-		self.cache is a dictionary which store info about a specific
+		self.cache: is a dictionary which store info about a specific
 		webpage to extract title later using self.display()
+		self.index: element with this index is updated next
+		self.max_len: max len of content displayed on polybar, otherwise, trim
 		"""
 		self.cache = data
 		self.index = -1
+		self.max_len = 75
 
 	def __get_current_index(self):
 		"""
@@ -56,7 +60,7 @@ class News(object):
 		""" return True if there is content in one of the pages """
 
 		for page in self.cache:
-			if len(page['title']) != 0:
+			if not page['title']:
 				return True
 		return False
 
@@ -80,7 +84,8 @@ class News(object):
 		to $(pwd)/news_url file
 		"""
 
-		dirname = os.path.dirname(os.path.realpath(__file__))
+		# dirname = os.path.dirname(os.path.realpath(__file__))
+		dirname = '/home/near/.config/polybar/news/'
 		link_file = os.path.join(dirname, 'news_url')
 
 		with open(link_file, 'w') as file:
@@ -97,12 +102,13 @@ class News(object):
 				soup_html = soup(html, 'html.parser')
 				elem_list = soup_html.select(page['selector'])
 
-				title = [elem.text.strip() for elem in elem_list]
-				href = [elem['href'] for elem in elem_list]
-				self.cache[index]['title'] = list(zip(title, href))
+				for elem in elem_list:
+					title = elem.text.strip()
+					href = elem['href']
+					self.cache[index]['title'].append({'name': title, 'href': href})
 			except Exception as e:
 				print(e)
-				print('Bad connection')
+				# print('Bad connection')
 
 		return 0 if self.is_content_avail() else 1
 
@@ -119,36 +125,62 @@ class News(object):
 			soup_html = soup(html, 'html.parser')
 			elem_list = soup_html.select(self.cache[index]['selector'])
 
-			title = [elem.text.strip() for elem in elem_list]
-			href = [elem['href'] for elem in elem_list]
-			self.cache[index]['title'] = list(zip(title, href))
+			for elem in elem_list:
+				title = elem.text.strip()
+				href = elem['href']
+				self.cache[index]['title'].append({'name': title, 'href': href})
 			# print('update successfully!')
 			return 0
 		except Exception as e:
 			print(e)
 			return 1
 
+	def __trim_content(self, data):
+		""" Trim the content if it's too long """
+
+		name_len = len(data['name'])
+		short_name_len = len(data['short_name'])
+		title_len = len(data['title']['name'])
+		self.max_len = 75
+
+		if name_len + title_len > self.max_len:
+			if short_name_len + title_len > self.max_len:
+				# 2 the len of the seperator between name and title (: )
+				offset = self.max_len - (short_name_len + title_len + 2)
+
+				data['title']['name'] = data['title']['name'][:offset-3] + '...'
+		return data
+
+	def __get_random_content(self):
+		""" Get random content of the webpage and its related info """
+		rand_index = random.randint(0, len(self.cache) - 1)
+
+		if not self.cache[rand_index]['title']:
+			# print('title is empty. Nothing to print')
+			return None
+
+		data = deepcopy(self.cache[rand_index])
+
+		rand_title_index = random.randint(0, len(self.cache[rand_index]['title']) - 1)
+		data['title'] = self.cache[rand_index]['title'][rand_title_index]
+
+		data = self.__trim_content(data)
+
+		return data
+
 	def display(self):
 		""" Print out titles from the web randomly """
 
-		rand_index = random.randint(0, len(self.cache) - 1)
+		data = self.__get_random_content()
 
-		if len(self.cache[rand_index]['title']) == 0:
+		if data is None:
 			# print('title is empty. Nothing to print')
 			return 1
 
-		rand_title_index = random.randint(0, len(self.cache[rand_index]['title']) - 1)
-
-		name = self.cache[rand_index]['name']
-		icon = color_string(self.cache[rand_index]['icon'], 'THEME_MAIN')
-		title, href = self.cache[rand_index]['title'][rand_title_index]
-		url = self.cache[rand_index]['url']
-		href_offset = self.cache[rand_index]['href_offset']
-
-		title_link = self.__get_title_url(url, href, href_offset)
+		title_link = self.__get_title_url(data['url'], data['title']['href'], data['href_offset'])
 		self.__export_link(title_link)
 
-		print('{} {}: {}'.format(icon, name, title), flush=True)
+		print('{} {}: {}'.format(data['icon'], data['name'], data['title']['name']), flush=True)
 		return 0
 
 	def display_all(self):
@@ -167,7 +199,8 @@ def get_data():
 		'title': list of string titles inside the inspected elements to put on polybar
 		'last_time': max time (day) since the first time it get the data to display
 	"""
-	dirname = os.path.dirname(os.path.realpath(__file__))
+	# dirname = os.path.dirname(os.path.realpath(__file__))
+	dirname = '/home/near/.config/polybar/news/'
 	data_file = os.path.join(dirname, 'data.yaml')
 
 	with open(data_file, 'r') as file:
@@ -222,6 +255,10 @@ def main():
 	# news.update_all()
 	# news.display_all()
 
-main()
+# main()
+
+# Renmind me to:
+# restore __file__ variable (2)
+# uncomment main func
 
 # vim: nofoldenable
