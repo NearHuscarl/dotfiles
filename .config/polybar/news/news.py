@@ -141,11 +141,10 @@ class News(object):
 		name_len = len(data['name'])
 		short_name_len = len(data['short_name'])
 		title_len = len(data['title']['name'])
-		self.max_len = 75
 
 		if name_len + title_len > self.max_len:
 			if short_name_len + title_len > self.max_len:
-				# 2 the len of the seperator between name and title (: )
+				# 2 is the len of the seperator between name and title (: )
 				offset = self.max_len - (short_name_len + title_len + 2)
 
 				data['title']['name'] = data['title']['name'][:offset-3] + '...'
