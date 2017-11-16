@@ -237,6 +237,9 @@ def main():
 		time.sleep(3)
 	display.start()
 
+	update.join()
+	display.join()
+
 	# news.update_all()
 	# news.display_all()
 
