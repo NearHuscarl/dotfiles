@@ -1,0 +1,13 @@
+#!/bin/bash
+
+function toggle-tray() {
+   local configPath="$HOME/.config/polybar/config"
+
+   if grep "^tray-position" "$configPath" 1> /dev/null; then
+      sed -i 's/^tray-position/;tray-position/' "$configPath"
+   else
+      sed -i 's/^;tray-position/tray-position/' "$configPath"
+   fi
+}
+
+toggle-tray

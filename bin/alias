@@ -4,7 +4,7 @@
 # Description: Bash custom aliases and other alias functions, some alias have
 #              the equivalent completion as the original commands
 # Author:      Near Huscarl <near.huscarl@gmail.com>
-# Last Change: Thu Nov 16 20:11:08 +07 2017
+# Last Change: Thu Nov 16 22:21:46 +07 2017
 # Licence:     BSD 3-Clause license
 # Note:        N/A
 # ============================================================================
@@ -207,7 +207,6 @@ alias music='ncmpcpp'
 alias clock='tty-clock -s -c -D -C6'
 alias symlink='ln -s'
 alias fuck='sudo $(history -p !!)'
-alias toggle-tray='alias-toggle-tray'
 alias key-import='gpg --recv-keys'
 # }}}
 # Even shorter aliases {{{

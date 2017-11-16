@@ -4,7 +4,7 @@
 # File:        alias-utils
 # Description: Function for custom alias script
 # Author:      Near Huscarl <near.huscarl@gmail.com>
-# Last Change: Sat Nov 11 23:35:44 +07 2017
+# Last Change: Thu Nov 16 22:21:33 +07 2017
 # Licence:     BSD 3-Clause license
 # Note:        N/A
 # ============================================================================
@@ -98,14 +98,6 @@ function alias-pic() { # {{{
          return 0
       fi
    done
-} # }}}
-function alias-toggle-tray() { # {{{
-   local configPath="$HOME/.config/polybar/config"
-   if grep "^tray-position" "$configPath" 1> /dev/null; then
-      sed -i 's/^tray-position/;tray-position/' $HOME/.config/polybar/config
-   else
-      sed -i 's/^;tray-position/tray-position/' $HOME/.config/polybar/config
-   fi
 } # }}}
 function alias-rgr() { # {{{
    rootDir=$(git rev-parse --show-toplevel 2> /dev/null)
