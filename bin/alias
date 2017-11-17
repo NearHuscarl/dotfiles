@@ -4,7 +4,7 @@
 # Description: Bash custom aliases and other alias functions, some alias have
 #              the equivalent completion as the original commands
 # Author:      Near Huscarl <near.huscarl@gmail.com>
-# Last Change: Thu Nov 16 22:21:46 +07 2017
+# Last Change: Sat Nov 18 03:44:17 +07 2017
 # Licence:     BSD 3-Clause license
 # Note:        N/A
 # ============================================================================
@@ -135,7 +135,7 @@ if [[ -x /usr/bin/git ]]; then
 	alias gfixstage='git commit --amend --reuse-message=HEAD' # Fix commit (staging other files)
 	alias gunstage='git reset HEAD'
 	alias grestore='git checkout --'
-	alias gswitch='git checkout'
+	alias gcheck='git checkout'
 	alias gnewbranch='git checkout -b'
 	alias gremove='git rm --cached'                           # Remove file in vcs while keeping in the local location
 	alias gdelbranch='git branch -d'
