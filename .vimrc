@@ -2,7 +2,7 @@
 " File:        .vimrc
 " Description: Vim settings
 " Author:      Near Huscarl <near.huscarl@gmail.com>
-" Last Change: Fri Nov 10 23:51:39 +07 2017
+" Last Change: Sat Nov 18 05:08:03 +07 2017
 " Licence:     BSD 3-Clause license
 " Note:        This is a personal vim config. therefore most likely not work 
 "              on your machine
@@ -200,7 +200,7 @@ set wildignore+=*.png,*.ppt,*.pptx,*.rar,*.swp,*.sfdm,*.xls,*.xlsx,*.xnb,*.zip
 if has('folding')
 	set foldenable
 	set foldmethod=marker
-	set foldopen=all
+	" set foldopen=all
 endif
 
 if has('GUI_running') && has('windows')
@@ -290,12 +290,12 @@ endif
 
 nnoremap { {zz|                                    "Jump between paragraph (backward) and zz
 nnoremap } }zz|                                    "Jump between paragraph (forward) and zz
-nnoremap n nzz
-nnoremap N Nzz
+" nnoremap n nzzzo
+" nnoremap N Nzzzo
 " }}}
 " {{{ Fold
-nnoremap <A-j> zjzz
-nnoremap <A-k> zk[zzz
+" nnoremap <A-j> zjzz
+" nnoremap <A-k> zk[zzz
 nnoremap z[ zo[z|                                  "Open fold, jump at the start and zz
 nnoremap z] zo]z|                                  "Open fold, jump at the end and zz
 nnoremap ]z ]zzz|                                  "jump at the end and zz
@@ -581,7 +581,6 @@ Plug 'sirver/ultisnips', {'on': [
 			\ 'UltiSnipsEdit!'
 			\ ]}
 Plug 'mattn/emmet-vim', {'on': ['EmmetInstall']}
-Plug 'jiangmiao/auto-pairs' ", {'on': []}
 Plug 'tpope/vim-surround', {'on': [
 			\ '<Plug>Ysurround',
 			\ '<Plug>Dsurround',
@@ -641,15 +640,11 @@ let g:ale_lint_on_text_changed = 0
 
 nmap [a <Plug>(ale_previous_wrap)zz
 nmap ]a <Plug>(ale_next_wrap)zz
+
+hi! link ALEErrorSign PreProc
+hi! link ALEWarningSign Statement
+hi! link ALEInfoSign Type
 " }}}
-"{{{ Auto Pairs
-autocmd InsertEnter * :silent! all autopairs#AutoPairsTryInit()
-let g:AutoPairsMoveCharacter      = ''
-let g:AutoPairsShortcutJump       = ''
-let g:AutoPairsShortcutToggle     = ''
-let g:AutoPairsShortcutFastWrap   = ''
-let g:AutoPairsShortcutBackInsert = ''
-"}}}
 " {{{ AsyncRun
 " Async with Fugitive
 command! -bang -nargs=* -complete=file Make AsyncRun -program=make @ <args>
@@ -813,12 +808,12 @@ map /  <Plug>(incsearch-forward)
 map ?  <Plug>(incsearch-backward)
 map g/ <Plug>(incsearch-stay)
 
-map n  <Plug>(incsearch-nohl-n)zz
-map N  <Plug>(incsearch-nohl-N)zz
-map *  <Plug>(incsearch-nohl-*)zz
-map #  <Plug>(incsearch-nohl-#)zz
-map g* <Plug>(incsearch-nohl-g*)zz
-map g# <Plug>(incsearch-nohl-g#)zz
+map n  <Plug>(incsearch-nohl-n)zzzo
+map N  <Plug>(incsearch-nohl-N)zzzo
+map *  <Plug>(incsearch-nohl-*)zzzo
+map #  <Plug>(incsearch-nohl-#)zzzo
+map g* <Plug>(incsearch-nohl-g*)zzzo
+map g# <Plug>(incsearch-nohl-g#)zzzo
 "}}}
 "{{{ is.vim
 " nmap n <Plug>(is-n)zozz
@@ -912,6 +907,8 @@ nnoremap <silent><Leader>sv :call lazyload#SessionView()<CR>
 nnoremap <silent><Leader>sV :call lazyload#SessionVIEW()<CR>
 "}}}
 "{{{ Smooth Scroll
+nnoremap <silent> <A-j> :call smooth_scroll#down(6, 0, 2)<CR>
+nnoremap <silent> <A-k> :call smooth_scroll#up(6, 0, 2)<CR>
 nnoremap <silent> <A-l> :call smooth_scroll#down(15, 0, 3)<CR>
 nnoremap <silent> <A-h> :call smooth_scroll#up(15, 0, 3)<CR>
 " nnoremap <silent> H     :call smooth_scroll#up(40, 0, 10)<CR>
@@ -1082,9 +1079,6 @@ autocmd BufEnter *
 			\|if(&diff || &ft == 'gundo') | set timeout timeoutlen=0   | endif
 
 autocmd BufLeave * if (&diff || &ft == 'gundo') | set timeout& timeoutlen& | endif
-
-autocmd BufEnter *.html let g:AutoPairs["<"] = '>'
-autocmd BufLeave *.html unlet g:AutoPairs["<"]
 
 autocmd QuickFixCmdPost * cwindow
 autocmd CursorHold * nohlsearch
