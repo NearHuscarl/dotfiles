@@ -2,7 +2,7 @@
 " File:        .vimrc
 " Description: Vim settings
 " Author:      Near Huscarl <near.huscarl@gmail.com>
-" Last Change: Sat Nov 18 05:08:03 +07 2017
+" Last Change: Sun Nov 19 04:49:57 +07 2017
 " Licence:     BSD 3-Clause license
 " Note:        This is a personal vim config. therefore most likely not work 
 "              on your machine
@@ -452,6 +452,7 @@ nnoremap <C-o> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
 nnoremap <silent>- :w<CR>|                         "Write changes
 nnoremap <silent><Leader>- :SudoWrite<CR>|         "Write changes with sudo
 nnoremap <silent><Leader>tV :ToggleVerbose<CR>
+nnoremap <Leader>o :call ide#Open('code')<CR>|     "Open vscode of current file to debug
 " }}}
 " {{{ Abbreviation
 cabbrev vbnm verbose<Space>nmap
@@ -581,6 +582,7 @@ Plug 'sirver/ultisnips', {'on': [
 			\ 'UltiSnipsEdit!'
 			\ ]}
 Plug 'mattn/emmet-vim', {'on': ['EmmetInstall']}
+Plug 'jiangmiao/auto-pairs' ", {'on': []}
 Plug 'tpope/vim-surround', {'on': [
 			\ '<Plug>Ysurround',
 			\ '<Plug>Dsurround',
@@ -645,6 +647,14 @@ hi! link ALEErrorSign PreProc
 hi! link ALEWarningSign Statement
 hi! link ALEInfoSign Type
 " }}}
+"{{{ Auto Pairs
+autocmd CursorHold,CursorHoldI * :silent! all autopairs#AutoPairsTryInit()
+let g:AutoPairsMoveCharacter      = ''
+let g:AutoPairsShortcutJump       = ''
+let g:AutoPairsShortcutToggle     = ''
+let g:AutoPairsShortcutFastWrap   = ''
+let g:AutoPairsShortcutBackInsert = ''
+"}}}
 " {{{ AsyncRun
 " Async with Fugitive
 command! -bang -nargs=* -complete=file Make AsyncRun -program=make @ <args>
@@ -858,7 +868,7 @@ let g:easytags_auto_highlight = 0
 "{{{ Emmet
 let g:user_emmet_install_global = 0
 
-autocmd InsertEnter *.html,*.css EmmetInstall
+autocmd CursorHold,CursorHoldI *.html EmmetInstall
 let g:user_emmet_mode='i'
 let g:user_emmet_leader_key    = '<A-o>'
 let g:user_emmet_next_key      = '<A-o>n'
@@ -965,8 +975,8 @@ nmap ys  <Plug>Ysurround
 nmap yS  <Plug>YSurround
 nmap yss <Plug>Yssurround
 nmap ySs <Plug>YSsurround
-xmap S   <Plug>VSurround
-xmap gS  <Plug>VgSurround
+xmap s   <Plug>VSurround
+xmap gs  <Plug>VgSurround
 "}}}
 "{{{ Thesaurus Query
 "Require internet
@@ -1079,6 +1089,9 @@ autocmd BufEnter *
 			\|if(&diff || &ft == 'gundo') | set timeout timeoutlen=0   | endif
 
 autocmd BufLeave * if (&diff || &ft == 'gundo') | set timeout& timeoutlen& | endif
+
+autocmd BufEnter *.html let g:AutoPairs["<"] = '>'
+autocmd BufLeave *.html unlet g:AutoPairs["<"]
 
 autocmd QuickFixCmdPost * cwindow
 autocmd CursorHold * nohlsearch
