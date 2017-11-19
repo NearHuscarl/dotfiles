@@ -46,6 +46,14 @@
 !/.config/youtube-dl/
 !/.config/zathura/
 
+!/.config/Code/
+/.config/Code/*
+!/.config/Code/User/
+/.config/Code/User/*
+!/.config/Code/User/settings.json
+!/.config/Code/User/keybindings.json
+!/.config/Code/User/README.md
+
 !/.config/polybar/
 /.config/polybar/pac_update/package_list
 /.config/polybar/news/news_url
