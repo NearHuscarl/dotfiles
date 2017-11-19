@@ -107,25 +107,25 @@ assign [class="Thunderbird"]        $ws_mail
 set $FLOAT floating enable, border none
 set $SCRATCHPAD move window to scratchpad, border none
 
-for_window [window_role="pop-up"]        $FLOAT
-for_window [window_role="bubble"]        $FLOAT
-for_window [window_role="task_dialog"]   $FLOAT
-for_window [window_role="Preferences"]   $FLOAT
-for_window [window_type="dialog"]        $FLOAT
-for_window [window_type="menu"]          $FLOAT
-for_window [class="Pavucontrol"]         $FLOAT
-for_window [class="File-roller"]         $FLOAT
-for_window [class="Nitrogen"]            $FLOAT
-for_window [class="Gucharmap"]           $FLOAT
-for_window [class="Blueberry.py"]        $FLOAT
-for_window [class="Sxiv"]                $FLOAT
-for_window [class="feh"]                 $FLOAT
-for_window [title="Floating"]            $FLOAT
-for_window [title="Startup Settings"]    $FLOAT
-for_window [class="mpv"]                 $FLOAT
+for_window [window_role="pop-up"]         $FLOAT
+for_window [window_role="bubble"]         $FLOAT
+for_window [window_role="task_dialog"]    $FLOAT
+for_window [window_role="Preferences"]    $FLOAT
+for_window [window_type="dialog"]         $FLOAT
+for_window [window_type="menu"]           $FLOAT
+for_window [class="Pavucontrol"]          $FLOAT
+for_window [class="File-roller"]          $FLOAT
+for_window [class="Nitrogen"]             $FLOAT
+for_window [class="Gucharmap"]            $FLOAT
+for_window [class="Blueberry.py"]         $FLOAT
+for_window [class="Sxiv"]                 $FLOAT
+for_window [class="feh"]                  $FLOAT
+for_window [title="Floating"]             $FLOAT
+for_window [title="Startup Settings"]     $FLOAT
+for_window [class="mpv"]                  $FLOAT
 for_window [class="Nm-connection-editor"] $FLOAT
-for_window [class="Gimp"]                $FLOAT
-for_window [title="Todo"]                $SCRATCHPAD
+for_window [class="Gimp"]                 $FLOAT
+for_window [title="Todo"]                 $SCRATCHPAD
 # for_window [title="libreoffice"]       floating enable
 
 # Very dirty workaround to make chrome developer tools fullscreen
