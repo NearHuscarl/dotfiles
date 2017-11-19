@@ -1,0 +1,71 @@
+html, body {
+	background-color: $bg-alt-color !important;
+	color: $fg-color !important;
+}
+
+.container {
+	// default foreground color
+	& * {
+		color: $fg-color !important;
+		border-color: $fg-color !important;
+	}
+
+	.markdown-body {
+		background-color: $bg-color !important;
+		border: unset !important;
+
+		// header
+		h1, h2, h3, h4, h5, h6 {
+			color: $main-color !important;
+		}
+
+		a {
+			color: $link-color !important;
+
+			&:hover {
+				color: $link-hover-color !important;
+			}
+		}
+
+		blockquote {
+			border-left-color: $hl-color2 !important;
+		}
+
+		// highlight bar
+		hr {
+			background-color: $bg-alt-color !important;
+		}
+
+		// code
+		pre {
+			background-color: $bg-alt-color !important;
+			code {
+				color: $white !important;
+			}
+
+			.hljs-string {
+				color: $string !important;
+			}
+			.hljs-keyword {
+				color: $keyword !important;
+			}
+			.hljs-comment {
+				color: $comment !important;
+			}
+			.hljs-number {
+				color: $number !important;
+			}
+			.hljs-function, .hljs-class {
+				.hljs-keyword {
+					color: $function !important;
+				}
+				.hljs-title {
+					color: $title !important;
+				}
+				.hljs-params {
+					color: $params !important;
+				}
+			}
+		}
+	}
+}

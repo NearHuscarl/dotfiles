@@ -47,7 +47,7 @@ html, body,
       }
       a.top-toolbar-active {
          border: unset !important;
-         background-color: $hl-color !important;
+         background-color: $main-color !important;
          color: $fg-alt-color !important;
       }
    }
@@ -109,7 +109,7 @@ input {
 
 // search button
 #search-btn {
-   background-color: $hl-color !important;
+   background-color: $main-color !important;
    color:            $fg-alt-color !important;
 }
 

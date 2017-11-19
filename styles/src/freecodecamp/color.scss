@@ -6,7 +6,7 @@
          color: $fg-color !important;
       }
       a:hover {
-         background-color: $hl-color !important;
+         background-color: $main-color !important;
          color: $fg-alt-color !important;
       }
    }
@@ -22,7 +22,7 @@ body, html {
 }
 
 dfn {
-   color: $hl-color !important;
+   color: $main-color !important;
    background-color: $bg-alt-color !important;
 }
 
@@ -38,7 +38,7 @@ button {
    color: $fg-alt-color !important;
 
    &:hover {
-      background-color: $hl-color !important;
+      background-color: $main-color !important;
    }
 }
 
@@ -78,7 +78,7 @@ table * {
 
 // icon
 .ion-checkmark-circled {
-   color: $hl-color !important;
+   color: $main-color !important;
 }
 
 // map right panel

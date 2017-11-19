@@ -1,6 +1,6 @@
 /* global */
 * {
-   border-color: $hl-color !important;
+   border-color: $main-color !important;
    color:        $fg-color !important;
    border-radius: 0 !important;
 }
@@ -62,7 +62,7 @@ input.moveto.customcommand.requiresjs {
 
 /* button|select */
 input[type="button"], input[type="submit"], button, .button {
-   background-color: $hl-color !important;
+   background-color: $main-color !important;
    color:            $fg-alt-color !important;
 }
 

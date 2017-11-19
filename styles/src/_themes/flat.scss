@@ -24,7 +24,20 @@ $fg-alt-color:       $white;
 $link-color:         $blue;
 $link-hover-color:   $lightblue;
 $link-visited-color: $magenta;
-$hl-color:           $cyan;
+$main-color:         $cyan;
+$main-color2:        $magenta;
+$hl-color:           $red;
+$hl-color2:          $orange;
 $code-color:         $green;
 $title-color:        $orange;
 $alert-color:        $red;
+
+// code (github)
+$string:   $cyan;
+$keyword:  $orange;
+$comment:  $lightgrey;
+$number:   $red;
+$function: $orange;
+$class:    $orange;
+$title:    $blue;
+$params:   $white;

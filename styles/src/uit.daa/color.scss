@@ -25,7 +25,7 @@ a {
 }
 
 h2 {
-   color: $hl-color !important;
+   color: $main-color !important;
 }
 
 img, a img {
@@ -66,7 +66,7 @@ li.first.leaf {
 
 /* arrow */
 .caret {
-    border-top: 4px solid $hl-color !important;
+    border-top: 4px solid $main-color !important;
     border-right: 4px solid transparent !important;
     border-left: 4px solid transparent !important;
     content: "" !important;
