@@ -1,11 +1,15 @@
 {
   // Controls the font size in pixels.
-  "editor.fontSize": 12,
+  "editor.fontSize": 14,
+
+  // Adjust the zoom level of the window. The original size is 0 and each increment above (e.g. 1) or below (e.g. -1) represents zooming 20% larger or smaller. You can also enter decimals to adjust the zoom level with a finer granularity.
+  "window.zoomLevel": -1,
 
   // Controls the font family.
   "editor.fontFamily": " 'Inconsolata', 'monospace' ",
 
-  "vim.disableAnnoyingNeovimMessage": true,
+  // Path to folder with a list of Virtual Environments (e.g. ~/.pyenv, ~/Envs, ~/.virtualenvs).
+  "python.venvPath": "~/.virtualenvs",
 
   // Zoom the font of the editor when using mouse wheel and holding Ctrl
   "editor.mouseWheelZoom": true,
@@ -17,6 +21,19 @@
   "workbench.colorTheme": "Solarized Dark",
   "workbench.activityBar.visible": false,
   
+  // Controls if the floating debug action bar should be hidden
+  "debug.hideActionBar": true,
+
+  // Controls if the minimap is shown
+  "editor.minimap.enabled": false,
+
+  // Controls if suggestions should automatically show up while typing
+  "editor.quickSuggestions": {
+    "other": true,
+    "comments": false,
+    "strings": true
+  },
+
   // Disable alt key trigger menubar shortcuts
   "window.enableMenuBarMnemonics": false,
 
@@ -24,23 +41,19 @@
   "editor.lineNumbers": "relative",
 
   // vim extension https://github.com/VSCodeVim/Vim
+  "vim.disableAnnoyingNeovimMessage": true,
+
   "vim.leader": "<Space>",
+
+  // Use system clipboard for unnamed register.
+  "vim.useSystemClipboard": true,
+
+  // Override VSCode's copy command with our own copy command, which works better with VSCodeVim. Turn this off if copying is not working.
+  // "vim.overrideCopy": false,
 
   // normal mapping (nnoremap equivalent)
   "vim.otherModesKeyBindingsNonRecursive": [
-    {
-      "before": ["<CR>"],
-      "after": ["o", "<Esc>"]
-    },
-    {
-      "before": ["-"],
-      "after": [],
-      "commands": [
-          {
-              "command": "workbench.action.files.save",
-              "args": []
-          }]
-    },
+    // Movement
     {
       "before": [";"],
       "after": [":"]
@@ -68,6 +81,179 @@
     {
       "before": ["L"],
       "after": ["j", "j", "j", "j", "j", "j", "j", "j", "j", "j", "z", "z"]
+    },
+    {
+      "before": ["U"],
+      "after": ["<C-r>"]
+    },
+    {
+      "before": ["<Leader>", "v"],
+      "after": ["<C-v>"]
+    },
+    // Jump back/forward
+    {
+      "before": ["[", "j"],
+      "after": ["<C-o>"]
+    },
+    {
+      "before": ["]", "j"],
+      "after": ["<C-i>"]
+    },
+    // Switching between windows
+    {
+      "before": [","],
+      "after": [],
+      "commands": [
+          {
+            "command": "workbench.action.previousEditor",
+            "args": []
+          }]
+    },
+    {
+      "before": ["."],
+      "after": [],
+      "commands": [
+          {
+            "command": "workbench.action.nextEditor",
+            "args": []
+          }]
+    },
+    // Debug mappings
+    {
+      "before":  ["<CR>"],
+      "after": [],
+      "commands": [
+          {
+            "command": "editor.debug.action.toggleBreakpoint",
+            "args": []
+          }]
+    },
+    {
+      "before":  ["<Leader>", "<CR>"],
+      "after": [],
+      "commands": [
+          {
+            "command": "editor.debug.action.conditionalBreakpoint",
+            "args": []
+          }]
+    },
+    {
+      "before": ["<Leader>", "s"],
+      "after": [],
+      "commands": [
+          {
+            "command": "workbench.action.debug.start",
+            "args": []
+          }]
+    },
+    {
+      "before": ["<Leader>", "S"],
+      "after": [],
+      "commands": [
+          {
+            "command": "workbench.action.debug.stop",
+            "args": []
+          }]
+    },
+    {
+      "before": ["<Leader>", "r"],
+      "after": [],
+      "commands": [
+          {
+            "command": "workbench.action.debug.restart",
+            "args": []
+          }]
+    },
+    {
+      "before": ["<Leader>", "i"],
+      "after": [],
+      "commands": [
+          {
+            "command": "workbench.action.debug.stepInto",
+            "args": []
+          }]
+    },
+    {
+      "before": ["<Leader>", "o"],
+      "after": [],
+      "commands": [
+          {
+            "command": "workbench.action.debug.stepOut",
+            "args": []
+          }]
+    },
+    {
+      "before": ["s"],
+      "after": [],
+      "commands": [
+          {
+            "command": "workbench.action.debug.stepOver",
+            "args": []
+          }]
+    },
+    {
+      "before": ["<Leader>", "c"],
+      "after": [],
+      "commands": [
+          {
+            "command": "workbench.action.debug.continue",
+            "args": []
+          }]
+    },
+    {
+      "before": ["<Leader>", "C"],
+      "after": [],
+      "commands": [
+          {
+            "command": "editor.debug.action.runToCursor",
+            "args": []
+          }]
+    },
+    {
+      "before": ["<Leader>", "w"],
+      "after": [],
+      "commands": [
+          {
+            "command": "editor.debug.action.selectionToWatch",
+            "args": []
+          }]
+    },
+    // Misc
+    {
+      "before": ["-"],
+      "after": [],
+      "commands": [
+          {
+              "command": "workbench.action.files.save",
+              "args": []
+          }]
+    },
+    {
+      "before": ["<Leader>", "f"],
+      "after": [],
+      "commands": [
+          {
+            "command": "workbench.action.toggleFullScreen",
+            "args": []
+          }]
+    },
+    {
+      "before": ["<Leader>", "<Leader>", "s"],
+      "after": [],
+      "commands": [
+          {
+            "command": "workbench.action.openGlobalSettings",
+            "args": []
+          }]
+    },
+    {
+      "before": ["<Leader>", "<Leader>", "k"],
+      "after": [],
+      "commands": [
+          {
+            "command": "workbench.action.openGlobalKeybindings",
+            "args": []
+          }]
     }
   ],
   "vim.insertModeKeyBindingsNonRecursive": [
