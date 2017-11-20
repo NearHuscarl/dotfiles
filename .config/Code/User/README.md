@@ -7,8 +7,10 @@ nnoremap h  ,
 nnoremap l  ;
 nnoremap gh h
 nnoremap gl l
-nnoremap H  kkkkkkkkkkzz
-nnoremap L  jjjjjjjjjjzz
+nnoremap J  jjjjjjjjjjzz
+nnoremap K  kkkkkkkkkkzz
+nnoremap L  jjjjjjjjjjjjjjjjjjjjzz
+nnoremap H  kkkkkkkkkkkkkkkkkkkkzz
 
 nnoremap U <C-r>
 nnoremap <Leader>v <C-v>

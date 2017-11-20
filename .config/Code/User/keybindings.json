@@ -2,13 +2,10 @@
 [
     // focus on various windows
 
-    // Toggle between terminal and editor
-    { "key": "alt+t",     "command": "workbench.action.focusActiveEditorGroup", "when": "terminalFocus"},
-    { "key": "alt+t",     "command": "workbench.action.terminal.focus",         "when": "!terminalFocus"},
-
-    // Toggle between variables debug window and editor
-    { "key": "alt+w",     "command": "workbench.action.focusActiveEditorGroup", "when": "watchExpressionsFocused"},
-    { "key": "alt+w",     "command": "workbench.debug.action.focusWatchView",   "when": "!watchExpressionsFocused" },
+    // Focus editor + toggle panel
+    { "key": "alt+enter", "command": "workbench.action.focusActiveEditorGroup"},
+    { "key": "alt+m",     "command": "workbench.action.togglePanel"},
+    { "key": "alt+n",     "command": "workbench.action.toggleSidebarVisibility"},
 
     // Toggle between breakpoints debug window and editor
     { "key": "alt+b",     "command": "workbench.action.focusActiveEditorGroup",     "when": "breakpointsFocused"},
@@ -18,31 +15,38 @@
     { "key": "alt+c",     "command": "workbench.action.focusActiveEditorGroup",   "when": "listFocus"},
     { "key": "alt+c",     "command": "workbench.debug.action.focusCallStackView", "when": "!listFocus"},
 
-    // Toggle between debug console window and editor
-    { "key": "alt+r",     "command": "workbench.action.focusActiveEditorGroup", "when": "inDebugRepl "},
-    { "key": "alt+r",     "command": "workbench.debug.action.focusRepl",        "when": "!inDebugRepl "},
-
-    // Toggle between variables debug window and editor
-    { "key": "alt+v",     "command": "workbench.action.focusActiveEditorGroup",   "when": "variablesFocused"},
-    { "key": "alt+v",     "command": "workbench.debug.action.focusVariablesView", "when": "!variablesFocused" },
-
+    // Open sidebar
+    { "key": "alt+d",     "command": "workbench.view.debug"},
+    { "key": "alt+e",     "command": "workbench.view.extensions", "when": "!extensionEditorFindWidgetInputFocused"},
+    
     // Toggle between problem window and editor
     { "key": "alt+p",     "command": "workbench.action.focusActiveEditorGroup", "when": "problemFocus"},
     { "key": "alt+p",     "command": "workbench.action.problems.focus",         "when": "!problemFocus"},
     { "key": "alt+p",     "command": "workbench.action.focusActiveEditorGroup", "when": "listFocus"},
 
-    // Focus editor + toggle panel
-    { "key": "alt+enter", "command": "workbench.action.focusActiveEditorGroup"},
-    { "key": "alt+m",     "command": "workbench.action.togglePanel"},
-    { "key": "alt+n",     "command": "workbench.action.toggleSidebarVisibility"},
+    // Toggle between debug console window and editor
+    { "key": "alt+r",     "command": "workbench.action.focusActiveEditorGroup", "when": "inDebugRepl "},
+    { "key": "alt+r",     "command": "workbench.debug.action.focusRepl",        "when": "!inDebugRepl "},
+
+    // Toggle between terminal and editor
+    { "key": "alt+t",     "command": "workbench.action.focusActiveEditorGroup", "when": "terminalFocus"},
+    { "key": "alt+t",     "command": "workbench.action.terminal.focus",         "when": "!terminalFocus"},
+
+    // Toggle between variables debug window and editor
+    { "key": "alt+v",     "command": "workbench.action.focusActiveEditorGroup",   "when": "variablesFocused"},
+    { "key": "alt+v",     "command": "workbench.debug.action.focusVariablesView", "when": "!variablesFocused" },
+
+    // Toggle between watch debug window and editor
+    { "key": "alt+w",     "command": "workbench.action.focusActiveEditorGroup", "when": "watchExpressionsFocused"},
+    { "key": "alt+w",     "command": "workbench.debug.action.focusWatchView",   "when": "!watchExpressionsFocused" },
 
     // Terminal shortcuts
-    { "key": "alt+j",     "command": "workbench.action.terminal.scrollDown",     "when": "terminalFocus"},
-    { "key": "alt+k",     "command": "workbench.action.terminal.scrollUp",       "when": "terminalFocus"},
+    { "key": "alt+j",     "command": "workbench.action.terminal.scrollDown", "when": "terminalFocus"},
+    { "key": "alt+k",     "command": "workbench.action.terminal.scrollUp",   "when": "terminalFocus"},
 
     // Debug console shortcuts
-    { "key": "alt+n",     "command": "repl.action.historyNext",                 "when": "inDebugRepl "},
-    { "key": "alt+p",     "command": "repl.action.historyPrevious",             "when": "inDebugRepl "},
+    { "key": "alt+n",     "command": "repl.action.historyNext",     "when": "inDebugRepl "},
+    { "key": "alt+p",     "command": "repl.action.historyPrevious", "when": "inDebugRepl "},
 
     // Variables window shortcuts
     { "key": "s",         "command": "debug.setVariable", "when": "variablesFocused"},
@@ -57,6 +61,9 @@
     { "key": "q",         "command": "list.clear",         "when": "listFocus"},
     { "key": "shift+j",   "command": "list.focusPageDown", "when": "listFocus"},
     { "key": "shift+k",   "command": "list.focusPageUp",   "when": "listFocus"},
+
+    // Other
+    { "key": "alt+/", "command": "workbench.action.quit" },
 
     // Test
     { "key": "alt+a",     "command": "editor.action.triggerSuggest"}
