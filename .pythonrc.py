@@ -1,3 +1,5 @@
+#!/bin/env python
+
 """
 This file is executed everytime before python interactive shell is run
 to setup stuff. Remember to put export PYTHONSTARTUP=$HOME/.pythonrc.py
@@ -28,5 +30,18 @@ except IOError:
 	print('No history file')
 
 atexit.register(readline.write_history_file, histfile)
+
+class Exit(object):
+	"""
+	hack to alias e to sys.exit() because
+	CTRL-D is mapped to something else in i3wm
+	"""
+	def __repr__(self):
+		sys.exit()
+
+# Caveat: do not assign e to something else
+# Do not use e like in print(e) or it will exit the shell
+e = Exit()
+exit = Exit()
 
 # vim: nofoldenable
