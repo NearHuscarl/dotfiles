@@ -129,6 +129,20 @@ div.usertext-body code {
 img {
   filter: brightness(0.6) !important; }
 
+.commentarea .comment,
+.commentarea .comment .comment,
+.commentarea .comment .comment .comment,
+.commentarea .comment .comment .comment .comment,
+.commentarea .comment .comment .comment .comment .comment,
+.commentarea .comment .comment .comment .comment .comment .comment,
+.commentarea .comment .comment .comment .comment .comment .comment .comment,
+.commentarea .comment .comment .comment .comment .comment .comment .comment .comment,
+.commentarea .comment .comment .comment .comment .comment .comment .comment .comment .comment,
+.commentarea .comment .comment .comment .comment .comment .comment .comment .comment .comment .comment,
+.commentarea .comment .comment .comment .comment .comment .comment .comment .comment .comment .comment .comment,
+.commentarea .comment .comment .comment .comment .comment .comment .comment .comment .comment .comment .comment .comment {
+  background-color: #1f2d3a !important; }
+
 .listing-chooser.initialized,
 .infobar.subscribebar.onboardingbar,
 .flat-list.buttons .share,

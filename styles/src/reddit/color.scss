@@ -149,3 +149,19 @@ div.usertext-body code {
 img {
   filter: brightness($img-brightness) !important;
 }
+
+// somebody spams the !important keyword...
+.commentarea .comment,
+.commentarea .comment .comment,
+.commentarea .comment .comment .comment,
+.commentarea .comment .comment .comment .comment,
+.commentarea .comment .comment .comment .comment .comment,
+.commentarea .comment .comment .comment .comment .comment .comment,
+.commentarea .comment .comment .comment .comment .comment .comment .comment,
+.commentarea .comment .comment .comment .comment .comment .comment .comment .comment,
+.commentarea .comment .comment .comment .comment .comment .comment .comment .comment .comment,
+.commentarea .comment .comment .comment .comment .comment .comment .comment .comment .comment .comment,
+.commentarea .comment .comment .comment .comment .comment .comment .comment .comment .comment .comment .comment,
+.commentarea .comment .comment .comment .comment .comment .comment .comment .comment .comment .comment .comment .comment {
+   background-color: $bg-color !important;
+}
