@@ -5,6 +5,9 @@
   // Adjust the zoom level of the window. The original size is 0 and each increment above (e.g. 1) or below (e.g. -1) represents zooming 20% larger or smaller. You can also enter decimals to adjust the zoom level with a finer granularity.
   "window.zoomLevel": -1,
 
+  // Control the visibility of the menu bar. A setting of 'toggle' means that the menu bar is hidden and a single press of the Alt key will show it. By default, the menu bar will be visible, unless the window is full screen.
+  "window.menuBarVisibility": "default",
+
   // Controls the font family.
   "editor.fontFamily": " 'Inconsolata', 'monospace' ",
 
@@ -18,7 +21,7 @@
   "editor.fontWeight": "bold",
 
   // Specifies the color theme used in the workbench.
-  "workbench.colorTheme": "Solarized Dark",
+  "workbench.colorTheme": "Gotham",
   "workbench.activityBar.visible": false,
   
   // Controls if the floating debug action bar should be hidden
@@ -107,7 +110,7 @@
       "before": ["]", "j"],
       "after": ["<C-i>"]
     },
-    // Switching between windows
+    // Switching between tabs
     {
       "before": [","],
       "after": [],
@@ -123,6 +126,25 @@
       "commands": [
           {
             "command": "workbench.action.nextEditor",
+            "args": []
+          }]
+    },
+    // Switching between window panes
+    {
+      "before": ["<Leader>", "9"],
+      "after": [],
+      "commands": [
+          {
+            "command": "workbench.action.focusFirstEditorGroup",
+            "args": []
+          }]
+    },
+    {
+      "before": ["<Leader>", "0"],
+      "after": [],
+      "commands": [
+          {
+            "command": "workbench.action.focusSecondEditorGroup",
             "args": []
           }]
     },
@@ -237,11 +259,29 @@
           }]
     },
     {
+      "before": ["<Leader>", "q"],
+      "after": [],
+      "commands": [
+          {
+              "command": "workbench.action.closeActiveEditor",
+              "args": []
+          }]
+    },
+    {
       "before": ["<Leader>", "f"],
       "after": [],
       "commands": [
           {
             "command": "workbench.action.toggleFullScreen",
+            "args": []
+          }]
+    },
+    {
+      "before": ["<Leader>", "M"],
+      "after": [],
+      "commands": [
+          {
+            "command": "workbench.action.toggleMenuBar",
             "args": []
           }]
     },
@@ -269,5 +309,6 @@
       "before": ["<Leader>", "i"],
       "after": ["<Esc>"]
     }
-  ]
+  ],
+  "python.pythonPath": "/usr/bin/python"
 }  
