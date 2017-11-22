@@ -1,11 +1,16 @@
 #!/bin/bash
 
-# close vim todo scratchpad
-vim --servername todo --remote-send '<Esc>:wqa<CR>'
-# close main vim
-vim --servername vim --remote-send '<Esc>:wqa<CR>'
-# Wait until the processes have been shut down
-while pgrep -x vim >/dev/null; do sleep 1; done
+if [[ "$(pgrep -x vim)" ]]; then
+	# close vim todo scratchpad
+	vim --servername TODO --remote-send '<Esc>:wqa<CR>' 2> /dev/null
+	# close main vim
+	vim --servername VIM --remote-send '<Esc>:wqa<CR>' 2> /dev/null
+
+	# Wait until the processes have been shut down
+	while pgrep -x vim > /dev/null; do
+		sleep 1
+	done
+fi
 
 # now shutdown
-shutdown -h now
+command -p shutdown -h now
