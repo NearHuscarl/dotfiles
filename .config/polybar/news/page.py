@@ -44,6 +44,7 @@ class Page(object):
 		self.content = {}
 		self.icon = ''
 		self.interval = 0
+		self.api = False
 
 	def __trim_content(self, title):
 		""" Trim the content if it's too long """
@@ -92,48 +93,36 @@ class Page(object):
 
 		logging.info('update ' + self.name['long'] + "'s content")
 
-		try:
-			assert 'title' in self.selector, 'no "title" key self.selector Mythologic class'
+		assert 'title' in self.selector, 'no "title" key self.selector'
 
-			if 'working' in self.url:
-				html = requests.get(self.url['working'], headers={'User-agent': 'news'}).text
-			else:
-				html = requests.get(self.url['base'], headers={'User-agent': 'news'}).text
+		url = self.url['working'] if 'working' in self.url else self.url['base']
+		page_html = requests.get(url, headers={'User-agent': 'news'}).text
 
-			soup_html = soup(html, 'html.parser')
+		page_soup = soup(page_html, 'html.parser')
 
-			for selector_name, selector_val in self.selector.items():
-				element = soup_html.select(selector_val)
+		for selector_name, selector_val in self.selector.items():
+			element = page_soup.select(selector_val)
 
-				if not self.__filter():
-					continue
-				self.content[selector_name] = element
+			if not self.__filter():
+				continue
+			self.content[selector_name] = element
 
-			# Raise error if one of the key value dont have the same len as the rest
-			first_name = list(self.content.keys())[0]
-			first_len = len(self.content[first_name])
+		# Raise error if one of the key value dont have the same len as the rest
+		first_name = list(self.content.keys())[0]
+		first_len = len(self.content[first_name])
 
-			for selector_name in list(self.selector.keys())[1:]:
-				check = len(self.content[first_name]) == len(self.content[selector_name])
-				err_msg = "self.content[{}] ({}) and self.content[{}]'s ({}) len is not equal"
-				current_len = len(self.content[selector_name])
+		for selector_name in list(self.selector.keys())[1:]:
+			check = len(self.content[first_name]) == len(self.content[selector_name])
+			err_msg = "self.content[{}] ({}) and self.content[{}]'s ({}) len is not equal"
+			current_len = len(self.content[selector_name])
 
-				assert check, err_msg.format(first_name, first_len, selector_name, current_len)
-
-			return 0
-		except (HTTPError, Timeout, requests.ConnectionError) as error:
-			print(error)
-			return 1
+			assert check, err_msg.format(first_name, first_len, selector_name, current_len)
 
 	def display(self, index):
 		""" Print out titles from the web based on index parameter """
 
 		icon = color_string(self.icon, 'THEME_MAIN')
-
-		try:
-			title = self.__trim_content(self.content['title'][index].text.strip())
-		except KeyError:
-			return 1
+		title = self.__trim_content(self.content['title'][index].text.strip())
 
 		if len(self.name['long']) + len(title) <= max_len:
 			name = self.name['long']
@@ -141,7 +130,6 @@ class Page(object):
 			name = self.name['short']
 
 		print('{} {}: {}'.format(icon, name, title), flush=True)
-		return 0
 
 	def display_all(self):
 		""" Display all data, use for debugging """
@@ -171,7 +159,7 @@ class Mythologic(Page):
 		self.interval = 20
 
 class Daa(Page):
-	""" Implementation of daa.uit.edu.vn Page """
+	""" Subclass of Page """
 
 	def __init__(self):
 		super().__init__()
@@ -188,7 +176,7 @@ class Daa(Page):
 		self.interval = 5
 
 class Quora(Page):
-	""" Implementation of daa.uit.edu.vn Page """
+	""" Subclass of Page """
 
 	def __init__(self):
 		super().__init__()
@@ -220,7 +208,7 @@ class Quora(Page):
 		return url + '/' + href
 
 class QuoraComputerProgramming(Quora):
-	""" Implementation of daa.uit.edu.vn Page """
+	""" Subclass of Quora """
 
 	def __init__(self):
 		super().__init__()
@@ -231,7 +219,7 @@ class QuoraComputerProgramming(Quora):
 		self.url['working'] = 'https://www.quora.com/topic/Computer-Programming/'
 
 class Reddit(Page):
-	""" Implementation of reddit.com Page """
+	""" Subclass of Page """
 
 	def __init__(self):
 		super().__init__()
@@ -267,7 +255,7 @@ class Reddit(Page):
 		return url + '/' + href
 
 class RedditRimWorld(Reddit):
-	""" Implementation of reddit.com Page """
+	""" Subclass of Reddit Page """
 
 	def __init__(self):
 		super().__init__()
@@ -278,7 +266,7 @@ class RedditRimWorld(Reddit):
 		self.url['working'] = 'https://www.reddit.com/r/RimWorld/new/'
 
 class RedditVim(Reddit):
-	""" Implementation of reddit.com Page """
+	""" Subclass of Reddit Page """
 
 	def __init__(self):
 		super().__init__()

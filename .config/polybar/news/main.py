@@ -11,6 +11,8 @@ import random
 import time
 from threading import Thread
 
+from requests import ConnectionError
+from requests.exceptions import HTTPError, Timeout
 from page import (
 		Daa,
 		Mythologic,
@@ -24,23 +26,23 @@ class News(object):
 	""" Store a list a Page, update and print in parellel periodically """
 
 	def __init__(self, pages):
-		# dirname = os.path.dirname(os.path.realpath(__file__))
-		dirname = '/home/near/.config/polybar/news/'
+		dirname = os.path.dirname(os.path.realpath(__file__))
 		self.url_file = os.path.join(dirname, 'news_url')
 		self.pages = pages
 		self.size = len(self.pages)
 		self.index = -1
 		self.index_list = random.sample(range(0, self.size), self.size)
 
-	def __set_index(self):
+	def __get_index(self):
 		"""
-		Get current index for cache list to update the
+		Get current index for pages list to update the
 		webpage content to avoid updating all webpages at once
 		"""
 
 		self.index += 1
 		if self.index > self.size - 1:
 			self.index = 0
+		return self.index_list[self.index]
 
 	def __is_content_avail(self):
 		""" return True if there is content in one of the pages """
@@ -76,14 +78,19 @@ class News(object):
 		use in parellel with display_news
 		"""
 
+		index = self.__get_index()
+
 		while True:
-			while self.pages[self.index].update() != 0:
-				logging.info('update failed')
-				self.__set_index()
+			try:
+				self.pages[index].update()
+			except (HTTPError, Timeout, ConnectionError):
+				logging.info('update failed: ')
 				time.sleep(2)
-			self.__set_index()
-			logging.info('update success')
-			time.sleep(30)
+			else:
+				logging.info('update success')
+				time.sleep(3)
+			finally:
+				index = self.__get_index()
 
 	def display_news(self):
 		"""
@@ -94,16 +101,17 @@ class News(object):
 		page_index, title_index = self.__get_random_index()
 
 		while True:
-			while self.pages[page_index].display(title_index) != 0:
+			try:
+				self.pages[page_index].display(title_index)
+			except KeyError:
 				logging.info('display failed')
-				page_index, title_index = self.__get_random_index()
-				self.__export_link(self.pages[page_index].get_link(title_index))
 				time.sleep(0)
-
-			logging.info('display success')
-			page_index, title_index = self.__get_random_index()
-			self.__export_link(self.pages[page_index].get_link(title_index))
-			time.sleep(20)
+			else:
+				logging.info('display success')
+				self.__export_link(self.pages[page_index].get_link(title_index))
+				time.sleep(2)
+			finally:
+				page_index, title_index = self.__get_random_index()
 
 	def __export_link(self, link):
 		""" Export link of current title displayed on polybar
@@ -114,6 +122,8 @@ class News(object):
 			file.write(link)
 
 	def start(self):
+		""" Start endless loop of scraping and display news """
+
 		update = Thread(target=lambda: self.update_news())
 		display = Thread(target=lambda: self.display_news())
 
@@ -133,6 +143,8 @@ class News(object):
 		display.join()
 
 def main():
+	""" main function """
+
 	parser = argparse.ArgumentParser(description='Show headlines from various websites on polybar')
 	parser.add_argument('log', nargs='?', help='Logging for debug or not')
 	arg = parser.parse_args()
@@ -142,7 +154,7 @@ def main():
 			Mythologic(),
 			QuoraComputerProgramming(),
 			RedditRimWorld(),
-			RedditVim
+			RedditVim()
 			]
 
 	arg.log = 'debug'
@@ -155,11 +167,11 @@ def main():
 		logging.basicConfig(format='[%(levelname)s] %(message)s', level=logging.DEBUG)
 
 		news = News(pages)
-		# news.start()
-		news.pages[2].update()
-		news.pages[2].display_all()
-		news.pages[2].display(0)
-		print(news.pages[2].get_link(0))
+		news.start()
+		# news.pages[2].update()
+		# news.pages[2].display_all()
+		# news.pages[2].display(0)
+		# print(news.pages[2].get_link(0))
 
 		# print()
 		# for i in range(0, len(news.pages[0].content['title'])):
