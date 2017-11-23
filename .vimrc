@@ -2,7 +2,7 @@
 " File:        .vimrc
 " Description: Vim settings
 " Author:      Near Huscarl <near.huscarl@gmail.com>
-" Last Change: Sun Nov 19 04:49:57 +07 2017
+" Last Change: Fri Nov 24 01:25:57 +07 2017
 " Licence:     BSD 3-Clause license
 " Note:        This is a personal vim config. therefore most likely not work 
 "              on your machine
@@ -452,7 +452,9 @@ nnoremap <C-o> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
 nnoremap <silent>- :w<CR>|                         "Write changes
 nnoremap <silent><Leader>- :SudoWrite<CR>|         "Write changes with sudo
 nnoremap <silent><Leader>tV :ToggleVerbose<CR>
-nnoremap <Leader>o :call ide#Open('code')<CR>|     "Open vscode of current file to debug
+nnoremap <Leader>o    :call ide#Open('code')<CR>|  "Open vscode of current file to debug
+nnoremap <Leader><CR> :ExecuteFile<CR>|            "Run executable file (python, ruby, bash..)
+nnoremap <Leader><Leader><CR> :ExecuteFile<Space>| "Same with argument
 " }}}
 " {{{ Abbreviation
 cabbrev vbnm verbose<Space>nmap
@@ -488,6 +490,7 @@ command! -range=% Space2Tab      <line1>,<line2>call retab#Space2Tab()
 command! -range=% Space2TabAll   <line1>,<line2>call retab#Space2TabAll()
 command! -range=% Tab2SpaceAll   <line1>,<line2>call retab#Tab2SpaceAll()
 command! SudoWrite                              w !sudo tee > /dev/null %
+command! -nargs=* -bar ExecuteFile              call execute#File(<q-args>)
 " }}}
 
 " }}}
