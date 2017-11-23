@@ -2,13 +2,13 @@
 " File:        source.vim
 " Description: Source vimrc + current file if it's in autoload/
 " Author:      Near Huscarl <near.huscarl@gmail.com>
-" Last Change: Sat Nov 04 22:40:55 +07 2017
+" Last Change: Fri Nov 24 01:12:46 +07 2017
 " Licence:     BSD 3-Clause license
 " Note:        Note
 " ============================================================================
 
 function! source#SourceAuto() " {{{
-	if @% =~# 'autoload'
+	if expand('%:p:h') =~# 'autoload$'
 		let filename = expand('%:t')
 		execute 'runtime autoload/' . filename
 	endif
@@ -20,3 +20,5 @@ function! source#SourceAuto() " {{{
 	nohlsearch
 endfunction
 " }}}
+
+" vim: nofoldenable
