@@ -433,7 +433,7 @@ nnoremap <F8> mzggg?G`z|                           "Encrypted with ROT13, just f
 nnoremap Q @q|                                     "Execute macro
 vnoremap > >gv|                                    "Make indent easier
 vnoremap < <gv|                                    "Make indent easier
-nnoremap <leader>py :echom expand("%:p")<CR>|      "Echo current file path
+nnoremap yp :call yank#Path()<CR>|                 "Yank and show current path
 
 if ExistsFile(s:autoload . 'license.vim')
 	nnoremap <silent> u     :call license#SkipLicenseDate('undo')<CR>
