@@ -1,6 +1,3 @@
-highlight ntCursor guifg=NONE guibg=NONE
-set guicursor=c-n-ve-i-r:ntCursor
-
 setlocal nowrap
 
 if has('localmap')
@@ -13,3 +10,5 @@ if has('localmap')
    nnoremap <buffer> <A-l> :clast<CR>:copen<CR>
    nnoremap <silent><buffer> q :q<CR>
 endif
+
+setlocal statusline=\ %n\ \ %f%=%L\ lines\ 

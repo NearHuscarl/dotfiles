@@ -234,7 +234,7 @@ nnoremap <A-'> :bnext<CR>|                         "Go to the next buffer
 nnoremap <A-;> :bprevious<CR>|                     "Go to the previous buffer
 nnoremap <A-e> :enew<CR>|                          "Edit new buffer
 nnoremap <A-b> :buffer#<CR>|                       "Switch between last buffers
-nnoremap <Leader>q :bp <Bar>:bd #<CR>|             "Delete current buffer
+nnoremap <Leader>q :bprevious <Bar>:bdelete #<CR>| "Delete current buffer
 nnoremap <Leader>x :e#<CR>|                        "Open last closed buffer (not really)
 " }}}
 " {{{ Pane
@@ -541,17 +541,7 @@ Plug 'justinmk/vim-sneak', {'on': [
 			\ ]}
 
 Plug 'airblade/vim-rooter'
-Plug 'scrooloose/nerdtree', {'on': [
-			\ 'NERDTreeTabsToggle',
-			\ 'NERDTreeFind'
-			\ ]}
-Plug 'jistr/vim-nerdtree-tabs', {'on': [
-			\ 'NERDTreeTabsToggle',
-			\ 'NERDTreeFind'
-			\ ]}
-
 Plug 'suan/vim-instant-markdown'
-
 Plug 'terryma/vim-smooth-scroll'
 
 " Filetype
@@ -562,10 +552,6 @@ Plug 'hdima/python-syntax'
 Plug 'hail2u/vim-css3-syntax'
 Plug 'tmhedberg/SimpylFold'
 
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight', {'on': [
-			\ 'NERDTreeTabsToggle',
-			\ 'NERDTreeFind'
-			\ ]}
 Plug 'altercation/vim-colors-solarized'
 Plug 'dhruvasagar/vim-table-mode', {'on': 'TableModeToggle'}
 Plug 'ap/vim-css-color'
@@ -850,13 +836,6 @@ let g:gundo_help             = 0
 let g:gundo_return_on_revert = 0
 let g:gundo_auto_preview     = 1
 "}}}
-"{{{ Syntax Highlight
-let g:NERDTreeHighlightFolders               = 1 " Enables folder icon highlighting using exact match
-let g:NERDTreeHighlightFoldersFullName       = 1 " Highlights the folder name
-let g:NERDTreeFileExtensionHighlightFullName = 1
-let g:NERDTreeExactMatchHighlightFullName    = 1
-let g:NERDTreePatternMatchHighlightFullName  = 1
-"}}}
 "{{{ Easy Align
 vnoremap ga <Esc>:'<,'>EasyAlign // dl<Left><Left><Left><Left>| " Align with delimiter aligned left
 nmap ga <Plug>(EasyAlign)
@@ -919,6 +898,10 @@ nnoremap <silent><Leader>sc :call lazyload#SessionClose()<CR>
 nnoremap <silent><Leader>sd :call lazyload#SessionDelete()<CR>
 nnoremap <silent><Leader>sv :call lazyload#SessionView()<CR>
 nnoremap <silent><Leader>sV :call lazyload#SessionVIEW()<CR>
+"}}}
+"{{{ SimpylFold
+let g:SimpylFold_fold_docstring = 0
+let b:SimpylFold_fold_docstring = 0
 "}}}
 "{{{ Smooth Scroll
 nnoremap <silent> <A-j> :call smooth_scroll#down(6, 0, 2)<CR>
@@ -1013,32 +996,11 @@ let g:neocomplete#sources#omni#functions            = ['cpp']
 "}}}
 " {{{ Youcompleteme
 let g:ycm_semantic_triggers = {
-	 \   'css':  [ 're!^\s{3}',  're!:\s+' ],
-	 \   'scss': [ 're!^\s{3,}', 're!:\s+' ],
+	 \   'css':  [ 're!^\s{3,}', 're!^\t{1,}', 're!:\s'],
+	 \   'scss': [ 're!^\s{3,}', 're!^\t{1,}', 're!:\s'],
 	 \ }
 let g:ycm_key_list_select_completion = []
 " }}}
-"{{{ NERDTree
-nnoremap <silent><Leader>nt :NERDTreeTabsToggle<CR>| "Toggle NERDTree and move cursor back to the last window
-nnoremap <silent><Leader>nf :NERDTreeFind<CR>|       " Press <Leader>Nf to go to the directory where current file is openned
-
-let NERDTreeMapOpenVSplit    = 'v'                   " vsplit (default was s)
-let NERDTreeMapOpenSplit     = 'x'                   " hsplit (default was i)
-let NERDTreeShowLineNumbers  = 1                     " Enable line numbers
-let NERDTreeAutoDeleteBuffer = 1
-let NERDTreeMinimalUI        = 1
-let NERDTreeShowHidden       = 1
-let NERDTreeIgnore           = ['NTUSER.DAT*']
-set ambiwidth=double
-
-autocmd BufEnter *
-			\ if(winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree())
-			\|    q
-			\|endif " Close NERDTree automatically if it's the only buffer left
-
-let g:NERDTreeDirArrowExpandable  = '+'
-let g:NERDTreeDirArrowCollapsible = '-'
-"}}}
 "{{{ Ultisnips
 nnoremap <Leader>U :UltiSnipsEdit<CR>|                            " Open new file to define snippets
 nnoremap <Leader><Leader>U :UltiSnipsEdit!<CR>|                   " Open all available files to select
@@ -1053,9 +1015,6 @@ let g:UltiSnipsJumpForwardTrigger  = "<A-j>"
 let g:UltiSnipsJumpBackwardTrigger = "<A-k>"
 "}}}
 "{{{ Autocmd
-highlight ntCursor guifg=NONE guibg=NONE
-let blacklist = ['nerdtree', 'qf', 'gundo', 'fugitiveblame', 'vim-plug']
-
 call statusline#SetStatusline()
 augroup Statusline
 	autocmd!
@@ -1079,19 +1038,13 @@ augroup END
 
 augroup SwitchBuffer
 	autocmd!
-	autocmd BufEnter * set cursorline
+	autocmd BufEnter * set cursorline | silent! lcd %:p:h
 	autocmd BufEnter * set number relativenumber
 	autocmd BufLeave * set nocursorline
 	autocmd BufLeave * set norelativenumber
 augroup END
 
-autocmd BufEnter *
-			\ if(index(blacklist, &filetype) < 0)
-			\|    silent! lcd %:p:h
-			\|    execute "set guicursor&"
-			\|else | set guicursor=c-n-ve-i-r:ntCursor | endif
-			\|if(&diff || &ft == 'gundo') | set timeout timeoutlen=0   | endif
-
+autocmd BufEnter * if (&diff || &ft == 'gundo') | set timeout timeoutlen=0   | endif
 autocmd BufLeave * if (&diff || &ft == 'gundo') | set timeout& timeoutlen& | endif
 
 autocmd BufEnter *.html let g:AutoPairs["<"] = '>'
@@ -1103,7 +1056,7 @@ autocmd CursorHold * nohlsearch
 " call plug#load('neco-vim', 'neco-syntax', 'neoinclude.vim', 'neocomplete.vim', 'ultisnips')
 
 autocmd FocusLost * if &modified && filereadable(expand("%:p")) | write | endif
-autocmd BufWritePre * call license#SetLastChangeBeforeBufWrite() 
+autocmd BufWritePre * call license#SetLastChangeBeforeBufWrite()
 
 " " Save fold when leaving vim
 " autocmd BufWinLeave * silent! mkview
@@ -1138,5 +1091,3 @@ endif
 
 " feh --hide-pointer --geometry 1000x600 --zoom fill
 " feh --hide-pointer --thumbnails --thumb-height 60 --thumb-width 100 --index-info "" --geometry 1000x600 --image-bg black
-let g:SimpylFold_fold_docstring = 0
-let b:SimpylFold_fold_docstring = 0
