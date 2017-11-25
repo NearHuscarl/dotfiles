@@ -2,7 +2,7 @@
 " File:        .vimrc
 " Description: Vim settings
 " Author:      Near Huscarl <near.huscarl@gmail.com>
-" Last Change: Fri Nov 24 01:25:57 +07 2017
+" Last Change: Sat Nov 25 10:50:17 +07 2017
 " Licence:     BSD 3-Clause license
 " Note:        This is a personal vim config. therefore most likely not work 
 "              on your machine
@@ -74,6 +74,21 @@ endfunction
 "{{{ Basic Setup
 
 autocmd!
+
+if g:os ==? 'linux' && !has('gui_running')
+	" Fix alt key not working in gnome-terminal
+	" if \e not work, replace with  (<C-v><C-[>)
+	let charList = [
+				\ 'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o',
+				\ 'p','q','r','s','t','u','v','w','x','y','z','1','2','3','4',
+				\ '5','6','7','8','9','0', ',', '.', '/', ';',"'",']','\','-','=']
+	for char in charList
+		exec "set <A-" .char. ">=\e" .char
+		exec "imap \e" .char. " <A-" .char. ">"
+	endfor
+	exec "set <A-[>=<C-[>"
+	exec "inoremap \e[ <c-[>"
+endif
 
 set fileformat=unix
 set t_Co=256                                       "More color
@@ -1073,21 +1088,6 @@ if has('gui_running')
 	endif
 endif
 "}}}
-
-if g:os == 'linux' && !has('gui_running')
-	" Fix alt key not working in gnome-terminal
-	" if \e not work, replace with  (<C-v><C-[>)
-	let charList = [
-				\ 'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o',
-				\ 'p','q','r','s','t','u','v','w','x','y','z','1','2','3','4',
-				\ '5','6','7','8','9','0', ',', '.', '/', ';',"'",']','\','-','=']
-	for char in charList
-		exec "set <A-" .char. ">=\e" .char
-		exec "imap \e" .char. " <A-" .char. ">"
-	endfor
-	exec "set <A-[>=<C-[>"
-	exec "inoremap \e[ <c-[>"
-endif
 
 " feh --hide-pointer --geometry 1000x600 --zoom fill
 " feh --hide-pointer --thumbnails --thumb-height 60 --thumb-width 100 --index-info "" --geometry 1000x600 --image-bg black
