@@ -2,7 +2,7 @@
 " File:        source.vim
 " Description: Source vimrc + current file if it's in autoload/
 " Author:      Near Huscarl <near.huscarl@gmail.com>
-" Last Change: Sat Nov 25 06:03:27 +07 2017
+" Last Change: Sun Nov 26 18:06:13 +07 2017
 " Licence:     BSD 3-Clause license
 " Note:        Note
 " ============================================================================
@@ -15,27 +15,54 @@ function! source#Vimrc() " {{{
 	nohlsearch
 endfunction
 " }}}
-" Note: This function cannot source the file contain itself (autoload/source.vim)
-" Because it cannot be redefined while still executing. workaround is manually
-" call runt autoload/source.vim
-function! source#Other() " {{{
+function! s:EchoHL(msg, hl_group) " {{{
+	execute 'echohl ' . a:hl_group
+	echomsg a:msg
+	echohl None
+endfunction
+" }}}
+function! source#Vimfile() " {{{
+	" Note: This function cannot source the file contain itself (autoload/source.vim)
+	" Because it cannot be redefined while still executing.
+	if expand('%:p') =~# 'autoload\/source\.vim'
+		return
+	endif
+
 	for dirname in ['after', 'autoload', 'colors', 'ftdetect', 'ftplugin', 'indent']
 		" dirname = 'autoload' => match ../autoload/.. or ../autoload
 		if expand('%:p:h') =~# '\(\/' . dirname . '\/\|\/' . dirname . '$\)'
 			let file_path = dirname . '/' . expand('%:t')
 
 			execute 'runtime ' . file_path
-			echohl String
-			echomsg file_path . ' has been sourced!'
-			echohl None
+			redraw
+			call s:EchoHL(file_path . 'has been sourced!', 'String')
 
 			return
 		endif
 	endfor
 
-	echohl PreProc
-	echomsg 'current file cannot be sourced!'
-	echohl None
+	call s:EchoHL('current file cannot be sourced!', 'PreProc')
+endfunction
+" }}}
+function! source#Xresources() " {{{
+	let cmd = 'xrdb $HOME/.Xresources'
+
+	if has('win32') || has('win64')
+		let s:plugged = $HOME.'\vimfiles\plugged\'
+	else
+		let s:plugged = $HOME.'/.vim/plugged/'
+	endif
+
+	if expand('%:p') =~# '\.Xresources'
+		if !empty(glob(s:plugged . 'asyncrun.vim'))
+			execute 'AsyncRun ' . cmd
+		else
+			execute '!' . cmd
+		endif
+
+		redraw
+		call s:EchoHL('~/.Xresources has been sourced!', 'String')
+	endif
 endfunction
 " }}}
 

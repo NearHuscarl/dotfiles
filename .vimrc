@@ -228,7 +228,7 @@ let @n = "0f>a\<CR>\<Esc>$F<i\<CR>\<Esc>j"         "Newline per tag if not
 " {{{ Open / Source file
 nnoremap <Leader>tv :edit $MYVIMRC<Bar>CloseEmptyBuffer<CR>
 nnoremap <silent>,v :call source#Vimrc()<CR>
-nnoremap <silent>,, :call source#Other()<CR>
+nnoremap <silent>,, :call source#Vimfile()<CR>
 " }}}
 " {{{ Movement
 nnoremap ;   :|                                    "No need to shift ; anymore to enter command mode
