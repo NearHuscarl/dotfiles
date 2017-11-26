@@ -4,7 +4,7 @@
 # Description: Bash custom aliases and other alias functions, some alias have
 #              the equivalent completion as the original commands
 # Author:      Near Huscarl <near.huscarl@gmail.com>
-# Last Change: Sat Nov 18 03:44:17 +07 2017
+# Last Change: Sat Nov 25 12:57:32 +07 2017
 # Licence:     BSD 3-Clause license
 # Note:        N/A
 # ============================================================================
@@ -193,6 +193,7 @@ alias sxiv='sxiv -b -s h'
 # }}}
 # Other {{{
 alias xmod='xmodmap ~/.Xmodmap'
+alias xres='xrdb ~/.Xresources'
 alias reboot='shutdown -r now'
 alias shutoff='$HOME/bin/shutdown'
 alias size='alias-size'
