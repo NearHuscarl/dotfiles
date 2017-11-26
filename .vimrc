@@ -2,7 +2,7 @@
 " File:        .vimrc
 " Description: Vim settings
 " Author:      Near Huscarl <near.huscarl@gmail.com>
-" Last Change: Sat Nov 25 10:50:17 +07 2017
+" Last Change: Mon Nov 27 02:09:02 +07 2017
 " Licence:     BSD 3-Clause license
 " Note:        This is a personal vim config. therefore most likely not work 
 "              on your machine
@@ -81,13 +81,16 @@ if g:os ==? 'linux' && !has('gui_running')
 	let charList = [
 				\ 'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o',
 				\ 'p','q','r','s','t','u','v','w','x','y','z','1','2','3','4',
-				\ '5','6','7','8','9','0', ',', '.', '/', ';',"'",']','\','-','=']
+				\ '5','6','7','8','9','0', ',', '.', '/', ';',"'",'\','-','=']
 	for char in charList
-		exec "set <A-" .char. ">=\e" .char
-		exec "imap \e" .char. " <A-" .char. ">"
+		execute "set <A-" .char. ">=\e" .char
+		execute "imap \e" .char. " <A-" .char. ">"
 	endfor
-	exec "set <A-[>=<C-[>"
-	exec "inoremap \e[ <c-[>"
+	" execute "set <A-]>=\e]"
+	" execute "inoremap \e] <A-]>"
+
+	execute "set <A-[>=<C-[>"
+	execute "inoremap \e[ <c-[>"
 endif
 
 set fileformat=unix
@@ -100,19 +103,11 @@ filetype on
 filetype plugin on
 filetype indent on
 
-if has('gui_running')
-	try
-		color flat
-		" colorscheme gotham
-	catch /E185/
-		colorscheme evening
-	endtry
-else
-	let g:solarized_termcolors=&t_Co
-	let g:solarized_termtrans=1
-	" color solarized8_dark
-	color flat
-endif
+try
+	colorscheme flat
+catch /E185/
+	colorscheme evening
+endtry
 
 set hidden                                         "Make buffer hidden once modified
 
@@ -206,6 +201,7 @@ if has('mksession')
 	set sessionoptions-=options                     "Do not store settings and mappings in session
 endif
 
+set tags=./tags;/                                  "Search for tags file in current dir up to root
 set history=10000                                  "Set number of commands and search to be remembered
 set grepprg=rg\ --vimgrep
 
@@ -274,9 +270,9 @@ nnoremap <silent><A-_> :resize -5<CR>|             "Decrease window height by 5
 nnoremap <silent><A-+> :resize +5<CR>|             "Increase window height by 5
 " }}}
 " {{{ Jump
-nnoremap <A-]> g<C-]>zz|                           "Jump to definition (Open tag list if there are more than 1 tag)
-" nnoremap <A-t> <C-t>zz|                            "Jump back between tag
-" nnoremap <S-t> :tag<CR>zz|                         "Jump forward between tag
+nnoremap gy g<C-]>zz|                              "Jump to definition (Open tag list if there are more than 1 tag)
+nnoremap gk <C-t>zz|                               "Jump back between tag
+nnoremap gj :tag<CR>zz|                            "Jump forward between tag
 nnoremap <A-\> :OpenTagInVSplit<CR>zz|             "Open tag in vertical split
 nnoremap ' `|                                      "' to jump to mark (line and column)
 nnoremap ` '|                                      "` to jump to mark (line)
@@ -540,10 +536,10 @@ Plug 'tpope/vim-fugitive'
 Plug 'skywind3000/asyncrun.vim'
 Plug 'w0rp/ale'
 
-Plug 'xolox/vim-misc'
-Plug 'xolox/vim-shell'
-Plug 'xolox/vim-easytags'
+Plug 'xolox/vim-misc', {'on': []}
+Plug 'xolox/vim-shell', {'on': []}
 Plug 'xolox/vim-session', {'on': []}
+" Plug 'xolox/vim-easytags'
 
 " Other
 Plug 'justinmk/vim-sneak', {'on': [
@@ -996,7 +992,7 @@ inoremap <A-t> <Esc>:TableModeToggle<CR>a
 "}}}
 "{{{ Vim-man
 " ../vim-man/plugin/man.vim
-command! -nargs=* -bar -complete=customlist,man#completion#run Man  
+command! -nargs=* -bar -complete=customlist,man#completion#run Man
 			\ call plug#load('vim-man')
 			\|call man#get_page('horizontal', <f-args>)
 "}}}
@@ -1068,10 +1064,10 @@ autocmd BufLeave *.html unlet g:AutoPairs["<"]
 autocmd QuickFixCmdPost * cwindow
 autocmd CursorHold * nohlsearch
 
-" call plug#load('neco-vim', 'neco-syntax', 'neoinclude.vim', 'neocomplete.vim', 'ultisnips')
-
 autocmd FocusLost * if &modified && filereadable(expand("%:p")) | write | endif
 autocmd BufWritePre * call license#SetLastChangeBeforeBufWrite()
+
+autocmd BufWritePost *.py,*.js call ctags#Update()
 
 " " Save fold when leaving vim
 " autocmd BufWinLeave * silent! mkview
