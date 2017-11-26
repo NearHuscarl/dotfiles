@@ -6,5 +6,10 @@
 # Dependencies:
 #  vim-plug
 #  vim-session
-vim_command='silent call plug#load("vim-session") | SessionOpen todo | redraw!'
+vim_command='
+	silent call plug#load("vim-misc") |
+	silent call plug#load("vim-shell") |
+	silent call plug#load("vim-session") |
+	SessionOpen todo | redraw!'
+
 $TERMINAL --title=Todo -e "vim --servername todo -c '$vim_command'"
