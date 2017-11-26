@@ -92,16 +92,16 @@ bindsym $mod+period workspace next
 bindsym $mod+comma workspace prev
 # }}}
 # Assign application to specific workspace {{{
-assign [class="Gvim"]               $ws_dev
-assign [title="Vim - Dev"]          $ws_dev
-assign [class="Google-chrome"]      $ws_web
-assign [class="Vivaldi-stable"]     $ws_web
-assign [class="Zathura"]            $ws_doc
+assign [class="Gvim"]                $ws_dev
+assign [title="Vim - Dev"]           $ws_dev
+assign [class="Google-chrome"]       $ws_web
+assign [class="Vivaldi-stable"]      $ws_web
+assign [class="Zathura"]             $ws_doc
 assign [title="Libreoffice Writer$"] $ws_doc
-assign [class="Gimp"]               $ws_design
-assign [class="Thunar"]             $ws_file
-assign [title="Ranger"]             $ws_file
-assign [class="Thunderbird"]        $ws_mail
+assign [class="Gimp"]                $ws_design
+assign [class="Thunar"]              $ws_file
+assign [title="Ranger"]              $ws_file
+assign [class="Thunderbird"]         $ws_mail
 # }}}
 # Setup for specific windows {{{
 set $FLOAT floating enable, border none
