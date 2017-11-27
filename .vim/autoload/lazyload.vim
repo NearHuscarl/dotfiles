@@ -2,13 +2,14 @@
 " File:        lazyload.vim
 " Description: Functions to lazyload some plugins
 " Author:      Near Huscarl <near.huscarl@gmail.com>
-" Last Change: Tue Nov 07 11:45:07 +07 2017
+" Last Change: Sat Nov 25 08:12:38 +07 2017
 " Licence:     BSD 3-Clause license
 " Note:        Need vim-plug
 " ============================================================================
 
 function! s:SetupSessionPlugin() " {{{
    call plug#load('vim-misc')
+   call plug#load('vim-shell')
    call plug#load('vim-session')
    nnoremap <Leader>so :SessionOpen<CR>
    nnoremap <Leader>sO :SessionOpen!<CR>
