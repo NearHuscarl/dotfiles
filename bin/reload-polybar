@@ -2,8 +2,8 @@
 
 if [[ -x /usr/bin/polybar ]]; then
    killall -q polybar
-   polybar -r holybar &
-   polybar -r molybar &
+   bash --login -c 'polybar -r holybar &'
+   bash --login -c 'polybar -r molybar &'
 else
    printf "polybar is not installed. Nothing to reload\n"
 fi
