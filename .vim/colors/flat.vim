@@ -14,8 +14,8 @@
 " light grey      #84888b    rgb(10, 10, 10)       7      7
 " lighter grey    #ecf0f1    rgb(188, 188, 188)    15     foreground color
 " white           #ecf0f1    rgb(255, 255, 255)    15     15
-" purple          #8e44ad    rgb(95, 95, 135)      5      5
-" light purple    #9b59b6    rgb(135, 135, 175)    13     13
+" magenta         #8e44ad    rgb(95, 95, 135)      5      5
+" light magenta   #9b59b6    rgb(135, 135, 175)    13     13
 " green           #27ae60    rgb(95, 135, 95)      2      2
 " light green     #2ecc71    rgb(135, 175, 135)    10     10
 " aqua            #16a085    rgb(95, 135, 135)     6      6
@@ -88,11 +88,11 @@ if ($TERM =~ '256' || &t_Co >= 256) || has("gui_running")
   hi StatusLine    ctermbg=3    ctermfg=0    guibg=#f39c12 guifg=#1f2d3a cterm=NONE      gui=NONE
   hi StatusLineNC  ctermbg=8    ctermfg=3    guibg=#2c3e50 guifg=#f39c12 cterm=NONE      gui=NONE
 
-  hi Visual        ctermbg=4    ctermfg=15   guibg=#2980b9 guifg=#ecf0f1 cterm=NONE      gui=NONE   
+  hi Visual        ctermbg=4    ctermfg=15   guibg=#2980b9 guifg=#ecf0f1 cterm=NONE      gui=NONE
   hi VisualNOS     ctermbg=7    ctermfg=15   guibg=#84888b guifg=#ecf0f1 cterm=underline gui=underline
 
   hi VertSplit     ctermbg=8    ctermfg=8    guibg=#2c3e50 guifg=#2c3e50 cterm=NONE      gui=NONE
-  hi WildMenu      ctermbg=12   ctermfg=0    guibg=#3498db guifg=#1f2d3a cterm=NONE      gui=NONE
+  hi WildMenu      ctermbg=5    ctermfg=15   guibg=#8e44ad guifg=#ecf0f1 cterm=NONE      gui=NONE
 
   hi Function      ctermbg=NONE ctermfg=12   guibg=NONE    guifg=#f1c40f cterm=NONE      gui=NONE
   hi SpecialKey    ctermbg=NONE ctermfg=7    guibg=NONE    guifg=#84888b cterm=NONE      gui=NONE
@@ -145,7 +145,7 @@ elseif &t_Co == 8 || $TERM !~# '^linux' || &t_Co == 16
   hi Underlined    ctermbg=NONE       ctermfg=NONE        cterm=reverse
 
   hi LineNr        ctermbg=black      ctermfg=gray        cterm=NONE
-  hi NonText       ctermbg=NONE       ctermfg=darkgray    cterm=NONE
+  hi NonText       ctermbg=NONE       ctermfg=gray        cterm=NONE
 
   hi Pmenu         ctermbg=darkgray   ctermfg=white       cterm=NONE
   hi PmenuSbar     ctermbg=gray       ctermfg=NONE        cterm=NONE
@@ -176,11 +176,11 @@ elseif &t_Co == 8 || $TERM !~# '^linux' || &t_Co == 16
   hi Visual        ctermbg=white      ctermfg=blue        cterm=reverse
   hi VisualNOS     ctermbg=lightgray  ctermfg=white       cterm=NONE
 
-  hi FoldColumn    ctermbg=black      ctermfg=darkgray    cterm=NONE
-  hi Folded        ctermbg=none      ctermfg=darkgray    cterm=NONE
+  hi FoldColumn    ctermbg=black      ctermfg=gray        cterm=NONE
+  hi Folded        ctermbg=NONE       ctermfg=gray        cterm=NONE
 
   hi VertSplit     ctermbg=darkgray   ctermfg=darkgray    cterm=NONE
-  hi WildMenu      ctermbg=blue       ctermfg=black       cterm=NONE
+  hi WildMenu      ctermbg=magenta    ctermfg=white       cterm=NONE
 
   hi SpecialKey    ctermbg=NONE       ctermfg=darkgray    cterm=NONE
   hi Title         ctermbg=NONE       ctermfg=white       cterm=NONE
@@ -202,7 +202,7 @@ elseif &t_Co == 8 || $TERM !~# '^linux' || &t_Co == 16
   hi SpellRare     ctermbg=NONE       ctermfg=darkmagenta cterm=undercurl
 
   hi ColorColumn   ctermbg=black      ctermfg=NONE        cterm=NONE
-  hi SignColumn    ctermbg=NONE       ctermfg=darkgray    cterm=NONE
+  hi SignColumn    ctermbg=NONE       ctermfg=gray        cterm=NONE
 endif
 
 hi link Boolean                  Constant
