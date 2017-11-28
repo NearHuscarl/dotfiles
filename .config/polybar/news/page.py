@@ -7,7 +7,10 @@ from various websites and put them on polybar
 
 import logging
 import os
+import sys
 import pprint
+import time
+import feedparser
 from datetime import datetime
 
 import requests
@@ -29,41 +32,54 @@ def color_string(string, color_envron_var):
 
 class Page(object):
 	"""
-	Interface to implement subclass that hold the info
-	in order to scrap the titles on the internet
+	Interface to implement subclass that hold the
+	info in order to scrap the titles on the internet
 	"""
 	def __init__(self):
 		"""
-		List of attributes that will be defined in subclass
-		content_selector: string of inner container html tag that hold
-			title, author name, link... Represent a headline and its relevant info
+		List of (default) attributes that will be defined or overrided in subclass:
+			self.name: name of the website (reddit)
+			self.url:
+				self.url['working'] is used to download content and url['base']
+					is used to get link
+				if there is no self.url['working'], self.url['base'] will be used to
+					download content instead
+			self.selector: list of css selector that will be used to get relevant elements
+				that hold info about title, time...
+			self.content_selector: list of result elements selected from said selectors
+			self.icon: prefix text to display on polybar for aesthetic purpose
+			self.filter: dictionary of properties that will be used to evaluated to filter
+				invalid title (too old or not enough upvote...)
+				filter['interval']: max days to filter old headline
+				filter['timefmt']: time format used to get parse date from date string
 		"""
-		self.name = {'long': '', 'short': ''}
+		self.name = ''
 		self.url = {'base': ''}
-		self.selector = {}
-		self.content = {}
-		self.icon = ''
-		self.interval = 0
-		self.api = False
+		self.selector = {'title': '', 'date': ''}
+		self.content = []
+		self.icon = ''
+		self.filter = {'interval': 0, 'timefmt': ''}
 
-	def __trim_content(self, title):
-		""" Trim the content if it's too long """
+	def _trim_content(self, headline, title):
+		"""
+		Trim title if headline len exceed max len
+		title: target to be trimmed off and return
+		headline: title + other info to be displayed on polybar
+		return: headline with trimmed title
+		"""
 
-		name_len = len(self.name['long'])
-		short_name_len = len(self.name['short'])
-		title_len = len(title)
+		headline_len = len(headline)
 
-		if name_len + title_len > max_len:
-			if short_name_len + title_len > max_len:
-				# 2 is the len of the seperator between name and title (: )
-				offset = max_len - (short_name_len + title_len + 2)
+		if headline_len > max_len:
+			offset = max_len - headline_len
 
-				if title[offset-3] == ' ':
-					title = title[:offset-3] + '...'
-				else:
-					title = title[:offset-3].rsplit(' ', 1)[0] + '...'
+			if title[offset-3] == ' ':
+				trimmed_title = title[:offset-3] + '...'
+			else:
+				trimmed_title = title[:offset-3].rsplit(' ', 1)[0] + '...'
+			headline = headline.replace(title, trimmed_title)
 
-		return title
+		return headline
 
 	def get_link(self, index):
 		""" Get title url of specific title using index parameter """
@@ -72,208 +88,289 @@ class Page(object):
 		# logging.info('Reimplement in subclass if neccessary')
 
 		url = self.url['base'].strip('/')
-
-		try:
-			href = self.content['title'][index]['href'].strip('/')
-		except KeyError:
-			return ''
+		href = self.content['title'][index]['href'].strip('/')
 
 		return url + '/' + href
 
-	def __filter(self):
+	def _filter(self):
 		""" Filter invalid titles (Too old or not enough upvotes...) """
 
 		# logging.info('Filter invalid titles (Too old or not enough upvotes...)')
 		# logging.info('Implement in subclass')
 
-		return True
+		time_now = time.mktime(datetime.now().timetuple())
+
+		self.content = [title for title in self.content if
+				time_now - title['date'] <= 3600 * 24 * self.filter['interval']]
+
+	def _parse_time(self, soup_elem):
+		""" Parse time depend on string
+		implement on subclass depend on time format in
+		string like '26 Nov 2017' or '26 November 2017'
+		"""
+		date = soup_elem.text.strip()
+		return time.mktime(datetime.strptime(date, self.filter['timefmt']).timetuple())
 
 	def update(self):
 		""" Update self.content dictionary using self.selector dictionary """
 
-		logging.info('update ' + self.name['long'] + "'s content")
-
-		assert 'title' in self.selector, 'no "title" key self.selector'
+		logging.info('update ' + self.name + "'s content")
 
 		url = self.url['working'] if 'working' in self.url else self.url['base']
 		page_html = requests.get(url, headers={'User-agent': 'news'}).text
 
 		page_soup = soup(page_html, 'html.parser')
 
-		for selector_name, selector_val in self.selector.items():
-			element = page_soup.select(selector_val)
+		title = page_soup.select(self.selector['title'])
+		date = page_soup.select(self.selector['date'])
+		assert len(title) == len(date), 'title and date len is not equal'
 
-			if not self.__filter():
-				continue
-			self.content[selector_name] = element
+		for title, date in zip(title, date):
+			self.content.append({'title': title.text.strip(), 'date': self._parse_time(date)})
 
-		# Raise error if one of the key value dont have the same len as the rest
-		first_name = list(self.content.keys())[0]
-		first_len = len(self.content[first_name])
-
-		for selector_name in list(self.selector.keys())[1:]:
-			check = len(self.content[first_name]) == len(self.content[selector_name])
-			err_msg = "self.content[{}] ({}) and self.content[{}]'s ({}) len is not equal"
-			current_len = len(self.content[selector_name])
-
-			assert check, err_msg.format(first_name, first_len, selector_name, current_len)
+		self._filter()
 
 	def display(self, index):
 		""" Print out titles from the web based on index parameter """
 
 		icon = color_string(self.icon, 'THEME_MAIN')
-		title = self.__trim_content(self.content['title'][index].text.strip())
+		name = self.name
+		title = self.content[index]['title']
 
-		if len(self.name['long']) + len(title) <= max_len:
-			name = self.name['long']
-		else:
-			name = self.name['short']
-
-		print('{} {}: {}'.format(icon, name, title), flush=True)
+		headline = '{}: {}'.format(name, title)
+		headline = self._trim_content(headline, title)
+		print('{} {}'.format(icon, headline), flush=True)
 
 	def display_all(self):
 		""" Display all data, use for debugging """
 
-		pprint.pprint('self.name:             ' + str(self.name))
-		pprint.pprint('self.url               ' + str(self.url))
-		pprint.pprint('self.selector:       \n' + pprint.pformat(str(self.selector)))
-		pprint.pprint('self.content:        \n' + pprint.pformat(str(self.content)))
-		pprint.pprint('self.icon:             ' + self.icon)
-		pprint.pprint('self.interval:         ' + str(self.interval))
+		print('self.name:')
+		pprint.pprint(self.name)
+		print('\nself.url:')
+		pprint.pprint(self.url)
+		print('\nself.selector:')
+		pprint.pprint(self.selector)
+		print('\nself.content:')
+		pprint.pprint(self.content)
+		print('\nself.icon:')
+		pprint.pprint(self.icon)
+		print('\nself.filter:')
+		pprint.pprint(self.filter)
 
 class Mythologic(Page):
-	""" Implementation of mythologicinteractive.com Page """
+	""" mythologicinteractive.com Page """
 
 	def __init__(self):
 		super().__init__()
-		self.name = {
-				'long': 'mythologicinteractive',
-				'short': 'SFD'
-				}
+		self.name = 'Mythologic'
 		self.url['base'] = 'http://mythologicinteractive.com/'
 		self.selector = {
 				'title': 'a[href*=Blog/]',
 				'date': 'span.blogCreateDate'
 				}
 		self.icon = ''
-		self.interval = 20
+		self.filter = {
+				'interval': 4,
+				'timefmt': 'Added %d %b %Y' # Added 26 Nov 2017
+				}
+
+class BeamNG(Page):
+	""" blog.beamng.com/blog/ Page """
+
+	def __init__(self):
+		super().__init__()
+		self.name = 'BeamNG'
+		self.url['base'] = 'http://blog.beamng.com/blog/'
+		self.selector = {
+				'title': 'article a > h3',
+				'date': 'article .date'
+				}
+		self.icon = ''
+		self.filter = {
+				'interval': 4,
+				'timefmt': '%d %B %Y' # 26 November 2017
+				}
 
 class Daa(Page):
 	""" Subclass of Page """
 
 	def __init__(self):
 		super().__init__()
-		self.name = {
-				'long': 'Thông báo uit',
-				'short': 'daa'
-				}
+		self.name = 'Thông báo uit'
 		self.url['base'] = 'https://daa.uit.edu.vn/'
 		self.selector = {
 				'title': '.view-hien-thi-bai-viet-moi a[href*=thongbao]',
 				'date': '.view-hien-thi-bai-viet-moi li'
 				}
 		self.icon = ''
-		self.interval = 5
-
-class Quora(Page):
-	""" Subclass of Page """
-
-	def __init__(self):
-		super().__init__()
-		self.name = {
-				'long': 'Quora',
-				'short': 'Quora'
+		self.filter = {
+				'interval': 7,
+				'timefmt': '%d/%m/%Y - %H:%M' # 20/09/2017 - 08:37
 				}
-		self.url['base'] = 'https://www.quora.com/'
-		self.selector = {
-				'title': '.AnswerStoryBundle .AnswerStoryBundle a.question_link',
-				'date': '.AnswerStoryBundle .AnswerStoryBundle a.answer_permalink'
-				}
-		self.icon = ''
 
-	def __filter(self):
-		""" Dont scrape anything, only use this class as interface """
-		return False
+	def _parse_time(self, soup_elem):
+		""" Parse time string """
+		date = soup_elem.contents[2].strip(' -\n')
+		return time.mktime(datetime.strptime(date, self.filter['timefmt']).timetuple())
 
-	def get_link(self, index):
-		""" Get title url of specific title using index parameter """
-
-		url = self.url['base'].strip('/')
-
-		try:
-			href = self.content['date'][index]['href'].strip('/')
-		except KeyError:
-			return ''
-
-		return url + '/' + href
-
-class QuoraComputerProgramming(Quora):
-	""" Subclass of Quora """
-
-	def __init__(self):
-		super().__init__()
-		self.name = {
-				'long': '[Q] Computer Programming',
-				'short': 'Quora CP'
-				}
-		self.url['working'] = 'https://www.quora.com/topic/Computer-Programming/'
 
 class Reddit(Page):
 	""" Subclass of Page """
 
 	def __init__(self):
 		super().__init__()
-		self.name = {
-				'long': 'Reddit',
-				'short': 'Reddit'
+		self.name = 'Reddit'
+		self.limit = 25
+		self.url = {
+				'base': 'https://www.reddit.com/',
+				'api': 'https://www.reddit.com/.json?limit=' + str(self.limit)
 				}
-		self.url['base'] = 'https://www.reddit.com/'
-		self.selector = {
-				'title': '.sitetable.linklisting a[data-event-action=title]',
-				'date': '.sitetable.linklisting .live-timestamp',
-				'comment': '.sitetable.linklisting .bylink.comments.may-blank',
-				'upvote': '.sitetable.linklisting .score.unvoted'
-				}
+		self.content = []
 		self.icon = ''
-		self.interval = 1.5
+		self.filter = {
+				'interval': 1.5,
+				'upvote': 0
+				}
 
 	def get_link(self, index):
 		""" Get title url
 		Example with url, href:
-			self.url: 'https://www.reddit.com/
+			self.url['base]: 'https://www.reddit.com/
 			href: '/r/RimWorld/comments/7d7lrp/hexagon_20/'
 			return: 'https://www.reddit.com/r/RimWorld/comments/7d7lrp/hexagon_20/'
 		"""
 
-		url = self.url['base'].strip('/')
+		base = self.url['base'].strip('/')
+		href = self.content[index]['href'].strip('/')
 
-		try:
-			href = self.content['comment'][index]['comment'].strip('/')
-		except KeyError:
-			return ''
+		return base + '/' + href
 
-		return url + '/' + href
+	def _filter(self):
+		""" Filter headlines that is under 90 upvotes or when too old """
+		min_upvote = self.filter['upvote']
+		time_now = time.mktime(datetime.now().timetuple())
+
+		self.content = [title for title in self.content if
+				int(title['upvote']) >= min_upvote
+				and time_now - title['date'] <= 3600 * 24 * self.filter['interval']]
+
+	def update(self):
+		""" Update reddit using API """
+
+		logging.info('update ' + self.name + "'s content")
+
+		url = self.url['api']
+		page = requests.get(url, headers={'User-agent': 'news'})
+
+		for i in range(0, self.limit):
+			headline = {
+					'title': page.json()['data']['children'][i]['data']['title'],
+					'href': page.json()['data']['children'][i]['data']['permalink'],
+					'nsfw': page.json()['data']['children'][i]['data']['over_18'],
+					'upvote': str(page.json()['data']['children'][i]['data']['ups']),
+					'date': page.json()['data']['children'][i]['data']['created']
+					}
+			self.content.append(headline)
+
+		self._filter()
+
+	def display(self, index):
+		""" Print out titles from the web based on index parameter """
+
+		icon = color_string(self.icon, 'THEME_MAIN')
+		name = self.name
+		nsfw = color_string('[NSFW] ', 'THEME_ALERT') if self.content[index]['nsfw'] else ''
+		title = self.content[index]['title']
+		upvote = self.content[index]['upvote']
+
+		headline = '{}: {}{} ({})'.format(name, nsfw, title, upvote)
+		headline = self._trim_content(headline, title)
+		print('{} {}'.format(icon, headline), flush=True)
 
 class RedditRimWorld(Reddit):
 	""" Subclass of Reddit Page """
 
 	def __init__(self):
 		super().__init__()
-		self.name = {
-				'long': '/r/RimWorld',
-				'short': 'Rimworld'
+		self.name = '/r/RimWorld'
+		self.url['api'] = 'https://www.reddit.com/r/RimWorld/.json?limit=' + str(self.limit)
+		self.filter = {
+				'interval': 2,
+				'upvote': 90,
 				}
-		self.url['working'] = 'https://www.reddit.com/r/RimWorld/new/'
 
 class RedditVim(Reddit):
 	""" Subclass of Reddit Page """
 
 	def __init__(self):
 		super().__init__()
-		self.name = {
-				'long': '/r/vim',
-				'short': 'Vim'
+		self.name = '/r/vim'
+		self.url['api'] = 'https://www.reddit.com/r/vim/.json?limit=' + str(self.limit)
+		self.filter = {
+				'interval': 4,
+				'upvote': 10,
 				}
-		self.url['working'] = 'https://www.reddit.com/r/vim/new/'
 
-# vim: nofoldenable
+class Medium(Page):
+	""" Subclass of Page """
+	def __init__(self):
+		super().__init__()
+		self.name = 'Medium'
+		self.url = {
+				'base': 'https://medium.com/',
+				'feed': 'https://medium.com/feed/topic/technology'
+				}
+		self.content = []
+		self.icon = ''
+		self.filter = {
+				'interval': 5,
+				'timefmt': ''
+				}
+
+	def update(self):
+		""" Subclass of Page. Use rss feed to update content """
+
+		logging.info('update ' + self.name + "'s content")
+
+		# pylint: disable=no-member
+		feed = feedparser.parse(self.url['feed'])
+
+		for i in range(0, len(feed.entries)):
+			headline = {
+					'title': feed.entries[i].title,
+					'link': feed.entries[i].link,
+					'date': feed.entries[i].published_parsed
+					}
+			self.content.append(headline)
+
+		self._filter()
+
+	def display(self, index):
+		""" Print out titles from the web based on index parameter """
+
+		icon = color_string(self.icon, 'THEME_MAIN')
+		name = self.name
+		title = self.content[index]['title']
+
+		headline = '{}: {}'.format(name, title)
+		headline = self._trim_content(headline, title)
+		print('{} {}'.format(icon, headline), flush=True)
+
+	def get_link(self, index):
+		return self.content[index]['link']
+
+class HackerNoon(Medium):
+	""" Subclass of Medium """
+	def __init__(self):
+		super().__init__()
+		self.name = 'Hackernoon'
+		self.url['feed'] = 'https://hackernoon.com/feed/'
+		self.content = []
+
+class Freecodecamp(Medium):
+	""" Subclass of Medium """
+	def __init__(self):
+		super().__init__()
+		self.name = 'Freecodecamp'
+		self.url['feed'] = 'https://medium.freecodecamp.org/feed/'
+		self.content = []

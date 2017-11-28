@@ -16,10 +16,12 @@ from requests.exceptions import HTTPError, Timeout
 from page import (
 		Daa,
 		Mythologic,
-		QuoraComputerProgramming,
+		BeamNG,
 		Reddit,
 		RedditRimWorld,
 		RedditVim,
+		HackerNoon,
+		Freecodecamp
 		)
 
 class News(object):
@@ -33,7 +35,7 @@ class News(object):
 		self.index = -1
 		self.index_list = random.sample(range(0, self.size), self.size)
 
-	def __get_index(self):
+	def _get_index(self):
 		"""
 		Get current index for pages list to update the
 		webpage content to avoid updating all webpages at once
@@ -44,7 +46,7 @@ class News(object):
 			self.index = 0
 		return self.index_list[self.index]
 
-	def __is_content_avail(self):
+	def _is_content_avail(self):
 		""" return True if there is content in one of the pages """
 
 		for page in self.pages:
@@ -52,7 +54,7 @@ class News(object):
 				return True
 		return False
 
-	def __get_random_index(self):
+	def _get_random_index(self):
 		"""
 		Return a tuple of random indexes for Page and Page.content['title'] which does 2 things:
 			Get a random page
@@ -78,7 +80,7 @@ class News(object):
 		use in parellel with display_news
 		"""
 
-		index = self.__get_index()
+		index = self._get_index()
 
 		while True:
 			try:
@@ -88,9 +90,9 @@ class News(object):
 				time.sleep(2)
 			else:
 				logging.info('update success')
-				time.sleep(3)
+				time.sleep(30)
 			finally:
-				index = self.__get_index()
+				index = self._get_index()
 
 	def display_news(self):
 		"""
@@ -98,7 +100,7 @@ class News(object):
 		use in parellel with update_news
 		"""
 
-		page_index, title_index = self.__get_random_index()
+		page_index, title_index = self._get_random_index()
 
 		while True:
 			try:
@@ -108,12 +110,12 @@ class News(object):
 				time.sleep(0)
 			else:
 				logging.info('display success')
-				self.__export_link(self.pages[page_index].get_link(title_index))
-				time.sleep(2)
+				self._export_link(self.pages[page_index].get_link(title_index))
+				time.sleep(20)
 			finally:
-				page_index, title_index = self.__get_random_index()
+				page_index, title_index = self._get_random_index()
 
-	def __export_link(self, link):
+	def _export_link(self, link):
 		""" Export link of current title displayed on polybar
 		to $(pwd)/news_url file
 		"""
@@ -133,7 +135,7 @@ class News(object):
 		# because display thread will keep dicing for another page if
 		# the last one is not successful
 		logging.info('update.start()')
-		while not self.__is_content_avail():
+		while not self._is_content_avail():
 			logging.info('content not available')
 			time.sleep(3)
 		logging.info('display.start()')
@@ -152,9 +154,11 @@ def main():
 	pages = [
 			Daa(),
 			Mythologic(),
-			QuoraComputerProgramming(),
+			BeamNG(),
 			RedditRimWorld(),
-			RedditVim()
+			RedditVim(),
+			HackerNoon(),
+			Freecodecamp()
 			]
 
 	arg.log = 'debug'
@@ -167,15 +171,16 @@ def main():
 		logging.basicConfig(format='[%(levelname)s] %(message)s', level=logging.DEBUG)
 
 		news = News(pages)
-		news.start()
-		# news.pages[2].update()
-		# news.pages[2].display_all()
-		# news.pages[2].display(0)
-		# print(news.pages[2].get_link(0))
+		# news.start()
+		news.pages[2].update()
+		news.pages[2].display_all()
+		# news.pages[2].display(2)
+		# pprint.pprint(news.pages[2].content)
 
-		# print()
-		# for i in range(0, len(news.pages[0].content['title'])):
-		# 	news.pages[0].display(i)
+		print()
+		for i in range(0, len(news.pages[2].content)):
+			news.pages[2].display(i)
+			# print(news.pages[1].get_link(i))
 	else:
 		news = News(pages)
 		news.start()
