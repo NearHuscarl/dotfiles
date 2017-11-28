@@ -1,20 +1,19 @@
 #!/bin/env python
 
 """
-News module for polybar that fetch news title
-from various websites and put them on polybar
+Page module that contain a list of Page class
+and its variants implemented in subclass
+which can update, filter titles and display them
 """
 
 import logging
 import os
-import sys
 import pprint
 import time
-import feedparser
 from datetime import datetime
 
+import feedparser
 import requests
-from requests.exceptions import HTTPError, Timeout
 from bs4 import BeautifulSoup as soup
 
 max_len = 75
@@ -34,6 +33,7 @@ class Page(object):
 	"""
 	Interface to implement subclass that hold the
 	info in order to scrap the titles on the internet
+	and display them
 	"""
 	def __init__(self):
 		"""
@@ -63,7 +63,7 @@ class Page(object):
 	def _trim_content(self, headline, title):
 		"""
 		Trim title if headline len exceed max len
-		title: target to be trimmed off and return
+		title (part of headline): target to be trimmed off
 		headline: title + other info to be displayed on polybar
 		return: headline with trimmed title
 		"""
@@ -82,14 +82,22 @@ class Page(object):
 		return headline
 
 	def get_link(self, index):
-		""" Get title url of specific title using index parameter """
+		""" Get url of specific title using index parameter
+		Example with url, href:
+			self.url['base']: 'https://www.reddit.com/'
+			href: '/r/RimWorld/comments/7d7lrp/hexagon_20/' or
+				'https://www.reddit.com/r/RimWorld/comments/7d7lrp/hexagon_20/'
+			return: 'https://www.reddit.com/r/RimWorld/comments/7d7lrp/hexagon_20/'
+		"""
 
 		# logging.info('Retrieve link for title')
 		# logging.info('Reimplement in subclass if neccessary')
 
 		url = self.url['base'].strip('/')
-		href = self.content['title'][index]['href'].strip('/')
+		href = self.content[index]['href'].strip('/')
 
+		if url in href:
+			return href
 		return url + '/' + href
 
 	def _filter(self):
@@ -104,7 +112,8 @@ class Page(object):
 				time_now - title['date'] <= 3600 * 24 * self.filter['interval']]
 
 	def _parse_time(self, soup_elem):
-		""" Parse time depend on string
+		"""
+		Parse time. element in soup so extract text first to get the string
 		implement on subclass depend on time format in
 		string like '26 Nov 2017' or '26 November 2017'
 		"""
@@ -112,7 +121,7 @@ class Page(object):
 		return time.mktime(datetime.strptime(date, self.filter['timefmt']).timetuple())
 
 	def update(self):
-		""" Update self.content dictionary using self.selector dictionary """
+		""" Update self.content using self.selector to target the right elements """
 
 		logging.info('update ' + self.name + "'s content")
 
@@ -126,7 +135,11 @@ class Page(object):
 		assert len(title) == len(date), 'title and date len is not equal'
 
 		for title, date in zip(title, date):
-			self.content.append({'title': title.text.strip(), 'date': self._parse_time(date)})
+			self.content.append({
+				'title': title.text.strip(),
+				'href': title['href'],
+				'date': self._parse_time(date)
+				})
 
 		self._filter()
 
@@ -157,6 +170,43 @@ class Page(object):
 		print('\nself.filter:')
 		pprint.pprint(self.filter)
 
+class BeamNG(Page):
+	""" blog.beamng.com/ Page """
+
+	def __init__(self):
+		super().__init__()
+		self.name = 'BeamNG'
+		self.url = {
+				'base': 'http://blog.beamng.com/',
+				'working': 'http://blog.beamng.com/blog/'
+				}
+		self.selector = {
+				'title': 'article a[href*=http://blog.beamng.com/]',
+				'date': 'article .date'
+				}
+		self.icon = ''
+		self.filter = {
+				'interval': 4,
+				'timefmt': '%d %B %Y' # 26 November 2017
+				}
+
+class Cosmoteer(Page):
+	""" https://cosmoteer.net/ Page """
+
+	def __init__(self):
+		super().__init__()
+		self.name = 'Cosmoteer'
+		self.url['base'] = 'http://blog.cosmoteer.net/'
+		self.selector = {
+				'title': '.date-outer .post-title a',
+				'date': '.date-outer .date-header'
+				}
+		self.icon = ''
+		self.filter = {
+				'interval': 6,
+				'timefmt': '%A, %B %d, %Y' # Tuesday, September 19, 2017
+				}
+
 class Mythologic(Page):
 	""" mythologicinteractive.com Page """
 
@@ -174,22 +224,30 @@ class Mythologic(Page):
 				'timefmt': 'Added %d %b %Y' # Added 26 Nov 2017
 				}
 
-class BeamNG(Page):
-	""" blog.beamng.com/blog/ Page """
+class ProjectZomboid(Page):
+	""" https://projectzomboid.com/blog/category/news-development/ Page """
 
 	def __init__(self):
 		super().__init__()
-		self.name = 'BeamNG'
-		self.url['base'] = 'http://blog.beamng.com/blog/'
+		self.name = 'Project Zomboid'
+		self.url = {
+				'base': 'https://projectzomboid.com/blog/',
+				'working': 'https://projectzomboid.com/blog/category/news-development/'
+				}
 		self.selector = {
-				'title': 'article a > h3',
-				'date': 'article .date'
+				'title': '.bodyContentListContainer .comictext.title a',
+				'date': '.bodyContentListContainer .comictext.title .content'
 				}
 		self.icon = ''
 		self.filter = {
-				'interval': 4,
-				'timefmt': '%d %B %Y' # 26 November 2017
+				'interval': 6,
+				'timefmt': '%B %d, %Y' # November 16, 2017
 				}
+
+	def _parse_time(self, soup_elem):
+		""" Parse time string. Remove extra \t in text """
+		date = soup_elem.contents[2].strip('\t')
+		return time.mktime(datetime.strptime(date, self.filter['timefmt']).timetuple())
 
 class Daa(Page):
 	""" Subclass of Page """
@@ -209,15 +267,17 @@ class Daa(Page):
 				}
 
 	def _parse_time(self, soup_elem):
-		""" Parse time string """
+		""" Parse time string. remove extra characters in time string """
 		date = soup_elem.contents[2].strip(' -\n')
 		return time.mktime(datetime.strptime(date, self.filter['timefmt']).timetuple())
 
-
 class Reddit(Page):
-	""" Subclass of Page """
+	""" Subclass of Page
+	Use API to get timestamp directly so it dont need self.filter['timefmt'] to parse time
+	"""
 
 	def __init__(self):
+		""" self.limit: max post specify in url query """
 		super().__init__()
 		self.name = 'Reddit'
 		self.limit = 25
@@ -246,7 +306,7 @@ class Reddit(Page):
 		return base + '/' + href
 
 	def _filter(self):
-		""" Filter headlines that is under 90 upvotes or when too old """
+		""" Filter headlines that is under self.filter['upvote'] upvotes or when too old """
 		min_upvote = self.filter['upvote']
 		time_now = time.mktime(datetime.now().timetuple())
 
@@ -296,7 +356,19 @@ class RedditRimWorld(Reddit):
 		self.url['api'] = 'https://www.reddit.com/r/RimWorld/.json?limit=' + str(self.limit)
 		self.filter = {
 				'interval': 2,
-				'upvote': 90,
+				'upvote': 90
+				}
+
+class RedditUnixporn(Reddit):
+	""" Subclass of Reddit Page """
+
+	def __init__(self):
+		super().__init__()
+		self.name = '/r/unixporn'
+		self.url['api'] = 'https://www.reddit.com/r/unixporn/.json?limit=' + str(self.limit)
+		self.filter = {
+				'interval': 3,
+				'upvote': 150
 				}
 
 class RedditVim(Reddit):
@@ -308,7 +380,19 @@ class RedditVim(Reddit):
 		self.url['api'] = 'https://www.reddit.com/r/vim/.json?limit=' + str(self.limit)
 		self.filter = {
 				'interval': 4,
-				'upvote': 10,
+				'upvote': 10
+				}
+
+class RedditWebdev(Reddit):
+	""" Subclass of Reddit Page """
+
+	def __init__(self):
+		super().__init__()
+		self.name = '/r/webdev'
+		self.url['api'] = 'https://www.reddit.com/r/webdev/.json?limit=' + str(self.limit)
+		self.filter = {
+				'interval': 2,
+				'upvote': 300
 				}
 
 class Medium(Page):
@@ -322,10 +406,7 @@ class Medium(Page):
 				}
 		self.content = []
 		self.icon = ''
-		self.filter = {
-				'interval': 5,
-				'timefmt': ''
-				}
+		self.filter['interval'] = 2
 
 	def update(self):
 		""" Subclass of Page. Use rss feed to update content """
@@ -339,7 +420,7 @@ class Medium(Page):
 			headline = {
 					'title': feed.entries[i].title,
 					'link': feed.entries[i].link,
-					'date': feed.entries[i].published_parsed
+					'date': time.mktime(feed.entries[i].published_parsed)
 					}
 			self.content.append(headline)
 

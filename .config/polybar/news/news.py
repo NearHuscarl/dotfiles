@@ -1,12 +1,15 @@
 #!/bin/env python
 
 """
+News module containing a news class that hold a list of Pages
+it updates and displays titles and relevants info from those pages
+randomly and periodicaly, updating and displaying is executed in
+2 seperate threads
 """
 
 import argparse
 import logging
 import os
-import pprint
 import random
 import time
 from threading import Thread
@@ -15,17 +18,20 @@ from requests import ConnectionError
 from requests.exceptions import HTTPError, Timeout
 from page import (
 		Daa,
-		Mythologic,
 		BeamNG,
-		Reddit,
+		Cosmoteer,
+		Mythologic,
+		ProjectZomboid,
 		RedditRimWorld,
+		RedditUnixporn,
 		RedditVim,
+		RedditWebdev,
 		HackerNoon,
 		Freecodecamp
 		)
 
 class News(object):
-	""" Store a list a Page, update and print in parellel periodically """
+	""" Store a list a Page, update and print in periodically """
 
 	def __init__(self, pages):
 		dirname = os.path.dirname(os.path.realpath(__file__))
@@ -37,7 +43,7 @@ class News(object):
 
 	def _get_index(self):
 		"""
-		Get current index for pages list to update the
+		Get current index of pages list to update the
 		webpage content to avoid updating all webpages at once
 		"""
 
@@ -50,7 +56,7 @@ class News(object):
 		""" return True if there is content in one of the pages """
 
 		for page in self.pages:
-			if 'title' in page.content:
+			if page.content:
 				return True
 		return False
 
@@ -63,12 +69,12 @@ class News(object):
 		page_index = random.randint(0, self.size - 1)
 
 		# Throw error if title list len is zero
-		err_msg = '{}\'s title selector not available'.format(self.pages[page_index].name['long'])
+		err_msg = '{}\'s title selector not available'.format(self.pages[page_index].name)
 		assert 'title' in self.pages[page_index].selector, err_msg
 
 		try:
-			title_index = random.randint(0, len(self.pages[page_index].content['title']) - 1)
-		except KeyError:
+			title_index = random.randint(0, len(self.pages[page_index].content) - 1)
+		except ValueError: # self.content is empty list => random.randint(0, -1)
 			return page_index, None
 
 		return page_index, title_index
@@ -105,7 +111,7 @@ class News(object):
 		while True:
 			try:
 				self.pages[page_index].display(title_index)
-			except KeyError:
+			except TypeError: # self.content is empty => title_index = None
 				logging.info('display failed')
 				time.sleep(0)
 			else:
@@ -116,15 +122,16 @@ class News(object):
 				page_index, title_index = self._get_random_index()
 
 	def _export_link(self, link):
-		""" Export link of current title displayed on polybar
-		to $(pwd)/news_url file
+		"""
+		Export link of current title displayed
+		on polybar to $(pwd)/news_url file
 		"""
 
 		with open(self.url_file, 'w') as file:
 			file.write(link)
 
 	def start(self):
-		""" Start endless loop of scraping and display news """
+		""" Start endless loop of scraping and displaying news """
 
 		update = Thread(target=lambda: self.update_news())
 		display = Thread(target=lambda: self.display_news())
@@ -153,15 +160,17 @@ def main():
 
 	pages = [
 			Daa(),
-			Mythologic(),
 			BeamNG(),
+			Cosmoteer(),
+			Mythologic(),
+			ProjectZomboid(),
 			RedditRimWorld(),
+			RedditUnixporn(),
 			RedditVim(),
+			RedditWebdev(),
 			HackerNoon(),
 			Freecodecamp()
 			]
-
-	arg.log = 'debug'
 
 	if arg.log == 'debug':
 		# Shut up the request module logger
@@ -172,15 +181,15 @@ def main():
 
 		news = News(pages)
 		# news.start()
-		news.pages[2].update()
-		news.pages[2].display_all()
-		# news.pages[2].display(2)
-		# pprint.pprint(news.pages[2].content)
+
+		test_index = 5
+		news.pages[test_index].update()
+		news.pages[test_index].display_all()
 
 		print()
-		for i in range(0, len(news.pages[2].content)):
-			news.pages[2].display(i)
-			# print(news.pages[1].get_link(i))
+		for i in range(0, len(news.pages[test_index].content)):
+			news.pages[test_index].display(i)
+			print(news.pages[test_index].get_link(i))
 	else:
 		news = News(pages)
 		news.start()
