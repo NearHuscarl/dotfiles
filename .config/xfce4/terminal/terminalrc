@@ -41,4 +41,5 @@ TabActivityColor=#a6a6e2e22e2e
 ShortcutsNoHelpkey=TRUE
 ShortcutsNoMenukey=TRUE
 BackgroundMode=TERMINAL_BACKGROUND_TRANSPARENT
+Encoding=UTF-8
 
