@@ -2,7 +2,7 @@
 " File:        .vimrc
 " Description: Vim settings
 " Author:      Near Huscarl <near.huscarl@gmail.com>
-" Last Change: Mon Nov 27 02:09:02 +07 2017
+" Last Change: Wed Nov 29 08:46:03 +07 2017
 " Licence:     BSD 3-Clause license
 " Note:        This is a personal vim config. therefore most likely not work 
 "              on your machine
@@ -16,6 +16,11 @@ if !exists('os')
 	else
 		let os = substitute(system('uname'), '\n', '', '')
 	endif
+endif
+
+let is_nvim = 0
+if has('nvim')
+	let is_nvim = 1
 endif
 
 if g:os == 'win'
@@ -75,7 +80,7 @@ endfunction
 
 autocmd!
 
-if g:os ==? 'linux' && !has('gui_running')
+if g:os ==? 'linux' && !has('gui_running') && !is_nvim
 	" Fix alt key not working in gnome-terminal
 	" if \e not work, replace with  (<C-v><C-[>)
 	let charList = [
@@ -122,7 +127,7 @@ set selection=inclusive                            "Last character is included i
 set scrolloff=4                                    "Min lines at 2 ends where cursor start to scroll
 
 set wildmenu                                       "Visual Autocomplete in cmd menu
-set wildmode=list:longest,full
+set wildmode=list:full
 set wildchar=<A-e>
 set completeopt=menu,longest
 set complete-=i                                    "An attempt to make YCM faster
@@ -490,14 +495,14 @@ if ExistsFile(s:autoload . 'toggleOption.vim')
 	command! ToggleVerbose call toggleOption#Verbose()
 	command! ToggleWrap    call toggleOption#Wrap()
 endif
-command! ToggleHeader                           call near#utils#ToggleHeader()
-command! -nargs=? -complete=help OpenHelpInTab  call near#utils#OpenHelpInTab(<q-args>)
+command! ToggleHeader                           call utils#ToggleHeader()
+command! -nargs=? -complete=help OpenHelpInTab  call utils#OpenHelpInTab(<q-args>)
 command! CloseEmptyBuffer                       call <SID>CloseEmptyBuffer()
-command! -nargs=+ -complete=command RedirInTab  call near#utils#RedirInTab(<q-args>)
-command! -nargs=+ ExistsInTab                   echo near#utils#ExistsInTab(<f-args>)
-command! OpenTagInVSplit                        call near#utils#OpenTagInVSplit()
-command! TrimWhitespace                         call near#utils#TrimWhitespace()
-command! MakeSymlink                            call near#utils#MakeSymlink()
+command! -nargs=+ -complete=command RedirInTab  call utils#RedirInTab(<q-args>)
+command! -nargs=+ ExistsInTab                   echo utils#ExistsInTab(<f-args>)
+command! OpenTagInVSplit                        call utils#OpenTagInVSplit()
+command! TrimWhitespace                         call utils#TrimWhitespace()
+command! MakeSymlink                            call utils#MakeSymlink()
 command! -range=% Space2Tab      <line1>,<line2>call retab#Space2Tab()
 command! -range=% Space2TabAll   <line1>,<line2>call retab#Space2TabAll()
 command! -range=% Tab2SpaceAll   <line1>,<line2>call retab#Tab2SpaceAll()
@@ -511,6 +516,7 @@ call plug#begin(s:plugged)
 
 " Essential
 Plug 'bling/vim-bufferline'
+Plug '/usr/share/vim/vimfiles'
 Plug 'junegunn/fzf.vim'
 Plug 'haya14busa/incsearch.vim', {'on': [
 			\ '<Plug>(incsearch-forward)',
@@ -539,7 +545,6 @@ Plug 'w0rp/ale'
 Plug 'xolox/vim-misc', {'on': []}
 Plug 'xolox/vim-shell', {'on': []}
 Plug 'xolox/vim-session', {'on': []}
-" Plug 'xolox/vim-easytags'
 
 " Other
 Plug 'justinmk/vim-sneak', {'on': [
@@ -566,8 +571,6 @@ Plug 'tmhedberg/SimpylFold'
 Plug 'altercation/vim-colors-solarized'
 Plug 'dhruvasagar/vim-table-mode', {'on': 'TableModeToggle'}
 Plug 'ap/vim-css-color'
-Plug 'whatyouhide/vim-gotham'
-Plug 'lifepillar/vim-solarized8'
 
 Plug 'junegunn/limelight.vim',  {'on': 'Limelight!!'}
 Plug 'junegunn/goyo.vim',       {'on': 'Goyo'}
@@ -852,13 +855,6 @@ vnoremap ga <Esc>:'<,'>EasyAlign // dl<Left><Left><Left><Left>| " Align with del
 nmap ga <Plug>(EasyAlign)
 let g:easy_align_ignore_groups = []       " Vim Align ignore comment by default
 "}}}
-"{{{ Easy Tag
-let g:easytags_opts = ['--exclude=*vim/plugged/']
-let g:easytags_async = 1
-let g:easytags_dynamic_files = 2
-let g:easytags_events = ['BufWritePost']
-let g:easytags_auto_highlight = 0
-"}}}
 "{{{ Emmet
 let g:user_emmet_install_global = 0
 
@@ -879,7 +875,7 @@ let g:goyo_width  = 110
 let g:goyo_height = 100
 let g:goyo_enable = 0
 
-nnoremap <silent>go :call near#utils#ToggleGoyo(goyo_enable)<CR>
+nnoremap <silent>go :call utils#ToggleGoyo(goyo_enable)<CR>
 "}}}
 "{{{ Limelight
 nmap <silent>gLL ;Limelight!!<CR>
@@ -1055,7 +1051,7 @@ augroup SwitchBuffer
 	autocmd BufLeave * set norelativenumber
 augroup END
 
-autocmd BufEnter * if (&diff || &ft == 'gundo') | set timeout timeoutlen=0   | endif
+autocmd BufEnter * if (&diff || &ft == 'gundo') | set timeout timeoutlen=0 | endif
 autocmd BufLeave * if (&diff || &ft == 'gundo') | set timeout& timeoutlen& | endif
 
 autocmd BufEnter *.html let g:AutoPairs["<"] = '>'
@@ -1067,7 +1063,10 @@ autocmd CursorHold * nohlsearch
 autocmd FocusLost * if &modified && filereadable(expand("%:p")) | write | endif
 autocmd BufWritePre * call license#SetLastChangeBeforeBufWrite()
 
-autocmd BufWritePost *.py,*.js call ctags#Update()
+autocmd BufWritePost *.py,*.js,*vimrc call ctags#Update()
+
+" Auto resize panes when window is resized
+autocmd VimResized * wincmd =
 
 " " Save fold when leaving vim
 " autocmd BufWinLeave * silent! mkview

@@ -2,12 +2,12 @@
 " File:        utils.vim
 " Description: Utility Functions
 " Author:      Near Huscarl <near.huscarl@gmail.com>
-" Last Change: Sun Nov 05 00:29:23 +07 2017
+" Last Change: Tue Nov 28 08:43:36 +07 2017
 " Licence:     BSD 3-Clause license
 " Note:        Miscellaneous functions in autoload/ is put here
 " ============================================================================
 
-function! near#utils#ToggleHeader() " {{{
+function! utils#ToggleHeader() " {{{
    let fileName = expand('%')
    let name = split(fileName, '\.')[0]
    let extension = split(fileName, '\.')[1]
@@ -35,7 +35,7 @@ function! near#utils#ToggleHeader() " {{{
       execute "normal! g`\""
    endif
 endfunction " }}}
-function! near#utils#OpenHelpInTab(word) " {{{
+function! utils#OpenHelpInTab(word) " {{{
    " silent to disable error tag not found
    " execute "silent! tab h <C-r><C-w>"
    if mode() == 'n'
@@ -50,7 +50,7 @@ function! near#utils#OpenHelpInTab(word) " {{{
       endif
    endif
 endfunction " }}}
-function! near#utils#RedirInTab(command) " {{{
+function! utils#RedirInTab(command) " {{{
    " Display output log in another tab eg. :RedirInTab mes
    redir => s:output
    silent! execute a:command
@@ -63,7 +63,7 @@ function! near#utils#RedirInTab(command) " {{{
       silent! put=s:output
    endif
 endfunction " }}}
-function! near#utils#ExistsInTab(...) " {{{
+function! utils#ExistsInTab(...) " {{{
    let a:NumOfWin = winnr('$')
    let a:flag = 0
    while (a:NumOfWin > 0)
@@ -80,7 +80,7 @@ function! near#utils#ExistsInTab(...) " {{{
    endif
    return 0
 endfunction " }}}
-function! near#utils#OpenTagInVSplit() " {{{
+function! utils#OpenTagInVSplit() " {{{
    if (winnr('$') > 1 && !ExistsInTab('nerdtree', 'tagbar'))
       let g:tagKey = expand('<cword>')
       execute "wincmd p"
@@ -90,12 +90,12 @@ function! near#utils#OpenTagInVSplit() " {{{
       execute "vertical split | wincmd p | tjump " . expand('<cword>')
    endif
 endfunction " }}}
-function! near#utils#TrimWhitespace() " {{{
+function! utils#TrimWhitespace() " {{{
    let save = winsaveview()
    %s/\s\+$//e
    call winrestview(save)
 endfunction " }}}
-function! near#utils#MakeSymlink() " {{{
+function! utils#MakeSymlink() " {{{
    if has('win64')
       if !empty(glob('$HOME\vimfiles\autoload\NearFunc.vim'))
          silent !del -F \%UserProfile\%\vimfiles\autoload\NearFunc.vim
@@ -113,7 +113,7 @@ function! near#utils#MakeSymlink() " {{{
       silent !mklink /H \%UserProfile\%\_vsvimrc \%UserProfile\%\Desktop\.vimrc\_vsvimrc
    endif
 endfunction " }}}
-function! near#utils#GundoAutoPreviewToggle() " {{{
+function! utils#GundoAutoPreviewToggle() " {{{
    if g:gundo_auto_preview == 1
       let g:gundo_auto_preview = 0
       echo "Gundo auto preview off"
@@ -122,7 +122,7 @@ function! near#utils#GundoAutoPreviewToggle() " {{{
       echo "Gundo auto preview on"
    endif
 endfunction " }}}
-function! near#utils#ToggleGoyo(on) " {{{
+function! utils#ToggleGoyo(on) " {{{
    let ftList = ['cpp', 'py', 'vim']
    if index(ftList, &filetype) != -1
       let g:goyo_linenr=1
