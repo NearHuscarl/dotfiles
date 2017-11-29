@@ -92,6 +92,15 @@ fi
 
 # custom settings
 
+# Display quote at startup
+if [[ -x /usr/bin/cowsay && -x /usr/bin/fortune ]]; then
+	cow_type=$(shuf -n 1 -e bong cower default head-in moofasa moose sodomized three-eyes small www)
+	cow_mode=$(shuf -n 1 -e b d g p s t w y)
+	cow_express=$(shuf -n 1 -e cowsay cowthink)
+	fortune -s | fmt -80 -s | "$cow_express" -"$cow_mode" -f "$cow_type" -n | lolcat
+	echo
+fi
+
 # Export custom environment variables
 [[ -f ~/bin/export ]] && . ~/bin/export
 
