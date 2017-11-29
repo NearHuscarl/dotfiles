@@ -2,7 +2,7 @@
 " File:        ctags.vim
 " Description: Update ctags file. Use with autocmd BufWritePost
 " Author:      Near Huscarl <near.huscarl@gmail.com>
-" Last Change: Tue Nov 28 09:37:16 +07 2017
+" Last Change: Tue Nov 28 09:54:49 +07 2017
 " Licence:     BSD 3-Clause license
 " Note:        None
 " ============================================================================
@@ -41,7 +41,7 @@ function! ctags#Update() " {{{
 	" tags in $HOME for vimrc
 	if tag_path ==# '~'
 		let cmd = 'ctags
-					\ --exclude=plugged
+					\ --exclude=third_party --exclude=test
 					\ --exclude=undo
 					\ --exclude=session -f newtags -R ~/.vim/
 					\ && ctags --append -f newtags . .*
