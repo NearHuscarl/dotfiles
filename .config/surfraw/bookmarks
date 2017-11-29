@@ -2,81 +2,85 @@
 # $HOME/.config/surfraw/bookmarks
 
 # Search engine
-google            https://www.google.com.vn/
-duckduckgo        https://duckduckgo.com/
-youtube           https://www.youtube.com/
+google             https://www.google.com.vn/
+duckduckgo         https://duckduckgo.com/
+youtube            https://www.youtube.com/
 
 # Media
-reddit            https://www.reddit.com
-facebook          https://www.facebook.com/
-fb-msg            https://www.facebook.com/messages
-quora             https://www.quora.com/
+reddit             https://www.reddit.com
+facebook           https://www.facebook.com/
+fb-msg             https://www.facebook.com/messages
+quora              https://www.quora.com/
 
 # Dev
-aur               https://aur.archlinux.org/packages/
-freecodecamp      https://www.freecodecamp.org
-pep8              https://www.python.org/dev/peps/pep-0008/
+aur                https://aur.archlinux.org/packages/
+freecodecamp       https://www.freecodecamp.org
+pep8               https://www.python.org/dev/peps/pep-0008/
+strftime           http://strftime.org/
 
-github            https://github.com/
-gist              https://gist.github.com/NearHuscarl
-gh-dotfiles       https://github.com/NearHuscarl/dotfiles
-gh-io             https://github.com/NearHuscarl/NearHuscarl.github.io
-gh-fcc            https://github.com/NearHuscarl/FCC-Exercise-Archive
-gh-python         https://github.com/NearHuscarl/LearnPythonTheHardWay
+github             https://github.com/
+gist               https://gist.github.com/NearHuscarl
+gh-dotfiles        https://github.com/NearHuscarl/dotfiles
+gh-io              https://github.com/NearHuscarl/NearHuscarl.github.io
+gh-fcc             https://github.com/NearHuscarl/FCC-Exercise-Archive
+gh-python          https://github.com/NearHuscarl/LearnPythonTheHardWay
 
-portfolio         https://nearhuscarl.github.io/Portfolio/portfolio.html
+portfolio          https://nearhuscarl.github.io/Portfolio/portfolio.html
 
-r/linux           https://www.reddit.com/r/linux/
-r/unixporn        https://www.reddit.com/r/unixporn/
-r/vim             https://www.reddit.com/r/vim/
-vim-vivify        http://bytefluent.com/vivify/
+r/linux            https://www.reddit.com/r/linux/
+r/unixporn         https://www.reddit.com/r/unixporn/
+r/vim              https://www.reddit.com/r/vim/
+vim-vivify         http://bytefluent.com/vivify/
 
-lintJs            https://github.com/eslint/eslint/tree/master/docs/rules
-lintScss          https://github.com/brigade/scss-lint/blob/master/lib/scss_lint/linter/README.md
+lintJs             https://github.com/eslint/eslint/tree/master/docs/rules
+lintScss           https://github.com/brigade/scss-lint/blob/master/lib/scss_lint/linter/README.md
 
 # Browser extension options
-extension         https://chrome.google.com/webstore/category/extensions?hl=en
-tampermonkey      chrome-extension://dhdgffkkebhmkfjojejmpbldmpobfkfo/options.html#nav=dashboard
-cvim              chrome-extension://ihlenndgcmojhcghmfjfneahoeklbjjh/pages/options.html
-stylish           chrome-extension://fjnbnpbmkenffdnngjfgmeleoegfcffe/manage.html
-adblock           chrome-extension://gighmmpiobklfepjocnamgkkbiglidom/options.html
-videospeed        chrome-extension://nffaoalbilbmmfgbnbgppjihopabppdk/options.html
+extension          https://chrome.google.com/webstore/category/extensions?hl=en
+tampermonkey       chrome-extension://dhdgffkkebhmkfjojejmpbldmpobfkfo/options.html#nav=dashboard
+cvim               chrome-extension://ihlenndgcmojhcghmfjfneahoeklbjjh/pages/options.html
+stylish            chrome-extension://fjnbnpbmkenffdnngjfgmeleoegfcffe/manage.html
+adblock            chrome-extension://gighmmpiobklfepjocnamgkkbiglidom/options.html
+videospeed         chrome-extension://nffaoalbilbmmfgbnbgppjihopabppdk/options.html
 
 # Document
-arch-wiki         https://wiki.archlinux.org/
-regex             https://regexr.com
-devdoc            http://devdocs.io/
-csslayout         http://learnlayout.com/
+arch-wiki          https://wiki.archlinux.org/
+regex              https://regexr.com
+devdoc             http://devdocs.io/
+csslayout          http://learnlayout.com/
 
 # Game
-beamng-blog       http://blog.beamng.com/blog/
-cosmoteer         https://cosmoteer.net/history.html
-ludeon            https://ludeon.com/forums/index.php
-projectzomboid    https://projectzomboid.com/blog/category/news-development/
-rwdevtracker      https://rimworlddevtracker.com/
-r/rimworld        https://www.reddit.com/r/RimWorld/
-r/starshiptheory  https://www.reddit.com/r/StarshipTheory/
-sfd               http://mythologicinteractive.com
-twitter-ravenfied https://twitter.com/SteelRaven7
-twitter-tynan     https://twitter.com/TynanSylvester
+beamng-blog        http://blog.beamng.com/blog/
+cosmoteer          https://cosmoteer.net/history.html
+ludeon             https://ludeon.com/forums/index.php
+projectzomboid     https://projectzomboid.com/blog/category/news-development/
+rwdevtracker       https://rimworlddevtracker.com/
+r/rimworld         https://www.reddit.com/r/RimWorld/
+r/starshiptheory   https://www.reddit.com/r/StarshipTheory/
+sfd                http://mythologicinteractive.com
+twitter-ravenfied  https://twitter.com/SteelRaven7
+twitter-tynan      https://twitter.com/TynanSylvester
 
 # School
-biboo-uit         https://tuts.biboo.vn/uit/
-courses           https://courses.uit.edu.vn/
-ctsv              https://ctsv.uit.edu.vn
-daa               https://daa.uit.edu.vn/
-odic              http://www.oxfordlearnersdictionaries.com/
-udic              http://www.urbandictionary.com/
+biboo-uit          https://tuts.biboo.vn/uit/
+courses            https://courses.uit.edu.vn/
+ctsv               https://ctsv.uit.edu.vn
+daa                https://daa.uit.edu.vn/
+odic               http://www.oxfordlearnersdictionaries.com/
+udic               http://www.urbandictionary.com/
 
 # Utility
-color-hex         http://www.color-hex.com/popular-colors.php
-mynoise           https://mynoise.net
-online2pdf        https://online2pdf.com/
-terminal.sexy     http://terminal.sexy
-thesarus          http://www.thesaurus.com/
-zamzar-pdf        http://www.zamzar.com/convert/docx-to-pdf/
-fontawesome       http://fontawesome.io/icons/
+color-hex          http://www.color-hex.com/popular-colors.php
+mynoise            https://mynoise.net
+online2pdf         https://online2pdf.com/
+terminal.sexy      http://terminal.sexy
+thesarus           http://www.thesaurus.com/
+zamzar-pdf         http://www.zamzar.com/convert/docx-to-pdf/
+
+awesome-icon       http://fontawesome.io/icons/
+awesome-cheatsheet http://fontawesome.io/cheatsheet/
+material-icon      https://material.io/icons/
 
 # Misc
-gmail             https://mail.google.com
-imgur             https://imgur.com/
+gmail              https://mail.google.com
+imgur              https://imgur.com/
