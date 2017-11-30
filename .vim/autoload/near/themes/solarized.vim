@@ -31,6 +31,5 @@ let g:near#themes#solarized#inactive = { 'fg': s:base5,  'bg': s:base1  }| " Sta
 let g:near#themes#solarized#filename = { 'fg': s:base5,  'bg': s:base1  }| " User1
 let g:near#themes#solarized#modified = { 'fg': s:base1,  'bg': s:base5  }| " User1
 let g:near#themes#solarized#main     = { 'fg': s:base5,  'bg': s:base1  }| " User2
-let g:near#themes#solarized#branch   = { 'fg': s:base1,  'bg': s:base5  }| " User3
 let g:near#themes#solarized#plugin   = { 'fg': s:base6,  'bg': s:yellow }| " User4
 let g:near#themes#solarized#none     = { 'fg': s:base5,  'bg': s:base0  }| " User9 - Transparent

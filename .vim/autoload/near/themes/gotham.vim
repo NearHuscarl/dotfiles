@@ -31,6 +31,5 @@ let g:near#themes#gotham#inactive = { 'fg': s:base5,  'bg': s:base1  }| " Status
 let g:near#themes#gotham#filename = { 'fg': s:base5,  'bg': s:base1  }| " User1
 let g:near#themes#gotham#modified = { 'fg': s:base6,  'bg': s:base4  }| " User1
 let g:near#themes#gotham#main     = { 'fg': s:base5,  'bg': s:base1  }| " User2
-let g:near#themes#gotham#branch   = { 'fg': s:base7,  'bg': s:base4  }| " User3
 let g:near#themes#gotham#plugin   = { 'fg': s:base2,  'bg': s:yellow }| " User4
 let g:near#themes#gotham#none     = { 'fg': s:base5,  'bg': s:base0  }| " User9 - Transparent
