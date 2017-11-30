@@ -2,7 +2,7 @@
 " File:        .vimrc
 " Description: Vim settings
 " Author:      Near Huscarl <near.huscarl@gmail.com>
-" Last Change: Wed Nov 29 08:46:03 +07 2017
+" Last Change: Fri Dec 01 01:04:06 +07 2017
 " Licence:     BSD 3-Clause license
 " Note:        This is a personal vim config. therefore most likely not work 
 "              on your machine
@@ -24,7 +24,6 @@ if has('nvim')
 endif
 
 if g:os == 'win'
-	let $MYVIMRC   = $HOME.'\_vimrc'
 	let s:autoload = $HOME.'\vimfiles\autoload\'
 	let s:plugged  = $HOME.'\vimfiles\plugged\'
 	let s:session  = $HOME.'\vimfiles\session\'
@@ -32,7 +31,6 @@ if g:os == 'win'
 	let s:swapfile = $HOME.'\vimfiles\swapfiles//'
 	let s:undo     = $HOME.'\vimfiles\undo\'
 else
-	let $MYVIMRC   = $HOME.'/.vimrc'
 	let s:autoload = $HOME.'/.vim/autoload/'
 	let s:plugged  = $HOME.'/.vim/plugged/'
 	let s:session  = $HOME.'/.vim/session/'
@@ -70,11 +68,6 @@ function! s:CloseEmptyBuffer() " {{{
 	endwhile
 endfunction
 " }}}
-function! s:Eatchar(pat) " {{{
-	let c = nr2char(getchar(0))
-	return (c =~ a:pat) ? '' : c
-endfunction
-" }}}
 "}}}
 "{{{ Basic Setup
 
@@ -102,17 +95,20 @@ set fileformat=unix
 set t_Co=256                                       "More color
 set encoding=utf-8                                 "Enable the use of icon or special char
 scriptencoding utf-8                               "Need this for nerdtree to work properly
-syntax on                                          "Color my code
 
 filetype on
 filetype plugin on
 filetype indent on
 
-try
-	colorscheme flat
-catch /E185/
-	colorscheme evening
-endtry
+if !exists('g:colors_name')
+	syntax on                                       "Color my code
+	try
+		colorscheme flat
+	catch /E185/
+		colorscheme evening
+	endtry
+endif
+source $HOME/.vim/syntax/custom.vim
 
 set hidden                                         "Make buffer hidden once modified
 
@@ -128,7 +124,6 @@ set scrolloff=4                                    "Min lines at 2 ends where cu
 
 set wildmenu                                       "Visual Autocomplete in cmd menu
 set wildmode=list:full
-set wildchar=<A-e>
 set completeopt=menu,longest
 set complete-=i                                    "An attempt to make YCM faster
 
@@ -168,6 +163,7 @@ set relativenumber                                 "Choose relave number to make
 set numberwidth=2                                  "Number Column width
 
 set nobackup                                       "No fucking backup
+set noshowmode                                     "Dont show --INSERT-- or --VISUAL--
 set showmatch                                      "Highlight matching parenthesis when make the other one
 set showcmd                                        "Show command as you type
 
@@ -176,7 +172,7 @@ set wrapmargin=0                                   "Number of chars outside the 
 set formatoptions-=t                               "Keep textwidth setting in existing files
 set formatoptions+=j                               "Remove a comment leader when joining lines 
 set wrap                                           "Turn off auto wrap
-set showbreak=>>\                                  "Characters at the start of wrapped lines
+set showbreak=⤷\                                  "Characters at the start of wrapped lines
 if has('linebreak')
 	set linebreak                                   "Wrap long lines at last words instead of the last characters
 	set breakindent                                 "Keep the indent level after wrapping
@@ -186,7 +182,7 @@ set synmaxcol=228                                  "Maximum column for syntax hi
 set lazyredraw                                     "An attempt to make scrolling smoother
 
 set list                                           "Enable listchars option
-set listchars=tab:\|\ ,extends:»,precedes:«,trail:¥,nbsp:_
+set listchars=tab:\│\ ,extends:»,precedes:«,trail:·,nbsp:·
 " set expandtab                                      "When press tab, convert into n spaces
 set tabstop=3                                      "Set how many columns a tab count for
 set shiftwidth=3                                   "Set how many column is indented with >> and <<
@@ -246,12 +242,12 @@ vnoremap :  =
 vnoremap :: ==
 " }}}
 " {{{ Buffer
-nnoremap <A-'> :bnext<CR>|                         "Go to the next buffer
-nnoremap <A-;> :bprevious<CR>|                     "Go to the previous buffer
-nnoremap <A-e> :enew<CR>|                          "Edit new buffer
-nnoremap <A-b> :buffer#<CR>|                       "Switch between last buffers
-nnoremap <Leader>q :bprevious <Bar>:bdelete #<CR>| "Delete current buffer
-nnoremap <Leader>x :e#<CR>|                        "Open last closed buffer (not really)
+nnoremap <silent><A-'> :bnext<CR>|                 "Go to the next buffer
+nnoremap <silent><A-;> :bprevious<CR>|             "Go to the previous buffer
+nnoremap <silent><A-e> :enew<CR>|                  "Edit new buffer
+nnoremap <silent><A-b> :buffer#<CR>|               "Switch between last buffers
+nnoremap <silent><Leader>q :bprevious <Bar>:bdelete #<CR>| "Delete current buffer
+nnoremap <silent><Leader>x :e#<CR>|                "Open last closed buffer (not really)
 " }}}
 " {{{ Pane
 nnoremap <A-m>     <C-w>w|                         "Cycle through panes
@@ -264,9 +260,9 @@ nnoremap <Leader>K <C-w>K|                         "Move current pane to the ver
 nnoremap <Leader>J <C-w>J|                         "Move current pane to the very bottom
 " }}}
 " {{{ Tab
-nnoremap <Leader><Tab> :tabnew<CR>|                "Make a new tab
-nnoremap <A-,> :tabprevious<CR>|                   "Go to next tab
-nnoremap <A-.> :tabnext<CR>|                       "Go to previous tab
+nnoremap <silent><Leader><Tab> :tabnew<CR>|        "Make a new tab
+nnoremap <silent><A-,> :tabprevious<CR>|           "Go to next tab
+nnoremap <silent><A-.> :tabnext<CR>|               "Go to previous tab
 " }}}
 " {{{ Resize window
 nnoremap <silent><A--> :vert res -5<CR>|           "Decrease window width by 5
@@ -335,14 +331,14 @@ nnoremap Ka
 			\ :copen 20<CR>|                          "Find word under cursor in current working directory
 " }}}
 " {{{ Pair
-nnoremap ]t :tnext<CR>|                            "Go to next tag in the tag list
-nnoremap [t :tprevious<CR>|                        "Go to next tag in the tag list
-nnoremap ]c ]czz|                                  "Jump forward change and zz
-nnoremap [c [czz|                                  "Jump backward change and zz
-nnoremap ]q :cnext<CR>|                            "Jump to the next quickfix item
-nnoremap [q :cprev<CR>|                            "Jump to the previous quickfix item
-nnoremap ]Q :clast<CR>|                            "Jump to the previous quickfix item
-nnoremap [Q :cfirst<CR>|                           "Jump to the previous quickfix item
+nnoremap <silent>]t :tnext<CR>|                    "Go to next tag in the tag list
+nnoremap <silent>[t :tprevious<CR>|                "Go to next tag in the tag list
+nnoremap <silent>]c ]czz|                          "Jump forward change and zz
+nnoremap <silent>[c [czz|                          "Jump backward change and zz
+nnoremap <silent>]q :cnext<CR>|                    "Jump to the next quickfix item
+nnoremap <silent>[q :cprev<CR>|                    "Jump to the previous quickfix item
+nnoremap <silent>]Q :clast<CR>|                    "Jump to the previous quickfix item
+nnoremap <silent>[Q :cfirst<CR>|                   "Jump to the previous quickfix item
 " }}}
 " {{{ Insert Mode
 inoremap <A-9> <C-w>|                              "Delete previous word
@@ -385,7 +381,7 @@ inoremap <expr><A-u>   pumvisible() ? "\<C-x>"         : "\<Esc>0Di"
 " |-------+-----------------------------------------------------+---------------------------------|
 " }}}
 " {{{ Change mode
-inoremap <A-i> <Esc><Right>|                       "Switch to normal mode from insert mode
+inoremap <A-i> <Esc><Esc>|                         "Switch to normal mode from insert mode
 vnoremap <A-i> <Esc>|                              "Switch to normal mode from visual mode
 snoremap <A-i> <Esc>|                              "Switch to normal mode from select mode
 cnoremap <A-i> <C-c>|                              "Switch to normal mode from command mode
@@ -394,17 +390,15 @@ cnoremap <A-i> <C-c>|                              "Switch to normal mode from c
 nnoremap gV `[v`]|                                 "Visual select the last inserted text
 
 vnoremap $ $h
-vnoremap <silent> <A-k> 2<C-y>2k2<C-y>2k2<C-y>2k|  "Scroll 2 line above
-vnoremap <silent> <A-j> 2<C-e>2j2<C-e>2j2<C-e>2j|  "Scroll 2 line below
-vnoremap <silent> <A-l> 5<C-e>5j5<C-e>5j5<C-e>5j|  "Scroll 5 line above
-vnoremap <silent> <A-h> 5<C-y>5k5<C-y>5k5<C-y>5k|  "Scroll 5 line below
+vnoremap <silent><A-k> 6<C-y>6k|                  "Scroll 6 lines above
+vnoremap <silent><A-j> 6<C-e>6j|                  "Scroll 6 lines below
+vnoremap <silent><A-l> 12<C-e>12j|                "Scroll 12 lines above
+vnoremap <silent><A-h> 12<C-y>12k|                "Scroll 12 lines below
 
 vnoremap Kh y:OpenHelpInTab <C-r>"<CR>|           "Open help about the word under cursor
 vnoremap Ka
 			\ y:grep! "<C-R>""<CR><Bar>
 			\ :copen 20<CR>|                          "Find word under cursor in current working directory
-vnoremap <Leader>a y:Ag <C-r>"<Space>|             "Ag search (just like grep but faster)
-vnoremap <Leader>c y:CtrlP <C-r>"<CR>|             "CtrlP search
 vnoremap ; <Esc>:'<,'>|                            "Execute command in visual range
 
 nnoremap <A-v> <C-q>|                              "Visual block
@@ -452,25 +446,24 @@ vnoremap < <gv|                                    "Make indent easier
 nnoremap yp :call yank#Path()<CR>|                 "Yank and show current path
 
 if ExistsFile(s:autoload . 'license.vim')
-	nnoremap <silent> u     :call license#SkipLicenseDate('undo')<CR>
-	nnoremap <silent> <A-u> :call license#SkipLicenseDate('redo')<CR>
+	nnoremap <silent>u     :call license#SkipLicenseDate('undo')<CR>
+	nnoremap <silent><A-u> :call license#SkipLicenseDate('redo')<CR>
 else
-	nnoremap <silent> <A-u> <C-r>
+	nnoremap <silent><A-u> <C-r>
 endif
 
 nnoremap <A-p> ciw<C-r>*<esc>|                     "Paste over a word
-nnoremap <A-F1> :ToggleMenuBar<CR>|                "Toggle menu bar
-nnoremap <Leader>N :nohlsearch<CR>|                "diable highlight result
+nnoremap <silent><A-F1> :ToggleMenuBar<CR>|        "Toggle menu bar
+nnoremap <silent><Leader>N :nohlsearch<CR>|        "diable highlight result
 nnoremap <A-Space> a<Space><Left><esc>|            "Insert a whitespace
 nnoremap <Enter> o<Esc>|                           "Make new line
 nnoremap Y y$|                                     "Make Y yank to endline (same behaviours as D or R)
 nnoremap <C-w> :ToggleWrap<CR>|                    "Toggle wrap option
-nnoremap <C-o> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
 nnoremap <silent>- :w<CR>|                         "Write changes
 nnoremap <silent><Leader>- :SudoWrite<CR>|         "Write changes with sudo
 nnoremap <silent><Leader>tV :ToggleVerbose<CR>
-nnoremap <Leader>o    :call ide#Open('code')<CR>|  "Open vscode of current file to debug
-nnoremap <Leader><CR> :ExecuteFile<CR>|            "Run executable file (python, ruby, bash..)
+nnoremap <silent><Leader>o :call ide#Open('code')<CR>| "Open vscode of current file to debug
+nnoremap <silent><Leader><CR> :ExecuteFile<CR>|    "Run executable file (python, ruby, bash..)
 nnoremap <Leader><Leader><CR> :ExecuteFile<Space>| "Same with argument
 " }}}
 " {{{ Abbreviation
@@ -478,13 +471,6 @@ cabbrev vbnm verbose<Space>nmap
 cabbrev vbim verbose<Space>imap
 cabbrev vbvm verbose<Space>vmap
 cabbrev vbcm verbose<Space>cmap
-
-cabbrev cund  C:\Users\Near\Desktop<C-r>=s:Eatchar('\m\s\<Bar>/')<CR>
-cabbrev dprf  D:\Program Files<C-r>=s:Eatchar('\m\s\<Bar>/')<CR>
-cabbrev dprf8 D:\Program Files (x86)<C-r>=s:Eatchar('\m\s\<Bar>/')<CR>
-cabbrev dprfp D:\Program Files\Github\plugged<C-r>=s:Eatchar('\m\s\<Bar>/')<CR>
-cabbrev eprf  E:\Program Files<C-r>=s:Eatchar('\m\s\<Bar>/')<CR>
-cabbrev eprf8 E:\Program Files (x86)<C-r>=s:Eatchar('\m\s\<Bar>/')<CR>
 " }}}
 " {{{ Command difinition
 if ExistsFile(s:autoload . 'help.vim')
@@ -538,9 +524,11 @@ Plug 'haya14busa/incsearch.vim', {'on': [
 " 			\ '<Plug>(is-scroll-b)'
 " 			\ ]}
 Plug 'vim-utils/vim-man', {'on': []}
+Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-fugitive'
 Plug 'skywind3000/asyncrun.vim'
 Plug 'w0rp/ale'
+Plug 'mhinz/vim-startify'
 
 Plug 'xolox/vim-misc', {'on': []}
 Plug 'xolox/vim-shell', {'on': []}
@@ -640,16 +628,12 @@ let g:ale_fixers            = {}
 let g:ale_fixers.javascript = ['eslint']
 let g:ale_fixers.python     = ['pylint']
 let g:ale_fixers.scss       = ['scsslint']
-let g:ale_sign_error           = '!!'
-let g:ale_sign_warning         = '>>'
+let g:ale_sign_error           = ''
+let g:ale_sign_warning         = ''
 let g:ale_lint_on_text_changed = 0
 
 nmap [a <Plug>(ale_previous_wrap)zz
 nmap ]a <Plug>(ale_next_wrap)zz
-
-hi! link ALEErrorSign PreProc
-hi! link ALEWarningSign Statement
-hi! link ALEInfoSign Type
 " }}}
 "{{{ Auto Pairs
 autocmd CursorHold,CursorHoldI * :silent! all autopairs#AutoPairsTryInit()
@@ -678,34 +662,23 @@ let g:fastfold_fold_movement_commands = []
 let g:fastfold_skip_filetypes         = ['vim', 'py']
 "}}}
 "{{{ Fugitive
-nnoremap <Leader>gst :Gstatus<CR>|                 "Git status in vim!
-nnoremap <Leader>ga  :Git add %:p<CR>|             "Git add in vim!
-nnoremap <Leader>gbl :Gblame<CR>|                  "Git blame in vim!
-nnoremap <Leader>gw  :Gwrite<CR>|                  "Git write in vim!
-nnoremap <Leader>gr  :Gread<CR>|                   "Git read in vim!
-nnoremap <Leader>gd  :Gdiff<CR>|                   "Git diff in vim!
-nnoremap <Leader>gD  :Gdiff<Space><C-d>|           "Git diff in vim!
-nnoremap <Leader>gpl :Gpull<CR>|                   "Git pull in vim!
-nnoremap <Leader>gPL :Gpull<Space><C-d>|           "Git pull in vim!
-nnoremap <Leader>gps :Gpush<CR>|                   "Git push in vim!
-nnoremap <Leader>gPS :Gpush<Space><C-d>|           "Git push in vim!
-nnoremap <Leader>gm  :Gmove<CR>|                   "Git move in vim!
-nnoremap <Leader>gM  :Gmove<Space><C-d>|           "Git move in vim!
-nnoremap <Leader>gc  :Gcommit<CR>|                 "Git commmit in vim!
-nnoremap <Leader>gC  :Gcommit<Space><C-d>|         "Git commmit in vim!
-nnoremap <Leader>gbr :Gbrowse<CR>|                 "Open current file on github
-nnoremap <Leader>gBR :Gbrowse<Space><C-d>|         "Open current file on github
-nnoremap <Leader>gg  :Ggrep! <C-r><C-w><CR><CR>|   "Find word under cursor in repo
-nnoremap <Leader>gl
-			\ :Glog!<CR><Bar>
-			\ :bot copen<CR>|                         "Load all version before
-nnoremap <Leader>gL  :Glog!<Space><C-d>|           "Load all version before
-nnoremap <Leader>gsc :Glog! --grep= -- %<C-Left><C-Left><Left>| "Search for commit message
-nnoremap <Leader>gsd :Glog! -S -- %<C-Left><C-Left><Left>|      "Search content in diffs history
-nnoremap <silent><Leader>gh 
-			\ :!"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" "https://github.com/NearHuscarl/.vimrc/commits/master/_vimrc"<CR><CR>
+nnoremap <Leader>gs  :Gstatus<CR>|                              "Git status in vim!
+nnoremap <Leader>ga  :Git add %:p<CR>|                          "Git add in vim!
+nnoremap <Leader>gbl :Gblame<CR>|                               "Git blame in vim!
+nnoremap <Leader>gw  :Gwrite<CR>|                               "Git write in vim!
+nnoremap <Leader>gr  :Gread<CR>|                                "Git read in vim!
+nnoremap <Leader>gd  :Gdiff<CR>|                                "Git diff in vim!
+nnoremap <Leader>gP  :Gpull<CR>|                                "Git pull in vim!
+nnoremap <Leader>gp  :Gpush<CR>|                                "Git push in vim!
+nnoremap <Leader>gm  :Gmove<CR>|                                "Git move in vim!
+nnoremap <Leader>gc  :Gcommit<CR>|                              "Git commmit in vim!
+nnoremap <Leader>gbr :Gbrowse<CR>|                              "Open current file on github
+nnoremap <Leader>gk  :Ggrep! <C-r><C-w><CR><CR>|                "Find word under (k)ursor in repo
+nnoremap <Leader>gl  :Glog!<CR><Bar>:bot copen<CR>|             "Load all version before
+nnoremap <Leader>ggc :Glog! --grep= -- %<C-Left><C-Left><Left>| "Search for commit message
+nnoremap <Leader>ggd :Glog! -S -- %<C-Left><C-Left><Left>|      "Search content in diffs history
 "}}}
-"{{{ fzf
+"{{{ Fzf
 " Recommend: use with vim-rooter
 let g:rg_command = '
   \ rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --color "always"
@@ -929,7 +902,6 @@ endif
 "}}}
 "{{{ Sneak
 let g:sneak#use_ic_scs = 1          " Case determined by 'ignorecase' and 'smartcase'
-let g:sneak#label_esc = "\<A-i>"
 let g:sneak#absolute_dir = 1        " Movement in sneak not based on sneak search direction
 
 if ExistsFile(s:plugged . 'vim-sneak')
@@ -938,8 +910,8 @@ if ExistsFile(s:plugged . 'vim-sneak')
 	vmap <silent> l <Plug>Sneak_;
 	vmap <silent> h <Plug>Sneak_,
 else
-	nnoremap l   ;|                                    "Repeat latest f, F, t or T command (forward)
-	nnoremap h   ,|                                    "Repeat latest f, F, t or T command (backward)
+	nnoremap l ;| "Repeat latest f, F, t or T command (forward)
+	nnoremap h ,| "Repeat latest f, F, t or T command (backward)
 endif
 
 nmap f <Plug>Sneak_f
@@ -953,13 +925,31 @@ vmap t <Plug>Sneak_t
 vmap T <Plug>Sneak_T
 
 " 3 characters search instead
-nnoremap <silent> s :<C-U>call sneak#wrap('',           3, 0, 2, 1)<CR>
-nnoremap <silent> S :<C-U>call sneak#wrap('',           3, 1, 2, 1)<CR>
-xnoremap <silent> s :<C-U>call sneak#wrap(visualmode(), 3, 0, 2, 1)<CR>
-xnoremap <silent> S :<C-U>call sneak#wrap(visualmode(), 3, 1, 2, 1)<CR>
-onoremap <silent> s :<C-U>call sneak#wrap(v:operator,   3, 0, 2, 1)<CR>
-onoremap <silent> S :<C-U>call sneak#wrap(v:operator,   3, 1, 2, 1)<CR>
-hi Sneak guifg=white guibg=magenta ctermfg=15 ctermbg=5
+nnoremap <silent>s :<C-U>call sneak#wrap('',           3, 0, 2, 1)<CR>
+nnoremap <silent>S :<C-U>call sneak#wrap('',           3, 1, 2, 1)<CR>
+xnoremap <silent>s :<C-U>call sneak#wrap(visualmode(), 3, 0, 2, 1)<CR>
+xnoremap <silent>S :<C-U>call sneak#wrap(visualmode(), 3, 1, 2, 1)<CR>
+onoremap <silent>s :<C-U>call sneak#wrap(v:operator,   3, 0, 2, 1)<CR>
+onoremap <silent>S :<C-U>call sneak#wrap(v:operator,   3, 1, 2, 1)<CR>
+"}}}
+"{{{ Startify
+function! s:center_header(lines) abort
+	let longest_line   = max(map(copy(a:lines), 'strwidth(v:val)'))
+	let centered_lines = map(copy(a:lines),
+				\ 'repeat(" ", (&columns / 2) - (longest_line / 2)) . v:val')
+	return centered_lines
+endfunction
+let g:startify_custom_header = s:center_header(startify#fortune#cowsay())
+let g:startify_custom_indices = [
+			\ 'a','b','c','d','f','h','l','m','n','o',
+			\ 'p','r','s','t','u','v','w','x','y','z']
+let g:startify_list_order = [
+			\ ['Session:'],   'sessions',
+			\ ['MRU:'],       'files',
+			\ ['MRU (cwd):'], 'dir',
+			\ ['bookmarks:'], 'bookmarks',
+			\ ['commands:'],  'commands',
+			\ ]
 "}}}
 "{{{ Surround
 nmap ds  <Plug>Dsurround
@@ -1022,13 +1012,11 @@ let g:UltiSnipsJumpForwardTrigger  = "<A-j>"
 let g:UltiSnipsJumpBackwardTrigger = "<A-k>"
 "}}}
 "{{{ Autocmd
-call statusline#SetStatusline()
 augroup Statusline
 	autocmd!
+	autocmd VimEnter * call statusline#SetStatusline()
 	autocmd BufEnter * silent! call statusline#UpdateStatuslineInfo()
-	autocmd BufWritePost * let g:statuslineLastModified = statusline#SetLastModified()
-	autocmd CursorHold * let g:statuslineFileSize  = statusline#SetFileSize()
-	autocmd CursorHold * let g:statuslineWordCount = statusline#SetWordCount()
+	autocmd CursorHold * let g:statuslineFileSize = statusline#SetFileSize()
 augroup END
 
 augroup SaveView
@@ -1067,10 +1055,6 @@ autocmd BufWritePost *.py,*.js,*vimrc call ctags#Update()
 
 " Auto resize panes when window is resized
 autocmd VimResized * wincmd =
-
-" " Save fold when leaving vim
-" autocmd BufWinLeave * silent! mkview
-" autocmd BufWinEnter * silent! loadview
 
 if has('gui_running')
 	if g:os == 'linux'
