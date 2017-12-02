@@ -2,11 +2,17 @@
 " File:        ctags.vim
 " Description: Update ctags file. Use with autocmd BufWritePost
 " Author:      Near Huscarl <near.huscarl@gmail.com>
-" Last Change: Tue Nov 28 09:54:49 +07 2017
+" Last Change: Thu Nov 30 20:49:23 +07 2017
 " Licence:     BSD 3-Clause license
 " Note:        None
 " ============================================================================
 
+function! s:EchoHL(msg, hl_group) " {{{
+	execute 'echohl ' . a:hl_group
+	echomsg a:msg
+	echohl None
+endfunction
+" }}}
 function! s:ExecuteCmd(cmd) " {{{
 	if has('win32') || has('win64')
 		let s:plugged = $HOME.'\vimfiles\plugged\'
@@ -40,12 +46,8 @@ function! ctags#Update() " {{{
 
 	" tags in $HOME for vimrc
 	if tag_path ==# '~'
-		let cmd = 'ctags
-					\ --exclude=third_party --exclude=test
-					\ --exclude=undo
-					\ --exclude=session -f newtags -R ~/.vim/
-					\ && ctags --append -f newtags . .*
-					\ && mv newtags tags &'
+		call s:EchoHL('No tags file found up to $HOME/', 'PreProc')
+		return
 	else
 		let cmd = 'ctags -R -f newtags && mv newtags tags &'
 	endif
@@ -55,9 +57,7 @@ function! ctags#Update() " {{{
 	execute 'cd ' . old_cwd
 
 	redraw
-	echohl String
-	echomsg tag_path . '/tags has been updated!'
-	echohl None
+	call s:EchoHL(tag_path . '/tags has been updated!', 'String')
 endfunction
 " }}}
 
