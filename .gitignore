@@ -21,6 +21,7 @@
 !/.vimrc
 !/.xprofile
 !/.Xmodmap
+!/.Xresources
 !/.zshrc
 !/install.sh
 
@@ -85,6 +86,7 @@
 !/.vim/indent/
 !/.vim/snippet/
 !/.vim/syntax/
+!/.vim/vimrc
 
 # Only include some custom scripts in .virtualenvs/projectX/bin/
 !/.virtualenvs/
