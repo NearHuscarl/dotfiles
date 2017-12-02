@@ -2,7 +2,7 @@
 " File:        statusline.vim
 " Description: Statusline setup for vim
 " Author:      Near Huscarl <near.huscarl@gmail.com>
-" Last Change: Sat Dec 02 21:35:06 +07 2017
+" Last Change: Sat Dec 02 22:08:12 +07 2017
 " Licence:     BSD 3-Clause license
 " Note:        N/A
 " ============================================================================
@@ -80,10 +80,10 @@ function! s:Filename() " {{{
 endfunction " }}}
 function! statusline#SetModified() " {{{
 	if &modified
-		call s:Highlight("SLFilename", s:modified.fg, s:modified.bg)
+		call s:Highlight("StatusLineFilename", s:modified.fg, s:modified.bg)
 		return '+'
 	endif
-	call s:Highlight("SLFilename", s:filename.fg, s:filename.bg)
+	call s:Highlight("StatusLineFilename", s:filename.fg, s:filename.bg)
 	return ''
 endfunction " }}}
 function! s:IsReadOnly() " {{{
@@ -146,7 +146,7 @@ function! statusline#SetStatusline() " {{{
 		set statusline+=\ %2p%%\ \│                        " Percentage through file in lines
 		set statusline+=\ %{statusline#InitModeColor()}    " Initiate mode color
 		set statusline+=%{statusline#GetMode()}\ |         " Show Current mode
-		set statusline+=%#StatusLineFilename#\ |           " Switch to SLFilename highlight
+		set statusline+=%#StatusLineFilename#\ |           " Switch to StatusLineFilename highlight
 		set statusline+=%{g:statuslineFilename}            " Filename
 		set statusline+=%{statusline#SetModified()}        " Append "+" after filename if modified
 		set statusline+=%{g:statuslineIsReadOnly}\ |       " Is modificable or not
