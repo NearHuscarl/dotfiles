@@ -2,7 +2,7 @@
 " File:        statusline.vim
 " Description: Statusline setup for vim
 " Author:      Near Huscarl <near.huscarl@gmail.com>
-" Last Change: Fri Dec 01 00:16:46 +07 2017
+" Last Change: Sat Dec 02 21:35:06 +07 2017
 " Licence:     BSD 3-Clause license
 " Note:        N/A
 " ============================================================================
@@ -10,16 +10,16 @@
 function! s:Highlight(group, ...) " {{{
 	let gui   = ['guifg', 'guibg']
 	let cterm = ['ctermfg', 'ctermbg']
-	let command = 'hi ' . a:group
+	let command = 'highlight ' . a:group
 
-	if (len(a:000) < 1) || (len(a:000) > (len(gui)))
+	if len(a:000) < 1 || len(a:000) > len(gui)
 		echoerr "No colour or too many colours specified"
 	else
 		for i in range(0, len(a:000)-1)
 			let command .= ' ' . gui[i]   . '=' . a:000[i].gui
 			let command .= ' ' . cterm[i] . '=' . a:000[i].cterm
 		endfor
-		exe command
+		execute command
 	endif
 endfunction " }}}
 function! statusline#InitModeColor() " {{{
@@ -80,10 +80,10 @@ function! s:Filename() " {{{
 endfunction " }}}
 function! statusline#SetModified() " {{{
 	if &modified
-		call s:Highlight("User1", s:modified.fg, s:modified.bg)
+		call s:Highlight("SLFilename", s:modified.fg, s:modified.bg)
 		return '+'
 	endif
-	call s:Highlight("User1", s:filename.fg, s:filename.bg)
+	call s:Highlight("SLFilename", s:filename.fg, s:filename.bg)
 	return ''
 endfunction " }}}
 function! s:IsReadOnly() " {{{
@@ -136,19 +136,21 @@ endfunction
 " }}}
 function! statusline#SetStatusline() " {{{
 	" This function is called when entering new buffer
+	call statusline#SetHighlight()
+
 	if has('statusline')
 		"http://got-ravings.blogspot.com/2008/08/vim-pr0n-making-statuslines-that-own.html
 		"https://vi.stackexchange.com/questions/6505/how-to-cut-trim-line-in-statusline/6506
 		"Statusline (requires Powerline font, with highlight groups using Solarized theme)
 		set statusline=
-		set statusline+=\ %2p%%\ \│                        " Percentage through file in lines as in |CTRL-G|
+		set statusline+=\ %2p%%\ \│                        " Percentage through file in lines
 		set statusline+=\ %{statusline#InitModeColor()}    " Initiate mode color
 		set statusline+=%{statusline#GetMode()}\ |         " Show Current mode
-		set statusline+=%1*\ |                             " Switch to User1 highlight
+		set statusline+=%#StatusLineFilename#\ |           " Switch to SLFilename highlight
 		set statusline+=%{g:statuslineFilename}            " Filename
 		set statusline+=%{statusline#SetModified()}        " Append "+" after filename if modified
 		set statusline+=%{g:statuslineIsReadOnly}\ |       " Is modificable or not
-		set statusline+=%2*\ |                             " Switch to User2 highlight
+		set statusline+=%#StatusLineMain#\ |               " Switch to StatusLineMain highlight
 		set statusline+=%=                                 " Switch to the right side
 		set statusline+=%<                                 " Where to truncate line
 		set statusline+=%{g:statuslineFiletype}\ \│\ |     " Filetype
@@ -159,40 +161,42 @@ function! statusline#SetStatusline() " {{{
 		set statusline+=\ %03l:%-2v\ |                     " Line number and column number
 	endif
 endfunction " }}}
-" Highlight {{{
-let g:statusline_colors = g:colors_name
-try
-	call near#themes#{g:colors_name}#isAvailable()
-catch
-	let g:statusline_colors = "solarized"
-endtry
+function! statusline#SetHighlight() " {{{
+	" Custom statusline highlight (User1, StatusLineMain...)
+	if !exists('g:statusline_colors') || g:statusline_colors != g:colors_name
+		let g:statusline_colors = g:colors_name
+		try
+			call statusline#{g:colors_name}#isAvailable()
+		catch /Unknown function/
+			let g:statusline_colors = "solarized"
+		endtry
+	endif
 
-" Make variable easier to read
-let s:normal  = g:near#themes#{g:statusline_colors}#normal
-let s:insert  = g:near#themes#{g:statusline_colors}#insert
-let s:visual  = g:near#themes#{g:statusline_colors}#visual
-let s:vLine   = g:near#themes#{g:statusline_colors}#vLine
-let s:vBlock  = g:near#themes#{g:statusline_colors}#vBlock
-let s:replace = g:near#themes#{g:statusline_colors}#replace
-let s:prompt  = g:near#themes#{g:statusline_colors}#prompt
+	" Make variable easier to read
+	let s:normal  = g:statusline#{g:statusline_colors}#normal
+	let s:insert  = g:statusline#{g:statusline_colors}#insert
+	let s:visual  = g:statusline#{g:statusline_colors}#visual
+	let s:vLine   = g:statusline#{g:statusline_colors}#vLine
+	let s:vBlock  = g:statusline#{g:statusline_colors}#vBlock
+	let s:replace = g:statusline#{g:statusline_colors}#replace
+	let s:prompt  = g:statusline#{g:statusline_colors}#prompt
 
-let s:inactive  = g:near#themes#{g:statusline_colors}#inactive
-let s:filename  = g:near#themes#{g:statusline_colors}#filename
-let s:modified  = g:near#themes#{g:statusline_colors}#modified
-let s:main      = g:near#themes#{g:statusline_colors}#main
-let s:plugin    = g:near#themes#{g:statusline_colors}#plugin
-let s:none      = g:near#themes#{g:statusline_colors}#none
+	let s:inactive  = g:statusline#{g:statusline_colors}#inactive
+	let s:filename  = g:statusline#{g:statusline_colors}#filename
+	let s:modified  = g:statusline#{g:statusline_colors}#modified
+	let s:main      = g:statusline#{g:statusline_colors}#main
+	let s:plugin    = g:statusline#{g:statusline_colors}#plugin
+	let s:none      = g:statusline#{g:statusline_colors}#none
 
-" highlight! Statusline cterm=bold gui=bold
-" highlight! User4      cterm=bold gui=bold
+	" highlight! Statusline cterm=bold gui=bold
+	" highlight! StatusLinePlugin cterm=bold gui=bold
 
-call s:Highlight("StatusLineNC", s:inactive.fg,  s:inactive.bg)
-call s:Highlight("User1",        s:filename.fg,  s:filename.bg)
-call s:Highlight("User2",        s:main.fg,      s:main.bg)
-call s:Highlight("User4",        s:plugin.fg,    s:plugin.bg)
-call s:Highlight("User9",        s:none.fg,      s:none.bg)
-
-command! -nargs=+ Hi call Highlight(<f-args>)
+	call s:Highlight('StatusLineNC',       s:inactive.fg,  s:inactive.bg)
+	call s:Highlight('StatusLineFilename', s:filename.fg,  s:filename.bg)
+	call s:Highlight('StatusLineMain',     s:main.fg,      s:main.bg)
+	call s:Highlight('StatusLinePlugin',   s:plugin.fg,    s:plugin.bg)
+	call s:Highlight('StatusLineNone',     s:none.fg,      s:none.bg)
+endfunction
 " }}}
 
 " vim: foldmethod=marker

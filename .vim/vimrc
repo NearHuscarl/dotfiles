@@ -99,16 +99,15 @@ scriptencoding utf-8                               "Need this for nerdtree to wo
 filetype on
 filetype plugin on
 filetype indent on
+syntax on                                          "Color my code
 
 if !exists('g:colors_name')
-	syntax on                                       "Color my code
 	try
 		colorscheme flat
 	catch /E185/
 		colorscheme evening
 	endtry
 endif
-source $HOME/.vim/syntax/custom.vim
 
 set hidden                                         "Make buffer hidden once modified
 
@@ -1067,6 +1066,23 @@ if has('gui_running')
 	endif
 endif
 "}}}
+"{{{ Highlight Group
+call statusline#SetHighlight()
+if !exists(g:colors_name)
+	highlight link ALEErrorSign PreProc
+	highlight link ALEWarningSign Statement
+	highlight link ALEInfoSign Type
 
-" feh --hide-pointer --geometry 1000x600 --zoom fill
+	highlight link Sneak Search
+
+	highlight link StartifyHeader  Question
+	highlight link StartifyBracket Normal
+	highlight link StartifyNumber  Statement
+	highlight link StartifyPath    Comment
+	highlight link StartifyFile    String
+	highlight link StartifySlash   Comment
+endif
+"}}}
+
+" flink eh --hide-pointer --geometry 1000x600 --zoom fill
 " feh --hide-pointer --thumbnails --thumb-height 60 --thumb-width 100 --index-info "" --geometry 1000x600 --image-bg black
