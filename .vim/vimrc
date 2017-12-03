@@ -868,15 +868,25 @@ let g:session_default_name = 'Default'
 "OpenSession -> SessionOpen 
 "ViewSession -> SessionView 
 let g:session_command_aliases = 1
+let g:session_map_list = [
+			\ '<Leader>so',
+			\ '<Leader>sO',
+			\ '<Leader>ss',
+			\ '<Leader>sS',
+			\ '<Leader>sv',
+			\ '<Leader>sV',
+			\ '<Leader>sc',
+			\ '<Leader>sd',
+			\ ]
 
-nnoremap <silent><Leader>so :call session#LazyOpen()<CR>
-nnoremap <silent><Leader>sO :call session#LazyOPEN()<CR>
-nnoremap <silent><Leader>ss :call session#LazySave()<CR>
-nnoremap <silent><Leader>sS :call session#LazySAVE()<CR>
-nnoremap <silent><Leader>sc :call session#LazyClose()<CR>
-nnoremap <silent><Leader>sd :call session#LazyDelete()<CR>
-nnoremap <silent><Leader>sv :call session#LazyView()<CR>
-nnoremap <silent><Leader>sV :call session#LazyVIEW()<CR>
+nnoremap <silent><Leader>so :call session#LazyOpen(session_map_list)<CR>
+nnoremap <silent><Leader>sO :call session#LazyOPEN(session_map_list)<CR>
+nnoremap <silent><Leader>ss :call session#LazySave(session_map_list)<CR>
+nnoremap <silent><Leader>sS :call session#LazySAVE(session_map_list)<CR>
+nnoremap <silent><Leader>sv :call session#LazyView(session_map_list)<CR>
+nnoremap <silent><Leader>sV :call session#LazyVIEW(session_map_list)<CR>
+nnoremap <silent><Leader>sc :call session#LazyClose(session_map_list)<CR>
+nnoremap <silent><Leader>sd :call session#LazyDelete(session_map_list)<CR>
 "}}}
 "{{{ SimpylFold
 let g:SimpylFold_fold_docstring = 0
