@@ -2,7 +2,7 @@
 " File:        lazyload.vim
 " Description: Functions to lazyload some plugins
 " Author:      Near Huscarl <near.huscarl@gmail.com>
-" Last Change: Sat Nov 25 08:12:38 +07 2017
+" Last Change: Sun Dec 03 11:34:31 +07 2017
 " Licence:     BSD 3-Clause license
 " Note:        Need vim-plug
 " ============================================================================
@@ -21,53 +21,43 @@ function! s:SetupSessionPlugin() " {{{
    nnoremap <Leader>sV :SessionView<Space><C-d>
 endfunction
 " }}}
-function! lazyload#SessionOpen() " {{{
+function! session#LazyOpen() " {{{
    call s:SetupSessionPlugin()
-   execute "SessionOpen"
+   execute 'SessionOpen'
 endfunction
 " }}}
-function! lazyload#SessionOPEN() " {{{
+function! session#LazyOPEN() " {{{
    call s:SetupSessionPlugin()
-   execute "SessionOpen!"
+   execute 'SessionOpen!'
 endfunction
 " }}}
-function! lazyload#SessionSave() " {{{
+function! session#LazySave() " {{{
    call s:SetupSessionPlugin()
-   execute "SessionSave"
+   execute 'SessionSave'
 endfunction
 " }}}
-function! lazyload#SessionSAVE() " {{{
+function! session#LazySAVE() " {{{
    call s:SetupSessionPlugin()
    execute "normal! :SessionSave \<C-d>"
 endfunction
 " }}}
-function! lazyload#SessionClose() " {{{
+function! session#LazyClose() " {{{
    call s:SetupSessionPlugin()
-   execute "SessionClose"
+   execute 'SessionClose'
 endfunction
 " }}}
-function! lazyload#SessionDelete() " {{{
+function! session#LazyDelete() " {{{
    call s:SetupSessionPlugin()
-   execute "SessionDelete"
+   execute 'SessionDelete'
 endfunction
 " }}}
-function! lazyload#SessionView() " {{{
+function! session#LazyView() " {{{
    call s:SetupSessionPlugin()
-   execute "SessionView"
+   execute 'SessionView'
 endfunction
 " }}}
-function! lazyload#SessionVIEW() " {{{
+function! session#LazyVIEW() " {{{
    call s:SetupSessionPlugin()
    execute "normal! :SessionView \<C-d>"
-endfunction
-" }}}
-function! lazyload#UltiSnips() " {{{
-   " lazyload ultisnips make cursor move -> restore cursor pos
-   let viewInfo  = winsaveview()
-   call plug#load('ultisnips')
-   call winrestview(viewInfo)
-
-   inoremap <silent><Tab> <C-R>=ultisnips#Expand()<CR>
-   return ultisnips#Expand()
 endfunction
 " }}}

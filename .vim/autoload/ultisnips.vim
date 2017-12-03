@@ -3,7 +3,7 @@
 " Description: Ultisnips hack to use tab to expand snippet, popup or insert
 "              literal tab depend on the context
 " Author:      Near Huscarl <near.huscarl@gmail.com>
-" Last Change: Sun Nov 05 01:10:11 +07 2017
+" Last Change: Sun Dec 03 11:35:31 +07 2017
 " Licence:     BSD 3-Clause license
 " Note:        None
 " ============================================================================
@@ -24,7 +24,7 @@ function! ultisnips#Expand() " {{{
          endif
       endif
    endif
-   return ""
+   return ''
 endfunction
 " }}}
 
@@ -60,11 +60,21 @@ endfunction
 " }}}
 function! s:InsertSpace() " {{{
    let tabWidth = &tabstop
-   let space = ""
+   let space = ''
    while tabWidth > 0
       let space .= "\<Space>"
       let tabWidth -= 1 
    endwhile
    return space
+endfunction
+" }}}
+function! ultisnips#Lazyload() " {{{
+   " lazyload ultisnips make cursor move -> restore cursor pos
+   let viewInfo  = winsaveview()
+   call plug#load('ultisnips')
+   call winrestview(viewInfo)
+
+   inoremap <silent><Tab> <C-R>=ultisnips#Expand()<CR>
+   return ultisnips#Expand()
 endfunction
 " }}}

@@ -869,14 +869,14 @@ let g:session_default_name = 'Default'
 "ViewSession -> SessionView 
 let g:session_command_aliases = 1
 
-nnoremap <silent><Leader>so :call lazyload#SessionOpen()<CR>
-nnoremap <silent><Leader>sO :call lazyload#SessionOPEN()<CR>
-nnoremap <silent><Leader>ss :call lazyload#SessionSave()<CR>
-nnoremap <silent><Leader>sS :call lazyload#SessionSAVE()<CR>
-nnoremap <silent><Leader>sc :call lazyload#SessionClose()<CR>
-nnoremap <silent><Leader>sd :call lazyload#SessionDelete()<CR>
-nnoremap <silent><Leader>sv :call lazyload#SessionView()<CR>
-nnoremap <silent><Leader>sV :call lazyload#SessionVIEW()<CR>
+nnoremap <silent><Leader>so :call session#LazyOpen()<CR>
+nnoremap <silent><Leader>sO :call session#LazyOPEN()<CR>
+nnoremap <silent><Leader>ss :call session#LazySave()<CR>
+nnoremap <silent><Leader>sS :call session#LazySAVE()<CR>
+nnoremap <silent><Leader>sc :call session#LazyClose()<CR>
+nnoremap <silent><Leader>sd :call session#LazyDelete()<CR>
+nnoremap <silent><Leader>sv :call session#LazyView()<CR>
+nnoremap <silent><Leader>sV :call session#LazyVIEW()<CR>
 "}}}
 "{{{ SimpylFold
 let g:SimpylFold_fold_docstring = 0
@@ -1000,7 +1000,7 @@ let g:ycm_key_list_select_completion = []
 "{{{ Ultisnips
 nnoremap <Leader>U :UltiSnipsEdit<CR>|                            " Open new file to define snippets
 nnoremap <Leader><Leader>U :UltiSnipsEdit!<CR>|                   " Open all available files to select
-inoremap <silent><Tab> <C-r>=lazyload#UltiSnips()<CR>
+inoremap <silent><Tab> <C-r>=ultisnips#Lazyload()<CR>
 
 let g:UltiSnipsSnippetsDir = s:snippet                             " Custom snippets stored here
 let g:UltiSnipsSnippetDirectories  = ["UltiSnips","snippet"]        " Directories list for ultisnips to search
