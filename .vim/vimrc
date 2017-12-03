@@ -934,12 +934,9 @@ vmap t <Plug>Sneak_t
 vmap T <Plug>Sneak_T
 
 " 3 characters search instead
-nnoremap <silent>s :<C-U>call sneak#wrap('',           3, 0, 2, 1)<CR>
-nnoremap <silent>S :<C-U>call sneak#wrap('',           3, 1, 2, 1)<CR>
-xnoremap <silent>s :<C-U>call sneak#wrap(visualmode(), 3, 0, 2, 1)<CR>
-xnoremap <silent>S :<C-U>call sneak#wrap(visualmode(), 3, 1, 2, 1)<CR>
-onoremap <silent>s :<C-U>call sneak#wrap(v:operator,   3, 0, 2, 1)<CR>
-onoremap <silent>S :<C-U>call sneak#wrap(v:operator,   3, 1, 2, 1)<CR>
+let g:sneak_map_list = ['s', 'S']
+nnoremap <silent>s :call sneak#LazyloadForwardNormal(sneak_map_list)<CR>
+nnoremap <silent>S :call sneak#LazyloadBackwardNormal(sneak_map_list)<CR>
 "}}}
 "{{{ Startify
 function! s:center_header(lines) abort
