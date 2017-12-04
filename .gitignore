@@ -32,6 +32,7 @@
 !/styles/
 !/themes/
 !/.fonts/
+!/.vim/
 
 # Repeat the process for subdir .config
 !/.config/
@@ -74,20 +75,6 @@
 !/.config/xfce4/terminal/
 /.config/xfce4/terminal/*
 !/.config/xfce4/terminal/terminalrc
-
-# Exclude undo/ plugged/ session/ swapfiles/ and some others
-!/.vim/
-/.vim/*
-!/.vim/README.md
-!/.vim/after/
-!/.vim/autoload/
-!/.vim/colors/
-!/.vim/ftdetect/
-!/.vim/ftplugin/
-!/.vim/indent/
-!/.vim/snippet/
-!/.vim/syntax/
-!/.vim/vimrc
 
 # Only include some custom scripts in .virtualenvs/projectX/bin/
 !/.virtualenvs/
