@@ -424,14 +424,13 @@ cnoremap <silent><A-y> <C-f>yy:q<CR>|              "Copy command content
 cnoremap <A-r> <C-r>*|                             "Paste yanked text in command line
 " }}}
 " {{{ Replace
-vnoremap <Leader>rf y:%s/<C-r>"/|                  "Replace in whole file with query is the selected word
-vnoremap <Leader>rb y:bufdo %s/<C-r>"/|            "Replace across opening buffers with query is the selected word
-vnoremap <Leader>rr 
-			\y:.,.+s/<C-r>"/<Home>
-			\<Right><Right><Right><Right>|            "Replace from current line to ... with query is the selected word
-nnoremap <Leader>rf :%s/|                          "Replace in whole file
-nnoremap <Leader>rb :bufdo %s/|                    "Replace across opening buffers
-nnoremap <Leader>rr :.,.+s//<Left><Left><Left>|    "Replace from current line to ...
+vnoremap <Leader>rf y:Replace %s/\<<C-r>"\>/|           "Replace selected word in this file
+vnoremap <Leader>rb y:Replace bufdo %s/\<<C-r>"\>/|     "Replace selected word across buffers
+nnoremap <Leader>rk  :Replace %s/\<<C-r><C-w>\>/|       "Replace current word in this file
+nnoremap <Leader>rK  :Replace bufdo %s/\<<C-r><C-w>\>/| "Replace current word across buffers
+nnoremap <Leader>rf  :Replace %s/|                      "Replace in this file
+nnoremap <Leader>rb  :Replace bufdo %s/|                "Replace across buffers
+nnoremap <Leader>rr  :Replace |                         "Replace with custom range
 " }}}
 " {{{ Misc
 nnoremap U :later 1f<CR>|                          "Go to the latest change
@@ -493,6 +492,7 @@ command! -range=% Space2TabAll   <line1>,<line2>call retab#Space2TabAll()
 command! -range=% Tab2SpaceAll   <line1>,<line2>call retab#Tab2SpaceAll()
 command! SudoWrite                              w !sudo tee > /dev/null %
 command! -nargs=* -bar ExecuteFile              call execute#File(<q-args>)
+command! -nargs=1 -bar Replace                  call substitute#Exe(<q-args>)
 " }}}
 
 " }}}
