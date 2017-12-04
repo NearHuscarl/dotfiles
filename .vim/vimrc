@@ -23,7 +23,7 @@ if has('nvim')
 	let is_nvim = 1
 endif
 
-if g:os == 'win'
+if g:os ==# 'win'
 	let s:autoload = $HOME.'\vimfiles\autoload\'
 	let s:plugged  = $HOME.'\vimfiles\plugged\'
 	let s:session  = $HOME.'\vimfiles\session\'
@@ -48,7 +48,7 @@ function! ExistsFile(path) " {{{
 endfunction
 " }}}
 function! s:BufferIsEmpty() " {{{
-	 if (line('$') == 1 && getline(1) == '') && (filereadable(@%) == 0)
+	 if (line('$') == 1 && getline(1) ==# '') && (filereadable(@%) == 0)
 		  return 1
 	 endif
 	 return 0
@@ -57,10 +57,10 @@ endfunction
 function! s:CloseEmptyBuffer() " {{{
 	let t:NumOfWin = winnr('$')
 	while t:NumOfWin >= 1
-		execute "wincmd p"
+		execute 'wincmd p'
 		if s:BufferIsEmpty()
 			while s:BufferIsEmpty() && t:NumOfWin >= 1
-				execute "bdelete"
+				execute 'bdelete'
 				let t:NumOfWin -= 1
 			endwhile
 		endif
@@ -73,7 +73,7 @@ endfunction
 
 autocmd!
 
-if g:os ==? 'linux' && !has('gui_running') && !is_nvim
+if g:os ==# 'Linux' && !has('gui_running') && !is_nvim
 	" Fix alt key not working in gnome-terminal
 	" if \e not work, replace with  (<C-v><C-[>)
 	let charList = [
@@ -81,13 +81,13 @@ if g:os ==? 'linux' && !has('gui_running') && !is_nvim
 				\ 'p','q','r','s','t','u','v','w','x','y','z','1','2','3','4',
 				\ '5','6','7','8','9','0', ',', '.', '/', ';',"'",'\','-','=']
 	for char in charList
-		execute "set <A-" .char. ">=\e" .char
-		execute "imap \e" .char. " <A-" .char. ">"
+		execute 'set <A-' .char. ">=\e" .char
+		execute "imap \e" .char. ' <A-' .char. '>'
 	endfor
 	" execute "set <A-]>=\e]"
 	" execute "inoremap \e] <A-]>"
 
-	execute "set <A-[>=<C-[>"
+	execute 'set <A-[>=<C-[>'
 	execute "inoremap \e[ <c-[>"
 endif
 
@@ -128,7 +128,7 @@ set complete-=i                                    "An attempt to make YCM faste
 
 if has('GUI_running')
 	" :put =&guifont
-	if g:os == 'win'
+	if g:os ==# 'win'
 		set guifont=Fura_Code_Light:h8:cANSI:qDRAFT,Andale_Mono:h10,Menlo:h10,Consolas:h10,Courier_New:h10
 	else
 		set guifont=DejaVu\ Sans\ Mono\ Bold\ 8
@@ -610,7 +610,7 @@ Plug 'drmikehenry/vim-fontsize', {'on': [
 " Plug 'powerline/fonts'
 call plug#end()
 
-let g:plug_window = "vertical botright new"
+let g:plug_window = 'vertical botright new'
 
 nnoremap <Leader>pc :PlugClean<CR>|                    "Clean directory
 nnoremap <Leader>pC :PlugClean!<CR>|                   "Clean directory
@@ -626,6 +626,7 @@ let g:ale_fixers            = {}
 let g:ale_fixers.javascript = ['eslint']
 let g:ale_fixers.python     = ['pylint']
 let g:ale_fixers.scss       = ['scsslint']
+let g:ale_fixers.vim        = ['vint']
 let g:ale_sign_error           = ''
 let g:ale_sign_warning         = ''
 let g:ale_lint_on_text_changed = 0
@@ -744,8 +745,8 @@ if has('python3') && !has('python')
 endif
 
 nnoremap <Leader>u :GundoToggle<CR>
-let gundo_map_move_older = ""
-let gundo_map_move_newer = ""
+let gundo_map_move_older = ''
+let gundo_map_move_newer = ''
 let g:gundo_preview_height   = 11
 let g:gundo_preview_bottom   = 1
 let g:gundo_right            = 0
@@ -830,7 +831,7 @@ nnoremap <silent> <A-l> :call smooth_scroll#down(15, 0, 3)<CR>
 nnoremap <silent> <A-h> :call smooth_scroll#up(15, 0, 3)<CR>
 " nnoremap <silent> H     :call smooth_scroll#up(40, 0, 10)<CR>
 " nnoremap <silent> L     :call smooth_scroll#down(40, 0, 10)<CR>
-if g:os == 'win'
+if g:os ==# 'win'
 	let s:smoothScrollPath = '~\vimfiles\plugged\vim-smooth-scroll\autoload\smooth_scroll.vim'
 else
 	let s:smoothScrollPath = '~/.vim/plugged/vim-smooth-scroll/autoload/smooth_scroll.vim'
@@ -941,12 +942,12 @@ nnoremap <Leader><Leader>U :UltiSnipsEdit!<CR>|                   " Open all ava
 inoremap <silent><Tab> <C-r>=ultisnips#Lazyload()<CR>
 
 let g:UltiSnipsSnippetsDir = s:snippet                             " Custom snippets stored here
-let g:UltiSnipsSnippetDirectories  = ["UltiSnips","snippet"]        " Directories list for ultisnips to search
+let g:UltiSnipsSnippetDirectories  = ['UltiSnips', 'snippet']        " Directories list for ultisnips to search
 let g:UltiSnipsEditSplit           = 'normal'
 " let g:UltiSnipsExpandTrigger       = "<Tab>"
-let g:UltiSnipsListSnippets        = "<C-e>"
-let g:UltiSnipsJumpForwardTrigger  = "<A-j>"
-let g:UltiSnipsJumpBackwardTrigger = "<A-k>"
+let g:UltiSnipsListSnippets        = '<C-e>'
+let g:UltiSnipsJumpForwardTrigger  = '<A-j>'
+let g:UltiSnipsJumpBackwardTrigger = '<A-k>'
 "}}}
 "{{{ Autocmd
 augroup Statusline
@@ -994,12 +995,12 @@ autocmd BufWritePost *.py,*.js,*vimrc call ctags#Update()
 autocmd VimResized * wincmd =
 
 if has('gui_running')
-	if g:os == 'linux'
+	if g:os ==# 'Linux'
 		autocmd VimEnter *
 					\ if executable('wmctrl')
 					\|   call system('wmctrl -i -b add,maximized_vert,maximized_horz -r '.v:windowid)
 					\|endif
-	elseif g:os == 'win'
+	elseif g:os ==# 'win'
 		autocmd GUIEnter * simalt ~x            "Open vim in maximum winow size
 	endif
 endif
