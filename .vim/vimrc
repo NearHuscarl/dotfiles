@@ -2,7 +2,7 @@
 " File:        .vimrc
 " Description: Vim settings
 " Author:      Near Huscarl <near.huscarl@gmail.com>
-" Last Change: Fri Dec 01 01:04:06 +07 2017
+" Last Change: Tue Dec 05 01:09:54 +07 2017
 " Licence:     BSD 3-Clause license
 " Note:        This is a personal vim config. therefore most likely not work 
 "              on your machine
@@ -543,7 +543,6 @@ Plug 'justinmk/vim-sneak', {'on': [
 			\ '<Plug>Sneak_T'
 			\ ]}
 
-Plug 'airblade/vim-rooter'
 Plug 'suan/vim-instant-markdown'
 Plug 'terryma/vim-smooth-scroll'
 
@@ -678,115 +677,47 @@ nnoremap <Leader>ggc :Glog! --grep= -- %<C-Left><C-Left><Left>| "Search for comm
 nnoremap <Leader>ggd :Glog! -S -- %<C-Left><C-Left><Left>|      "Search content in diffs history
 "}}}
 "{{{ Fzf
-" Recommend: use with vim-rooter
-let g:rg_command = '
-  \ rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --color "always"
-  \ -g "*.{js,json,php,md,html,config,py,conf,vim}"
-  \ -g "{.vimrc,config}"
-  \ -g "!{.git,node_modules,vendor,.local,undo}/*" '
-
-" let g:fzf_colors =
-" \ { 'fg':      ['fg', 'Normal'],
-"   \ 'bg':      ['bg', 'Normal'],
-"   \ 'hl':      ['fg', 'Conditional'],
-"   \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-"   \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-"   \ 'hl+':     ['fg', 'PreProc'],
-"   \ 'info':    ['fg', 'String'],
-"   \ 'prompt':  ['fg', 'Conditional'],
-"   \ 'pointer': ['fg', 'String'],
-"   \ 'marker':  ['fg', 'PreProc'],
-"   \ 'spinner': ['fg', 'String'],
-"   \ 'header':  ['fg', 'Comment'] }
-
-let g:fzfOpt='--bind=
-			\alt-k:up,
-			\alt-j:down,
-			\alt-i:abort,
-			\alt-h:backward-char,
-			\alt-l:forward-char,
-			\alt-n:backward-word,
-			\alt-m:forward-word,
-			\alt-e:jump,
-			\alt-t:toggle,
-			\alt-d:kill-line
-			\ --color=info:6,bg+:8,hl+:1,hl:3,pointer:6,marker:1,spinner:6
+let g:fzf_option='
+			\ --bind=alt-k:up,alt-j:down
+			\ --bind=alt-h:backward-char,alt-l:forward-char
+			\ --bind=alt-n:backward-word,alt-m:forward-word
+			\ --bind=alt-i:abort,alt-d:kill-line,alt-e:jump,alt-t:toggle
+			\ --color=hl:$THEME_HL2,hl+:$THEME_HL,bg+:$THEME_BG_ALT
+			\ --color=info:$THEME_MAIN,pointer:$THEME_MAIN,marker:$THEME_MAIN2
+			\ --color=spinner:$THEME_MAIN,border:$THEME_MAIN
+			\ --prompt=\>\ 
 			\ --multi'
+let g:grep_cmd = 'rg
+			\ --column --line-number --no-heading
+			\ --hidden --ignore-case --follow --color "always" '
 
-let g:fzf_action = {
-  \ 'alt-enter': 'tab split',
-  \ 'alt-h': 'split',
-  \ 'alt-v': 'vsplit' }
-
-" Show all except binary
-command! -bang FilesAll
-			\ call fzf#run({
-			\  'source': 'rg $HOME /etc/systemd --files --no-ignore --hidden --follow --no-messages --glob "!{undo,.local}/*"',
-			\  'sink': 'edit',
-			\  'options': g:fzfOpt
-			\ })
-
-" Show all in / except binary
-" Will update when more files need to be searched
-command! -bang FilesRoot
-			\ call fzf#run({
-			\  'source': 'rg /etc/systemd --files --no-ignore --hidden --follow --no-messages',
-			\  'sink': 'edit',
-			\  'options': g:fzfOpt
-			\ })
-
-" Unlike fzf#vim#files, respect .gitignore
-command! -bang -nargs=1 FilesRepo
-			\ call fzf#run({
-			\  'source': 'rg ' . <args> . ' --files --hidden --no-messages',
-			\  'sink': 'edit',
-			\  'options': g:fzfOpt
-			\ })
-
-command! -bang -nargs=* Grep
-			\ call fzf#vim#grep(g:rg_command .shellescape(<q-args>), 1, {'options': g:fzfOpt}, <bang>0)
-command! -bang -nargs=? -complete=dir Files
+command! -nargs=+ Grep
+			\ call fzf#vim#grep(g:grep_cmd . shellescape(<q-args>), 0, {'options': g:fzf_option}, 0)
+command! -nargs=? -complete=dir Files
 			\ call fzf#vim#files(<q-args>, {
-			\   'options': g:fzfOpt,
-			\   'source': 'rg --files --no-ignore --hidden --follow --no-messages --glob "!{undo,.local}/*"'
-			\ }, <bang>0)
-command! -bang Colors
-			\ call fzf#vim#colors({'options': g:fzfOpt}, <bang>0)
-command! -bang -nargs=* History
-			\ call fzf#vim#history({'options': g:fzfOpt}, <bang>0)
-command! -bang Helptags
-			\ call fzf#vim#helptags({'options': g:fzfOpt}, <bang>0)
-command! -bang Tags
-			\ call fzf#vim#tags(<q-args>, {'options': g:fzfOpt}, <bang>0)
-command! -bang Maps
-			\ call fzf#vim#maps(<q-args>, {'options': g:fzfOpt}, <bang>0)
-command! -bang -nargs=* Lines
-			\ call fzf#vim#lines({'options': g:fzfOpt}, <bang>0)
-command! -bang -nargs=? -complete=buffer Buffers
-			\ call fzf#vim#buffers({'options': g:fzfOpt}, <bang>0)
+			\   'options': g:fzf_option,
+			\   'source': 'rg --files --hidden --follow --no-messages'
+			\ }, 0)
 
-nnoremap <Leader>ep  :FilesRepo FindRootDirectory()<CR>|                   "Current (p)roject root directory
-nnoremap <Leader>erh :FilesRepo "$HOME/"<CR>
-nnoremap <Leader>erf :FilesRepo "$HOME/Github/FCC-Exercise-Archive/"<CR>
-nnoremap <Leader>erp :FilesRepo "$HOME/Github/LearnPythonTheHardWay/"<CR>
-nnoremap <Leader>erw :FilesRepo "$HOME/Github/NearHuscarl.github.io/"<CR>
+command! GitFiles execute 'Files ' . git#GetRootDir()
+command! Colors   call fzf#vim#colors({'options': g:fzf_option}, 0)
+command! MRU      call fzf#vim#history({'options': g:fzf_option}, 0)
+command! Helptags call fzf#vim#helptags({'options': g:fzf_option}, 0)
+command! Tags     call fzf#vim#tags(<q-args>, {'options': g:fzf_option}, 0)
+command! Maps     call fzf#vim#maps(<q-args>, {'options': g:fzf_option}, 0)
+command! Lines    call fzf#vim#lines({'options': g:fzf_option}, 0)
+command! Buffers  call fzf#vim#buffers({'options': g:fzf_option}, 0)
 
 nnoremap gr :Grep<Space>
-nnoremap <Leader>rg :Grep<CR>
-nnoremap <Leader>e/ :FilesRoot<CR>
-nnoremap <Leader>ef :Files<CR>
-" Manually call Rooter because sometimes rooter fail to run automatically
+nnoremap <Leader>ep :GitFiles<CR>|    "Fzf files in the whole git repo
+nnoremap <Leader>ef :Files<CR>|       "Fzf files from cwd
 nnoremap <Leader>eh :Files $HOME<CR>
-nnoremap <Leader>ea :FilesAll<CR>
-nnoremap <Leader>em :History<CR>
+nnoremap <Leader>em :MRU<CR>
 nnoremap <Leader>h  :Helptags<CR>
 nnoremap <Leader>j  :Tags<CR>
 nnoremap <Leader>m  :Maps<CR>
 nnoremap <Leader>l  :Lines<CR>
 nnoremap <Leader>b  :Buffers<CR>
-"}}}
-"{{{ vim-rooter
-let g:rooter_silent_chdir = 1
 "}}}
 "{{{ Incsearch
 let g:incsearch#auto_nohlsearch = 1

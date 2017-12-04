@@ -1,4 +1,4 @@
 if has('localmap')
-   nnoremap <silent><buffer> q :q<CR>
+	nnoremap <silent><buffer> q :q<CR>
 endif
 
