@@ -1,0 +1,15 @@
+cmdargs:
+   # Checking more strictly
+   severity: style_problem
+   # Enable coloring
+   color: true
+   env:
+      # Enable Neovim syntax
+      neovim: true
+
+policies:
+   # No detect implicit scope
+   ProhibitImplicitScopeVariable:
+      enabled: false
+
+# vim: ft=yaml
