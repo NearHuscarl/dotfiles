@@ -2,7 +2,7 @@
 " File:        .vimrc
 " Description: Vim settings
 " Author:      Near Huscarl <near.huscarl@gmail.com>
-" Last Change: Tue Dec 05 01:09:54 +07 2017
+" Last Change: Tue Dec 05 10:17:58 +07 2017
 " Licence:     BSD 3-Clause license
 " Note:        This is a personal vim config. therefore most likely not work 
 "              on your machine
@@ -104,7 +104,7 @@ syntax on                                          "Color my code
 if !exists('g:colors_name')
 	try
 		colorscheme flat
-	catch /E185/
+	catch /Cannot find color scheme/
 		colorscheme evening
 	endtry
 endif
@@ -463,6 +463,8 @@ nnoremap <silent><Leader>tV :ToggleVerbose<CR>
 nnoremap <silent><Leader>o :call ide#Open('code')<CR>| "Open vscode of current file to debug
 nnoremap <silent><Leader><CR> :ExecuteFile<CR>|    "Run executable file (python, ruby, bash..)
 nnoremap <Leader><Leader><CR> :ExecuteFile<Space>| "Same with argument
+nnoremap <silent><Leader>R :redraw!<CR>
+nnoremap <silent><Leader>c :call syntax#GetGroup()<CR>
 " }}}
 " {{{ Abbreviation
 cabbrev vbnm verbose<Space>nmap
@@ -535,8 +537,6 @@ Plug 'xolox/vim-session', {'on': []}
 
 " Other
 Plug 'justinmk/vim-sneak', {'on': [
-			\ '<Plug>Sneak_s',
-			\ '<Plug>Sneak_S',
 			\ '<Plug>Sneak_f',
 			\ '<Plug>Sneak_F',
 			\ '<Plug>Sneak_t',
@@ -555,11 +555,8 @@ Plug 'hail2u/vim-css3-syntax'
 Plug 'tmhedberg/SimpylFold'
 
 Plug 'altercation/vim-colors-solarized'
-Plug 'dhruvasagar/vim-table-mode', {'on': 'TableModeToggle'}
 Plug 'ap/vim-css-color'
 
-Plug 'junegunn/limelight.vim',  {'on': 'Limelight!!'}
-Plug 'junegunn/goyo.vim',       {'on': 'Goyo'}
 Plug 'junegunn/vim-easy-align', {'on': '<Plug>(EasyAlign)'}
 
 Plug 'tpope/vim-commentary', {'on': [
@@ -774,19 +771,6 @@ let g:fontsize#defaultSize = 8
 nmap <silent><A-Up>   <Plug>FontsizeInc
 nmap <silent><A-Down> <Plug>FontsizeDec
 "}}}
-"{{{ Goyo
-let g:goyo_width  = 110
-let g:goyo_height = 100
-let g:goyo_enable = 0
-
-nnoremap <silent>go :call utils#ToggleGoyo(goyo_enable)<CR>
-"}}}
-"{{{ Limelight
-nmap <silent>gLL ;Limelight!!<CR>
-nmap gLl <Plug>(Limelight)|                  "Motion (normal mode)
-xmap gLl <Plug>(Limelight)|                  "Motion (viusal mode)
-let g:limelight_priority = -1                      "Do not overrule hlsearch
-"}}}
 " {{{ Python Syntax
 let python_highlight_all = 1
 " }}}
@@ -910,9 +894,6 @@ if has('python3')
 	nnoremap Kt :ThesaurusQueryReplaceCurrentWord<CR>
 	vnoremap Kt y:ThesaurusQueryReplace <C-r>"<CR>
 endif
-"}}}
-"{{{ Table Mode
-inoremap <A-t> <Esc>:TableModeToggle<CR>a
 "}}}
 "{{{ Vim-man
 " ../vim-man/plugin/man.vim
