@@ -4,7 +4,7 @@
 # Description: Bash custom aliases and other alias functions, some alias have
 #              the equivalent completion as the original commands
 # Author:      Near Huscarl <near.huscarl@gmail.com>
-# Last Change: Mon Dec 04 01:20:37 +07 2017
+# Last Change: Mon Dec 04 11:33:46 +07 2017
 # Licence:     BSD 3-Clause license
 # Note:        N/A
 # ============================================================================
@@ -161,23 +161,6 @@ if [[ -x /usr/bin/trash-put ]]; then
 	alias rm-empty='trash-empty'
 	alias rm-rm='trash-rm'
 fi
-# }}}
-# Edit config file {{{
-alias compton-conf='$EDITOR $HOME/.config/compton.conf'
-alias dunst-conf='$EDITOR $HOME/.config/dunst/dunstrc'
-alias i3-conf='$EDITOR $HOME/.config/i3/config'
-alias git-conf='$EDITOR $HOME/.config/git/config'
-alias neofetch-conf='$EDITOR $HOME/.config/neofetch/config'
-alias polybar-conf='$EDITOR $HOME/.config/polybar/config'
-alias dunst-conf='$EDITOR $HOME/.config/dunst/dunstrc'
-alias mp-conf='$EDITOR $HOME/.config/ncmpcpp/config'
-
-alias bashrc='$EDITOR $HOME/.bashrc'
-alias inputrc='$EDITOR $HOME/.inputrc'
-alias gitignore='$EDITOR $HOME/.gitignore'
-alias todo='start-todo'
-alias plan='$EDITOR $HOME/misc/plan'
-alias arch='$EDITOR $HOME/misc/Arch.txt'
 # }}}
 # xprop {{{
 alias xprop-class='xprop WM_CLASS'
