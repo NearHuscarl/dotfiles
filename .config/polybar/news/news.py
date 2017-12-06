@@ -29,6 +29,7 @@ from page import (
 		HackerNoon,
 		Freecodecamp
 		)
+from util import color_bash as cb
 
 class News(object):
 	""" Store a list a Page, update and print in periodically """
@@ -101,11 +102,11 @@ class News(object):
 
 	def update_all(self):
 		""" Update all pages in self.pages list once (dont update againt if failed) """
-		logging.info('[update all] starting...')
+		logging.info(cb('[update all] starting...', 'magenta'))
 		for index in range(self.size):
-			logging.info('[update all] update ' + self.pages[index].name)
+			logging.info(cb('[update all] update ', 'magenta') + cb(self.pages[index].name, 'green'))
 			self.pages[index].update()
-		logging.info('[update all] finished')
+		logging.info(cb('[update all] finished', 'green'))
 
 	def update_news(self):
 		"""
@@ -120,10 +121,10 @@ class News(object):
 			try:
 				self.pages[index].update()
 			except (HTTPError, Timeout, ConnectionError):
-				logging.info('update failed: ')
+				logging.info(cb('update failed: ', 'red'))
 				time.sleep(2)
 			else:
-				logging.info('update success')
+				logging.info(cb('update success', 'green'))
 				time.sleep(30)
 			finally:
 				index = self._get_index()
@@ -140,10 +141,10 @@ class News(object):
 			try:
 				self.pages[page_index].display(title_index)
 			except TypeError: # self.content is empty => title_index = None
-				logging.info('display failed')
+				logging.info(cb('display failed', 'red'))
 				time.sleep(0)
 			else:
-				logging.info('display success')
+				logging.info(cb('display success', 'green'))
 				self._export_link(self.pages[page_index].get_link(title_index))
 				time.sleep(20)
 			finally:
@@ -165,16 +166,16 @@ class News(object):
 		display = Thread(target=lambda: self.display_news())
 
 		update.start()
-		logging.info('update.start()')
+		logging.info(cb('update.start()', 'blue'))
 
 		# Only display if there is at least one page fetch successfully
 		# because display thread will keep dicing for another page if
 		# the last one is not successful
 		while not self._is_content_avail():
-			logging.info('content not available')
+			logging.info(cb('content not available', 'red'))
 			time.sleep(3)
 		display.start()
-		logging.info('display.start()')
+		logging.info(cb('display.start()', 'blue'))
 
 		update.join()
 		display.join()
@@ -208,7 +209,7 @@ if __name__ == '__main__':
 	if arg.log != 'debug':
 		main()
 	else:
-		pages = [
+		page_list = [
 				Daa(),
 				BeamNG(),
 				Cosmoteer(),
@@ -228,7 +229,7 @@ if __name__ == '__main__':
 		# Setup logging
 		logging.basicConfig(format='[%(levelname)s] %(message)s', level=logging.DEBUG)
 
-		news = News(pages)
+		news = News(page_list)
 		news.start()
 		# news.update_all()
 

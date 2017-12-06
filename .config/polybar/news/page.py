@@ -15,19 +15,9 @@ from datetime import datetime
 import feedparser
 import requests
 from bs4 import BeautifulSoup as soup
+from util import color_polybar, color_bash as cb
 
 max_len = 75
-
-def color_string(string, color_envron_var):
-	"""
-	Print output in color in polybar format, second argument
-	is environment variable from $HOME/themes/current_theme
-	"""
-
-	# Environment variables in $HOME/bin/export
-	color_begin = '%{F' + os.environ[color_envron_var] +  '}'
-	color_end = '%{F-}'
-	return color_begin + string + color_end
 
 class Page(object):
 	"""
@@ -96,9 +86,6 @@ class Page(object):
 			return: 'https://www.reddit.com/r/RimWorld/comments/7d7lrp/hexagon_20/'
 		"""
 
-		# logging.info('Retrieve link for title')
-		# logging.info('Reimplement in subclass if neccessary')
-
 		url = self.url['base'].strip('/')
 		href = self.content[index]['href'].strip('/')
 
@@ -108,9 +95,6 @@ class Page(object):
 
 	def _filter(self):
 		""" Filter invalid titles (Too old or not enough upvotes...) """
-
-		# logging.info('Filter invalid titles (Too old or not enough upvotes...)')
-		# logging.info('Implement in subclass')
 
 		time_now = time.mktime(datetime.now().timetuple())
 
@@ -129,7 +113,7 @@ class Page(object):
 	def update(self):
 		""" Update self.content using self.selector to target the right elements """
 
-		logging.info('update ' + self.name + "'s content")
+		logging.info(cb('update ', 'yellow') + cb(self.name, 'green') + cb("'s content", 'yellow'))
 
 		url = self.url['working'] if 'working' in self.url else self.url['base']
 		page_html = requests.get(url, headers={'User-agent': 'news'}).text
@@ -152,7 +136,7 @@ class Page(object):
 	def display(self, index):
 		""" Print out titles from the web based on index parameter """
 
-		icon = color_string(self.icon, 'THEME_MAIN')
+		icon = color_polybar(self.icon, 'THEME_MAIN')
 		name = self.name
 		title = self.content[index]['title']
 
@@ -323,7 +307,7 @@ class Reddit(Page):
 	def update(self):
 		""" Update reddit using API """
 
-		logging.info('update ' + self.name + "'s content")
+		logging.info(cb('update ', 'yellow') + cb(self.name, 'green') + cb("'s content", 'yellow'))
 
 		url = self.url['api']
 		page = requests.get(url, headers={'User-agent': 'news'})
@@ -343,9 +327,9 @@ class Reddit(Page):
 	def display(self, index):
 		""" Print out titles from the web based on index parameter """
 
-		icon = color_string(self.icon, 'THEME_MAIN')
+		icon = color_polybar(self.icon, 'THEME_MAIN')
 		name = self.name
-		nsfw = color_string('[NSFW] ', 'THEME_ALERT') if self.content[index]['nsfw'] else ''
+		nsfw = color_polybar('[NSFW] ', 'THEME_ALERT') if self.content[index]['nsfw'] else ''
 		title = self.content[index]['title']
 		upvote = self.content[index]['upvote']
 
@@ -417,7 +401,7 @@ class Medium(Page):
 	def update(self):
 		""" Subclass of Page. Use rss feed to update content """
 
-		logging.info('update ' + self.name + "'s content")
+		logging.info(cb('update ', 'yellow') + cb(self.name, 'green') + cb("'s content", 'yellow'))
 
 		# pylint: disable=no-member
 		feed = feedparser.parse(self.url['feed'])
@@ -435,7 +419,7 @@ class Medium(Page):
 	def display(self, index):
 		""" Print out titles from the web based on index parameter """
 
-		icon = color_string(self.icon, 'THEME_MAIN')
+		icon = color_polybar(self.icon, 'THEME_MAIN')
 		name = self.name
 		title = self.content[index]['title']
 
