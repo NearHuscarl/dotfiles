@@ -60,6 +60,12 @@ class Page(object):
 		self.icon = ''
 		self.filter = {'interval': 0, 'timefmt': ''}
 
+	def __repr__(self):
+		return '{}()'.format(self.__class__.__name__)
+
+	def __len__(self):
+		return len(self.content)
+
 	def _trim_content(self, headline, title):
 		"""
 		Trim title if headline len exceed max len

@@ -39,7 +39,23 @@ class News(object):
 		self.pages = pages
 		self.size = len(self.pages)
 		self.index = -1
-		self.index_list = random.sample(range(0, self.size), self.size)
+
+	def __repr__(self):
+		return '{}({})'.format(self.__class__.__name__, self.pages)
+
+	def _get_sum_of_titles(self):
+		""" Get total number of titles from self.pages list """
+		sum_ = 0
+		for index in range(0, self.size):
+			sum_ += len(self.pages[index])
+		return sum_
+
+	def _get_chance(self, page):
+		"""
+		return chance for a Page to print out one of its titles
+		the more titles a page has, the more chance that page will have titles printed
+		"""
+		return len(page) * 100 / self._get_sum_of_titles()
 
 	def _get_index(self):
 		"""
@@ -50,7 +66,7 @@ class News(object):
 		self.index += 1
 		if self.index > self.size - 1:
 			self.index = 0
-		return self.index_list[self.index]
+		return self.index
 
 	def _is_content_avail(self):
 		""" return True if there is content in one of the pages """
@@ -67,6 +83,10 @@ class News(object):
 			Get a random title in that page
 		"""
 		page_index = random.randint(0, self.size - 1)
+		chance = self._get_chance(self.pages[page_index])
+		while random.randint(1, 100) > chance:
+			page_index = random.randint(0, self.size - 1)
+			chance = self._get_chance(self.pages[page_index])
 
 		# Throw error if title list len is zero
 		err_msg = '{}\'s title selector not available'.format(self.pages[page_index].name)
@@ -79,6 +99,13 @@ class News(object):
 
 		return page_index, title_index
 
+	def update_all(self):
+		""" Update all pages in self.pages list once (dont update againt if failed) """
+		logging.info('[update all] starting...')
+		for index in range(self.size):
+			logging.info('[update all] update ' + self.pages[index].name)
+			self.pages[index].update()
+		logging.info('[update all] finished')
 
 	def update_news(self):
 		"""
@@ -86,8 +113,9 @@ class News(object):
 		use in parellel with display_news
 		"""
 
-		index = self._get_index()
+		self.update_all()
 
+		index = self._get_index()
 		while True:
 			try:
 				self.pages[index].update()
@@ -137,26 +165,22 @@ class News(object):
 		display = Thread(target=lambda: self.display_news())
 
 		update.start()
+		logging.info('update.start()')
 
 		# Only display if there is at least one page fetch successfully
 		# because display thread will keep dicing for another page if
 		# the last one is not successful
-		logging.info('update.start()')
 		while not self._is_content_avail():
 			logging.info('content not available')
 			time.sleep(3)
-		logging.info('display.start()')
 		display.start()
+		logging.info('display.start()')
 
 		update.join()
 		display.join()
 
 def main():
 	""" main function """
-
-	parser = argparse.ArgumentParser(description='Show headlines from various websites on polybar')
-	parser.add_argument('log', nargs='?', help='Logging for debug or not')
-	arg = parser.parse_args()
 
 	pages = [
 			Daa(),
@@ -172,7 +196,32 @@ def main():
 			Freecodecamp()
 			]
 
-	if arg.log == 'debug':
+	news = News(pages)
+	news.start()
+
+if __name__ == '__main__':
+
+	parser = argparse.ArgumentParser(description='Show headlines from various websites on polybar')
+	parser.add_argument('log', nargs='?', help='Logging for debug or not')
+	arg = parser.parse_args()
+
+	if arg.log != 'debug':
+		main()
+	else:
+		pages = [
+				Daa(),
+				BeamNG(),
+				Cosmoteer(),
+				Mythologic(),
+				ProjectZomboid(),
+				RedditRimWorld(),
+				RedditUnixporn(),
+				RedditVim(),
+				RedditWebdev(),
+				HackerNoon(),
+				Freecodecamp()
+				]
+
 		# Shut up the request module logger
 		logging.getLogger("requests").setLevel(logging.WARNING)
 		logging.getLogger("urllib3").setLevel(logging.WARNING)
@@ -180,21 +229,27 @@ def main():
 		logging.basicConfig(format='[%(levelname)s] %(message)s', level=logging.DEBUG)
 
 		news = News(pages)
-		# news.start()
-
-		test_index = 5
-		news.pages[test_index].update()
-		news.pages[test_index].display_all()
-
-		print()
-		for i in range(0, len(news.pages[test_index].content)):
-			news.pages[test_index].display(i)
-			print(news.pages[test_index].get_link(i))
-	else:
-		news = News(pages)
 		news.start()
+		# news.update_all()
 
-if __name__ == '__main__':
-	main()
+		total_list = [0] * news.size
+		for i in range(0, 200):
+			page_index, _ = news._get_random_index()
+			total_list[page_index] += 1
+			print(page_index)
+
+		for i in range(0, news.size):
+			print('\n' + news.pages[i].name + '\' title count: ' + str(len(news.pages[i])))
+		print(str(total_list))
+
+		# print(news)
+		# test_index = 5
+		# news.pages[test_index].update()
+		# news.pages[test_index].display_all()
+
+		# print()
+		# for i in range(0, len(news.pages[test_index].content)):
+		# 	news.pages[test_index].display(i)
+		# 	print(news.pages[test_index].get_link(i))
 
 # vim: nofoldenable
