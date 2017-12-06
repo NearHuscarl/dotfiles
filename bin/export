@@ -4,7 +4,7 @@
 # File:        export
 # Description: export custom environment variables
 # Author:      Near Huscarl <near.huscarl@gmail.com>
-# Last Change: Tue Nov 21 01:21:11 +07 2017
+# Last Change: Wed Nov 29 08:21:33 +07 2017
 # Licence:     BSD 3-Clause license
 # Note:        N/A
 # ============================================================================
@@ -26,13 +26,15 @@ if [[ $TERMINAL != '' ]]; then
 fi
 
 # custom bash script
-export PATH=$HOME/bin/:$PATH
+export PATH=$PATH:$HOME/bin/
 # global node_modules (see $HOME/.npmrc)
 export PATH=$PATH:$HOME/.npm-global/bin
 # custom python script
-export PATH=$HOME/script/:$PATH
+export PATH=$PATH:$HOME/script/
 # Temp fix for scss_lint
 export PATH=$PATH:$HOME/.gem/ruby/2.4.0/bin/
+# Stuff when install using pip install --user
+export PATH=$PATH:$HOME/.local/bin/
 # python linter
 export PYLINTRC=$HOME/.pylintrc
 export BROWSER=vivaldi-stable
