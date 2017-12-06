@@ -59,7 +59,7 @@ modules-left = i3 mpd
 modules-right = wired-network wireless-network cpu memory filesystem home volume battery date time powermenu
 
 ; tray-position = right
-; tray-padding = 2
+tray-padding = 2
 ; }}}
 ; {{{ [module/filesystem]
 [module/filesystem]
@@ -395,11 +395,12 @@ click-left = xdg-open https://mail.google.com
 type = custom/script
 interval = 1200
 
-exec = bash -l -c $HOME/.config/polybar/pac_update.sh
+exec = bash -l -c $HOME/.config/polybar/pac_update/main
 exec-if = "ping -q -w 2 -c 1 176.34.135.167 > /dev/null"
 
-click-left  = bash -l -c '$HOME/.config/polybar/pac_update.sh update_pac'
-click-right = bash -l -c '$HOME/.config/polybar/pac_update.sh update_aur'
+click-left  = bash -l -c '$HOME/.config/polybar/pac_update/main update_pac'
+click-right = bash -l -c '$HOME/.config/polybar/pac_update/main update_aur'
+click-middle = bash -l -c '$HOME/.config/polybar/pac_update/main list_packages'
 ; }}}
 ; {{{ [module/trash]
 [module/trash]
