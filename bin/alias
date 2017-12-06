@@ -4,7 +4,7 @@
 # Description: Bash custom aliases and other alias functions, some alias have
 #              the equivalent completion as the original commands
 # Author:      Near Huscarl <near.huscarl@gmail.com>
-# Last Change: Mon Dec 04 11:33:46 +07 2017
+# Last Change: Wed Dec 06 05:44:52 +07 2017
 # Licence:     BSD 3-Clause license
 # Note:        N/A
 # ============================================================================
@@ -43,7 +43,7 @@ alias tree='alias-tree'
 # vim {{{
 if [[ -x /usr/bin/vim ]]; then
 	alias view='vim -R'
-	alias vim0='vim -u NONE'
+	alias vim0='vim -u NONE -N'
 	alias vimrc='vim $HOME/.vimrc'
 	alias vim-startup='vim -c q --startuptime /tmp/vim.log && tail -n1 $_'
 	alias vim-Startup='vim -c q --startuptime /tmp/vim.log && vim $_'
