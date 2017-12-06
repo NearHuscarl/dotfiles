@@ -1,22 +1,20 @@
-/* flat */
 *::-webkit-scrollbar {
-  width: 10px !important;
+  background: #1f2d3a !important;
   height: 10px !important;
-  background: #1f2d3a !important; }
+  width: 10px !important; }
 
 *::-webkit-scrollbar-thumb {
-  min-height: 18px !important;
-  background: #2c3e50 !important; }
+  background: #2c3e50 !important;
+  min-height: 18px !important; }
 
 ::-webkit-scrollbar-track,
 ::-webkit-scrollbar-corner {
   background: #1f2d3a !important; }
 
-/* global */
 * {
   background-color: transparent !important;
-  color: #84888b !important;
-  border-color: #2c3e50 !important; }
+  border-color: #2c3e50 !important;
+  color: #84888b !important; }
 
 a, #header-bottom-right * {
   background-color: transparent !important; }
@@ -28,7 +26,6 @@ a.option.active.add {
   background-color: #2c3e50 !important;
   color: #ecf0f1 !important; }
 
-/* Default links */
 a {
   color: #2980b9 !important; }
 
@@ -38,12 +35,10 @@ a {
 a:hover {
   color: #3498db !important; }
 
-/* input */
 textarea,
 input {
   background-color: #2c3e50 !important; }
 
-/* Background */
 html, body,
 .side *,
 .titlebox *, .titlebox h1.redditname:before,
@@ -53,7 +48,6 @@ html, body,
 #searchexpando > label {
   background-color: #2c3e50 !important; }
 
-/* Top bar */
 #header-img {
   filter: brightness(1) !important; }
 
@@ -67,23 +61,19 @@ html, body,
 .tabmenu * {
   background-color: transparent !important; }
 
-/* not link */
 h1 a:visited,
 [id*="header"] a {
   color: #ecf0f1 !important; }
 
-/* sidebar */
 .side {
   padding: 10px !important; }
 
 .titlebox::before {
   color: #ecf0f1 !important; }
 
-/* dropdown */
 .drop-choices {
   background-color: #2c3e50 !important; }
 
-/* comment */
 form.usertext.cloneable {
   background-color: transparent !important; }
 
@@ -100,24 +90,24 @@ div.child {
 .thing.noncollapsed.comment {
   border-style: none !important; }
 
-/* text */
 div.md {
   color: #84888b !important; }
 
-div.usertext-body code {
-  border: none !important;
-  background-color: #2c3e50 !important;
-  color: #27ae60 !important; }
+pre {
+  background-color: #2c3e50 !important; }
+  pre code {
+    background-color: #2c3e50 !important;
+    border: none !important;
+    color: #27ae60 !important; }
 
 .md blockquote {
-  border-left: solid #f39c12 !important;
   background-color: #2c3e50 !important;
+  border-left: solid #f39c12 !important;
   display: inline-block !important; }
 
 .md blockquote p {
   background-color: transparent !important; }
 
-/* cvim */
 .cVim-find-mark {
   background-color: #f39c12 !important;
   color: #ecf0f1 !important; }
@@ -154,3 +144,9 @@ img {
 .give-gold-button,
 .promoted, img.img_ad {
   display: none !important; }
+
+div.usertext-body code {
+  font-family: "Inconsolata", monospace !important;
+  font-size: 14px !important;
+  font-weight: bold !important;
+  line-height: 120% !important; }

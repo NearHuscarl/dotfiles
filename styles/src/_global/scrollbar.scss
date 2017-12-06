@@ -1,17 +1,19 @@
 // scrollbar
 
+// scss-lint:disable ImportantRule
+
 *::-webkit-scrollbar {
-   width: 10px! important;
-   height: 10px! important;
-   background: $bg-color !important;
+	background: $bg-color !important;
+	height: 10px !important;
+	width: 10px !important;
 }
 
 *::-webkit-scrollbar-thumb {
-   min-height: 18px !important;
-   background: $bg-alt-color !important;
+	background: $bg-alt-color !important;
+	min-height: 18px !important;
 }
 
 ::-webkit-scrollbar-track,
 ::-webkit-scrollbar-corner {
-   background: $bg-color !important;
+	background: $bg-color !important;
 }
