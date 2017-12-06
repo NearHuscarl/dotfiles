@@ -1,12 +1,15 @@
-/* flat */
 *::-webkit-scrollbar {
-  width: 10px !important;
-  height: 10px !important;
-  background: #1f2d3a !important; }
+  -webkit-appearance: none; }
+
+*::-webkit-scrollbar:vertical {
+  width: 10px !important; }
+
+*::-webkit-scrollbar:horizontal {
+  height: 10px !important; }
 
 *::-webkit-scrollbar-thumb {
-  min-height: 18px !important;
-  background: #2c3e50 !important; }
+  background: #2c3e50 !important;
+  min-height: 18px !important; }
 
 ::-webkit-scrollbar-track,
 ::-webkit-scrollbar-corner {
