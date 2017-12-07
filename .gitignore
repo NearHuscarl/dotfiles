@@ -102,6 +102,8 @@
 /.vim/autoload/plug.vim
 /.config/ranger/history
 /.npm-global/
+__pycache__
+*.log
 # api
 weather_api.txt
 gmail_pass.txt
