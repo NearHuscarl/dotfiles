@@ -12,7 +12,7 @@ import requests
 
 from requests import exceptions
 
-parser = argparse.ArgumentParser(description='Display number of files in trash for polybar')
+parser = argparse.ArgumentParser(description='Show current weather on for polybar')
 parser.add_argument('-u', '--unit', default='metric', nargs='?',
 		help='unit: metric or imperial. Default: metric')
 arg = parser.parse_args()
