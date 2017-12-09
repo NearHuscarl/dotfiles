@@ -7,8 +7,7 @@ which can update, filter titles and display them
 """
 
 import logging
-import os
-import pprint
+from pprint import pprint
 import time
 from datetime import datetime
 
@@ -56,7 +55,8 @@ class Page(object):
 	def __len__(self):
 		return len(self.content)
 
-	def _trim_content(self, headline, title):
+	@staticmethod
+	def _trim_content(headline, title):
 		"""
 		Trim title if headline len exceed max len
 		title (part of headline): target to be trimmed off
@@ -148,17 +148,17 @@ class Page(object):
 		""" Display all data, use for debugging """
 
 		print('self.name:')
-		pprint.pprint(self.name)
+		pprint(self.name)
 		print('\nself.url:')
-		pprint.pprint(self.url)
+		pprint(self.url)
 		print('\nself.selector:')
-		pprint.pprint(self.selector)
+		pprint(self.selector)
 		print('\nself.content:')
-		pprint.pprint(self.content)
+		pprint(self.content)
 		print('\nself.icon:')
-		pprint.pprint(self.icon)
+		pprint(self.icon)
 		print('\nself.filter:')
-		pprint.pprint(self.filter)
+		pprint(self.filter)
 
 class BeamNG(Page):
 	""" blog.beamng.com/ Page """
