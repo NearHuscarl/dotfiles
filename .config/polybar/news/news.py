@@ -46,19 +46,19 @@ class News(object):
 
 	def _get_page_index(self):
 		"""
-		return chance for a Page to print out one of its titles
-		the more titles a page has, the more chance that page will have titles printed
+		Get page index randomly. the probability of
+		each index is proportional to its title count
 		"""
+
 		rand_list = []
 		for page_index in range(0, self.size):
 			rand_list.extend([page_index] * len(self.pages[page_index]))
-			print(rand_list)
 		return random.choice(rand_list)
 
 	def _get_index(self):
 		"""
-		Get current index of pages list to update the
-		webpage content to avoid updating all webpages at once
+		Get current index of pages list to update the webpage
+		content to avoid updating all webpages at once
 		"""
 
 		self.index += 1
