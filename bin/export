@@ -4,7 +4,7 @@
 # File:        export
 # Description: export custom environment variables
 # Author:      Near Huscarl <near.huscarl@gmail.com>
-# Last Change: Wed Nov 29 08:21:33 +07 2017
+# Last Change: Sun Dec 10 19:42:59 +07 2017
 # Licence:     BSD 3-Clause license
 # Note:        N/A
 # ============================================================================
@@ -30,7 +30,7 @@ export PATH=$PATH:$HOME/bin/
 # global node_modules (see $HOME/.npmrc)
 export PATH=$PATH:$HOME/.npm-global/bin
 # custom python script
-export PATH=$PATH:$HOME/script/
+export PYTHONPATH=$PYTHONPATH:$HOME/script/bin/
 # Temp fix for scss_lint
 export PATH=$PATH:$HOME/.gem/ruby/2.4.0/bin/
 # Stuff when install using pip install --user
