@@ -44,19 +44,16 @@ class News(object):
 	def __repr__(self):
 		return '{}({})'.format(self.__class__.__name__, self.pages)
 
-	def _get_sum_of_titles(self):
-		""" Get total number of titles from self.pages list """
-		sum_ = 0
-		for index in range(0, self.size):
-			sum_ += len(self.pages[index])
-		return sum_
-
-	def _get_chance(self, page):
+	def _get_page_index(self):
 		"""
 		return chance for a Page to print out one of its titles
 		the more titles a page has, the more chance that page will have titles printed
 		"""
-		return len(page) * 100 / self._get_sum_of_titles()
+		rand_list = []
+		for page_index in range(0, self.size):
+			rand_list.extend([page_index] * len(self.pages[page_index]))
+			print(rand_list)
+		return random.choice(rand_list)
 
 	def _get_index(self):
 		"""
@@ -83,12 +80,9 @@ class News(object):
 			Get a random page
 			Get a random title in that page
 		"""
-		page_index = random.randint(0, self.size - 1)
-		chance = self._get_chance(self.pages[page_index])
-		while random.randint(1, 100) > chance:
-			page_index = random.randint(0, self.size - 1)
-			chance = self._get_chance(self.pages[page_index])
+		page_index = self._get_page_index()
 
+		# TODO: Move this to test.py
 		# Throw error if title list len is zero
 		err_msg = '{}\'s title selector not available'.format(self.pages[page_index].name)
 		assert 'title' in self.pages[page_index].selector, err_msg
@@ -235,9 +229,9 @@ if __name__ == '__main__':
 
 		total_list = [0] * news.size
 		for i in range(0, 200):
-			page_index, _ = news._get_random_index()
-			total_list[page_index] += 1
-			print(page_index)
+			pi, _ = news._get_random_index()
+			total_list[pi] += 1
+			print(pi)
 
 		for i in range(0, news.size):
 			print('\n' + news.pages[i].name + '\' title count: ' + str(len(news.pages[i])))
