@@ -32,12 +32,12 @@ def get_credentials():
 	credentials = credentials_store.get()
 
 	if not credentials or credentials.invalid:
-		SCOPE = 'https://www.googleapis.com/auth/gmail.readonly'
-		CLIENT_SECRET_FILE = os.path.join(credentials_dir, 'client_secret.json')
-		APPLICATION_NAME = 'Gmail Notification - Polybar'
+		scope = 'https://www.googleapis.com/auth/gmail.readonly'
+		client_secret_file = os.path.join(credentials_dir, 'client_secret.json')
+		application_name = 'Gmail Notification - Polybar'
 
-		flow = client.flow_from_clientsecrets(CLIENT_SECRET_FILE, SCOPE)
-		flow.user_agent = APPLICATION_NAME
+		flow = client.flow_from_clientsecrets(client_secret_file, scope)
+		flow.user_agent = application_name
 		credentials = tools.run_flow(flow, credentials_store)
 	return credentials
 
@@ -49,13 +49,14 @@ def update_unread_gmail_count():
 		http = credentials.authorize(httplib2.Http())
 		gmail = discovery.build('gmail', 'v1', http=http)
 
+		# pylint: disable=no-member
 		result = gmail.users().messages().list(userId='me', q='in:inbox is:unread').execute()
 		unread_count = result['resultSizeEstimate']
 
 		print(color_string('', 'THEME_MAIN') + ' ' + str(unread_count), flush=True)
 		return 0
 
-	except (errors.HttpError, httplib2.ServerNotFoundError):
+	except (OSError, errors.HttpError, httplib2.ServerNotFoundError):
 		print(color_string('', 'THEME_ALERT'), flush=True)
 		return 1
 

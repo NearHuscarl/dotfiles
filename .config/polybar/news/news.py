@@ -97,9 +97,12 @@ class News(object):
 	def update_all(self):
 		""" Update all pages in self.pages list once (dont update againt if failed) """
 		logging.info(cb('[update all] starting...', 'magenta'))
-		for index in range(self.size):
-			logging.info(cb('[update all] update ', 'magenta') + cb(self.pages[index].name, 'green'))
-			self.pages[index].update()
+		try:
+			for index in range(self.size):
+				logging.info(cb('[update all] update ', 'magenta') + cb(self.pages[index].name, 'green'))
+				self.pages[index].update()
+		except (HTTPError, Timeout, ConnectionError):
+			logging.info(cb('update failed: ', 'red'))
 		logging.info(cb('[update all] finished', 'green'))
 
 	def update_news(self):
