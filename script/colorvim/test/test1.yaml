@@ -1,0 +1,39 @@
+name: test1
+description:
+author:
+   name: Near Huscarl
+   email: near.huscarl@gmail.com
+license: BSD 3-Clauses
+note:
+option:
+   transparent: true
+   background: dark
+palette:
+   # color name generated from http://www.color-blindness.com/color-name-hue/
+   # because my english is bed. You can use whatever name you like though
+   # color name         gui         cterm    optional
+   midnight:          ['#1F2D3A',     0,     'black']
+   persian_red:       ['#C0392B',     1,     'red']
+   jungle_green:      ['#27AE60',     2,     'green']
+   gamboge:           ['#F39C12',     3,     'yellow']
+   pelorous:          ['#2980B9',     4,     'blue']
+   deep_lilac:        ['#8E44AD',     5,     'magenta']
+   mountain_meadow:   ['#16A085',     6,     'cyan']
+   aluminium:         ['#84888B',     7,     'lightgray']
+   madison:           ['#2C3E50',     8,     'darkgray']
+   cinnabar:          ['#E74C3C',     9,     'lightred']
+   shamrock:          ['#2ECC71',     10,    'lightgreen']
+   moon_yellow:       ['#F1C40F',     11,    'lightyellow']
+   summer_sky:        ['#3498DB',     12,    'lightblue']
+   wisteria:          ['#9B59B6',     13,    'lightmagenta']
+   java:              ['#2AA198',     14,    'lightcyan']
+   solitude:          ['#ECF0F1',     15,    'white']
+group:
+   #              fg             bg             (reverse|underline|bold)
+   Normal:        aluminium      _
+   Comment:       aluminium      _
+   Identifer:     pelorous       _
+   Statuslne:     solitude       pelorous
+   Function:      gamboge        _
+   Constant:      cinnabar       _
+   DiffChange:    _              gamboge

@@ -1,0 +1,18 @@
+name: test2
+description: Test colorshceme 2
+author:
+   name: Near
+   email: near.huscarl@gmail.com
+license: BSD 3-Clauses
+note:
+option:
+   transparent: true
+palette:
+   # color name   gui        cterm  optional
+   dark:      ['#1F2D3A',     0,     'black']
+   gray:      ['#84888B',     7,     'lightgray']
+   snow:      ['#ECF0F1',     15,    'white']
+
+group:
+   Normal:    snow           dark
+   Comment:   gray           dark

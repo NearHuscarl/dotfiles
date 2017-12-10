@@ -1,0 +1,241 @@
+#!/bin/env python
+
+"""
+Generate vim colorscheme file from yaml file config which is
+more simple than having to create colorscheme using vimscript
+"""
+
+import argparse
+from datetime import datetime
+import os
+from pprint import pprint as p
+import time
+
+import yaml
+
+# ----- module scope variables -----
+# pylint: disable=global-statement
+yaml_path = ''
+output_path = ''
+color_dict = {}
+# ----------------------------------
+
+# ----- getter functions ------
+def get_name():
+	""" get colorscheme name """
+	if 'name' not in color_dict or not color_dict['name']:
+		raise NameError('Name field not exists or empty')
+	return color_dict['name']
+
+def get_filename():
+	""" get colorscheme filename """
+	return get_name() + '.vim'
+
+def get_description():
+	""" get colorscheme description (default is <colorscheme>.vim) """
+	if 'description' not in color_dict or not color_dict['description']:
+		return get_name() + ' colorscheme'
+	return color_dict['description']
+
+def get_author():
+	""" get author name. email is optional """
+	if 'author' not in color_dict or 'name' not in color_dict['author']:
+		raise NameError('Author field not exists or empty')
+
+	if 'email' not in color_dict['author'] or not color_dict['author']['email']:
+		return color_dict['author']['name']
+
+	return '{} <{}>'.format(color_dict['author']['name'], color_dict['author']['email'])
+
+
+def get_last_change():
+	""" Get the generated timestamp """
+	return time.strftime('%a %b %d %H:%M:%S %Z %Y', time.localtime())
+
+def get_license():
+	""" get license info (optional) """
+	if 'license' not in color_dict or not color_dict['license']:
+		return None
+	return color_dict['license']
+
+def get_note():
+	""" get colorscheme note (optional) """
+	if 'note' not in color_dict or not color_dict['note']:
+		return None
+	return color_dict['note']
+
+def get_color():
+	""" get color palette as a dictionary """
+	return color_dict['palette']
+
+def get_background():
+	""" get background value ('dark' or 'light') """
+	if 'option' not in color_dict or 'background' not in color_dict['option'] \
+			or not color_dict['option']['background']:
+		return 'dark'
+	background = color_dict['option']['background']
+	if background != 'dark' and background != 'light':
+		raise NameError("background option has to be either 'dark' or 'light'")
+	return background
+
+def get_group_color(name, type_):
+	""" Get color for group based on type (termfg, termbg, guifg or guibg) """
+	colors = color_dict['group'][name].split()
+	if len(colors) < 2:
+		raise ValueError('Require at least 2 colors for fg and bg')
+
+	if type_ == 'termfg':
+		return 'NONE' if colors[0] == '_' else color_dict['palette'][colors[0]][1]
+	elif type_ == 'termbg':
+		return 'NONE' if colors[1] == '_' else color_dict['palette'][colors[1]][1]
+	elif type_ == 'guifg':
+		return 'NONE' if colors[0] == '_' else color_dict['palette'][colors[0]][0]
+	elif type_ == 'guibg':
+		return 'NONE' if colors[1] == '_' else color_dict['palette'][colors[1]][0]
+	else:
+		raise 'youre fucked'
+
+def get_termfg(group):
+	""" Wrapper to get ctermfg """
+	return get_group_color(group, 'termfg')
+
+def get_termbg(group):
+	""" Wrapper to get ctermbg """
+	return get_group_color(group, 'termbg')
+
+def get_guifg(group):
+	""" Wrapper to get guifg """
+	return get_group_color(group, 'guifg')
+
+def get_guibg(group):
+	""" Wrapper to get guibg """
+	return get_group_color(group, 'guibg')
+
+# -----------------------------
+
+def hex2rgb(hex_color):
+	""" '#B4FBB8' => 'rgb(180, 251, 184)' """
+	hex_color = hex_color.strip('#')
+
+	rgb = tuple(int(hex_color[i:i+2], 16) for i in (0, 2, 4))
+	return 'rgb{}'.format(rgb)
+
+def rgb2hex(rgb_color):
+	""" 'rgb(180, 251, 184)' => '#B4FBB8' """
+	rgb = [int(i) for i in rgb_color.strip('rgb()').split(',')]
+	return '#{:02x}{:02x}{:02x}'.format(rgb[0], rgb[1], rgb[2])
+
+def put(file, line):
+	""" write content to a file with newline character """
+	file.write(line + '\n')
+
+def write_header():
+	""" Write header content to colorscheme file """
+
+	with open(output_path, 'w') as file:
+		put(file, '" ==================================================================')
+		put(file, '" File:        {}'.format(get_filename()))
+		put(file, '" Description: {}'.format(get_description()))
+		put(file, '" Author:      {}'.format(get_author()))
+		put(file, '" Last Change: {}'.format(get_last_change()))
+		if get_license():
+			put(file, '" Licence:     {}'.format(get_license()))
+		if get_note():
+			put(file, '" Note:        {}'.format(get_note()))
+		put(file, '" ==================================================================')
+		put(file, '')
+
+def write_palette():
+	""" Write color summary to colorscheme file """
+	rgb_list = [hex2rgb(color_val[0]) for color_val in get_color().values()]
+	max_rgb_len = len(max(rgb_list, key=len))
+	max_name_len = len(max(get_color().keys(), key=len))
+
+	with open(output_path, 'a') as file:
+		formatter = ('Name', 'Hex', 'Rgb', 'Xterm')
+		put(file, '" {:{x}}  {:7}  {:{y}}  {}'.format(*formatter, x=max_name_len, y=max_rgb_len))
+		put(file, '" ==================================================================')
+		for color, val, rgb_val in zip(get_color().keys(), get_color().values(), rgb_list):
+			formatter = (color, val[0], rgb_val, val[1])
+			put(file, '" {:{x}}  {}  {:{y}}  {}'.format(*formatter, x=max_name_len, y=max_rgb_len))
+		put(file, '')
+
+def write_body():
+	""" Write all color group assignment and some logics to colorshceme file """
+
+	with open(output_path, 'a') as file:
+		put(file, 'hi clear')
+		put(file, '')
+		put(file, "if exists('syntax_on')")
+		put(file, '  syntax reset')
+		put(file, 'endif')
+		put(file, '')
+		put(file, "let colors_name = '{}'".format(get_name()))
+		put(file, 'set background={}'.format(get_background()))
+		put(file, '')
+		put(file, "if ($TERM =~ '256' || &t_Co >= 256) || has('gui_running')")
+
+		max_group_len = len(max(color_dict['group'].keys(), key=len))
+		for group in color_dict['group']:
+			attr = (group,
+					get_termbg(group),
+					get_termfg(group),
+					get_guibg(group),
+					get_guifg(group),
+					'NONE',
+					'NONE')
+			line = ('hi {:{x}} ctermbg={:<4} ctermfg={:<4} '
+					'guibg={:<7} guifg={:<7} cterm={:<7} gui={}').format(*attr, x=max_group_len)
+			put(file, line)
+
+		put(file, 'endif')
+
+def parse_yaml():
+	""" return object parsed from yaml file """
+
+	with open(yaml_path, 'r') as file:
+		parsed = yaml.load(file)
+	return parsed
+
+def generate(colorscheme):
+	""" generate colorscheme from yaml parse result """
+	global color_dict
+	color_dict = colorscheme
+
+	write_header()
+	write_palette()
+	write_body()
+	# p(colorscheme)
+
+def main():
+	""" main function """
+
+	global yaml_path
+	global output_path
+
+	parser = argparse.ArgumentParser(
+			description='Generate vim colorscheme file from simplilfied yaml config file')
+	parser.add_argument('inputfile', metavar='F', type=str, nargs=1,
+			help='yaml file path to parse')
+	parser.add_argument('-d', '--dest', nargs='?',
+			help='destination path for generated colorshceme, default is current directory',
+			default=os.getcwd())
+	arg = parser.parse_args()
+
+	yaml_path = arg.inputfile[0]
+	colorscheme = parse_yaml()
+
+	output_path = os.path.join(arg.dest, colorscheme['name'] + '.vim')
+	generate(colorscheme)
+
+if __name__ == '__main__':
+	main()
+
+# TODO
+# update all colorscheme with default setting for new hi group?
+# test if color assign to color group exist
+# test if non-exist color is filled with default color properly
+# test if group has at least 2 value (bg and fg) (- is also a value)
+# convert color name to lowercase
+
+# vim: nofoldenable
