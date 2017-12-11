@@ -5,7 +5,7 @@ author:
 license: BSD 3-Clauses
 note:
 option:
-   transparent: true
+   transparent: false
    background: light
 palette:
    # color name   gui        cterm  optional

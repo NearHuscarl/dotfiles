@@ -1,4 +1,4 @@
-name: test2
+name: test5
 description: Test colorshceme 2
 author:
    name: Near
@@ -6,7 +6,7 @@ author:
 license: BSD 3-Clauses
 note:
 option:
-   transparent: true
+   transparent: false
 palette:
    # color name   gui        cterm  optional
    dark:      ['#1F2D3A',     0,     'black']

@@ -6,10 +6,10 @@ more simple than having to create colorscheme using vimscript
 """
 
 import argparse
-from datetime import datetime
 import os
 from pprint import pprint as p
 import time
+import subprocess
 
 import yaml
 
@@ -78,38 +78,41 @@ def get_background():
 		raise NameError("background option has to be either 'dark' or 'light'")
 	return background
 
-def get_group_color(name, type_):
-	""" Get color for group based on type (termfg, termbg, guifg or guibg) """
+def get_term_color(color):
+	""" Get ctermfg color """
+	return 'NONE' if color == '_' else color_dict['palette'][color][1]
+
+def get_gui_color(color):
+	""" Get guibg color """
+	return 'NONE' if color == '_' else color_dict['palette'][color][0]
+
+def get_group_attr(name):
+	""" Return a tuple contain group attributes (termfg, termbg, guifg, guibg, term & gui) """
 	colors = color_dict['group'][name].split()
+
 	if len(colors) < 2:
-		raise ValueError('Require at least 2 colors for fg and bg')
+		raise ValueError('Require at least 2 color values for fg and bg')
 
-	if type_ == 'termfg':
-		return 'NONE' if colors[0] == '_' else color_dict['palette'][colors[0]][1]
-	elif type_ == 'termbg':
-		return 'NONE' if colors[1] == '_' else color_dict['palette'][colors[1]][1]
-	elif type_ == 'guifg':
-		return 'NONE' if colors[0] == '_' else color_dict['palette'][colors[0]][0]
-	elif type_ == 'guibg':
-		return 'NONE' if colors[1] == '_' else color_dict['palette'][colors[1]][0]
+	valid_colors = list(color_dict['palette'].keys()) + ['_']
+	valid_attr = ['bold', 'underline', 'undercurl', 'strikethrough', 'reverse', 'inverse',  \
+			'italic', 'standout', 'nocombine', 'NONE']
+	for i, color in enumerate(colors):
+		if color not in valid_colors and i in [0, 1]: # Check if fg and bg color is in palette
+			raise NameError('color {} of {} is not in the color pelette'.format(color, name))
+		if color not in valid_attr and i not in [0, 1]: # Check if other attribute is a valid name
+			raise NameError('attribute {} of {} is not a valid keyword'.format(color, name))
+
+	transp_group = ['Normal', 'LineNr', 'Folded', 'SignColumn']
+	if 'transparent' in color_dict['option'] and color_dict['option']['transparent'] \
+			and name in transp_group:
+		termbg = 'NONE'
 	else:
-		raise 'youre fucked'
+		termbg = get_term_color(colors[1])
 
-def get_termfg(group):
-	""" Wrapper to get ctermfg """
-	return get_group_color(group, 'termfg')
-
-def get_termbg(group):
-	""" Wrapper to get ctermbg """
-	return get_group_color(group, 'termbg')
-
-def get_guifg(group):
-	""" Wrapper to get guifg """
-	return get_group_color(group, 'guifg')
-
-def get_guibg(group):
-	""" Wrapper to get guibg """
-	return get_group_color(group, 'guibg')
+	termfg = get_term_color(colors[0])
+	guibg = get_gui_color(colors[1])
+	guifg = get_gui_color(colors[0])
+	return (termfg, termbg, guifg, guibg, 'NONE', 'NONE')
 
 # -----------------------------
 
@@ -124,6 +127,13 @@ def rgb2hex(rgb_color):
 	""" 'rgb(180, 251, 184)' => '#B4FBB8' """
 	rgb = [int(i) for i in rgb_color.strip('rgb()').split(',')]
 	return '#{:02x}{:02x}{:02x}'.format(rgb[0], rgb[1], rgb[2])
+
+def set_up():
+	""" Capitalize group name and make all colorname lowercase """
+	color_dict['group'] = {name.capitalize(): val.lower()
+			for name, val in color_dict['group'].items()}
+	color_dict['palette'] = {name.lower(): val
+			for name, val in color_dict['palette'].items()}
 
 def put(file, line):
 	""" write content to a file with newline character """
@@ -177,15 +187,9 @@ def write_body():
 
 		max_group_len = len(max(color_dict['group'].keys(), key=len))
 		for group in color_dict['group']:
-			attr = (group,
-					get_termbg(group),
-					get_termfg(group),
-					get_guibg(group),
-					get_guifg(group),
-					'NONE',
-					'NONE')
-			line = ('hi {:{x}} ctermbg={:<4} ctermfg={:<4} '
-					'guibg={:<7} guifg={:<7} cterm={:<7} gui={}').format(*attr, x=max_group_len)
+			attr = get_group_attr(group)
+			line = ('hi {:{x}} ctermfg={:<4} ctermbg={:<4} guifg={:<7} guibg={:<7} '
+					'cterm={:<7} gui={}').format(group, *attr, x=max_group_len)
 			put(file, line)
 
 		put(file, 'endif')
@@ -202,10 +206,12 @@ def generate(colorscheme):
 	global color_dict
 	color_dict = colorscheme
 
+	set_up()
 	write_header()
 	write_palette()
 	write_body()
-	# p(colorscheme)
+	# Indent
+	subprocess.Popen('vim ' + '+"normal! gg=G" ' + '+wqa ' + output_path, shell=True)
 
 def main():
 	""" main function """
@@ -233,9 +239,6 @@ if __name__ == '__main__':
 
 # TODO
 # update all colorscheme with default setting for new hi group?
-# test if color assign to color group exist
 # test if non-exist color is filled with default color properly
-# test if group has at least 2 value (bg and fg) (- is also a value)
-# convert color name to lowercase
 
 # vim: nofoldenable

@@ -1,11 +1,11 @@
-name: test2
+name: test3
 description: Test colorshceme 2
 author:
    email: near.huscarl@gmail.com
 license: BSD 3-Clauses
 note:
 option:
-   transparent: true
+   transparent: false
    background: light
 palette:
    # color name   gui        cterm  optional
