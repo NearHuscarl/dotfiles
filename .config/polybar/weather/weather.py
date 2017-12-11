@@ -6,18 +6,40 @@
 
 import argparse
 import datetime
+import logging
 import os
 import time
 import requests
+import importlib
 
-from requests import exceptions
+# pylint: disable=redefined-builtin
+from requests import ConnectionError
+from requests.exceptions import HTTPError, Timeout
 
-parser = argparse.ArgumentParser(description='Show current weather on for polybar')
-parser.add_argument('-u', '--unit', default='metric', nargs='?',
-		help='unit: metric or imperial. Default: metric')
-arg = parser.parse_args()
+from util import color_polybar, color_bash as cb
 
-def get_time():
+class MyInternetIsShitty(Exception):
+	""" Custom exception """
+	pass
+
+def get_args():
+	""" Get script argument """
+	parser = argparse.ArgumentParser(description='Show current weather on polybar')
+	parser.add_argument('log', nargs='?', help='Logging for debugging or not')
+	parser.add_argument('-u', '--unit', default='metric', nargs='?',
+			help='unit: metric or imperial. Default: metric')
+	return parser.parse_args()
+
+def set_up_logging():
+	""" Set some logging parameter """
+	if importlib.util.find_spec('requests'):
+		# Shut up the request module logger
+		logging.getLogger("requests").setLevel(logging.WARNING)
+		logging.getLogger("urllib3").setLevel(logging.WARNING)
+	logging.basicConfig(format='[%(levelname)s] %(message)s', level=logging.DEBUG)
+
+
+def get_day_or_night():
 	""" return 'day' or 'night' based on current hour """
 
 	hour = int(datetime.datetime.now().strftime('%H'))
@@ -31,7 +53,7 @@ def get_time():
 def get_weather_icon(weather_id):
 	""" Get weather icon based on weather condition """
 
-	time = get_time()
+	day_night_status = get_day_or_night()
 
 	weather = {
 			'thunderstorm':   200 <= weather_id <= 232,
@@ -40,8 +62,8 @@ def get_weather_icon(weather_id):
 			'atmosphere':     701 <= weather_id <= 781,
 			'squall':         weather_id == 771,
 			'tornado':        weather_id == 781 or weather_id == 900,
-			'clear_day':      weather_id == 800 and time == 'day',
-			'clear_night':    weather_id == 800 and time == 'night',
+			'clear_day':      weather_id == 800 and day_night_status == 'day',
+			'clear_night':    weather_id == 800 and day_night_status == 'night',
 			'tropical storm': weather_id == 901,
 			'hurricane':      weather_id == 902,
 			'cold':           weather_id == 903,
@@ -98,45 +120,17 @@ def convert_temp_unit(temp_value, temp_unit):
 	elif temp_unit == 'F':
 		return round(temp_value * 1.8 + 32)
 
-def color_string(string, color_envron_var):
-	"""
-	Print output in color in polybar format, second argument
-	is environment variable from $HOME/themes/current_theme
-	"""
+def get_api_key():
+	""" Get secret api key from a file on filesystem """
+	paren_dir = os.path.dirname(os.path.realpath(__file__))
+	api_path = os.path.join(paren_dir, 'weather_api.txt')
 
-	# Environment variables in $HOME/bin/export
-	color_begin = '%{F' + os.environ[color_envron_var] +  '}'
-	color_end = '%{F-}'
-	return color_begin + string + color_end
+	with open(api_path, 'r') as file:
+		api_key = file.read().replace('\n', '')
+	return api_key
 
-def update_weather(city_id, units, api_key):
-	""" Update weather by using openweather api """
-
-	url = 'http://api.openweathermap.org/data/2.5/weather?id={}&appid={}&units={}'
-	temp_unit = 'C' if units == 'metric' else 'K'
-	error_icon = color_string('', 'THEME_ALERT')
-
-	try:
-		req = requests.get(url.format(city_id, api_key, units))
-
-		description = req.json()['weather'][0]['description'].capitalize()
-
-		temp_value = round(req.json()['main']['temp'])
-		temp = str(temp_value) + '°' + temp_unit
-		thermo_icon = color_string(get_thermo_icon(temp_value, units), 'THEME_MAIN')
-
-		weather_id = req.json()['weather'][0]['id']
-		weather_icon = color_string(get_weather_icon(weather_id), 'THEME_MAIN')
-
-		print('{} {} {} {}'.format(weather_icon, description, thermo_icon, temp), flush=True)
-		return 0
-	except (exceptions.ConnectionError, exceptions.Timeout, exceptions.HTTPError):
-		print(error_icon, flush=True)
-		return 1
-
-def main():
-	""" main function """
-
+def get_city_id():
+	""" Workaround to get city id based on my schedule """
 	region_code = {
 			'TPHCM': 1580578,
 			'TPHCM2': 1566083,
@@ -149,27 +143,58 @@ def main():
 
 	# 5pm Fri to 5pm Sun: Tan An, else Hai Duong
 	if (hour >= 17 and weekday == 'Fri') or weekday == 'Sat' or (hour < 17 and weekday == 'Sun'):
-		city_id = region_code['Tan An']
-	else:
-		city_id = region_code['Hai Duong']
+		return region_code['Tan An']
+	return region_code['Hai Duong']
 
-	paren_dir = os.path.dirname(os.path.realpath(__file__))
-	api_path = os.path.join(paren_dir, 'weather_api.txt')
+def update_weather(city_id, units, api_key):
+	""" Update weather by using openweather api """
 
-	with open(api_path, 'r') as file:
-		api_key = file.read().replace('\n', '')
+	url = 'http://api.openweathermap.org/data/2.5/weather?id={}&appid={}&units={}'
+	temp_unit = 'C' if units == 'metric' else 'K'
+	error_icon = color_polybar('', 'THEME_ALERT')
+
+	try:
+		req = requests.get(url.format(city_id, api_key, units))
+
+		try:
+			description = req.json()['weather'][0]['description'].capitalize()
+		except ValueError:
+			raise MyInternetIsShitty
+
+		temp_value = round(req.json()['main']['temp'])
+		temp = str(temp_value) + '°' + temp_unit
+		thermo_icon = color_polybar(get_thermo_icon(temp_value, units), 'THEME_MAIN')
+
+		weather_id = req.json()['weather'][0]['id']
+		weather_icon = color_polybar(get_weather_icon(weather_id), 'THEME_MAIN')
+
+		print('{} {} {} {}'.format(weather_icon, description, thermo_icon, temp), flush=True)
+	except (HTTPError, Timeout, ConnectionError):
+		print(error_icon, flush=True)
+		raise MyInternetIsShitty
+
+def main():
+	""" main function """
+
+	arg = get_args()
+	if arg.log == 'debug':
+		set_up_logging()
 
 	units = arg.unit
-	result = update_weather(city_id, units, api_key)
+	api_key = get_api_key()
+	city_id = get_city_id()
 
 	while True:
-		if result == 0:
-			time.sleep(700)
-			result = update_weather(city_id, units, api_key)
-		else:
+		try:
+			update_weather(city_id, units, api_key)
+		except MyInternetIsShitty:
+			logging.info(cb('update failed: ', 'red'))
 			time.sleep(3)
-			result = update_weather(city_id, units, api_key)
+		else:
+			logging.info(cb('update success', 'green'))
+			time.sleep(700)
 
-main()
+if __name__ == '__main__':
+	main()
 
 # vim: nofoldenable
