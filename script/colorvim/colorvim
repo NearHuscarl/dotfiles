@@ -18,7 +18,35 @@ import yaml
 yaml_path = ''
 output_path = ''
 color_dict = {}
+args = None
 # ----------------------------------
+
+# ------- Set up -------
+def get_args():
+	""" Get script arguments """
+	parser = argparse.ArgumentParser(
+			description='Generate vim colorscheme file from simplilfied yaml config file')
+	parser.add_argument('inputfile', metavar='F', type=str, nargs=1,
+			help='yaml file path to parse')
+	parser.add_argument('-d', '--dest', nargs='?',
+			help='destination path for generated colorshceme, default is current directory',
+			default=os.getcwd())
+	parser.add_argument('-cg', '--callgraph', action='store_true', help='generate function all graph')
+	return parser.parse_args()
+
+def generate_callgraph(func):
+	""" set up before starting generate callgraph take function func as starting point """
+	from pycallgraph import PyCallGraph
+	from pycallgraph import Config
+	from pycallgraph.output import GraphvizOutput
+
+	graphviz = GraphvizOutput()
+	graphviz.output_file = 'colorvim.png'
+	config = Config(groups=True)
+
+	with PyCallGraph(config=config, output=graphviz):
+		func()
+#-----------------------
 
 # ----- getter functions ------
 def get_name():
@@ -214,31 +242,25 @@ def generate(colorscheme):
 	subprocess.Popen('vim ' + '+"normal! gg=G" ' + '+wqa ' + output_path, shell=True)
 
 def main():
-	""" main function """
-
 	global yaml_path
 	global output_path
 
-	parser = argparse.ArgumentParser(
-			description='Generate vim colorscheme file from simplilfied yaml config file')
-	parser.add_argument('inputfile', metavar='F', type=str, nargs=1,
-			help='yaml file path to parse')
-	parser.add_argument('-d', '--dest', nargs='?',
-			help='destination path for generated colorshceme, default is current directory',
-			default=os.getcwd())
-	arg = parser.parse_args()
-
-	yaml_path = arg.inputfile[0]
+	yaml_path = args.inputfile[0]
 	colorscheme = parse_yaml()
 
-	output_path = os.path.join(arg.dest, colorscheme['name'] + '.vim')
+	output_path = os.path.join(args.dest, colorscheme['name'] + '.vim')
 	generate(colorscheme)
 
 if __name__ == '__main__':
+	args = get_args()
+
+	if args.callgraph:
+		generate_callgraph(main)
 	main()
 
 # TODO
 # update all colorscheme with default setting for new hi group?
 # test if non-exist color is filled with default color properly
+# remove pycallgraph code
 
 # vim: nofoldenable
