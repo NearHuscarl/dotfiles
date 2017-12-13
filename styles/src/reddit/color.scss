@@ -132,6 +132,16 @@ div.md {
 		border: none !important;
 		color: $code-color !important;
 	}
+
+	pre {
+		background-color: $bg-alt-color !important;
+
+		code {
+			background-color: $bg-alt-color !important;
+			border: none !important;
+			color: $code-color !important;
+		}
+	}
 }
 
 .md blockquote {
