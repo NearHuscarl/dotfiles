@@ -118,14 +118,14 @@ div.md {
 	color: $fg-color !important;
 }
 
-code {
-	background-color: $bg-alt-color !important;
-	border: none !important;
-	color: $code-color !important;
-}
-
-pre {
-	background-color: $bg-alt-color !important;
+.usertext-body {
+	p {
+		code {
+			background-color: $bg-alt-color !important;
+			border: none !important;
+			color: $code-color !important;
+		}
+	}
 
 	code {
 		background-color: $bg-alt-color !important;
