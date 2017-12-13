@@ -1,14 +1,16 @@
+'use strict';
+
 const gulp         = require('gulp');
 const sass         = require('gulp-sass');
 const uglifyCss    = require('gulp-clean-css');
 const rename       = require('gulp-rename');
-const newer        = require('gulp-newer');
 const gulpsync     = require('gulp-sync')(gulp);
 const cached       = require('gulp-cached');
 const filter       = require('gulp-filter');
 const debug        = require('gulp-debug');
 const findSassMain = require('gulp-sass-inheritance');
 
+let cwd = process.cwd();
 let path = {
 	src: "src/**/*.scss",
 	srcEntry: "src/**/main.scss",
@@ -45,24 +47,13 @@ gulp.task('uglifyCss', function(){
 			path.basename = "style";
 			path.extname = ".min.css";
 		}))
-		// .pipe(newer(path.dest))
 		.pipe(cached('mincss'))
 		.pipe(uglifyCss())
 
 		.pipe(gulp.dest(path.dest));
 });
 
-// https://stackoverflow.com/questions/9781218/how-to-change-node-jss-console-font-color
-let color = {
-	red: '\x1b[31m',
-	green: '\x1b[32m',
-	yellow: '\x1b[33m',
-	cyan: '\x1b[36m',
-	reset: '\x1b[0m'
-}
-let cwd = process.cwd();
-
-function formatEventType(eventType)
+function getEventStr(eventType)
 {
 	if (eventType == 'changed') {
 		return 'MODIFIED';
@@ -75,15 +66,24 @@ function formatEventType(eventType)
 	}
 }
 
-function getColorCode(eventType)
+function getFormatStr(event)
 {
-	if (eventType == 'changed') {
+	// https://stackoverflow.com/questions/9781218/how-to-change-node-jss-console-font-color
+	let color = {
+		red: '\x1b[31m',
+		green: '\x1b[32m',
+		yellow: '\x1b[33m',
+		cyan: '\x1b[36m',
+		reset: '\x1b[0m'
+	}
+
+	if (event == 'changed') {
 		return '%s' + color.yellow + '%s' + color.reset + '%s' + color.cyan + '%s' + color.reset;
 	}
-	else if (eventType == 'added') {
+	else if (event == 'added') {
 		return '%s' + color.green + '%s' + color.reset + '%s' + color.cyan + '%s' + color.reset;
 	}
-	else if (eventType == 'deleted') {
+	else if (event == 'deleted') {
 		return '%s' + color.red + '%s' + color.reset + '%s' + color.cyan + '%s' + color.reset;
 	}
 }
@@ -91,13 +91,13 @@ function getColorCode(eventType)
 gulp.task('watch', function() {
 	gulp.watch(path.src, gulpsync.sync(['compileCss', 'uglifyCss']))
 		.on('change', function(event) {
-			let fileName = event.path.split('/').pop();
-			let replaceRegex = new RegExp('(' + cwd + '|' + fileName +  ')', 'g');
-			let fileParent = event.path.replace(replaceRegex, '');
-			let eventType = formatEventType(event.type);
-			let colorCode = getColorCode(event.type);
+			let filename = event.path.split('/').pop();
+			let cwdAndFilename = new RegExp('(' + cwd + '|' + filename +  ')', 'g');
+			let dirname = event.path.replace(cwdAndFilename, '');
+			let eventType = getEventStr(event.type);
+			let formatStr = getFormatStr(event.type);
 
-			console.log(colorCode, '[', eventType , '] ' + fileParent, fileName);
+			console.log(formatStr, '[', eventType , '] ' + dirname, filename);
 		});
 });
 
