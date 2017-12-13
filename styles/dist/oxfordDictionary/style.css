@@ -47,18 +47,18 @@ html, body,
   background-color: #1f2d3a !important; }
 
 .main_nav .menu a.top-toolbar-active {
-  border: unset !important;
   background-color: #16a085 !important;
+  border: unset !important;
   color: #ecf0f1 !important; }
 
 #rightcolumn {
-  top: -30px !important;
-  position: relative !important; }
+  position: relative !important;
+  top: -30px !important; }
 
 .accordion.ui-grad dt {
-  box-shadow: unset !important;
   background-color: #2c3e50 !important;
-  border-color: #2c3e50 !important; }
+  border-color: #2c3e50 !important;
+  box-shadow: unset !important; }
 
 .accordion.ui-grad dd {
   border-color: #2c3e50 !important; }
@@ -75,8 +75,8 @@ table.quickLinks tr {
 
 #search-form {
   background-color: #2c3e50 !important;
-  color: #84888b !important;
-  border-color: #2c3e50 !important; }
+  border-color: #2c3e50 !important;
+  color: #84888b !important; }
   #search-form * {
     border-color: #2c3e50 !important; }
 
@@ -95,9 +95,9 @@ input[type="submit"] {
   background-color: transparent !important; }
 
 #search-form .inputSuggestions {
-  z-index: 99 !important;
   background-color: #2c3e50 !important;
-  color: #84888b !important; }
+  color: #84888b !important;
+  z-index: 99 !important; }
   #search-form .inputSuggestions * {
     background-color: #2c3e50 !important;
     color: #84888b !important; }
@@ -111,7 +111,6 @@ input[type="submit"] {
 .sound.audio_play_button.pron-us {
   filter: brightness(5) !important; }
 
-/* list number */
 .sn-g::before {
   color: #f39c12 !important; }
 

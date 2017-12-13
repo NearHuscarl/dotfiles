@@ -4,21 +4,18 @@
 
 .flair-mod {
   background-color: #a88c63 !important;
-  background-image: url("//a.thumbs.redditmedia.com/t97dp8hGFhXBQUIZRCxKwX7R7-VinaKqb6zKHb61jG4.png") !important;
   color: white !important; }
 
 .flair-mod2 {
   background-color: #a88c63 !important;
-  background-image: url("//b.thumbs.redditmedia.com/-meviIMNRZ8gceLtI_E9E8tEYddqgUxsZKvRsD6G9hE.png") !important;
   color: white !important; }
 
 .flair-extraLife {
-  background-color: #FAF9F8 !important;
-  color: #D4280C !important;
-  font-weight: bold !important;
-  border-style: solid !important;
+  background-color: #faf9f8 !important;
   border-style: dotted !important;
-  border-width: 2px !important; }
+  border-width: 2px !important;
+  color: #d4280c !important;
+  font-weight: bold !important; }
 
 .flair-fun {
   background-color: green !important;
@@ -26,18 +23,15 @@
 
 .flair-ship {
   background-color: blue !important;
-  background-image: url("//b.thumbs.redditmedia.com/ppdwOH0fgLcyMcPdfEtz6iEUYtGFpzhO0GXHxtkeuNA.png") !important;
   color: black !important; }
 
 .flair-war {
   background-color: red !important;
-  background-image: url("//b.thumbs.redditmedia.com/iVh3Ng61TwKffmQBRTP2pZx9aqYZGIpoAI8Dr0oHqkw.png") !important;
   color: white !important; }
 
 .flair-pmfaf {
   background-color: #608396 !important;
-  background-image: url("//b.thumbs.redditmedia.com/u2n9QCyADZE7uNMOlvIBvGSrDF3gdL--xwLJNGFD7Jk.png") !important;
-  color: #E4ECF0 !important;
+  color: #e4ecf0 !important;
   font-family: Verdana, Geneva, sans-serif !important;
   font-weight: bold !important; }
 
@@ -50,23 +44,23 @@
   color: white !important; }
 
 .flair-gold {
-  background-color: #C8A521 !important;
+  background-color: #c8a521 !important;
   color: white !important; }
 
 .flair-silver {
-  background-color: #B3B4B3 !important;
+  background-color: #b3b4b3 !important;
   color: white !important; }
 
 .flair-plasteel {
-  background-color: #7B9A9C !important;
+  background-color: #7b9a9c !important;
   color: white !important; }
 
 .flair-uranium {
-  background-color: #4A484A !important;
+  background-color: #4a484a !important;
   color: white !important; }
 
 .flair-granite {
-  background-color: #675D5F !important;
+  background-color: #675d5f !important;
   color: white !important; }
 
 .flair-marble {
@@ -74,11 +68,11 @@
   color: black !important; }
 
 .flair-limestone {
-  background-color: #9D9886 !important;
+  background-color: #9d9886 !important;
   color: black !important; }
 
 .flair-sandstone {
-  background-color: #7D675D !important;
+  background-color: #7d675d !important;
   color: black !important; }
 
 .flair-slate {
@@ -86,9 +80,9 @@
   color: white !important; }
 
 .flair-jade {
-  background-color: #61B036 !important;
+  background-color: #61b036 !important;
   color: black !important; }
 
 .linkflairlabel {
-  color: #fff !important;
-  background-color: #738491 !important; }
+  background-color: #738491 !important;
+  color: #ffffff !important; }

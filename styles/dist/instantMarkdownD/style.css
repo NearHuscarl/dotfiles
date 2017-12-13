@@ -20,8 +20,8 @@ html, body {
   color: #84888b !important; }
 
 .container * {
-  color: #84888b !important;
-  border-color: #84888b !important; }
+  border-color: #84888b !important;
+  color: #84888b !important; }
 
 .container .markdown-body {
   background-color: #1f2d3a !important;
@@ -48,25 +48,28 @@ html, body {
       color: #84888b !important; }
     .container .markdown-body pre .hljs-number {
       color: #e74c3c !important; }
-    .container .markdown-body pre .hljs-function .hljs-keyword, .container .markdown-body pre .hljs-class .hljs-keyword {
+    .container .markdown-body pre .hljs-function .hljs-keyword,
+    .container .markdown-body pre .hljs-class .hljs-keyword {
       color: #f39c12 !important; }
-    .container .markdown-body pre .hljs-function .hljs-title, .container .markdown-body pre .hljs-class .hljs-title {
+    .container .markdown-body pre .hljs-function .hljs-title,
+    .container .markdown-body pre .hljs-class .hljs-title {
       color: #2980b9 !important; }
-    .container .markdown-body pre .hljs-function .hljs-params, .container .markdown-body pre .hljs-class .hljs-params {
+    .container .markdown-body pre .hljs-function .hljs-params,
+    .container .markdown-body pre .hljs-class .hljs-params {
       color: #ecf0f1 !important; }
 
 .diff-view .blob-code-inner,
 td.blob-num,
 td.blob-code {
   font-family: "Inconsolata", monospace !important;
-  font-weight: bold !important;
   font-size: 12px !important;
+  font-weight: bold !important;
   line-height: 110% !important; }
 
 .markdown-body pre,
 .markdown-body pre *,
 .markdown-body .highlight pre {
   font-family: "Inconsolata", monospace !important;
-  font-weight: bold !important;
   font-size: 15px !important;
+  font-weight: bold !important;
   line-height: 120% !important; }

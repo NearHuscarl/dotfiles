@@ -15,10 +15,9 @@
 ::-webkit-scrollbar-corner {
   background: #1f2d3a !important; }
 
-/* global */
 * {
-  border-color: #2c3e50 !important;
   background-color: #1f2d3a !important;
+  border-color: #2c3e50 !important;
   color: #84888b !important; }
 
 textarea,
@@ -28,18 +27,18 @@ textarea,
 a {
   color: #2980b9 !important; }
   a:hover, a:focus {
-    color: #3498db !important;
-    background-color: #2c3e50 !important; }
+    background-color: #2c3e50 !important;
+    color: #3498db !important; }
   a:visited {
     color: #8e44ad !important; }
 
 h2 {
   color: #16a085 !important; }
 
-img, a img {
+img,
+a img {
   filter: brightness(0.6) !important; }
 
-/* undisplay some bullshit */
 .navbar .nav > li.first:nth-child(1),
 .sidebar h2 {
   background: none !important; }
@@ -47,10 +46,9 @@ img, a img {
 #block-search-form .btn-search {
   display: none !important; }
 
-/* menu */
 #main-nav a {
-  color: #2980b9 !important;
-  background-color: #2c3e50 !important; }
+  background-color: #2c3e50 !important;
+  color: #2980b9 !important; }
 
 #main-nav a:hover {
   background-color: #1f2d3a !important; }
@@ -58,32 +56,28 @@ img, a img {
 li.first.leaf {
   display: none !important; }
 
-/* list in main page */
 .item-list > ul > li {
   background: none !important;
-  list-style-type: circle !important;
-  list-style-position: inside !important; }
+  list-style-position: inside !important;
+  list-style-type: circle !important; }
 
-/* arrow */
 .caret {
-  border-top: 4px solid #16a085 !important;
-  border-right: 4px solid transparent !important;
+  background-color: transparent !important;
   border-left: 4px solid transparent !important;
-  content: "" !important;
-  background-color: transparent !important; }
+  border-right: 4px solid transparent !important;
+  border-top: 4px solid #16a085 !important;
+  content: "" !important; }
 
-/* read more button */
 ul.links li.node-readmore a {
   text-shadow: inherit !important; }
 
-/* fix Xem them link */
-.more-link a:after, a.more-link:after, .page-search .node-readmore a:after {
+.more-link a:after,
+a.more-link:after,
+.page-search .node-readmore a:after {
   content: ">>" !important; }
 
-/* new */
 .marker {
   color: #e74c3c !important; }
 
-/* cvim fix */
 #cVim-link-container {
   background-color: transparent !important; }
