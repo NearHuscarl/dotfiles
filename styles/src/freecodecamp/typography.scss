@@ -1,12 +1,16 @@
+// scss-lint:disable ImportantRule
+
 #mainEditorPanel {
-   font-family: 'Inconsolata', monospace !important;
-   font-weight: bold !important;
-   span {
-      line-height: 120% !important;
-      font-size: 13px !important;
-   }
-   .CodeMirror-linenumber {
-      line-height: 120% !important;
-      font-size: 13px !important;
-   }
+	font-family: 'Inconsolata', monospace !important;
+	font-weight: bold !important;
+
+	span {
+		font-size: 13px !important;
+		line-height: 120% !important;
+	}
+
+	.CodeMirror-linenumber {
+		font-size: 13px !important;
+		line-height: 120% !important;
+	}
 }

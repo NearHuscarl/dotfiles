@@ -1,94 +1,99 @@
-/* global */
+// scss-lint:disable ImportantRule
+// scss-lint:disable SelectorFormat
+
+// global
 * {
-   border-color:     $bg-alt-color !important;
-   background-color: $bg-color !important;
-   color:            $fg-color !important;
+	background-color: $bg-color !important;
+	border-color: $bg-alt-color !important;
+	color: $fg-color !important;
 }
 
 textarea,
 #block-search-form .search-query {
-    background-color: $bg-alt-color !important;
+	background-color: $bg-alt-color !important;
 }
 
 a {
-   color: $link-color !important;
+	color: $link-color !important;
 
-   &:hover,
-   &:focus {
-      color:            $link-hover-color !important;
-      background-color: $bg-alt-color !important;
-   }
+	&:hover,
+	&:focus {
+		background-color: $bg-alt-color !important;
+		color: $link-hover-color !important;
+	}
 
-   &:visited {
-      color: $link-visited-color !important;
-   }
+	&:visited {
+		color: $link-visited-color !important;
+	}
 }
 
 h2 {
-   color: $main-color !important;
+	color: $main-color !important;
 }
 
-img, a img {
-  filter: brightness($img-brightness) !important;
+img,
+a img {
+	filter: brightness($img-brightness) !important;
 }
 
-/* undisplay some bullshit */
+// undisplay some bullshit
 .navbar .nav > li.first:nth-child(1),
 .sidebar h2 {
-   background: none !important;
+	background: none !important;
 }
 
 #block-search-form .btn-search {
-   display: none !important;
+	display: none !important;
 }
 
-/* menu */
-
+// menu
 #main-nav a {
-   color:            $link-color !important;
-   background-color: $bg-alt-color !important;
+	background-color: $bg-alt-color !important;
+	color: $link-color !important;
 }
 
 #main-nav a:hover {
-   background-color: $bg-color !important;
+	background-color: $bg-color !important;
 }
 
 li.first.leaf {
-   display: none !important;
+	display: none !important;
 }
 
-/* list in main page */
+// list in main page
 .item-list > ul > li {
-   background: none !important;
-   list-style-type: circle !important;
-   list-style-position: inside !important;
+	background: none !important;
+	list-style-position: inside !important;
+	list-style-type: circle !important;
 }
 
-/* arrow */
+// arrow
 .caret {
-    border-top: 4px solid $main-color !important;
-    border-right: 4px solid transparent !important;
-    border-left: 4px solid transparent !important;
-    content: "" !important;
-    background-color: transparent !important;
+	background-color: transparent !important;
+	border-left: 4px solid transparent !important;
+	border-right: 4px solid transparent !important;
+	border-top: 4px solid $main-color !important;
+	content: "" !important;
 }
 
-/* read more button */
+// read more button
 ul.links li.node-readmore a {
-   text-shadow: inherit !important;
+	text-shadow: inherit !important;
 }
 
-/* fix Xem them link */
-.more-link a:after, a.more-link:after, .page-search .node-readmore a:after {
-   content: ">>" !important;
+// fix Xem them link
+.more-link a:after,
+a.more-link:after,
+.page-search .node-readmore a:after {
+	content: ">>" !important;
 }
 
-/* new */
+// new
 .marker {
-   color: $alert-color !important;
+	color: $alert-color !important;
 }
 
-/* cvim fix */
+// cvim fix
 #cVim-link-container {
-   background-color: transparent !important;
+	background-color: transparent !important;
 }

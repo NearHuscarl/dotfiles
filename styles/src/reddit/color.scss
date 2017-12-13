@@ -1,13 +1,15 @@
 // scss-lint:disable ImportantRule
+// scss-lint:disable ColorVariable
 
 // global
 * {
 	background-color: transparent !important;
 	border-color: $bg-alt-color !important;
-	color:        $fg-color !important;
+	color: $fg-color !important;
 }
 
-a, #header-bottom-right * {
+a,
+#header-bottom-right * {
 	background-color: transparent !important;
 }
 
@@ -39,9 +41,11 @@ input {
 }
 
 // Background
-html, body,
+html,
+body,
 .side *,
-.titlebox *, .titlebox h1.redditname:before,
+.titlebox *,
+.titlebox h1.redditname::before,
 .modal-body {
 	background-color: $bg-color !important;
 }
@@ -56,7 +60,7 @@ html, body,
 }
 
 #sr-header-area {
-	background-color: rgba(0,0,0,0.4) !important;
+	@include background-opacity(#000000, 0.4);
 }
 
 #sr-header-area *,

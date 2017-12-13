@@ -1,5 +1,8 @@
+// scss-lint:disable ImportantRule
+// scss-lint:disable SelectorFormat
+
 * {
-   color: $fg-color !important;
+	color: $fg-color !important;
 }
 
 // main
@@ -7,7 +10,7 @@ html, body,
 #rightcolumn,
 .top-container,
 .responsive_entry_center_wrap {
-   background-color: $bg-color !important;
+	background-color: $bg-color !important;
 }
 
 // logo
@@ -30,124 +33,128 @@ html, body,
 // bottom stuff
 .responsive_footer_top,
 .versionSelector {
-   display: none !important;
+	display: none !important;
 }
 
 // main nav/footer
 .responsive_row.flush-below.top,
 #ox-footer {
-   background-color: $bg-alt-color !important;
+	background-color: $bg-alt-color !important;
 }
 
 // top nav
 .main_nav {
-   .menu {
-      a:hover {
-         background-color: $bg-color !important;
-      }
-      a.top-toolbar-active {
-         border: unset !important;
-         background-color: $main-color !important;
-         color: $fg-alt-color !important;
-      }
-   }
+	.menu {
+		a:hover {
+			background-color: $bg-color !important;
+		}
+
+		a.top-toolbar-active {
+			background-color: $main-color !important;
+			border: unset !important;
+			color: $fg-alt-color !important;
+		}
+	}
 }
 
 // right column
 #rightcolumn {
-   top: -30px !important;
-   position: relative !important;
+	position: relative !important;
+	top: -30px !important;
 }
 
 .accordion.ui-grad {
-   dt {
-      box-shadow: unset !important;
-      background-color: $bg-alt-color !important;
-      border-color:     $bg-alt-color !important;
-   }
-   dd {
-      border-color: $bg-alt-color !important;
-   }
+	dt {
+		background-color: $bg-alt-color !important;
+		border-color: $bg-alt-color !important;
+		box-shadow: unset !important;
+	}
+
+	dd {
+		border-color: $bg-alt-color !important;
+	}
 }
 
 // right column main page
 table.quickLinks {
-   tr {
-      th {
-         background-color: $bg-color !important; // first row of the table
-         border: unset !important;
-      }
-      background-color: $bg-alt-color !important;
-      border: unset !important;
-   }
+	tr {
+		background-color: $bg-alt-color !important;
+		border: unset !important;
+
+		th {
+			background-color: $bg-color !important; // first row of the table
+			border: unset !important;
+		}
+	}
 }
 
 // selected link
 .selected {
-   background-color: $bg-alt-color !important;
+	background-color: $bg-alt-color !important;
 }
 
 // search bar
 #search-form {
-   background-color: $bg-alt-color !important;
-   color:            $fg-color !important;
-   border-color:     $bg-alt-color !important;
+	background-color: $bg-alt-color !important;
+	border-color: $bg-alt-color !important;
+	color: $fg-color !important;
 
-   * {
-      border-color: $bg-alt-color !important;
-   }
+	* {
+		border-color: $bg-alt-color !important;
+	}
 }
 
 .dictionarySelector #select_div {
-   background-color: $bg-alt-color !important;
+	background-color: $bg-alt-color !important;
 }
 
 input {
-   background-color: $bg-color !important;
-   padding-left: 5px !important;
+	background-color: $bg-color !important;
+	padding-left: 5px !important;
 }
 
 // search button
 #search-btn {
-   background-color: $main-color !important;
-   color:            $fg-alt-color !important;
+	background-color: $main-color !important;
+	color: $fg-alt-color !important;
 }
 
 input[type="submit"] {
-   background-color: transparent !important;
+	background-color: transparent !important;
 }
 
 #search-form  {
-   .inputSuggestions {
-      z-index: 99 !important;
-      background-color: $bg-alt-color !important;
-      color:            $fg-color !important;
-      * {
-         background-color: $bg-alt-color !important;
-         color:            $fg-color !important;
-      }
-   }
+	.inputSuggestions {
+		background-color: $bg-alt-color !important;
+		color: $fg-color !important;
+		z-index: 99 !important;
+
+		* {
+			background-color: $bg-alt-color !important;
+			color: $fg-color !important;
+		}
+	}
 }
 
 // definition part
 
 .webtop-g {
-   background-color: $bg-alt-color !important;
+	background-color: $bg-alt-color !important;
 }
 
 .audio_play_button.pron-uk {
-   filter: brightness(4) !important;
+	filter: brightness(4) !important;
 }
 
 .sound.audio_play_button.pron-us {
-   filter: brightness(5) !important;
+	filter: brightness(5) !important;
 }
 
-/* list number */
+// list number
 .sn-g::before {
-   color: $title-color !important;
+	color: $title-color !important;
 }
 
 .box {
-   background-color: $bg-alt-color !important;
+	background-color: $bg-alt-color !important;
 }

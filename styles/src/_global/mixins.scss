@@ -1,0 +1,7 @@
+// scss-lint:disable ImportantRule
+// scss-lint:disable DuplicateProperty
+
+@mixin background-opacity($hexcolor, $opacity) {
+	background-color: $hexcolor !important; // fallback
+	background-color: rgba($hexcolor, $opacity) !important;
+}

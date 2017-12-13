@@ -1,72 +1,78 @@
-/* global */
+// scss-lint:disable ImportantRule
+// scss-lint:disable SelectorFormat
+
+// global
 * {
-   border-color: $main-color !important;
-   color:        $fg-color !important;
-   border-radius: 0 !important;
+	border-color: $main-color !important;
+	border-radius: 0 !important;
+	color: $fg-color !important;
 }
 
 body, html {
-   background-color: $bg-alt-color !important;
+	background-color: $bg-alt-color !important;
 }
 
 a {
-   color: $link-color !important;
+	color: $link-color !important;
 
-   &:hover {
-      color: $link-hover-color !important;
-   }
+	&:hover {
+		color: $link-hover-color !important;
+	}
 
-   &:visited {
-      /* color: $link-visited-color !important; */
-   }
+	&:visited {
+		// color: $link-visited-color !important;
+	}
 }
 
 
 h2 {
-   color: $title-color !important;
+	color: $title-color !important;
 }
 
-/* hide */
+// hide
 .block-hider-hide,
 input.moveto.customcommand.requiresjs {
-   display: none !important;
+	display: none !important;
 }
 
-/* menu */
+// menu
 #page-header {
-   background: none !important;
-   background-color: $bg-color !important;
+	background: none !important;
+	background-color: $bg-color !important;
 }
+
 .navbar {
-   background-color: $bg-color !important;
+	background-color: $bg-color !important;
 }
 
-/* main */
+// main
 #page-content,
-.region-content *
-{
-   background-color: $bg-color !important;
+.region-content * {
+	background-color: $bg-color !important;
 }
 
-/* dock */
+// dock
 .dockeditempanel_bd,
 .block_course_overview.block_docked {
-   background-color: $bg-color !important;
+	background-color: $bg-color !important;
 }
 
-/* footer */
+// footer
 #page-footer-inner {
-   background: none !important;
-   background-color: $bg-color !important;
+	background: none !important;
+	background-color: $bg-color !important;
 }
 
-/* button|select */
-input[type="button"], input[type="submit"], button, .button {
-   background-color: $main-color !important;
-   color:            $fg-alt-color !important;
+// button|select
+input[type="button"],
+input[type="submit"],
+button,
+.button {
+	background-color: $main-color !important;
+	color: $fg-alt-color !important;
 }
 
 select {
-   border: none !important;
-   background-color: $bg-alt-color !important;
+	background-color: $bg-alt-color !important;
+	border: none !important;
 }

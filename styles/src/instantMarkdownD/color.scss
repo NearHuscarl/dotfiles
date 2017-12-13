@@ -1,3 +1,5 @@
+// scss-lint:disable ImportantRule
+
 html, body {
 	background-color: $bg-alt-color !important;
 	color: $fg-color !important;
@@ -6,8 +8,8 @@ html, body {
 .container {
 	// default foreground color
 	& * {
-		color: $fg-color !important;
 		border-color: $fg-color !important;
+		color: $fg-color !important;
 	}
 
 	.markdown-body {
@@ -39,6 +41,7 @@ html, body {
 		// code
 		pre {
 			background-color: $bg-alt-color !important;
+
 			code {
 				color: $white !important;
 			}
@@ -46,22 +49,30 @@ html, body {
 			.hljs-string {
 				color: $string !important;
 			}
+
 			.hljs-keyword {
 				color: $keyword !important;
 			}
+
 			.hljs-comment {
 				color: $comment !important;
 			}
+
 			.hljs-number {
 				color: $number !important;
 			}
-			.hljs-function, .hljs-class {
+
+			.hljs-function,
+			.hljs-class {
+
 				.hljs-keyword {
 					color: $function !important;
 				}
+
 				.hljs-title {
 					color: $title !important;
 				}
+
 				.hljs-params {
 					color: $params !important;
 				}

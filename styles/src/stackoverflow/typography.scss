@@ -1,8 +1,11 @@
-pre.prettyprint, code {
-   font: {
-      family: $font-code !important;
-      weight: bold !important;
-      size: 12.5px !important;
-   }
-   line-height: 110% !important;
+// scss-lint:disable ImportantRule
+
+pre.prettyprint,
+code {
+	font: {
+		family: $font-code !important;
+		size: 12.5px !important;
+		weight: bold !important;
+	}
+	line-height: 110% !important;
 }

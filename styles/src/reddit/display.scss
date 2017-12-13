@@ -1,5 +1,8 @@
+// scss-lint:disable ImportantRule
+// scss-lint:disable SelectorFormat
+
 // Hide annoying stuff
-.listing-chooser.initialized,        // annoy  left panel
+.listing-chooser.initialized,        // annoy left panel
 .infobar.subscribebar.onboardingbar, // banner in main page
 // buttons under post
 .flat-list.buttons .share,
@@ -11,6 +14,7 @@
 .comment-save-button,
 .give-gold-button,
 // ad
-.promoted, img.img_ad {
-   display: none !important;
+.promoted,
+img.img_ad {
+	display: none !important;
 }
