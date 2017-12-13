@@ -44,6 +44,7 @@
 !/.config/gtk-3.0/
 !/.config/ncmpcpp/
 !/.config/neofetch/
+!/.config/qutebrowser/
 !/.config/rofi/
 !/.config/surfraw/
 !/.config/youtube-dl/
@@ -58,7 +59,9 @@
 !/.config/Code/User/README.md
 
 !/.config/polybar/
+# git update-index --assume-unchanged ~/.config/polybar/pac_update/package_list
 /.config/polybar/pac_update/package_list
+# git update-index --assume-unchanged ~/.config/polybar/news/news_url
 /.config/polybar/news/news_url
 
 !/.config/mpd/
@@ -68,6 +71,7 @@
 
 !/.config/ranger/
 /.config/ranger/colorschemes/*
+# git update-index --assume-unchanged ~/.config/ranger/bookmarks
 !/.config/ranger/colorschemes/flat.py
 
 !/.config/xfce4/
