@@ -157,18 +157,9 @@ class TestColorvim(unittest.TestCase):
 						'found {} instead ').format(group, colorvim.get_group_attr(group)[1])
 				self.assertEqual(colorvim.get_group_attr(group)[1], 'NONE', err_msg)
 
-	def test_group_name_transform(self):
-		""" Test transform group name to be capitalized """
-		colorvim.yaml_path = self.test14_path
-		colorvim.color_dict = colorvim.parse_yaml()
-
-		colorvim.set_up()
-		self.assertIn('Normal', colorvim.color_dict['group'])
-		self.assertIn('Comment', colorvim.color_dict['group'])
-
-	def test_text_transform(self):
+	def test_colorname_transform(self):
 		""" Test transform color name to lowercase """
-		colorvim.yaml_path = self.test15_path
+		colorvim.yaml_path = self.test14_path
 		colorvim.color_dict = colorvim.parse_yaml()
 
 		colorvim.set_up()
@@ -178,6 +169,20 @@ class TestColorvim(unittest.TestCase):
 		self.assertIn('dark', colorvim.color_dict['palette'])
 		self.assertIn('gray', colorvim.color_dict['palette'])
 		self.assertIn('snow', colorvim.color_dict['palette'])
+
+	def test_multiple_attribute(self):
+		""" Test multiple attribute getters """
+		colorvim.yaml_path = self.test15_path
+		colorvim.color_dict = colorvim.parse_yaml()
+
+		colorvim.set_up()
+
+		self.assertEqual(colorvim.get_group_attr('Normal')[4], 'reverse')
+		self.assertEqual(colorvim.get_group_attr('Comment')[4], 'reverse,bold,underline')
+		self.assertEqual(colorvim.get_group_attr('Identify')[4], 'reverse,bold')
+		with self.assertRaises(NameError):
+			colorvim.get_group_attr('Function')
+		self.assertEqual(colorvim.get_group_attr('PreProc')[4], 'NONE')
 
 if __name__ == '__main__':
 	unittest.main()
