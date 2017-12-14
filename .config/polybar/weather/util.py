@@ -1,6 +1,6 @@
 #!/bin/env python
 
-""" util functions for polybar news module """
+""" util functions for polybar """
 
 import os
 
