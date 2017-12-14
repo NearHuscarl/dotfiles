@@ -18,7 +18,7 @@ import yaml
 yaml_path = ''
 output_path = ''
 color_dict = {}
-args = None
+arg_list = None
 # ----------------------------------
 
 # ------- Set up -------
@@ -34,18 +34,21 @@ def get_args():
 	parser.add_argument('-cg', '--callgraph', action='store_true', help='generate function all graph')
 	return parser.parse_args()
 
-def generate_callgraph(func):
-	""" set up before starting generate callgraph take function func as starting point """
-	from pycallgraph import PyCallGraph
-	from pycallgraph import Config
-	from pycallgraph.output import GraphvizOutput
+def callgraph(func):
+	""" decorator to record callgraph start from the decorated function """
+	def generate_callgraph(*args, **kwargs):
+		""" set up before starting generate callgraph and take function func as starting point """
+		from pycallgraph import PyCallGraph
+		from pycallgraph import Config
+		from pycallgraph.output import GraphvizOutput
 
-	graphviz = GraphvizOutput()
-	graphviz.output_file = 'colorvim.png'
-	config = Config(groups=True)
+		graphviz = GraphvizOutput()
+		graphviz.output_file = 'colorvim.png'
+		config = Config(groups=True)
 
-	with PyCallGraph(config=config, output=graphviz):
-		func()
+		with PyCallGraph(config=config, output=graphviz):
+			func(*args, **kwargs)
+	return generate_callgraph
 #-----------------------
 
 # ----- getter functions ------
@@ -116,31 +119,41 @@ def get_gui_color(color):
 
 def get_group_attr(name):
 	""" Return a tuple contain group attributes (termfg, termbg, guifg, guibg, term & gui) """
-	colors = color_dict['group'][name].split()
-
-	if len(colors) < 2:
+	group_attr = color_dict['group'][name].split(None, 2)
+	if len(group_attr) < 2:
 		raise ValueError('Require at least 2 color values for fg and bg')
+	elif len(group_attr) < 3:
+		fg_color, bg_color = color_dict['group'][name].split()
+		attr = 'NONE'
+		attr_list = []
+	else:
+		fg_color, bg_color, attr = color_dict['group'][name].split(None, 2)
+		attr = attr.replace(' ', '')
+		attr_list = attr.split(',')
 
 	valid_colors = list(color_dict['palette'].keys()) + ['_']
 	valid_attr = ['bold', 'underline', 'undercurl', 'strikethrough', 'reverse', 'inverse',  \
 			'italic', 'standout', 'nocombine', 'NONE']
-	for i, color in enumerate(colors):
-		if color not in valid_colors and i in [0, 1]: # Check if fg and bg color is in palette
-			raise NameError('color {} of {} is not in the color pelette'.format(color, name))
-		if color not in valid_attr and i not in [0, 1]: # Check if other attribute is a valid name
-			raise NameError('attribute {} of {} is not a valid keyword'.format(color, name))
+
+	if fg_color not in valid_colors:
+		raise NameError('color {} of {} is not in the color pelette'.format(fg_color, name))
+	if bg_color not in valid_colors:
+		raise NameError('color {} of {} is not in the color pelette'.format(bg_color, name))
+	for attr_ in attr_list:
+		if attr_ not in valid_attr:
+			raise NameError('attribute {} of {} is not a valid keyword'.format(attr_, name))
 
 	transp_group = ['Normal', 'LineNr', 'Folded', 'SignColumn']
 	if 'transparent' in color_dict['option'] and color_dict['option']['transparent'] \
 			and name in transp_group:
 		termbg = 'NONE'
 	else:
-		termbg = get_term_color(colors[1])
+		termbg = get_term_color(bg_color)
 
-	termfg = get_term_color(colors[0])
-	guibg = get_gui_color(colors[1])
-	guifg = get_gui_color(colors[0])
-	return (termfg, termbg, guifg, guibg, 'NONE', 'NONE')
+	termfg = get_term_color(fg_color)
+	guibg = get_gui_color(bg_color)
+	guifg = get_gui_color(fg_color)
+	return (termfg, termbg, guifg, guibg, attr, attr)
 
 # -----------------------------
 
@@ -157,8 +170,8 @@ def rgb2hex(rgb_color):
 	return '#{:02x}{:02x}{:02x}'.format(rgb[0], rgb[1], rgb[2])
 
 def set_up():
-	""" Capitalize group name and make all colorname lowercase """
-	color_dict['group'] = {name.capitalize(): val.lower()
+	""" Make all colorname lowercase """
+	color_dict['group'] = {name: val.lower()
 			for name, val in color_dict['group'].items()}
 	color_dict['palette'] = {name.lower(): val
 			for name, val in color_dict['palette'].items()}
@@ -245,22 +258,21 @@ def main():
 	global yaml_path
 	global output_path
 
-	yaml_path = args.inputfile[0]
+	yaml_path = arg_list.inputfile[0]
 	colorscheme = parse_yaml()
 
-	output_path = os.path.join(args.dest, colorscheme['name'] + '.vim')
+	output_path = os.path.join(arg_list.dest, colorscheme['name'] + '.vim')
 	generate(colorscheme)
 
 if __name__ == '__main__':
-	args = get_args()
+	arg_list = get_args()
 
-	if args.callgraph:
-		generate_callgraph(main)
+	if arg_list.callgraph:
+		main = callgraph(main)
 	main()
 
 # TODO
 # update all colorscheme with default setting for new hi group?
 # test if non-exist color is filled with default color properly
-# remove pycallgraph code
 
 # vim: nofoldenable
