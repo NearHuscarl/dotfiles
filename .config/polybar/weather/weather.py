@@ -159,6 +159,7 @@ def update_weather(city_id, units, api_key):
 		try:
 			description = req.json()['weather'][0]['description'].capitalize()
 		except ValueError:
+			print(error_icon, flush=True)
 			raise MyInternetIsShitty
 
 		temp_value = round(req.json()['main']['temp'])
