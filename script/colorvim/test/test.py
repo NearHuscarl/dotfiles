@@ -15,29 +15,11 @@ class TestColorvim(unittest.TestCase):
 	@classmethod
 	def setUpClass(cls):
 		""" Run before all the tests """
-		cwd = os.getcwd()
-		cls.test1_path = os.path.join(cwd, 'test1.yaml')
-		cls.test2_path = os.path.join(cwd, 'test2.yaml')
-		cls.test3_path = os.path.join(cwd, 'test3.yaml')
-		cls.test4_path = os.path.join(cwd, 'test4.yaml')
-		cls.test5_path = os.path.join(cwd, 'test5.yaml')
-		cls.test6_path = os.path.join(cwd, 'test6.yaml')
-		cls.test7_path = os.path.join(cwd, 'test7.yaml')
-		cls.test8_path = os.path.join(cwd, 'test8.yaml')
-		cls.test9_path = os.path.join(cwd, 'test9.yaml')
-		cls.test10_path = os.path.join(cwd, 'test10.yaml')
-		cls.test11_path = os.path.join(cwd, 'test11.yaml')
-		cls.test12_path = os.path.join(cwd, 'test12.yaml')
-		cls.test13_path = os.path.join(cwd, 'test13.yaml')
-		cls.test14_path = os.path.join(cwd, 'test14.yaml')
-		cls.test15_path = os.path.join(cwd, 'test15.yaml')
-		cls.test16_path = os.path.join(cwd, 'test16.yaml')
-		cls.test17_path = os.path.join(cwd, 'test17.yaml')
-		cls.test18_path = os.path.join(cwd, 'test18.yaml')
-		cls.test19_path = os.path.join(cwd, 'test19.yaml')
-		cls.test20_path = os.path.join(cwd, 'test20.yaml')
-		cls.test21_path = os.path.join(cwd, 'test21.yaml')
-		cls.test22_path = os.path.join(cwd, 'test22.yaml')
+		cls.test_paths = []
+		dirname = os.path.dirname(os.path.realpath(__file__))
+
+		for i in range(1, 30):
+			cls.test_paths.append(os.path.join(dirname, 'test' + str(i) + '.yaml'))
 
 	@classmethod
 	def tearDownClass(cls):
@@ -56,7 +38,7 @@ class TestColorvim(unittest.TestCase):
 
 	def test_cmd(self):
 		""" Test command exit status """
-		self.assertEqual(os.system('colorvim ' + self.test1_path), 0)
+		self.assertEqual(os.system('colorvim ' + self.test_paths[0]), 0)
 
 	def test_rgb2hex(self):
 		""" Test hex2rgb() """
@@ -72,53 +54,53 @@ class TestColorvim(unittest.TestCase):
 
 	def test_author_is_empty(self):
 		""" Test fail when empty author field dont raise exception NameError """
-		colorvim.yaml_path = self.test2_path
+		colorvim.yaml_path = self.test_paths[1]
 		colorvim.color_dict = colorvim.parse_yaml()
 		with self.assertRaises(NameError):
 			colorvim.get_author()
 
-		colorvim.yaml_path = self.test3_path
+		colorvim.yaml_path = self.test_paths[2]
 		colorvim.color_dict = colorvim.parse_yaml()
 		with self.assertRaises(NameError):
 			colorvim.get_author()
 
 	def test_default_description(self):
 		""" Test default description is which should be '<name> colorscheme' """
-		colorvim.yaml_path = self.test4_path
+		colorvim.yaml_path = self.test_paths[3]
 		colorvim.color_dict = colorvim.parse_yaml()
 
 		self.assertEqual(colorvim.get_description(), 'test4 colorscheme')
 
 	def test_background_option(self):
 		""" Test: default background should be 'dark', value should be 'dark' or 'light' only """
-		colorvim.yaml_path = self.test5_path
+		colorvim.yaml_path = self.test_paths[4]
 		colorvim.color_dict = colorvim.parse_yaml()
 		self.assertEqual(colorvim.get_background(), 'dark')
 
-		colorvim.yaml_path = self.test6_path
+		colorvim.yaml_path = self.test_paths[5]
 		colorvim.color_dict = colorvim.parse_yaml()
 		self.assertEqual(colorvim.get_background(), 'dark')
 
-		colorvim.yaml_path = self.test7_path
+		colorvim.yaml_path = self.test_paths[6]
 		colorvim.color_dict = colorvim.parse_yaml()
 		with self.assertRaises(NameError):
 			colorvim.get_background()
 
 	def test_name_is_empty(self):
 		""" Test fail when empty name field dont raise exception NameError """
-		colorvim.yaml_path = self.test8_path
+		colorvim.yaml_path = self.test_paths[7]
 		colorvim.color_dict = colorvim.parse_yaml()
 		with self.assertRaises(NameError):
 			colorvim.get_name()
 
-		colorvim.yaml_path = self.test9_path
+		colorvim.yaml_path = self.test_paths[8]
 		colorvim.color_dict = colorvim.parse_yaml()
 		with self.assertRaises(NameError):
 			colorvim.get_name()
 
 	def test_color_name_is_in_palette(self):
 		""" Test if color name is in color palette """
-		colorvim.yaml_path = self.test10_path
+		colorvim.yaml_path = self.test_paths[9]
 		colorvim.color_dict = colorvim.parse_yaml()
 
 		with self.assertRaises(NameError):
@@ -128,7 +110,7 @@ class TestColorvim(unittest.TestCase):
 
 	def test_attr_val_is_valid_name(self):
 		""" Test if attribute value is a valid name """
-		colorvim.yaml_path = self.test11_path
+		colorvim.yaml_path = self.test_paths[10]
 		colorvim.color_dict = colorvim.parse_yaml()
 
 		with self.assertRaises(NameError):
@@ -139,7 +121,7 @@ class TestColorvim(unittest.TestCase):
 		Test if color group has at least 2 value (bg and fg color)
 		'_' is also a value indicate NONE
 		"""
-		colorvim.yaml_path = self.test12_path
+		colorvim.yaml_path = self.test_paths[11]
 		colorvim.color_dict = colorvim.parse_yaml()
 
 		with self.assertRaises(ValueError):
@@ -147,7 +129,7 @@ class TestColorvim(unittest.TestCase):
 
 	def test_transperant_option(self):
 		""" Test if transparent is true, ctermbg in transp group is NONE  """
-		colorvim.yaml_path = self.test13_path
+		colorvim.yaml_path = self.test_paths[12]
 		colorvim.color_dict = colorvim.parse_yaml()
 
 		transp_group = ['Normal', 'LineNr', 'Folded', 'SignColumn']
@@ -159,7 +141,7 @@ class TestColorvim(unittest.TestCase):
 
 	def test_colorname_transform(self):
 		""" Test transform color name to lowercase """
-		colorvim.yaml_path = self.test14_path
+		colorvim.yaml_path = self.test_paths[13]
 		colorvim.color_dict = colorvim.parse_yaml()
 
 		colorvim.set_up()
@@ -172,7 +154,7 @@ class TestColorvim(unittest.TestCase):
 
 	def test_multiple_attribute(self):
 		""" Test multiple attribute getters """
-		colorvim.yaml_path = self.test15_path
+		colorvim.yaml_path = self.test_paths[14]
 		colorvim.color_dict = colorvim.parse_yaml()
 
 		colorvim.set_up()
