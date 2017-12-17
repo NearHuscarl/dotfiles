@@ -308,10 +308,9 @@ bindsym Print      exec $no_loading $HOME/bin/screenshot clipboard
 bindsym $mod+Print exec $no_loading $HOME/bin/screenshot filesystem
 # }}}
 # Sound {{{
-# xfce4 already done that
-# bindsym XF86AudioRaiseVolume exec amixer -q set Master 2dB+ unmute
-# bindsym XF86AudioLowerVolume exec amixer -q set Master 2dB- unmute
-# bindsym XF86AudioMute exec amixer -q set Master toggle
+bindsym XF86AudioRaiseVolume exec $no_loading $HOME/bin/volume.sh up
+bindsym XF86AudioLowerVolume exec $no_loading $HOME/bin/volume.sh down
+bindsym XF86AudioMute exec $no_loading $HOME/bin/volume.sh toggle
 # }}}
 # Misc {{{
 
