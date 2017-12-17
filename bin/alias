@@ -4,7 +4,7 @@
 # Description: Bash custom aliases and other alias functions, some alias have
 #              the equivalent completion as the original commands
 # Author:      Near Huscarl <near.huscarl@gmail.com>
-# Last Change: Thu Dec 14 17:07:04 +07 2017
+# Last Change: Sat Dec 16 17:50:25 +07 2017
 # Licence:     BSD 3-Clause license
 # Note:        N/A
 # ============================================================================
@@ -21,7 +21,6 @@ alias  ls="ls --color=auto"
 # }}}
 # change directory {{{
 alias dkt='cd $HOME/Desktop'
-alias dot='cd $HOME/dotfiles'
 alias cdh='cd $HOME'
 alias cdw='cd $HOME/Github/NearHuscarl.github.io/'
 alias cdp='cd $HOME/Github/LearnPythonTheHardWay/'
