@@ -31,7 +31,7 @@ def get_args():
 	parser.add_argument('-d', '--dest', nargs='?',
 			help='destination path for generated colorshceme, default is current directory',
 			default=os.getcwd())
-	parser.add_argument('-cg', '--callgraph', action='store_true', help='generate function all graph')
+	parser.add_argument('-cg', '--callgraph', action='store_true', help='generate function call graph')
 	return parser.parse_args()
 
 def callgraph(func):
@@ -111,11 +111,11 @@ def get_background():
 
 def get_term_color(color):
 	""" Get ctermfg color """
-	return 'NONE' if color == '_' else color_dict['palette'][color][1]
+	return 'NONE' if color == '_' else str(color_dict['palette'][color][1])
 
 def get_gui_color(color):
 	""" Get guibg color """
-	return 'NONE' if color == '_' else color_dict['palette'][color][0]
+	return 'NONE' if color == '_' else str(color_dict['palette'][color][0])
 
 def get_group_attr(name):
 	""" Return a tuple contain group attributes (termfg, termbg, guifg, guibg, term & gui) """
@@ -229,8 +229,8 @@ def write_body():
 		max_group_len = len(max(color_dict['group'].keys(), key=len))
 		for group in color_dict['group']:
 			attr = get_group_attr(group)
-			line = ('hi {:{x}} ctermfg={:<4} ctermbg={:<4} guifg={:<7} guibg={:<7} '
-					'cterm={:<7} gui={}').format(group, *attr, x=max_group_len)
+			line = ('hi {:{x}} ctermfg={:4} ctermbg={:4} guifg={:7} guibg={:7} '
+					'cterm={:7} gui={}').format(group, *attr, x=max_group_len)
 			put(file, line)
 
 		put(file, 'endif')
