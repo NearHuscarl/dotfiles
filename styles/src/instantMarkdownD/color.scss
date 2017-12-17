@@ -8,7 +8,7 @@ html, body {
 .container {
 	// default foreground color
 	& * {
-		border-color: $fg-color !important;
+		border-color: $bg-alt-color !important;
 		color: $fg-color !important;
 	}
 
@@ -76,6 +76,13 @@ html, body {
 				.hljs-params {
 					color: $params !important;
 				}
+			}
+		}
+
+		table {
+			tr {
+				background-color: $bg-color !important;
+				color: $fg-color !important;
 			}
 		}
 	}

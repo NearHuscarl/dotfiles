@@ -20,7 +20,7 @@ html, body {
   color: #84888b !important; }
 
 .container * {
-  border-color: #84888b !important;
+  border-color: #2c3e50 !important;
   color: #84888b !important; }
 
 .container .markdown-body {
@@ -57,6 +57,9 @@ html, body {
     .container .markdown-body pre .hljs-function .hljs-params,
     .container .markdown-body pre .hljs-class .hljs-params {
       color: #ecf0f1 !important; }
+  .container .markdown-body table tr {
+    background-color: #1f2d3a !important;
+    color: #84888b !important; }
 
 .diff-view .blob-code-inner,
 td.blob-num,
