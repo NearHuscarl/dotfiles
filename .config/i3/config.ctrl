@@ -1,4 +1,3 @@
-# vim: ft=i3
 # i3 config
 
 # Variables {{{
@@ -13,7 +12,7 @@ set $ws_music  "8"
 set $ws9       "9"
 set $ws_misc   "10"
 
-set $terminal   i3-sensible-terminal
+set $terminal   termite
 set $lock_font  Roboto-Bold
 set $mod        Control
 set $super      Mod4
@@ -56,7 +55,7 @@ bindsym $mod+slash kill
 bindsym $mod+shift+slash focus parent,focus parent,focus parent,focus parent,kill
 
 bindsym $mod+Shift+l exec i3lock-fancy -f $lock_font
-bindsym $mod+Return exec $terminal --disable-server
+bindsym $mod+Return exec $terminal
 bindsym $mod+shift+f fullscreen toggle
 
 bindsym $mod+g split toggle
@@ -122,33 +121,26 @@ for_window [window_role="Preferences"]    $FLOAT
 for_window [window_type="dialog"]         $FLOAT
 for_window [window_type="menu"]           $FLOAT
 for_window [class="Pavucontrol"]          $FLOAT
-for_window [class="File-roller"]          $FLOAT
 for_window [class="Nitrogen"]             $FLOAT
 for_window [class="Gucharmap"]            $FLOAT
-for_window [class="Blueberry.py"]         $FLOAT
 for_window [class="Sxiv"]                 $FLOAT
 for_window [class="feh"]                  $FLOAT
 for_window [title="Floating"]             $FLOAT
-for_window [title="Startup Settings"]     $FLOAT
 for_window [class="mpv"]                  $FLOAT
 for_window [class="Nm-connection-editor"] $FLOAT
 for_window [class="Gimp"]                 $FLOAT
+for_window [class="Display"]              $FLOAT
 for_window [title="Todo"]                 $SCRATCHPAD
+# for_window [class="File-roller"]          $FLOAT
+# for_window [class="Blueberry.py"]         $FLOAT
+# for_window [title="Startup Settings"]     $FLOAT
 # for_window [title="libreoffice"]       floating enable
 
-# Very dirty workaround to make chrome developer tools fullscreen
-# for_window [title="^Developer Tools.*"] \
-#  floating enable; \
-#  resize shrink width 10000px; \
-#  resize shrink height 10000px; \
-#  resize grow width 1290px; \
-#  resize grow height 718px; \
-#  move absolute position 0 px 0 px
 # }}}
 # Application launcher shortcut {{{
 bindsym F1 exec $terminal
 # bindsym F2 exec gvim; workspace $ws_dev
-bindsym F2 exec xfce4-terminal --title="Vim - Dev" -e "bash --login -c 'vim --servername vim'"; workspace $ws_dev
+bindsym F2 exec termite --title="Vim - Dev" -e "bash --login -c 'vim --servername vim'"; workspace $ws_dev
 # bindsym F3 exec google-chrome-stable; workspace $ws_web
 bindsym F3 exec vivaldi-stable; workspace $ws_web
 bindsym F4 exec $terminal --title="Ranger" -e "bash --login -c ranger"; workspace $ws_file
@@ -256,7 +248,6 @@ mode "resize" {
         bindsym shift+l resize grow width 8 px or 8 ppt
 
         # back to normal: Enter or Escape
-        bindsym $mod+r mode "default"
         bindsym Return mode "default"
         bindsym Escape mode "default"
 }
@@ -338,4 +329,4 @@ client.placeholder      #000000       #0c0c0c       #ffffff       #000000      #
 
 # }}}
 
-# vim: foldmethod=marker
+# vim: foldmethod=marker ft=i3
