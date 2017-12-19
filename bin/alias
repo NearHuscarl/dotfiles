@@ -4,7 +4,7 @@
 # Description: Bash custom aliases and other alias functions, some alias have
 #              the equivalent completion as the original commands
 # Author:      Near Huscarl <near.huscarl@gmail.com>
-# Last Change: Tue Dec 19 16:47:29 +07 2017
+# Last Change: Wed Dec 20 02:35:03 +07 2017
 # Licence:     BSD 3-Clause license
 # Note:        N/A
 # ============================================================================
@@ -17,7 +17,7 @@ alias vdir='vdir --color=auto'
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
-alias  ls="ls --color=auto"
+alias ls="ls --color=auto"
 # }}}
 # change directory {{{
 alias dkt='cd $HOME/Desktop'
@@ -164,7 +164,7 @@ alias xprop-class='xprop WM_CLASS'
 alias xprop-role='xprop WM_WINDOW_ROLE'
 alias xprop-title='xprop _NET_WM_NAME WM_NAME'
 # }}}
-# Picture {{{
+# picture {{{
 alias wallpaper='nitrogen --random --set-scaled "$HOME/Pictures/Low Poly"'
 alias schedule='sxiv -f $HOME/Pictures/misc/schedule.png'
 alias thumnail='sxiv -f -t -b -r *'
