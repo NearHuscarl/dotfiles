@@ -4,7 +4,7 @@
 # Description: Bash custom aliases and other alias functions, some alias have
 #              the equivalent completion as the original commands
 # Author:      Near Huscarl <near.huscarl@gmail.com>
-# Last Change: Sat Dec 16 17:50:25 +07 2017
+# Last Change: Tue Dec 19 16:47:29 +07 2017
 # Licence:     BSD 3-Clause license
 # Note:        N/A
 # ============================================================================
@@ -22,9 +22,7 @@ alias  ls="ls --color=auto"
 # change directory {{{
 alias dkt='cd $HOME/Desktop'
 alias cdh='cd $HOME'
-alias cdw='cd $HOME/Github/NearHuscarl.github.io/'
-alias cdp='cd $HOME/Github/LearnPythonTheHardWay/'
-alias cd-pic='cd $HOME/Pictures'
+alias cdp='cd $HOME/Pictures'
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
@@ -174,6 +172,7 @@ alias pic='alias-pic'
 alias sxiv='sxiv -b -s h'
 # }}}
 # Other {{{
+alias icon="python -c \"print(' '.join([chr(i) + '\u0020\0020' for i in range(61440, 61440+525)]))\""
 alias xmod='xmodmap ~/.Xmodmap'
 alias xres='xrdb ~/.Xresources'
 alias reboot='shutdown -r now'
