@@ -12,7 +12,7 @@ set $ws_music  "8"
 set $ws9       "9"
 set $ws_misc   "10"
 
-set $terminal   i3-sensible-terminal
+set $terminal   termite
 set $lock_font  Roboto-Bold
 set $mod        Mod4
 set $super      Mod4
@@ -55,7 +55,7 @@ bindsym $mod+slash kill
 bindsym $mod+shift+slash focus parent,focus parent,focus parent,focus parent,kill
 
 bindsym $mod+Shift+l exec i3lock-fancy -f $lock_font
-bindsym $mod+Return exec $terminal --disable-server
+bindsym $mod+Return exec $terminal
 bindsym $mod+shift+f fullscreen toggle
 
 bindsym $mod+g split toggle
@@ -147,7 +147,7 @@ for_window [title="Todo"]                 $SCRATCHPAD
 # Application launcher shortcut {{{
 bindsym F1 exec $terminal
 # bindsym F2 exec gvim; workspace $ws_dev
-bindsym F2 exec xfce4-terminal --title="Vim - Dev" -e "bash --login -c 'vim --servername vim'"; workspace $ws_dev
+bindsym F2 exec termite --title="Vim - Dev" -e "bash --login -c 'vim --servername vim'"; workspace $ws_dev
 # bindsym F3 exec google-chrome-stable; workspace $ws_web
 bindsym F3 exec vivaldi-stable; workspace $ws_web
 bindsym F4 exec $terminal --title="Ranger" -e "bash --login -c ranger"; workspace $ws_file

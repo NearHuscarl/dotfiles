@@ -172,6 +172,7 @@ alias pic='alias-pic'
 alias sxiv='sxiv -b -s h'
 # }}}
 # Other {{{
+alias rtm='killall -USR1 termite' # reload termite config
 alias icon="python -c \"print(' '.join([chr(i) + '\u0020\0020' for i in range(61440, 61440+525)]))\""
 alias xmod='xmodmap ~/.Xmodmap'
 alias xres='xrdb ~/.Xresources'
@@ -180,9 +181,6 @@ alias shutoff='$HOME/bin/shutdown'
 alias size='alias-size'
 alias mkdir='mkdir -pv'
 alias top='vtop'
-if [[ -x /usr/bin/xfce4-terminal ]]; then
-	alias term='xfce4-terminal'
-fi
 alias internet='$EDITOR $HOME/misc/Internet.txt'
 alias alsa-fix='sudo /usr/local/bin/fix_headphones_audio.sh'
 alias music='ncmpcpp'

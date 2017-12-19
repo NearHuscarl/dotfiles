@@ -9,7 +9,7 @@ MAN_STORE="${HOME}/.config/rofi/man/"
 MAN_DB="${MAN_STORE}/man.db"
 MAN_PATH="/usr/share/man/"
 MAN_EXT="xz"
-TERMINAL="xfce4-terminal"
+TERMINAL="termite"
 
 function create_db() {
   find "${MAN_PATH}" -iname "*.${MAN_EXT}" -printf "%f\n" | \
