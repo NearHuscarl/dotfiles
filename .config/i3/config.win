@@ -1,4 +1,3 @@
-# vim: ft=i3
 # i3 config
 
 # Variables {{{
@@ -338,4 +337,4 @@ client.placeholder      #000000       #0c0c0c       #ffffff       #000000      #
 
 # }}}
 
-# vim: foldmethod=marker
+# vim: foldmethod=marker ft=i3
