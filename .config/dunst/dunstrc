@@ -46,7 +46,7 @@
     # The height of the entire notification.  If the height is smaller
     # than the font height and padding combined, it will be raised
     # to the font height and padding.
-    notification_height = 0
+    notification_height = 2
 
     # Draw a line of "separator_height" pixel height between two
     # notifications.
@@ -54,17 +54,17 @@
     separator_height = 0
 
     # Padding between text and separator.
-    padding = 6
+    padding = 8
 
     # Horizontal padding.
     horizontal_padding = 8
 
     # Defines width in pixels of frame around the notification window.
     # Set to 0 to disable.
-    frame_width = 0
+    frame_width = 1
 
     # Defines color of the frame around the notification window.
-    frame_color = "#aaaaaa"
+    frame_color = "#16A085"
 
     # Define a color for the separator.
     # possible values are:
@@ -84,7 +84,7 @@
 
     ### Text ###
 
-    font = Inconsolata Bold 9
+    font = Inconsolata 10
 
     # The spacing between lines.  If the height is smaller than the
     # font height, it will get raised to the font height.
@@ -156,7 +156,7 @@
     icon_position = left
 
     # Scale larger icons down to this size, set to 0 to disable
-    max_icon_size = 20
+    max_icon_size = 25
 
     # Paths to default icons.
     icon_folders = /home/near/.icons/Paper/16x16/status/:/home/near/.icons/Paper/16x16/devices/:usr/share/icons/gnome/16x16/status/:/usr/share/icons/gnome/16x16/devices/
@@ -240,7 +240,7 @@
     # IMPORTANT: colors have to be defined in quotation marks.
     # Otherwise the "#" and following would be interpreted as a comment.
     background = "#2C3E50"
-    foreground = "#ECF0F1"
+    foreground = "#16A085"
     timeout = 5
     # Icon for notifications with low urgency, uncomment to enable
     icon = /home/near/.icons/Paper/16x16/status/dialog-info.png
@@ -255,7 +255,7 @@
 [urgency_critical]
     background = "#2C3E50"
     foreground = "#E74C3C"
-    frame_color = "#ff0000"
+    # frame_color = "#ff0000"
     timeout = 0
     # Icon for notifications with critical urgency, uncomment to enable
     icon = /home/near/.icons/Paper/16x16/status/dialog-error.png
