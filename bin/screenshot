@@ -1,40 +1,87 @@
-#!/bin/bash
+#!/bin/env bash
+
+# Usage:
+# $ ./screenshot clipboard
+# $ ./screenshot filesystem
+
+# Dependency:
+# maim
+# dunst-git
 
 set -o pipefail
+set -o nounset
+# set -o xtrace
 
-save_to="${1:-clipboard}"
+USAGE="Usage: screenshot [help|clipboard|filesystem]"
+HELP="\
+screenshot <command>
+Commands:
+  h,  help         print this help message
+  cb, clipboard    save image to clipboard
+  fs, filesystem   save image to filesystem"
+
+function die () {
+	echo "$*" >&2
+	exit 1
+}
+
+function usage() {
+	die "$USAGE"
+}
+
+function help() {
+	echo "$HELP"
+}
 
 function notify_screenshot() {
 	local notify_content="$@"
 
-	notify-send \
+	dunstify \
 		--urgency=low \
 		--icon="$HOME/.icons/dunst/screenshot.png" \
 		"$notify_content"
 }
 
-pic_name="$(date +[%Y-%m-%d]-[%H:%M:%S]).png"
-pic_dir="$HOME/Pictures/"
-pic_path=""$pic_dir"/"$pic_name""
+function take_screenshot_to_clipboard() {
+	maim --select --delay=1 | xclip -in -selection clipboard -target image/png
+	if [[ $? != 0 ]]; then
+		notify_screenshot 'Stop taking screenshot'
+	else
+		notify_screenshot 'Screenshot has been copied to clipboard'
+	fi
+}
 
-case "$save_to" in
-	'clipboard')
-		maim --select --delay=1 | xclip -in -selection clipboard -target image/png
-		if [[ $? != 0 ]]; then
-			notify_screenshot 'Stop taking screenshot'
-		else
-			notify_screenshot 'Screenshot has been copied to clipboard'
-		fi
-		;;
-	'filesystem')
-		maim --select --delay=1 "$pic_path"
-		if [[ $? != 0 ]]; then
-			notify_screenshot 'Stop taking screenshot'
-		else
-			notify_screenshot "Screenshot has been saved in <br>"$pic_dir" as" "$pic_name"
-		fi
-		;;
-	*)
-		echo 'Invalid parameter'
-		;;
-esac
+function take_screenshot_to_filesystem() {
+	local pic_name="$(date +[%Y-%m-%d]-[%H:%M:%S]).png"
+	local pic_dir="$HOME/Pictures/"
+	local pic_path=""$pic_dir"/"$pic_name""
+
+	maim --select --delay=1 "$pic_path"
+	if [[ $? != 0 ]]; then
+		notify_screenshot 'Stop taking screenshot'
+	else
+		notify_screenshot "Screenshot has been saved in <br>"$pic_dir" as" "$pic_name"
+	fi
+}
+
+function main() {
+	local save_to="${1:-clipboard}"
+
+	case "$#" in
+		0)
+			usage ;;
+		*)
+			case "$save_to" in
+				h|help)
+					help ;;
+				cb|clipboard)
+					take_screenshot_to_clipboard ;;
+				fs|filesystem)
+					take_screenshot_to_filesystem ;;
+				*)
+					usage ;;
+			esac
+	esac
+}
+
+main "$@"

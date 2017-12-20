@@ -1,0 +1,114 @@
+#!/bin/env bash
+
+# Usage:
+# $ ./volume up
+# $ ./volume down
+# $ ./volume toggle
+
+# Dependency:
+# alsa
+# dunst-git
+
+set -o errexit
+set -o pipefail
+set -o nounset
+# set -o xtrace
+
+USAGE="Usage: volume [help|up|down|toggle]"
+HELP="\
+volume <command>
+Commands:
+  h, help      print this help message
+  u, up        increase volume
+  d, down      decrease volume
+  t, toggle    toggle mute/unmute"
+
+function die () {
+	echo "$*" >&2
+	exit 1
+}
+
+function usage() {
+	die "$USAGE"
+}
+
+function help() {
+	echo "$HELP"
+}
+
+function get_volume() {
+	amixer get Master | grep '%' | cut -d '[' -f 2 | cut -d '%' -f 1
+}
+
+function is_mute() {
+	amixer get Master | grep -F [off] 1> /dev/null
+}
+
+function get_icon() {
+	local volume=$(get_volume)
+
+	if is_mute; then
+		echo ""$HOME"/.icons/dunst/volume-muted.svg"
+	elif (( "$volume" < 33 )); then
+		echo ""$HOME"/.icons/dunst/volume-low.svg"
+	elif (( "$volume" < 66 )); then
+		echo ""$HOME"/.icons/dunst/volume-medium.svg"
+	elif (( "$volume" <= 100 )); then
+		echo ""$HOME"/.icons/dunst/volume-high.svg"
+	fi
+}
+
+function get_bar() {
+	echo $(seq -s "─" $(($volume / 3)) | sed 's/[0-9]//g')
+}
+
+function notify_volume() {
+	local icon=$(get_icon)
+	local volume=$(get_volume)
+	is_mute && local mute_or_bar=' Mute' || local mute_or_bar="  $(get_bar)"
+
+	dunstify \
+		--urgency=low \
+		--icon="$icon" \
+		--replace=100 \
+		"$mute_or_bar"
+}
+
+function toggle_volume() {
+	amixer -q set Master toggle
+	notify_volume
+}
+
+function increase_volume() {
+	amixer -q set Master 2dB+ unmute
+	notify_volume
+}
+
+function decrease_volume() {
+	amixer -q set Master 2dB- unmute
+	notify_volume
+}
+
+function main() {
+	local volume_action="${1:-toggle}"
+
+	case "$#" in
+		0)
+			usage ;;
+		*)
+			case "$volume_action" in
+				h|help)
+					help ;;
+				t|toggle)
+					toggle_volume ;;
+				u|up)
+					increase_volume ;;
+				d|down)
+					decrease_volume ;;
+				*)
+					usage ;;
+			esac
+	esac
+}
+
+main "$@"
