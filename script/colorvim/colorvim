@@ -117,6 +117,20 @@ def get_gui_color(color):
 	""" Get guibg color """
 	return 'NONE' if color == '_' else str(color_dict['palette'][color][0])
 
+def validate_color(color, group):
+	""" Check if color is in palette list, raise if it doesn't """
+	valid_colors = list(color_dict['palette'].keys()) + ['_']
+	if color not in valid_colors:
+		raise NameError('color {} of {} is not in the color pelette'.format(color, group))
+
+def validate_attr(attr_list, group):
+	""" Check if attributes is in valid attribute keyword list, raise if it doesn't """
+	valid_attr = ['bold', 'underline', 'undercurl', 'strikethrough', 'reverse', 'inverse',  \
+			'italic', 'standout', 'nocombine', 'NONE']
+	for attr in attr_list:
+		if attr not in valid_attr:
+			raise NameError('attribute {} of {} is not a valid keyword'.format(attr, group))
+
 def get_group_attr(name):
 	""" Return a tuple contain group attributes (termfg, termbg, guifg, guibg, term & gui) """
 	group_attr = color_dict['group'][name].split(None, 2)
@@ -131,17 +145,9 @@ def get_group_attr(name):
 		attr = attr.replace(' ', '')
 		attr_list = attr.split(',')
 
-	valid_colors = list(color_dict['palette'].keys()) + ['_']
-	valid_attr = ['bold', 'underline', 'undercurl', 'strikethrough', 'reverse', 'inverse',  \
-			'italic', 'standout', 'nocombine', 'NONE']
-
-	if fg_color not in valid_colors:
-		raise NameError('color {} of {} is not in the color pelette'.format(fg_color, name))
-	if bg_color not in valid_colors:
-		raise NameError('color {} of {} is not in the color pelette'.format(bg_color, name))
-	for attr_ in attr_list:
-		if attr_ not in valid_attr:
-			raise NameError('attribute {} of {} is not a valid keyword'.format(attr_, name))
+	validate_color(fg_color, name)
+	validate_color(bg_color, name)
+	validate_attr(attr_list, name)
 
 	transp_group = ['Normal', 'LineNr', 'Folded', 'SignColumn']
 	if 'transparent' in color_dict['option'] and color_dict['option']['transparent'] \
@@ -230,10 +236,14 @@ def write_body():
 		for group in color_dict['group']:
 			attr = get_group_attr(group)
 			line = ('hi {:{x}} ctermfg={:4} ctermbg={:4} guifg={:7} guibg={:7} '
-					'cterm={:7} gui={}').format(group, *attr, x=max_group_len)
+					'cterm={:9} gui={}').format(group, *attr, x=max_group_len)
 			put(file, line)
 
 		put(file, 'endif')
+
+def indent():
+	""" Indent vim colorscheme file """
+	subprocess.Popen('vim ' + '+"normal! gg=G" ' + '+wqa ' + output_path, shell=True)
 
 def parse_yaml():
 	""" return object parsed from yaml file """
@@ -251,8 +261,7 @@ def generate(colorscheme):
 	write_header()
 	write_palette()
 	write_body()
-	# Indent
-	subprocess.Popen('vim ' + '+"normal! gg=G" ' + '+wqa ' + output_path, shell=True)
+	indent()
 
 def main():
 	global yaml_path
