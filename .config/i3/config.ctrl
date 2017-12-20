@@ -299,9 +299,9 @@ bindsym Print      exec $no_loading $HOME/bin/screenshot clipboard
 bindsym $mod+Print exec $no_loading $HOME/bin/screenshot filesystem
 # }}}
 # Sound {{{
-bindsym XF86AudioRaiseVolume exec $no_loading $HOME/bin/volume.sh up
-bindsym XF86AudioLowerVolume exec $no_loading $HOME/bin/volume.sh down
-bindsym XF86AudioMute exec $no_loading $HOME/bin/volume.sh toggle
+bindsym XF86AudioRaiseVolume exec $no_loading $HOME/bin/volume up
+bindsym XF86AudioLowerVolume exec $no_loading $HOME/bin/volume down
+bindsym XF86AudioMute exec $no_loading $HOME/bin/volume toggle
 # }}}
 # Misc {{{
 
