@@ -1,3 +1,4 @@
+# test_cmd
 name: flat
 author:
    name: Near Huscarl
@@ -46,3 +47,52 @@ group:
    Todo:          _              _               reverse
    Type:          violet         _
    Underlined:    cyan           _               underline
+
+   NonText:       gray           _
+
+   Pmenu:         white          darkgray
+   PmenuSbar:     _              darkgray
+   PmenuSel:      dark           cyan
+   PmenuThumb:    cyan           cyan
+
+   ErrorMsg:      dark           darkred
+   ModeMsg:       dark           lightgreen
+   MoreMsg:       cyan           _
+   Question:      lightgreen     _
+   WarningMsg:    darkred        _
+
+   TabLine:       yellow         darkgray
+   TabLineFill:   darkgray       darkgray
+   TabLineSel:    darkgray       yellow
+
+   Cursor:        _              _               reverse
+   CursorColumn:  _              darkgray
+   CursorLineNr:  lightcyan      darkgray
+   CursorLine:    _              darkgray
+
+   helpLeadBlank: _         _
+   helpNormal:    _         _
+
+   StatusLine:    white     blue
+   StatusLineNC:  yellow    darkgray
+
+   Visual:        white     blue
+   VisualNOS:     white     gray                  underline
+
+   VertSplit:     darkgray  darkgray
+   WildMenu:      white     purple
+
+   Function:      lightblue _
+   SpecialKey:    gray      _
+   Title:         white     _
+
+   DiffAdd:       cyan      white                 reverse
+   DiffChange:    darkgray  white                 reverse
+   DiffDelete:    darkred   white                 reverse
+   DiffText:      yellow    dark                  reverse
+
+   IncSearch:     dark      darkred
+   Search:        white     cyan
+
+   Directory:     lightcyan _
+   ColorColum:    _         dark

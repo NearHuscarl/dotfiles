@@ -17,8 +17,16 @@ import yaml
 # pylint: disable=global-statement
 yaml_path = ''
 output_path = ''
+
 color_dict = {}
 arg_list = None
+
+default_transparent_group = ['Normal', 'LineNr', 'Folded', 'SignColumn']
+transparent_group = []
+
+valid_colors = []
+valid_attr = []
+
 # ----------------------------------
 
 # ------- Set up -------
@@ -35,7 +43,7 @@ def get_args():
 	return parser.parse_args()
 
 def callgraph(func):
-	""" decorator to record callgraph start from the decorated function """
+	""" decorator to generate callgraph start from the decorated function """
 	def generate_callgraph(*args, **kwargs):
 		""" set up before starting generate callgraph and take function func as starting point """
 		from pycallgraph import PyCallGraph
@@ -49,6 +57,23 @@ def callgraph(func):
 		with PyCallGraph(config=config, output=graphviz):
 			func(*args, **kwargs)
 	return generate_callgraph
+
+def set_up(colorscheme):
+	""" Make all colorname lowercase and set up some global variables """
+	global color_dict
+	global valid_colors
+	global valid_attr
+
+	color_dict = colorscheme
+	color_dict['group'] = {name: val.lower()
+			for name, val in colorscheme['group'].items()}
+	color_dict['palette'] = {name.lower(): val
+			for name, val in colorscheme['palette'].items()}
+
+	valid_colors = list(color_dict['palette'].keys()) + ['_']
+	valid_attr = ['bold', 'underline', 'undercurl', 'strikethrough', 'reverse', 'inverse',  \
+			'italic', 'standout', 'nocombine', 'NONE']
+
 #-----------------------
 
 # ----- getter functions ------
@@ -99,6 +124,10 @@ def get_color():
 	""" get color palette as a dictionary """
 	return color_dict['palette']
 
+def get_group_dict():
+	""" Return a dictionary which have group names maps to their values """
+	return color_dict['group']
+
 def get_background():
 	""" get background value ('dark' or 'light') """
 	if 'option' not in color_dict or 'background' not in color_dict['option'] \
@@ -111,55 +140,71 @@ def get_background():
 
 def get_term_color(color):
 	""" Get ctermfg color """
-	return 'NONE' if color == '_' else str(color_dict['palette'][color][1])
+	return 'NONE' if color == '_' else str(get_color()[color][1])
 
 def get_gui_color(color):
 	""" Get guibg color """
-	return 'NONE' if color == '_' else str(color_dict['palette'][color][0])
+	return 'NONE' if color == '_' else str(get_color()[color][0])
+
+def get_transparent_group():
+	""" Get transparent groups that whose ctermbg value will be set to NONE """
+	if 'option' in color_dict and color_dict['option'].get('transparent_group'):
+		return color_dict['option']['transparent_group']
+	return default_transparent_group
+
+def is_transparent():
+	""" Is transparent option set """
+	if 'option' in color_dict and 'transparent' in color_dict['option']:
+		return True if color_dict['option']['transparent'] else False
+	return False
 
 def validate_color(color, group):
 	""" Check if color is in palette list, raise if it doesn't """
-	valid_colors = list(color_dict['palette'].keys()) + ['_']
 	if color not in valid_colors:
 		raise NameError('color {} of {} is not in the color pelette'.format(color, group))
 
 def validate_attr(attr_list, group):
 	""" Check if attributes is in valid attribute keyword list, raise if it doesn't """
-	valid_attr = ['bold', 'underline', 'undercurl', 'strikethrough', 'reverse', 'inverse',  \
-			'italic', 'standout', 'nocombine', 'NONE']
 	for attr in attr_list:
 		if attr not in valid_attr:
 			raise NameError('attribute {} of {} is not a valid keyword'.format(attr, group))
 
-def get_group_attr(name):
-	""" Return a tuple contain group attributes (termfg, termbg, guifg, guibg, term & gui) """
-	group_attr = color_dict['group'][name].split(None, 2)
-	if len(group_attr) < 2:
+def get_hi_group_color(group_name):
+	""" Return a tuple contain group fg and bg color (termfg, termbg, guifg, guibg) """
+	group_val = get_group_dict()[group_name].split(maxsplit=2)
+	if len(group_val) < 2:
 		raise ValueError('Require at least 2 color values for fg and bg')
-	elif len(group_attr) < 3:
-		fg_color, bg_color = color_dict['group'][name].split()
-		attr = 'NONE'
-		attr_list = []
-	else:
-		fg_color, bg_color, attr = color_dict['group'][name].split(None, 2)
-		attr = attr.replace(' ', '')
-		attr_list = attr.split(',')
+	fg_color, bg_color = group_val[:2]
 
-	validate_color(fg_color, name)
-	validate_color(bg_color, name)
-	validate_attr(attr_list, name)
+	validate_color(fg_color, group_name)
+	validate_color(bg_color, group_name)
 
-	transp_group = ['Normal', 'LineNr', 'Folded', 'SignColumn']
-	if 'transparent' in color_dict['option'] and color_dict['option']['transparent'] \
-			and name in transp_group:
-		termbg = 'NONE'
+	if is_transparent():
+		termbg = 'NONE' if group_name in get_transparent_group() else get_term_color(bg_color)
 	else:
 		termbg = get_term_color(bg_color)
-
 	termfg = get_term_color(fg_color)
 	guibg = get_gui_color(bg_color)
 	guifg = get_gui_color(fg_color)
-	return (termfg, termbg, guifg, guibg, attr, attr)
+	return (termfg, termbg, guifg, guibg)
+
+def get_hi_group_attr(group):
+	""" Return a tuple contain group attributes (term_attr, gui_attr) """
+	group_val = get_group_dict()[group].split(maxsplit=2)
+	if len(group_val) < 3:
+		return 'NONE'
+	attr = group_val[2].replace(' ', '')
+	attr_list = attr.split(',')
+
+	validate_attr(attr_list, group)
+	return attr
+
+def get_hi_group_value(group_name):
+	"""
+	Return a tuple contain group attributes
+	(termfg, termbg, guifg, guibg, term_attr, gui_attr)
+	"""
+	return get_hi_group_color(group_name) + tuple([get_hi_group_attr(group_name)]) * 2
 
 # -----------------------------
 
@@ -175,14 +220,7 @@ def rgb2hex(rgb_color):
 	rgb = [int(i) for i in rgb_color.strip('rgb()').split(',')]
 	return '#{:02x}{:02x}{:02x}'.format(rgb[0], rgb[1], rgb[2])
 
-def set_up():
-	""" Make all colorname lowercase """
-	color_dict['group'] = {name: val.lower()
-			for name, val in color_dict['group'].items()}
-	color_dict['palette'] = {name.lower(): val
-			for name, val in color_dict['palette'].items()}
-
-def put(file, line):
+def put(file, line=''):
 	""" write content to a file with newline character """
 	file.write(line + '\n')
 
@@ -200,10 +238,10 @@ def write_header():
 		if get_note():
 			put(file, '" Note:        {}'.format(get_note()))
 		put(file, '" ==================================================================')
-		put(file, '')
+		put(file)
 
 def write_palette():
-	""" Write color summary to colorscheme file """
+	""" Write color palette to colorscheme file """
 	rgb_list = [hex2rgb(color_val[0]) for color_val in get_color().values()]
 	max_rgb_len = len(max(rgb_list, key=len))
 	max_name_len = len(max(get_color().keys(), key=len))
@@ -215,31 +253,36 @@ def write_palette():
 		for color, val, rgb_val in zip(get_color().keys(), get_color().values(), rgb_list):
 			formatter = (color, val[0], rgb_val, val[1])
 			put(file, '" {:{x}}  {}  {:{y}}  {}'.format(*formatter, x=max_name_len, y=max_rgb_len))
-		put(file, '')
+		put(file)
 
 def write_body():
-	""" Write all color group assignment and some logics to colorshceme file """
+	""" Write all group assignment and some logics to colorshceme file """
 
 	with open(output_path, 'a') as file:
 		put(file, 'hi clear')
-		put(file, '')
+		put(file)
 		put(file, "if exists('syntax_on')")
 		put(file, '  syntax reset')
 		put(file, 'endif')
-		put(file, '')
+		put(file)
 		put(file, "let colors_name = '{}'".format(get_name()))
 		put(file, 'set background={}'.format(get_background()))
-		put(file, '')
+		put(file)
 		put(file, "if ($TERM =~ '256' || &t_Co >= 256) || has('gui_running')")
 
-		max_group_len = len(max(color_dict['group'].keys(), key=len))
-		for group in color_dict['group']:
-			attr = get_group_attr(group)
+		max_group_len = len(max(get_group_dict().keys(), key=len))
+		for group in get_group_dict():
+			attr = get_hi_group_value(group)
 			line = ('hi {:{x}} ctermfg={:4} ctermbg={:4} guifg={:7} guibg={:7} '
 					'cterm={:9} gui={}').format(group, *attr, x=max_group_len)
 			put(file, line)
 
 		put(file, 'endif')
+		put(file)
+
+def write_link():
+	""" Write group link (hi link Group1 Group2) to colorscheme file """
+	pass
 
 def indent():
 	""" Indent vim colorscheme file """
@@ -247,20 +290,17 @@ def indent():
 
 def parse_yaml():
 	""" return object parsed from yaml file """
-
 	with open(yaml_path, 'r') as file:
 		parsed = yaml.load(file)
 	return parsed
 
 def generate(colorscheme):
 	""" generate colorscheme from yaml parse result """
-	global color_dict
-	color_dict = colorscheme
-
-	set_up()
+	set_up(colorscheme)
 	write_header()
 	write_palette()
 	write_body()
+	write_link()
 	indent()
 
 def main():
@@ -282,6 +322,6 @@ if __name__ == '__main__':
 
 # TODO
 # update all colorscheme with default setting for new hi group?
-# test if non-exist color is filled with default color properly
+# test empty group value?
 
 # vim: nofoldenable

@@ -18,7 +18,7 @@ class TestColorvim(unittest.TestCase):
 		cls.test_paths = []
 		dirname = os.path.dirname(os.path.realpath(__file__))
 
-		for i in range(1, 30):
+		for i in range(0, 30):
 			cls.test_paths.append(os.path.join(dirname, 'test' + str(i) + '.yaml'))
 
 	@classmethod
@@ -38,7 +38,7 @@ class TestColorvim(unittest.TestCase):
 
 	def test_cmd(self):
 		""" Test command exit status """
-		self.assertEqual(os.system('colorvim ' + self.test_paths[0]), 0)
+		self.assertEqual(os.system('colorvim ' + self.test_paths[1]), 0)
 
 	def test_rgb2hex(self):
 		""" Test hex2rgb() """
@@ -54,117 +54,125 @@ class TestColorvim(unittest.TestCase):
 
 	def test_author_is_empty(self):
 		""" Test fail when empty author field dont raise exception NameError """
-		colorvim.yaml_path = self.test_paths[1]
+		colorvim.yaml_path = self.test_paths[2]
 		colorvim.color_dict = colorvim.parse_yaml()
 		with self.assertRaises(NameError):
 			colorvim.get_author()
 
-		colorvim.yaml_path = self.test_paths[2]
+		colorvim.yaml_path = self.test_paths[3]
 		colorvim.color_dict = colorvim.parse_yaml()
 		with self.assertRaises(NameError):
 			colorvim.get_author()
 
 	def test_default_description(self):
 		""" Test default description is which should be '<name> colorscheme' """
-		colorvim.yaml_path = self.test_paths[3]
+		colorvim.yaml_path = self.test_paths[4]
 		colorvim.color_dict = colorvim.parse_yaml()
 
 		self.assertEqual(colorvim.get_description(), 'test4 colorscheme')
 
 	def test_background_option(self):
 		""" Test: default background should be 'dark', value should be 'dark' or 'light' only """
-		colorvim.yaml_path = self.test_paths[4]
-		colorvim.color_dict = colorvim.parse_yaml()
-		self.assertEqual(colorvim.get_background(), 'dark')
-
 		colorvim.yaml_path = self.test_paths[5]
 		colorvim.color_dict = colorvim.parse_yaml()
 		self.assertEqual(colorvim.get_background(), 'dark')
 
 		colorvim.yaml_path = self.test_paths[6]
 		colorvim.color_dict = colorvim.parse_yaml()
+		self.assertEqual(colorvim.get_background(), 'dark')
+
+		colorvim.yaml_path = self.test_paths[7]
+		colorvim.color_dict = colorvim.parse_yaml()
 		with self.assertRaises(NameError):
 			colorvim.get_background()
 
 	def test_name_is_empty(self):
 		""" Test fail when empty name field dont raise exception NameError """
-		colorvim.yaml_path = self.test_paths[7]
+		colorvim.yaml_path = self.test_paths[8]
 		colorvim.color_dict = colorvim.parse_yaml()
 		with self.assertRaises(NameError):
 			colorvim.get_name()
 
-		colorvim.yaml_path = self.test_paths[8]
+		colorvim.yaml_path = self.test_paths[9]
 		colorvim.color_dict = colorvim.parse_yaml()
 		with self.assertRaises(NameError):
 			colorvim.get_name()
 
 	def test_color_name_is_in_palette(self):
 		""" Test if color name is in color palette """
-		colorvim.yaml_path = self.test_paths[9]
+		colorvim.yaml_path = self.test_paths[10]
 		colorvim.color_dict = colorvim.parse_yaml()
+		colorvim.set_up(colorvim.color_dict)
 
 		with self.assertRaises(NameError):
-			colorvim.get_group_attr('Normal')
+			colorvim.get_hi_group_value('Normal')
 		with self.assertRaises(NameError):
-			colorvim.get_group_attr('Comment')
+			colorvim.get_hi_group_value('Comment')
 
 	def test_attr_val_is_valid_name(self):
 		""" Test if attribute value is a valid name """
-		colorvim.yaml_path = self.test_paths[10]
+		colorvim.yaml_path = self.test_paths[11]
 		colorvim.color_dict = colorvim.parse_yaml()
+		colorvim.set_up(colorvim.color_dict)
 
 		with self.assertRaises(NameError):
-			colorvim.get_group_attr('Comment')
+			colorvim.get_hi_group_value('Comment')
 
 	def test_color_group_has_minimum_value(self):
 		"""
 		Test if color group has at least 2 value (bg and fg color)
 		'_' is also a value indicate NONE
 		"""
-		colorvim.yaml_path = self.test_paths[11]
-		colorvim.color_dict = colorvim.parse_yaml()
-
-		with self.assertRaises(ValueError):
-			colorvim.get_group_attr('Comment')
-
-	def test_transperant_option(self):
-		""" Test if transparent is true, ctermbg in transp group is NONE  """
 		colorvim.yaml_path = self.test_paths[12]
 		colorvim.color_dict = colorvim.parse_yaml()
+		colorvim.set_up(colorvim.color_dict)
+
+		with self.assertRaises(ValueError):
+			colorvim.get_hi_group_value('Comment')
+
+	def test_transparent_option(self):
+		""" Test if transparent is true, ctermbg in transp group is NONE  """
+		colorvim.yaml_path = self.test_paths[13]
+		colorvim.color_dict = colorvim.parse_yaml()
+		colorvim.set_up(colorvim.color_dict)
 
 		transp_group = ['Normal', 'LineNr', 'Folded', 'SignColumn']
 		for group in transp_group:
 			if group in colorvim.color_dict['group']:
 				err_msg = ('trasparent is set. {} group ctermbg should be NONE, '
-						'found {} instead ').format(group, colorvim.get_group_attr(group)[1])
-				self.assertEqual(colorvim.get_group_attr(group)[1], 'NONE', err_msg)
+						'found {} instead ').format(group, colorvim.get_hi_group_value(group)[1])
+				self.assertEqual(colorvim.get_hi_group_value(group)[1], 'NONE', err_msg)
 
 	def test_colorname_transform(self):
 		""" Test transform color name to lowercase """
-		colorvim.yaml_path = self.test_paths[13]
+		colorvim.yaml_path = self.test_paths[14]
 		colorvim.color_dict = colorvim.parse_yaml()
+		colorvim.set_up(colorvim.color_dict)
 
-		colorvim.set_up()
-		self.assertTrue(colorvim.color_dict['group']['Normal'].islower())
-		self.assertTrue(colorvim.color_dict['group']['Comment'].islower())
+		self.assertTrue(colorvim.get_group_dict()['Normal'].islower())
+		self.assertTrue(colorvim.get_group_dict()['Comment'].islower())
 
-		self.assertIn('dark', colorvim.color_dict['palette'])
-		self.assertIn('gray', colorvim.color_dict['palette'])
-		self.assertIn('snow', colorvim.color_dict['palette'])
+		self.assertIn('dark', colorvim.get_color())
+		self.assertIn('gray', colorvim.get_color())
+		self.assertIn('snow', colorvim.get_color())
 
 	def test_multiple_attribute(self):
 		""" Test multiple attribute getters """
-		colorvim.yaml_path = self.test_paths[14]
+		colorvim.yaml_path = self.test_paths[15]
 		colorvim.color_dict = colorvim.parse_yaml()
 
-		colorvim.set_up()
+		colorvim.set_up(colorvim.color_dict)
 
-		self.assertEqual(colorvim.get_group_attr('Normal')[4], 'reverse')
-		self.assertEqual(colorvim.get_group_attr('Comment')[4], 'reverse,bold,underline')
-		self.assertEqual(colorvim.get_group_attr('Identify')[4], 'reverse,bold')
+		self.assertEqual(colorvim.get_hi_group_value('Normal')[4], 'reverse')
+		self.assertEqual(colorvim.get_hi_group_value('Comment')[4], 'reverse,bold,underline')
+		self.assertEqual(colorvim.get_hi_group_value('Identify')[4], 'reverse,bold')
 		with self.assertRaises(NameError):
-			colorvim.get_group_attr('Function')
-		self.assertEqual(colorvim.get_group_attr('PreProc')[4], 'NONE')
+			colorvim.get_hi_group_value('Function')
+		self.assertEqual(colorvim.get_hi_group_value('PreProc')[4], 'NONE')
+
+	def test_duplicate_group(self):
+		""" Test if there is duplicate group assigments """
+		pass
 
 if __name__ == '__main__':
 	unittest.main()
