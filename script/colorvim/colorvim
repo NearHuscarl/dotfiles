@@ -58,13 +58,21 @@ def callgraph(func):
 			func(*args, **kwargs)
 	return generate_callgraph
 
+def validate_content(colorscheme):
+	""" Throw error if palette or group dict is empty """
+	if colorscheme['group'] is None:
+		raise KeyError('Groups is empty')
+	if colorscheme['palette'] is None:
+		raise KeyError('Palette is empty')
+	return colorscheme
+
 def set_up(colorscheme):
 	""" Make all colorname lowercase and set up some global variables """
 	global color_dict
 	global valid_colors
 	global valid_attr
 
-	color_dict = colorscheme
+	color_dict = validate_content(colorscheme)
 	color_dict['group'] = {name: val.lower()
 			for name, val in colorscheme['group'].items()}
 	color_dict['palette'] = {name.lower(): val
@@ -124,9 +132,11 @@ def get_color():
 	""" get color palette as a dictionary """
 	return color_dict['palette']
 
-def get_group_dict():
+def get_group_dict(group_name='ALL'):
 	""" Return a dictionary which have group names maps to their values """
-	return color_dict['group']
+	if group_name == 'ALL':
+		return color_dict['group']
+	return color_dict['group'][group_name]
 
 def get_background():
 	""" get background value ('dark' or 'light') """
@@ -171,7 +181,7 @@ def validate_attr(attr_list, group):
 
 def get_hi_group_color(group_name):
 	""" Return a tuple contain group fg and bg color (termfg, termbg, guifg, guibg) """
-	group_val = get_group_dict()[group_name].split(maxsplit=2)
+	group_val = get_group_dict(group_name).split(maxsplit=2)
 	if len(group_val) < 2:
 		raise ValueError('Require at least 2 color values for fg and bg')
 	fg_color, bg_color = group_val[:2]
@@ -188,15 +198,15 @@ def get_hi_group_color(group_name):
 	guifg = get_gui_color(fg_color)
 	return (termfg, termbg, guifg, guibg)
 
-def get_hi_group_attr(group):
+def get_hi_group_attr(group_name):
 	""" Return a tuple contain group attributes (term_attr, gui_attr) """
-	group_val = get_group_dict()[group].split(maxsplit=2)
+	group_val = get_group_dict(group_name).split(maxsplit=2)
 	if len(group_val) < 3:
 		return 'NONE'
 	attr = group_val[2].replace(' ', '')
 	attr_list = attr.split(',')
 
-	validate_attr(attr_list, group)
+	validate_attr(attr_list, group_name)
 	return attr
 
 def get_hi_group_value(group_name):
@@ -205,6 +215,12 @@ def get_hi_group_value(group_name):
 	(termfg, termbg, guifg, guibg, term_attr, gui_attr)
 	"""
 	return get_hi_group_color(group_name) + tuple([get_hi_group_attr(group_name)]) * 2
+
+def get_links(link_name='ALL'):
+	""" Return a list of linked groups """
+	if link_name == 'ALL':
+		return color_dict['link']
+	return color_dict['link'][link_name]
 
 # -----------------------------
 
@@ -257,7 +273,6 @@ def write_palette():
 
 def write_body():
 	""" Write all group assignment and some logics to colorshceme file """
-
 	with open(output_path, 'a') as file:
 		put(file, 'hi clear')
 		put(file)
@@ -272,17 +287,27 @@ def write_body():
 
 		max_group_len = len(max(get_group_dict().keys(), key=len))
 		for group in get_group_dict():
-			attr = get_hi_group_value(group)
+			value = get_hi_group_value(group)
 			line = ('hi {:{x}} ctermfg={:4} ctermbg={:4} guifg={:7} guibg={:7} '
-					'cterm={:9} gui={}').format(group, *attr, x=max_group_len)
+					'cterm={:9} gui={}').format(group, *value, x=max_group_len)
 			put(file, line)
 
 		put(file, 'endif')
 		put(file)
 
+def parse_link(link):
+	""" return a tuple of from_group and to_group from an element in links list """
+	return link.replace(' ', '').split('->')
+
 def write_link():
 	""" Write group link (hi link Group1 Group2) to colorscheme file """
-	pass
+	with open(output_path, 'a') as file:
+		from_groups = [parse_link(link)[0] for link in get_links()]
+		max_group_len = len(max(from_groups, key=len))
+		for link in get_links():
+			from_group, to_group = parse_link(link)
+			line = ('hi link {:{x}} {}').format(from_group, to_group, x=max_group_len)
+			put(file, line)
 
 def indent():
 	""" Indent vim colorscheme file """
@@ -323,5 +348,9 @@ if __name__ == '__main__':
 # TODO
 # update all colorscheme with default setting for new hi group?
 # test empty group value?
+# link:
+# test valid delimiter
+# test if enough operand
+# test if right hand side operand is in group list
 
 # vim: nofoldenable

@@ -1,6 +1,6 @@
-# test_multiple_attribute
-name: test15
-description: Test colorshceme 15
+# test_transparent_group_option
+name: test18
+description: Test colorshceme 18
 author:
    name: Near
    email: near.huscarl@gmail.com
@@ -9,6 +9,7 @@ note:
 option:
    transparent: true
    background: light
+   transparent_group: ['Normal', 'Statusline']
 palette:
    # color name   gui        cterm  optional
    dark:      ['#1F2D3A',     0,     'black']
@@ -16,8 +17,5 @@ palette:
    snow:      ['#ECF0F1',     15,    'white']
 
 group:
-   Normal:    snow           dark        reverse
-   Comment:   gray           dark        reverse,  bold ,   underline
-   Identify:  gray           dark        ReVeRse, BOLD
-   Function:  gray           dark        reverses,bold
-   PreProc:   snow           dark
+   Normal:    snow           dark
+   Comment:   gray           dark

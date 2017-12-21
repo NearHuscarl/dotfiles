@@ -1,6 +1,6 @@
-# test_multiple_attribute
-name: test15
-description: Test colorshceme 15
+# test_empty_group
+name: test16
+description: Test colorshceme 16
 author:
    name: Near
    email: near.huscarl@gmail.com
@@ -16,8 +16,4 @@ palette:
    snow:      ['#ECF0F1',     15,    'white']
 
 group:
-   Normal:    snow           dark        reverse
-   Comment:   gray           dark        reverse,  bold ,   underline
-   Identify:  gray           dark        ReVeRse, BOLD
-   Function:  gray           dark        reverses,bold
-   PreProc:   snow           dark
+   # absolute madman

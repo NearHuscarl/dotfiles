@@ -170,9 +170,36 @@ class TestColorvim(unittest.TestCase):
 			colorvim.get_hi_group_value('Function')
 		self.assertEqual(colorvim.get_hi_group_value('PreProc')[4], 'NONE')
 
-	def test_duplicate_group(self):
-		""" Test if there is duplicate group assigments """
-		pass
+	def test_empty_group(self):
+		""" empty group should throw error """
+		colorvim.yaml_path = self.test_paths[16]
+		colorvim.color_dict = colorvim.parse_yaml()
+
+		with self.assertRaises(KeyError):
+			colorvim.set_up(colorvim.color_dict)
+
+	def test_empty_palette(self):
+		""" empty palette should throw error """
+		colorvim.yaml_path = self.test_paths[17]
+		colorvim.color_dict = colorvim.parse_yaml()
+
+		with self.assertRaises(KeyError):
+			colorvim.set_up(colorvim.color_dict)
+
+	def test_transparent_group_option(self):
+		""" transparent group option should override default transparent group """
+		colorvim.yaml_path = self.test_paths[18]
+		colorvim.color_dict = colorvim.parse_yaml()
+
+		self.assertEqual(colorvim.get_transparent_group(), ['Normal', 'Statusline'])
+
+	def test_no_transparent_group_option(self):
+		""" omit transparent group option should return default transparent group """
+		colorvim.yaml_path = self.test_paths[19]
+		colorvim.color_dict = colorvim.parse_yaml()
+
+		self.assertEqual(colorvim.get_transparent_group(), colorvim.default_transparent_group)
+
 
 if __name__ == '__main__':
 	unittest.main()

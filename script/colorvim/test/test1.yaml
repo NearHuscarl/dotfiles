@@ -70,29 +70,78 @@ group:
    CursorLineNr:  lightcyan      darkgray
    CursorLine:    _              darkgray
 
-   helpLeadBlank: _         _
-   helpNormal:    _         _
+   helpLeadBlank: _              _
+   helpNormal:    _              _
 
-   StatusLine:    white     blue
-   StatusLineNC:  yellow    darkgray
+   StatusLine:    white          blue
+   StatusLineNC:  yellow         darkgray
 
-   Visual:        white     blue
-   VisualNOS:     white     gray                  underline
+   Visual:        white          blue
+   VisualNOS:     white          gray                  underline
 
-   VertSplit:     darkgray  darkgray
-   WildMenu:      white     purple
+   VertSplit:     darkgray       darkgray
+   WildMenu:      white          purple
 
-   Function:      lightblue _
-   SpecialKey:    gray      _
-   Title:         white     _
+   Function:      lightblue      _
+   SpecialKey:    gray           _
+   Title:         white          _
 
-   DiffAdd:       cyan      white                 reverse
-   DiffChange:    darkgray  white                 reverse
-   DiffDelete:    darkred   white                 reverse
-   DiffText:      yellow    dark                  reverse
+   DiffAdd:       cyan           white                 reverse
+   DiffChange:    darkgray       white                 reverse
+   DiffDelete:    darkred        white                 reverse
+   DiffText:      yellow         dark                  reverse
 
-   IncSearch:     dark      darkred
-   Search:        white     cyan
+   IncSearch:     dark           darkred
+   Search:        white          cyan
 
-   Directory:     lightcyan _
-   ColorColum:    _         dark
+   Directory:     lightcyan      _
+   ColorColum:    _              dark
+
+link:
+   - Boolean                  ->     Constant
+   - Character                ->     Constant
+   - Conditional              ->     Statement
+   - Debug                    ->     Special
+   - Define                   ->     PreProc
+   - Delimiter                ->     Special
+   - Exception                ->     Statement
+   - Float                    ->     Number
+   - HelpCommand              ->     Statement
+   - HelpExample              ->     Statement
+   - Include                  ->     PreProc
+   - Keyword                  ->     Statement
+   - Label                    ->     Statement
+   - Macro                    ->     PreProc
+   - Number                   ->     Constant
+   - Operator                 ->     Statement
+   - PreCondit                ->     PreProc
+   - Repeat                   ->     Statement
+   - SpecialChar              ->     Special
+   - SpecialComment           ->     Special
+   - StorageClass             ->     Type
+   - Structure                ->     Type
+   - Tag                      ->     Special
+   - Typedef                  ->     Type
+
+   - htmlEndTag               ->     htmlTagName
+   - htmlLink                 ->     Function
+   - htmlSpecialTagName       ->     htmlTagName
+   - htmlTag                  ->     htmlTagName
+   - htmlBold                 ->     Normal
+   - htmlItalic               ->     Normal
+   - xmlTag                   ->     Statement
+   - xmlTagName               ->     Statement
+   - xmlEndTag                ->     Statement
+
+   - markdownItalic           ->     Preproc
+   - asciidocQuotedEmphasized ->     Preproc
+
+   - diffBDiffer              ->     WarningMsg
+   - diffCommon               ->     WarningMsg
+   - diffDiffer               ->     WarningMsg
+   - diffIdentical            ->     WarningMsg
+   - diffIsA                  ->     WarningMsg
+   - diffNoEOL                ->     WarningMsg
+   - diffOnly                 ->     WarningMsg
+   - diffRemoved              ->     WarningMsg
+   - diffAdded                ->     String
