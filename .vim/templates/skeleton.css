@@ -1,0 +1,12 @@
+body               { background-color: #198c8c !important; }
+body *             { background-color: #008080 !important; }
+body * *           { background-color: #007373 !important; }
+body * * *         { background-color: #006666 !important; }
+body * * * *       { background-color: #005959 !important; }
+body * * * * *     { background-color: #004c4c !important; }
+body * * * * * *   { background-color: #004040 !important; }
+body * * * * * * * { background-color: #003333 !important; }
+
+body {
+	background-color: gray;
+}

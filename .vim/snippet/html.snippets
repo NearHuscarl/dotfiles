@@ -1,0 +1,30 @@
+snippet license "LICENSE" b
+<!--
+============================================================================
+File:        `!v expand("%:t")`                                             
+Description: ${1:Description}                                               
+Author:      Near Huscarl <near.huscarl@gmail.com>                          
+Last Change: `!v strftime("%a %b %d %H:%M:%S %Z %Y")`                       
+Licence:     ${2:BSD 3-Clause license}                                      
+Note:        ${3:Note}                                                      
+============================================================================
+-->
+endsnippet
+
+snippet e "element" b
+<${1:Element-Name}>$2</${1/(\w+).*/$1/}>
+endsnippet
+
+snippet en "element and newline" b
+<${1:Element-Name}>
+	$2
+</${1/(\w+).*/$1/}>
+endsnippet
+
+snippet div "div wrapper" i
+<div>${VISUAL}</div>
+endsnippet
+
+snippet 'sp(ace)?' "Insert Space" ir
+&nbsp
+endsnippet

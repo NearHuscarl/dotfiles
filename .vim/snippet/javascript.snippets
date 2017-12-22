@@ -1,0 +1,82 @@
+snippet license "LICENSE" b
+// ============================================================================
+// File:        `!v expand("%:t")`
+// Description: ${1:Description}
+// Author:      Near Huscarl <near.huscarl@gmail.com>
+// Last Change: `!v strftime("%a %b %d %H:%M:%S %Z %Y")`
+// Licence:     ${2:BSD 3-Clause license}
+// Note:        ${3:Note}
+// ============================================================================
+endsnippet
+
+snippet "if( ([\S ]+))?" "if statement" br
+if (`!p snip.rv = match.group(2) if match.group(2) is not None else 'true'`) {
+	$1
+}
+endsnippet
+
+snippet "ife(lse)?( ([\S ]+))?" "if-else statement" br
+if (`!p snip.rv = match.group(3) if match.group(3) is not None else 'true'`) {
+	$1
+}
+else {
+	$2
+}
+endsnippet
+
+snippet "(ei|elif|elseif)( ([\S ]+))?" "else if statement" br
+else if (`!p snip.rv = match.group(3) if match.group(3) is not None else ''`) {
+	$1
+}
+endsnippet
+
+snippet "(e|else)" "else statement" br
+else {
+	$1
+}
+endsnippet
+
+snippet for "for loop" b
+for (${1:let i = 0; i < n; i++}) {
+	$2
+}
+endsnippet
+
+snippet while "while loop" b
+while (${1:true}) {
+	${2:}
+}
+endsnippet
+
+snippet switch "switch statement" b
+switch ($1)
+{
+	case ${2:1}:
+		$3
+		break;
+	case ${4:2}:
+		$5
+		break;
+	default:${7}
+		break;
+}
+endsnippet
+
+snippet try "try catch statement" b
+try {
+	$1
+}
+catch (${2:error}) {
+	$3
+}
+endsnippet
+
+snippet "f( ([\S ]+))?" "function" br
+function (`!p snip.rv = match.group(2) if match.group(2) is not None else ''`$1) {
+	$2
+}
+endsnippet
+
+snippet "log( ([\S ]+))?" "console.log()" br
+console.log(`!p snip.rv = match.group(2) if match.group(2) is not None else ''`);
+endsnippet

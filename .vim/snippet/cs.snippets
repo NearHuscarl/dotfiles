@@ -1,0 +1,225 @@
+snippet i< "include header" b
+#include <${1:Filename}>
+endsnippet
+
+snippet i" "include header" b
+#include "${1:Filename}"
+endsnippet
+
+snippet signature "signature" b
+
+/*
+.@@@@@@@@@@@@@   @@@@@@@@@@@@@@@@@@@@@@@@@@@@@            @@@@@@@@@@@@@@@@@@@@@@@@@@@@             
+.@.#######( @@   @.(######..**************** @           @@ (#########* /#####/.@@./ @@@           
+.@ (/ .... *% @@ @ %......*#...............%.@         @@@.&..........& @.....@ ,@../(*@@@         
+.@@@#...,,....% @@ %......*#...,,,.........%.@   @@@@@@@##/,,,,,,,,...& @.....@@,,, ..&*&@@        
+.. @#...,,,,....%  %..,...*#...,,,........,%.@  @@**# @.&,,,,,,,. ,,..& @.....,,,,,,.. .&.@@@      
+.. @#...,,,.  ...,@%..,,,,*#...,,,@         #@@@@.@,.%%#,,,,,,,%...,,,& @...,,,,,,,..,...,# @@@    
+.. @#...,,,@/......,,,,,,,*#...,,,@********* @@ %/,,..,,,,,,,*&&...,,,& @...,,,,,,#...,,...%*#@@   
+.. @#...*,,@.&....,****,,,*#...*..********,&.@@*&...,*******(/ &..,,,,& @..,****@* &,...*,..,&.@@  
+.. @#,,,*,,@ @.@....***,,,*#,,,**********,,&.@@@ #,..,*****@.  &,,,,,,& @,,,,,////////,,,*****& @  
+.. @#,,,***@ @@@*@....*****#,,,************&.@@#*@******,..&/  &,,,***& @,,,**,.**********+/% @@@  
+.. @#,,,***@ @ @@**%,,*****#,,,***@.........*@ &*******..*..,& &,,,***& @,,,**@....******#( @@@    
+.. @#,,,[>*@ @  @@ %,,*****#,,,***@         #/&///////(...,.,,%@,,,***& @,,,**@/#...***,@,@@@      
+.. @#,,,[>*@ @   @ &,,*****#...,,,/////////&@////////@.((...*,.,******& @,,***@  &...,,,,/(*@@     
+.. @#***[>*@ @   @ &*,/****#(%...////////**&%/...//#/*@@ @...,<]////**& @*****@ @#*%.../,,*@ @@@   
+.. @#*,////@ @   @ &*,///[>@@ @..//////////&. #(./@.@@@@@*(*.<]///////& @,////@ @@@.&...,,,,@*#@@  
+.. @,######/.@   @ &*,<]/[>@@@#,###########( @@****@@   @@@.(#########**,*****,*@ @@##(...*,,/& @@ 
+.. @@@@@@@@@@@   @*##..//[>@ @@@@@@@@@@@@@@@@@@@@@@@@@@@@ @@@@@@@@@@@@@@@@@@@@@@@  @@@.&...*,,*@,@@
+.................@@@ #(,/[>@                                                         @@#(#,,,(((#,@
+...................@@@ #((*@                                                          @@@ @,,(#% @@
+.....................@@@ , @                                                            @@+/%% @@@ 
+.......................@@@@@                                                             @@@@@@@   
+*/
+
+endsnippet
+
+snippet id "identification" b
+/*
+ 
+   .Nguyen Khanh Nguyen
+   .MSSV: 16520846
+   .PMCL.2
+
+*/
+endsnippet
+
+snippet iall "include a set of headers" b
+#include <cstdio>
+#include <iostream>
+#include <conio.h>
+#include <cmath> 
+#include <iomanip>
+#include <cstdlib> 
+#include <random>
+#include <ctime>
+#include <tuple>
+#include <utility>
+#include <algorithm>
+#include <vector>
+#include <climits>
+#include <cstring>
+#include <array>
+#include <sstream>
+endsnippet
+
+snippet std "utilize std" b
+using namespace std;
+endsnippet
+
+snippet ci "cin" b
+cin >> ${1:Input};
+endsnippet
+
+snippet co "cout" b
+cout << ${1:Input};
+endsnippet
+
+snippet ( "Paired Parentheses" i
+($1)
+endsnippet
+
+snippet " "Quotation marks" w
+"$1"
+endsnippet
+
+snippet { "Paired Bracket" b
+{
+	$1
+}
+endsnippet
+
+snippet {; "Paired Bracket + Semicolon" b
+{
+	$1
+};
+endsnippet
+
+snippet if "if statement" b
+if(${1:Condition})
+{
+   ${2:Statements}
+}
+endsnippet
+
+snippet ifelse "if else statement" b
+if(${1:Condition})
+{
+   ${2:Statements}
+}
+else
+{
+   ${3:Statements}
+}
+endsnippet
+
+snippet elseif "else if statement" b
+else if(${1:Condition})
+{
+   ${2:Statements}
+}
+endsnippet
+
+snippet else "else statement" b
+else
+{
+   ${1:Statements}
+}
+endsnippet
+
+snippet for "for loop" b
+for(${1:Initialization}; ${2:Condition}; ${3:Variable(s) Update})
+{
+	${4:Statements}
+}
+endsnippet
+
+snippet forarro "ouput array" b
+for(int ${1:i} = 0; i < ${2:Size}; $1++)
+   cout << ${3:Array Name}[$1];
+endsnippet
+
+snippet while "while loop" b
+while(${1:Condition})
+{
+	${2:Statements}
+}
+endsnippet
+
+snippet dowhile "do while loop" b
+do
+{
+   ${1:Statements}
+}
+while(${2:Condition});
+endsnippet
+
+snippet switch "switch statement" b
+switch(${1:Expression})
+{
+   case ${2:Constant}
+      ${3:Statements}
+      break;
+   case ${4:Constant}
+      ${5:Statements}
+      break;${6}
+   default:
+      ${7:Statements}
+}
+endsnippet
+
+snippet case "" b
+case ${1:Constant}
+   ${2:Statements}
+   break;
+endsnippet
+
+snippet struct "struct definition" b
+struct ${1:Type Name}
+{
+   ${2:Members Definition}
+}${3:Object Names};
+endsnippet
+
+snippet main "main function" b
+int main()
+{
+   ${1:Statements}
+   system("pause");
+   return 0;
+}
+endsnippet
+
+snippet f "function definition" b
+${1:Return Type} ${2:Function Name}(${3:Parameter List})
+{
+   ${4:Body}
+}
+endsnippet
+
+snippet enum "enumeration" b
+enum ${1:Type Name} {${2:Components}};
+endsnippet
+
+snippet class "class" b
+class ${1:Class Name} 
+{
+	private:
+		${2:Members}
+	public:
+		${3:Members}
+};
+endsnippet
+
+snippet sg "Safeguard" b
+#ifndef $1
+#define ${1/\w+\s*/\U$0\E/g}
+
+$2
+
+#endif //${1/\w+\s*/\U$0\E/g} 
+endsnippet
+
+snippet vector "vector declaration" b
+vector<${1:Data Type}> ${2:Variable Name};
+endsnippet

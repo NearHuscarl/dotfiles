@@ -1,0 +1,11 @@
+.git/
+autoload/plug.vim
+plugged/
+plugin/
+session/
+swapfiles/
+undo/
+view/
+
+.netrwhist
+tags

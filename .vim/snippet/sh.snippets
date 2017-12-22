@@ -1,0 +1,89 @@
+snippet license "LICENSE" b
+# ============================================================================
+# File:        `!v expand("%:t")`
+# Description: ${1:Description}
+# Author:      Near Huscarl <near.huscarl@gmail.com>
+# Last Change: `!v strftime("%a %b %d %H:%M:%S %Z %Y")`
+# Licence:     ${2:BSD 3-Clause license}
+# Note:        ${3:N/A}
+# ============================================================================
+endsnippet
+
+# if<Tab>
+# => if [[ | ]]; then
+#
+#    fi
+#
+# if var != 0<Tab>
+# => if [[ var != 0 ]]; then
+#       |
+#    fi
+snippet "if( ([\S ]+))?" "if statement" br
+if [[ ${1:`!p snip.rv = match.group(2) if match.group(2) is not None else ''`} ]]; then
+	$2
+fi
+endsnippet
+
+snippet "ife(lse)?( ([\S ]+))?" "if-else statement" br
+if [[ ${1:`!p snip.rv = match.group(3) if match.group(3) is not None else ''`} ]]; then
+	$2
+else
+	$3
+fi
+endsnippet
+
+snippet "elif( ([\S ]+))?" "elif statement" br
+elif [[ ${1:`!p snip.rv = match.group(2) if match.group(2) is not None else ''`} ]]; then
+	$2
+endsnippet
+
+snippet "while( ([\S ]+))?" "while loop" br
+while [[ ${1:`!p snip.rv = match.group(2) if match.group(2) is not None else ''`} ]]; do
+	$2
+done
+endsnippet
+
+snippet for "for loop" b
+for ${1:i} in ${2:$(seq 1 10)}; do
+	${3:echo "$i"}
+done
+endsnippet
+
+snippet forarr "for loop with array" b
+for ${1:i} in ${2:"${arr[@]"}}; do
+	${3:echo "$i"}
+done
+endsnippet
+
+# arr<Tab> or array<Tab>
+# => arr = (|)
+# arr my_array<Tab>
+# => my_array = (|)
+snippet "arr(ay)?( (\S+))?" "array declaration" br
+`!p
+snip.rv = match.group(3) if match.group(2) is not None else 'arr'
+` = ($2)
+endsnippet
+
+snippet "f(unc)?( (\S+))?" "function declaration" br
+${1:`!p snip.rv = match.group(3) if match.group(2) is not None else ''`}() {
+	$2
+}
+endsnippet
+
+snippet "F(unc)?( (\S+))?" "function declaration" br
+function ${1:`!p snip.rv = match.group(3) if match.group(2) is not None else ''`}() {
+	$2
+}
+endsnippet
+
+snippet "case( ([\S ]+))?" "switch statement" br
+case ${1:`!p snip.rv = match.group(2) if match.group(2) is not None else ''`} in
+	$2)
+		$3;;
+	$4)
+		$5;;
+	*)
+		$6;;
+esac
+endsnippet

@@ -1,0 +1,16 @@
+digraph V {
+node [shape=box, style=filled]
+"s:vcg.collect_function_calls" -> "s:vcg.add_function_call";
+"s:vcg.parse" -> "s:vcg.prepare_output";
+"s:vcg.parse" -> "s:vcg.is_blank_or_comment";
+"s:vcg.parse" -> "s:vcg.process";
+"s:vcg.parse" -> "s:vcg.output";
+"s:vcg.add_function_call" -> "s:vcg.top_function";
+"s:vcg.process" -> "s:vcg.add_function";
+"s:vcg.process" -> "s:vcg.pop_function";
+"s:vcg.process" -> "s:vcg.collect_function_calls";
+"s:vcg.process" -> "s:vcg.push_function";
+"vimcallgraph#gen" -> "s:vcg.parse";
+"s:vcg.prepare_output" -> "s:vcg.add_function";
+"s:vcg.prepare_output" -> "s:vcg.top_function";
+}
