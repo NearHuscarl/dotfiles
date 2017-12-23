@@ -16,8 +16,8 @@ palette:
    snow:      ['#ECF0F1',     15,    'white']
 
 group:
-   Normal:    snow           dark        reverse
-   Comment:   gray           dark        reverse,  bold ,   underline
-   Identify:  gray           dark        ReVeRse, BOLD
-   Function:  gray           dark        reverses,bold
-   PreProc:   snow           dark
+   Normal:    snow    dark    reverse
+   Comment:   gray    dark    reverse,  bold ,   underline
+   Identify:  gray    dark    ReVeRse, BOLD
+   Function:  gray    dark    reverses,bold
+   PreProc:   snow    dark    _

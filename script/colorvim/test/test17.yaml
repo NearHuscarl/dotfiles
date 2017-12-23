@@ -12,5 +12,5 @@ option:
 palette:
    # absolute madwoman
 group:
-   Normal:    snow           dark
-   Comment:   gray           dark
+   Normal:    snow    dark    _
+   Comment:   gray    dark    _

@@ -16,5 +16,5 @@ palette:
    snow:      ['#ECF0F1',     15,    'white']
 
 group:
-   Normal:    snoww          dark
-   Comment:   gray           -
+   Normal:    snoww   dark    _
+   Comment:   gray    -       _

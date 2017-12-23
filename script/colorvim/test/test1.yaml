@@ -26,76 +26,76 @@ palette:
    lightcyan:        ['#2AA198',      14,    'lightcyan']
    white:            ['#ECF0F1',      15,    'white']
 group:
-   #              fg             bg             (reverse|underline|bold)
-   Normal:        white          dark
-   LineNr:        gray           dark
-   FoldColumn:    gray           dark
-   Folded:        gray           dark
-   MatchParen:    lightyellow    dark
-   SignColumn:    gray           dark
+   #              fg          bg         attr
+   Normal:        white       dark       _
+   LineNr:        gray        dark       _
+   FoldColumn:    gray        dark       _
+   Folded:        gray        dark       _
+   MatchParen:    lightyellow dark       _
+   SignColumn:    gray        dark       _
 
-   Comment:       gray           _
-   Conceal:       white          _
-   Constant:      red            _
-   Error:         darkred        _               reverse
-   Identifier:    blue           _
-   Ignore:        _              _
-   PreProc:       red            _
-   Special:       red            _
-   Statement:     yellow         _
-   String:        cyan           _
-   Todo:          _              _               reverse
-   Type:          violet         _
-   Underlined:    cyan           _               underline
+   Comment:       gray        _          _
+   Conceal:       white       _          _
+   Constant:      red         _          _
+   Error:         darkred     _          reverse
+   Identifier:    blue        _          _
+   Ignore:        _           _          _
+   PreProc:       red         _          _
+   Special:       red         _          _
+   Statement:     yellow      _          _
+   String:        cyan        _          _
+   Todo:          _           _          reverse
+   Type:          violet      _          _
+   Underlined:    cyan        _          underline
 
-   NonText:       gray           _
+   NonText:       gray        _          _
 
-   Pmenu:         white          darkgray
-   PmenuSbar:     _              darkgray
-   PmenuSel:      dark           cyan
-   PmenuThumb:    cyan           cyan
+   Pmenu:         white       darkgray   _
+   PmenuSbar:     _           darkgray   _
+   PmenuSel:      dark        cyan       _
+   PmenuThumb:    cyan        cyan       _
 
-   ErrorMsg:      dark           darkred
-   ModeMsg:       dark           lightgreen
-   MoreMsg:       cyan           _
-   Question:      lightgreen     _
-   WarningMsg:    darkred        _
+   ErrorMsg:      dark        darkred    _
+   ModeMsg:       dark        lightgreen _
+   MoreMsg:       cyan        _          _
+   Question:      lightgreen  _          _
+   WarningMsg:    darkred     _          _
 
-   TabLine:       yellow         darkgray
-   TabLineFill:   darkgray       darkgray
-   TabLineSel:    darkgray       yellow
+   TabLine:       yellow      darkgray   _
+   TabLineFill:   darkgray    darkgray   _
+   TabLineSel:    darkgray    yellow     _
 
-   Cursor:        _              _               reverse
-   CursorColumn:  _              darkgray
-   CursorLineNr:  lightcyan      darkgray
-   CursorLine:    _              darkgray
+   Cursor:        _           _          reverse
+   CursorColumn:  _           darkgray   _
+   CursorLineNr:  lightcyan   darkgray   _
+   CursorLine:    _           darkgray   _
 
-   helpLeadBlank: _              _
-   helpNormal:    _              _
+   helpLeadBlank: _           _          _
+   helpNormal:    _           _          _
 
-   StatusLine:    white          blue
-   StatusLineNC:  yellow         darkgray
+   StatusLine:    white       blue       _
+   StatusLineNC:  yellow      darkgray   _
 
-   Visual:        white          blue
-   VisualNOS:     white          gray                  underline
+   Visual:        white       blue       _
+   VisualNOS:     white       gray       underline
 
-   VertSplit:     darkgray       darkgray
-   WildMenu:      white          purple
+   VertSplit:     darkgray    darkgray   _
+   WildMenu:      white       purple     _
 
-   Function:      lightblue      _
-   SpecialKey:    gray           _
-   Title:         white          _
+   Function:      lightblue   _          _
+   SpecialKey:    gray        _          _
+   Title:         white       _          _
 
-   DiffAdd:       cyan           white                 reverse
-   DiffChange:    darkgray       white                 reverse
-   DiffDelete:    darkred        white                 reverse
-   DiffText:      yellow         dark                  reverse
+   DiffAdd:       cyan        white      reverse
+   DiffChange:    darkgray    white      reverse
+   DiffDelete:    darkred     white      reverse
+   DiffText:      yellow      dark       reverse
 
-   IncSearch:     dark           darkred
-   Search:        white          cyan
+   IncSearch:     dark        darkred    _
+   Search:        white       cyan       _
 
-   Directory:     lightcyan      _
-   ColorColum:    _              dark
+   Directory:     lightcyan   _          _
+   ColorColumn:   _           dark       _
 
 link:
    - Boolean                  ->     Constant

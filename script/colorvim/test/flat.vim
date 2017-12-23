@@ -2,7 +2,7 @@
 " File:        flat.vim
 " Description: flat colorscheme
 " Author:      Near Huscarl <near.huscarl@gmail.com>
-" Last Change: Fri Dec 22 02:32:23 +07 2017
+" Last Change: Sat Dec 23 21:37:58 +07 2017
 " Licence:     BSD 3-Clauses
 " ==================================================================
 
@@ -89,7 +89,7 @@ if ($TERM =~ '256' || &t_Co >= 256) || has('gui_running')
 	hi IncSearch     ctermfg=0    ctermbg=1    guifg=#1F2D3A guibg=#C0392B cterm=NONE      gui=NONE
 	hi Search        ctermfg=15   ctermbg=6    guifg=#ECF0F1 guibg=#16A085 cterm=NONE      gui=NONE
 	hi Directory     ctermfg=14   ctermbg=NONE guifg=#2AA198 guibg=NONE    cterm=NONE      gui=NONE
-	hi ColorColum    ctermfg=NONE ctermbg=0    guifg=NONE    guibg=#1F2D3A cterm=NONE      gui=NONE
+	hi ColorColumn   ctermfg=NONE ctermbg=0    guifg=NONE    guibg=#1F2D3A cterm=NONE      gui=NONE
 endif
 
 hi link Boolean                  Constant

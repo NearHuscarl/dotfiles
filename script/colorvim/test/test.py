@@ -120,13 +120,15 @@ class TestColorvim(unittest.TestCase):
 
 	def test_color_group_has_minimum_value(self):
 		"""
-		Test if color group has at least 2 value (bg and fg color)
+		Test if color group has at least 3 value (bg color, fg color and attribute)
 		'_' is also a value indicate NONE
 		"""
 		colorvim.yaml_path = self.test_paths[12]
 		colorvim.color_dict = colorvim.parse_yaml()
 		colorvim.set_up(colorvim.color_dict)
 
+		with self.assertRaises(ValueError):
+			colorvim.get_hi_group_value('Normal')
 		with self.assertRaises(ValueError):
 			colorvim.get_hi_group_value('Comment')
 
@@ -152,9 +154,9 @@ class TestColorvim(unittest.TestCase):
 		self.assertTrue(colorvim.get_group_dict()['Normal'].islower())
 		self.assertTrue(colorvim.get_group_dict()['Comment'].islower())
 
-		self.assertIn('dark', colorvim.get_color())
-		self.assertIn('gray', colorvim.get_color())
-		self.assertIn('snow', colorvim.get_color())
+		self.assertIn('dark', colorvim.get_colors())
+		self.assertIn('gray', colorvim.get_colors())
+		self.assertIn('snow', colorvim.get_colors())
 
 	def test_multiple_attribute(self):
 		""" Test multiple attribute getters """

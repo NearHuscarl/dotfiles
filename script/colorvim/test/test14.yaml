@@ -16,5 +16,5 @@ palette:
    SNoW:      ['#ECF0F1',     15,    'white']
 
 group:
-   Normal:    SNOW           dArk
-   Comment:   gray           Dark
+   Normal:    SNOW    dArk    _
+   Comment:   gray    Dark    _
