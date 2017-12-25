@@ -39,6 +39,11 @@ html, body {
 		}
 
 		// code
+		code {
+			background-color: $bg-alt-color !important;
+			color: $code-color !important;
+		}
+
 		pre {
 			background-color: $bg-alt-color !important;
 

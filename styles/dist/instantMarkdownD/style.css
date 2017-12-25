@@ -36,6 +36,9 @@ html, body {
     border-left-color: #f39c12 !important; }
   .container .markdown-body hr {
     background-color: #2c3e50 !important; }
+  .container .markdown-body code {
+    background-color: #2c3e50 !important;
+    color: #27ae60 !important; }
   .container .markdown-body pre {
     background-color: #2c3e50 !important; }
     .container .markdown-body pre code {
@@ -71,7 +74,8 @@ td.blob-code {
 
 .markdown-body pre,
 .markdown-body pre *,
-.markdown-body .highlight pre {
+.markdown-body .highlight pre,
+code {
   font-family: "Inconsolata", monospace !important;
   font-size: 15px !important;
   font-weight: bold !important;
