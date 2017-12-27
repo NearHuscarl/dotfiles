@@ -28,7 +28,7 @@ set $color_main2  #8E44AD
 # }}}
 # Startup {{{
 exec $no_loading xmodmap ~/.Xmodmap
-exec $no_loading nitrogen --random --set-scaled "Pictures/Low Poly"
+exec $no_loading nitrogen --random --set-scaled "Pictures/low_poly"
 exec $no_loading compton
 exec $no_loading mpd
 exec $no_loading xfce4-volumed

@@ -249,7 +249,7 @@ alias xprop-role="xprop WM_WINDOW_ROLE"
 alias xprop-title="xprop _NET_WM_NAME WM_NAME"
 # }}}
 # Picture {{{
-alias wallpaper='nitrogen --random --set-scaled "$HOME/Pictures/Low Poly"'
+alias wallpaper='nitrogen --random --set-scaled "$HOME/Pictures/low_poly"'
 alias pic-schedule="sxiv -f $HOME/Pictures/misc/schedule.png"
 alias pic-full="sxiv -f"
 alias thumnail="sxiv -f -t -b -r *"

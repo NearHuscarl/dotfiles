@@ -36,6 +36,12 @@
 # git submodule add -b master https://github.com/NearHuscarl/vim-config \.vim;
 !/.vim/
 
+!/Pictures/
+/Pictures/*
+!/Pictures/low_poly/
+/Pictures/low_poly/*
+!/Pictures/low_poly/README.md
+
 # Repeat the process for subdir .config
 !/.config/
 /.config/*

@@ -1,5 +1,5 @@
 
-## ~/Picture/low_poly/
+## ~/Pictures/low_poly/
 
 Screenshots hosted on [imgur](https://imgur.com/a/pRdWZ)
 
