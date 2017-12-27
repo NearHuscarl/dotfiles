@@ -1,0 +1,25 @@
+
+## ~/Picture/low_poly/
+
+Screenshots hosted on [imgur](https://imgur.com/a/pRdWZ)
+
+![low_poly1](https://i.imgur.com/3nYdiWG.jpg)
+![low_poly2](https://i.imgur.com/zBXbLzP.png)
+![low_poly3](https://i.imgur.com/prY1NfJ.jpg)
+![low_poly4](https://i.imgur.com/8xmcsQi.png)
+![low_poly5](https://i.imgur.com/g6aWeY1.jpg)
+![low_poly6](https://i.imgur.com/ZTMSQoh.jpg)
+![low_poly7](https://i.imgur.com/THjQpUc.jpg)
+![low_poly8](https://i.imgur.com/Pr7Di08.jpg)
+![low_poly9](https://i.imgur.com/lzr5gPV.jpg)
+![low_poly10](https://i.imgur.com/VnK2BwO.jpg)
+![low_poly11](https://i.imgur.com/fdtGFlY.png)
+![low_poly12](https://i.imgur.com/bykaEEl.png)
+![low_poly13](https://i.imgur.com/d2CmlHo.png)
+![low_poly14](https://i.imgur.com/GJ2QRFp.png)
+![low_poly15](https://i.imgur.com/rgW52jx.jpg)
+![low_poly16](https://i.imgur.com/njRSWX7.jpg)
+![low_poly17](https://i.imgur.com/3OlM9qL.jpg)
+![low_poly18](https://i.imgur.com/dklRCwO.png)
+![low_poly19](https://i.imgur.com/grujxsX.png)
+![low_poly20](https://i.imgur.com/TGMNdYi.jpg)
