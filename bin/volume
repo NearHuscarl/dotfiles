@@ -11,7 +11,7 @@
 
 set -o errexit
 set -o pipefail
-set -o nounset
+# set -o nounset
 # set -o xtrace
 
 USAGE="Usage: volume [help|up|down|toggle]"
@@ -90,7 +90,7 @@ function decrease_volume() {
 }
 
 function main() {
-	local volume_action="${1:-toggle}"
+	local volume_action="$1"
 
 	case "$#" in
 		0)

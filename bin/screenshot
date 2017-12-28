@@ -9,7 +9,7 @@
 # dunst-git
 
 set -o pipefail
-set -o nounset
+# set -o nounset
 # set -o xtrace
 
 USAGE="Usage: screenshot [help|clipboard|filesystem]"
@@ -65,7 +65,7 @@ function take_screenshot_to_filesystem() {
 }
 
 function main() {
-	local save_to="${1:-clipboard}"
+	local save_to="$1"
 
 	case "$#" in
 		0)
