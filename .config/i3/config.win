@@ -180,7 +180,7 @@ mode "launch" {
         bindsym r exec $no_loading rofi -show run; mode "default"
         bindsym w exec $no_loading rofi -show window; mode "default"
         bindsym i exec $no_loading $HOME/bin/rofi-surfraw-websearch.sh; mode "default"
-        bindsym b exec $no_loading $HOME/bin/rofi-surfraw-bookmarks.sh; mode "default"
+        bindsym b exec $no_loading $HOME/bin/bookmarks; mode "default"
         bindsym o exec $no_loading $HOME/bin/rofi-open.sh; mode "default"
         bindsym shift+1 exec $no_loading ~/bin/rofi-bangs.sh; mode "default"
 
@@ -305,7 +305,7 @@ bindsym $mod+shift+p exec $no_loading $HOME/bin/reload-polybar
 bindsym $mod+shift+d exec $no_loading $HOME/bin/reload-dunst
 
 # Open rofi bookmark list
-bindsym $mod+b workspace $ws_web; exec $no_loading $HOME/bin/rofi-surfraw-bookmarks.sh; mode "default"
+bindsym $mod+b workspace $ws_web; exec $no_loading $HOME/bin/bookmarks; mode "default"
 
 # Toggle between config with (ctrl|win) as modifier
 bindsym $mod+i exec $no_loading $HOME/bin/toggle-i3-config; reload
