@@ -5,6 +5,7 @@
 google                  https://www.google.com.vn/
 duckduckgo              https://duckduckgo.com/
 youtube                 https://www.youtube.com/
+yt-subscriptions        https://www.youtube.com/feed/subscriptions
 
 # Media
 reddit                  https://www.reddit.com
@@ -20,6 +21,7 @@ strftime                http://strftime.org/
 
 github                  https://github.com/
 gist                    https://gist.github.com/NearHuscarl
+gh-profiles             https://github.com/NearHuscarl
 gh-dotfiles             https://github.com/NearHuscarl/dotfiles
 gh-vim                  https://github.com/NearHuscarl/vim-config
 gh-io                   https://github.com/NearHuscarl/NearHuscarl.github.io
