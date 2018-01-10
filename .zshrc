@@ -2,7 +2,7 @@
 # File:        .zshrc
 # Description: zsh setting for interactive mode
 # Author:      Near Huscarl <near.huscarl@gmail.com>
-# Last Change: Sat Nov 11 20:22:58 +07 2017
+# Last Change: Fri Dec 29 18:34:07 +07 2017
 # Licence:     BSD 3-Clause license
 # Note:        N/A
 # ============================================================================
@@ -50,6 +50,7 @@ bindkey -v
 bindkey -M viins '\ei' vi-cmd-mode
 bindkey -M viins '\en' menu-complete
 bindkey -M viins '\ep' reverse-menu-complete
+bindkey '^[[Z' reverse-menu-complete # fix Shift-TAB not working as expected
 bindkey -M viins '\e9' backward-delete-word
 bindkey -M viins '\e0' forward-delete-word
 bindkey -M viins '\eh' vi-backward-char
