@@ -7,30 +7,32 @@
 # termite
 
 # set -o errexit
-# set -o pipefail
-# set -o nounset
+set -o pipefail
+set -o nounset
 # set -o xtrace
 
 # Global
-USAGE="Usage: color [-h|-c|-C|-e [<colorscheme>]|-l|[-s] <colorscheme>]"
+SCRIPT_NAME=$(basename "$0")
+USAGE="Usage: "$SCRIPT_NAME" [-h|-c|-C|-e [<colorscheme>]|-l|-r|[-s] <colorscheme>]"
 HELP="\
-color <colorscheme>
+"$SCRIPT_NAME" <colorscheme>
 Commands:
   -h, --help                  print this help message
   -c, --cycle                 cycle through available colorschemes
   -C, --Cycle                 cycle backward
-  -e, --edit [<colorscheme>]  edit <colorscheme> file using $EDITOR
+  -e, --edit [<colorscheme>]  edit <colorscheme> file using \$EDITOR
                               default is current colorscheme
   -l, --list                  print all available colorschemes
-  -s, --switch <colorscheme>  colorscheme to switch to
+  -r, --reload                reload current colorscheme
+  -s, --switch <colorscheme>  switch to <colorscheme>
   <colorscheme>               same as above"
 
 if [[ ! -v EDITOR ]]; then
 	EDITOR=vim
 fi
 
-function die () {
-	echo "$*" >&2
+function die() {
+	echo -e "$*" >&2
 	exit 1
 }
 
@@ -70,8 +72,13 @@ function switch_colorscheme() {
 	reload_config
 }
 
+function reload_colorscheme() {
+	switch_colorscheme "$(get_current_colorshceme)"
+	reload_config
+}
+
 function edit_colorscheme() {
-	[[ "$#" == 0 ]] && local color_name=$(get_current_colorshceme) || local color_name="$1"
+	[[ "$#" == 0 ]] && local color_name="$(get_current_colorshceme)" || local color_name="$1"
 	"$EDITOR" "$COLOR_PATH"/"$color_name"
 }
 
@@ -80,7 +87,7 @@ function reload_config() {
 }
 
 function list_colorscheme() {
-	ls "$COLOR_PATH"
+	ls -1 "$COLOR_PATH"
 }
 
 function cycle_forward_colorscheme() {
@@ -124,7 +131,8 @@ function main() {
 	local THEME="$termite_path"'/theme'
 	local COLOR_PATH="$termite_path"'/color'
 
-	local cmd="$1"
+	local cmd="${1:-}"
+	local color="${2:-}"
 	case "$#" in
 		0)
 			usage ;;
@@ -140,16 +148,23 @@ function main() {
 					edit_colorscheme ;;
 				-l|--list)
 					list_colorscheme ;;
+				-r|--reload)
+					reload_colorscheme ;;
+				-s|--switch)
+					die "Command should be: "$SCRIPT_NAME" -s <colorscheme>\n"$USAGE"" ;;
+				-*)
+					die "Invalid argument\n""$USAGE" ;;
 				*)
 					switch_colorscheme "$1" ;;
 			esac ;;
 		2)
-			local color="$2"
 			case "$cmd" in
 				-e|--edit)
 					edit_colorscheme "$color" ;;
 				-s|--switch)
 					switch_colorscheme "$color" ;;
+				-*)
+					die "Invalid argument\n""$USAGE" ;;
 				*)
 					usage ;;
 			esac ;;
