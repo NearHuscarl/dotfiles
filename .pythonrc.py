@@ -51,6 +51,15 @@ def debug(varname, delimiter='\n'):
 	""" Print variable name and its value """
 	print(str(get_var_name(varname, globals())) + ': ' + str(varname), end=delimiter)
 
+def find_defining_class(obj, method_name):
+	"""
+	take a method argument and return class name that define it. Useful when
+	debug in inheritance. Usage: >>> find_defining_class(Dog, 'eat') -> <class=Animal>
+	"""
+	for class_name in type(obj).mro():
+		if method_name in class_name.__dict__:
+			return class_name
+
 dict1 = {'one': 'mot', 'two': 'hai', 'three': 'ba', 'four': 'bon'}
 dict2 = {'dog': 'cat', 'rich': 'poor', 'me': 'you'}
 
