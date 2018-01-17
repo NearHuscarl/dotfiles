@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# Dependency: neovim-remote
+# remove this when neovim reach 0.3
+# https://github.com/neovim/neovim/issues/1750#issuecomment-334382051
+
+# $HOME/.config/ranger/rifle.conf
+# Open nvim and connect to neovim server (keep one instance), then move to workspace 2 (i3)
+
+if [[ -x /usr/bin/i3 ]]; then
+   nvr --remote "${@:-unnamed}" && i3-msg workspace 2 1> /dev/null
+else
+   nvr --remote "${@:-unnamed}"
+fi
+
+i3-msg workspace 2 1> /dev/null
