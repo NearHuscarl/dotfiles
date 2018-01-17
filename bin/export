@@ -42,3 +42,9 @@ export EDITOR=vim
 
 # Python virtualenvwrapper setup
 export WORKON_HOME=~/.virtualenvs
+
+export FZF_DEFAULT_OPTS="
+	--color=hl:$THEME_HL2,hl+:$THEME_HL,bg+:$THEME_BG_ALT
+	--color=info:$THEME_MAIN,pointer:$THEME_MAIN,marker:$THEME_MAIN2
+	--color=spinner:$THEME_MAIN,border:$THEME_MAIN
+"
