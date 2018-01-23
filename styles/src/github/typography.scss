@@ -26,3 +26,11 @@ td.blob-code {
 	}
 	line-height: 120% !important;
 }
+
+// fix horrendous tabsize of 8 in github when use tab character
+* {
+	-webkit-tab-size: 3 !important;
+	-moz-tab-size: 3 !important;
+	-o-tab-size: 3 !important;
+	tab-size: 3 !important;
+}
