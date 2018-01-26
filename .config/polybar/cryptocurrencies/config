@@ -11,4 +11,10 @@ icon = [B]
 [ethereum]
 icon = [E]
 
+[iota]
+icon = [I]
+
+[cardano]
+icon = [C]
+
 ; vim:ft=dosini
