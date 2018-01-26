@@ -54,9 +54,10 @@ font-1 = MaterialIcons:size=12;3
 font-2 = fontawesome:pixelsize=10;1
 font-3 = "DejaVu Math TeX Gyre:pixelsize=10;1"
 font-4 = "DejaVu Sans:pixelsize=10;1"
+; font-5 = cryptocoins:style=Regular;0
 
 modules-left = i3 mpd
-modules-right = wired-network wireless-network cpu memory filesystem home volume battery date time powermenu
+modules-right = crypto wired-network wireless-network cpu memory filesystem home volume battery date time powermenu
 
 ; tray-position = right
 tray-padding = 2
@@ -164,6 +165,12 @@ label-song-foreground = ${colors.foreground-icon}
 
 label-song = %title:2:25:...%
 label-offline =  mpd is offline
+; }}}
+; {{{ [module/crypto]
+[module/crypto]
+type = custom/script
+interval = 300
+exec = bash -l -c '$HOME/.config/polybar/cryptocurrencies/main.py'
 ; }}}
 ; {{{ [module/cpu]
 [module/cpu]

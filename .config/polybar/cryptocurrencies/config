@@ -1,0 +1,14 @@
+[general]
+; AUD BRL CAD CHF CLP CNY CZK DKK EUR GBP HKD HUF IDR ILS INR
+; JPY KRW MXN MYR NOK NZD PHP PKR PLN RUB SEK SGD THB TRY TWD ZAR
+base_currency = USD
+; percentage price both
+display = percentage
+
+[bitcoin]
+icon = [B]
+
+[ethereum]
+icon = [E]
+
+; vim:ft=dosini
