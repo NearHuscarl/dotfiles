@@ -57,7 +57,7 @@ font-4 = "DejaVu Sans:pixelsize=10;1"
 ; font-5 = cryptocoins:style=Regular;0
 
 modules-left = i3 mpd
-modules-right = crypto wired-network wireless-network cpu memory filesystem home volume battery date time powermenu
+modules-right = crypto wired-network wireless-network cpu memory filesystem home volume battery date time
 
 ; tray-position = right
 tray-padding = 2
@@ -171,6 +171,7 @@ label-offline =  mpd is offline
 type = custom/script
 interval = 300
 exec = bash -l -c '$HOME/.config/polybar/cryptocurrencies/main.py'
+click-left = xdg-open https://coinmarketcap.com/
 ; }}}
 ; {{{ [module/cpu]
 [module/cpu]
