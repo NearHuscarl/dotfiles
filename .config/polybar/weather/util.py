@@ -1,23 +1,11 @@
 #!/bin/env python
 
-""" util functions for polybar """
+""" util functions for polybar module """
 
 import os
 
-def color_polybar(string, color_envron_var):
-	"""
-	Return string with color using polybar format, for printing on polybar only,
-	second argument is environment variable from $HOME/themes/current_theme
-	"""
-
-	color_begin = '%{F' + os.environ[color_envron_var] +  '}'
-	color_end = '%{F-}'
-	return color_begin + string + color_end
-
-def color_bash(string, color):
-	""" print string with escape code for bash color """
-
-	color_code = {
+color_code = {
+		'bash': {
 			'black': '\x1b[30m',
 			'red': '\x1b[31m',
 			'green': '\x1b[32m',
@@ -35,30 +23,38 @@ def color_bash(string, color):
 			'lightcyan': '\x1b[96m',
 			'white': '\x1b[97m',
 			'reset': '\x1b[0m'
+			},
+		'polybar': {
+			'main': '%{F' + os.environ['THEME_MAIN'] + '}',
+			'black': '%{F' + os.environ['THEME_BLACK'] + '}',
+			'red': '%{F' + os.environ['THEME_RED'] + '}',
+			'green': '%{F' + os.environ['THEME_GREEN'] + '}',
+			'yellow': '%{F' + os.environ['THEME_YELLOW'] + '}',
+			'blue': '%{F' + os.environ['THEME_BLUE'] + '}',
+			'magenta': '%{F' + os.environ['THEME_MAGENTA'] + '}',
+			'cyan': '%{F' + os.environ['THEME_CYAN'] + '}',
+			'gray': '%{F' + os.environ['THEME_LIGHTGREY'] + '}',
+			'white': '%{F' + os.environ['THEME_WHITE'] + '}',
+			'reset': '%{F-}'
 			}
+		}
 
-	return color_code[color] + string + color_code['reset']
+def color_polybar(string, color):
+	"""
+	Return string with color using polybar format, for printing on polybar only,
+	second argument is environment variable from $HOME/themes/current_theme
+	"""
+	return color_code['polybar'][color] + string + color_code['polybar']['reset']
+
+def color_bash(string, color):
+	""" print string with escape code for bash color """
+	return color_code['bash'][color] + string + color_code['bash']['reset']
 
 def main():
-	""" main function """
-
-	print(color_polybar('test', 'THEME_BLACK'))
-	print(color_bash('test', 'black'))
-	print(color_bash('test', 'red'))
-	print(color_bash('test', 'green'))
-	print(color_bash('test', 'yellow'))
-	print(color_bash('test', 'blue'))
-	print(color_bash('test', 'magenta'))
-	print(color_bash('test', 'cyan'))
-	print(color_bash('test', 'lightgray'))
-	print(color_bash('test', 'darkgray'))
-	print(color_bash('test', 'lightred'))
-	print(color_bash('test', 'lightgreen'))
-	print(color_bash('test', 'lightyellow'))
-	print(color_bash('test', 'lightblue'))
-	print(color_bash('test', 'lightmagenta'))
-	print(color_bash('test', 'lightcyan'))
-	print(color_bash('test', 'white'))
+	for color in color_code['bash']:
+		print(color_bash('test', color))
+	for color in color_code['polybar']:
+		print(color_polybar('test', color))
 
 if __name__ == '__main__':
 	main()

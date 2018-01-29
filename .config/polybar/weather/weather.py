@@ -151,7 +151,7 @@ def update_weather(city_id, units, api_key):
 
 	url = 'http://api.openweathermap.org/data/2.5/weather?id={}&appid={}&units={}'
 	temp_unit = 'C' if units == 'metric' else 'K'
-	error_icon = color_polybar('', 'THEME_ALERT')
+	error_icon = color_polybar('', 'red')
 
 	try:
 		req = requests.get(url.format(city_id, api_key, units))
@@ -164,10 +164,10 @@ def update_weather(city_id, units, api_key):
 
 		temp_value = round(req.json()['main']['temp'])
 		temp = str(temp_value) + '°' + temp_unit
-		thermo_icon = color_polybar(get_thermo_icon(temp_value, units), 'THEME_MAIN')
+		thermo_icon = color_polybar(get_thermo_icon(temp_value, units), 'main')
 
 		weather_id = req.json()['weather'][0]['id']
-		weather_icon = color_polybar(get_weather_icon(weather_id), 'THEME_MAIN')
+		weather_icon = color_polybar(get_weather_icon(weather_id), 'main')
 
 		print('{} {} {} {}'.format(weather_icon, description, thermo_icon, temp), flush=True)
 	except (HTTPError, Timeout, ConnectionError):
