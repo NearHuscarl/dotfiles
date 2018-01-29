@@ -29,7 +29,7 @@ def get_cryptocurrencies():
 def get_change_in_24(json):
 	""" Get change from 24 hour + color """
 	change_24 = float(json['percent_change_24h'])
-	color = 'THEME_GREEN' if change_24 >= 0 else 'THEME_RED'
+	color = 'green' if change_24 >= 0 else 'red'
 	return color_polybar('{}%'.format(str(change_24)), color)
 
 def main():
@@ -38,7 +38,7 @@ def main():
 	convert_to = {'convert': base_currency}
 
 	for currency in cryptocurrencies:
-		icon = color_polybar(config[currency]['icon'], 'THEME_MAIN')
+		icon = color_polybar(config[currency]['icon'], 'main')
 		api_url = 'https://api.coinmarketcap.com/v1/ticker/{}'.format(currency)
 		json = requests.get(api_url, params=convert_to).json()[0]
 		local_price = round(float(json['price_{}'.format(base_currency.lower())]), 2)
