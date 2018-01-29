@@ -7,6 +7,9 @@ import os
 import sys
 
 import requests
+from requests import ConnectionError
+from requests.exceptions import HTTPError, Timeout
+
 from util import color_polybar
 
 config = configparser.ConfigParser()
@@ -40,7 +43,11 @@ def main():
 	for currency in cryptocurrencies:
 		icon = color_polybar(config[currency]['icon'], 'main')
 		api_url = 'https://api.coinmarketcap.com/v1/ticker/{}'.format(currency)
-		json = requests.get(api_url, params=convert_to).json()[0]
+		try:
+			json = requests.get(api_url, params=convert_to).json()[0]
+		except (HTTPError, Timeout, ConnectionError):
+			sys.stdout.write(color_polybar('', 'red'))
+			sys.exit()
 		local_price = round(float(json['price_{}'.format(base_currency.lower())]), 2)
 		change_24 = get_change_in_24(json)
 
