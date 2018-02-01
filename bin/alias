@@ -4,13 +4,113 @@
 # Description: Bash custom aliases and other alias functions, some alias have
 #              the equivalent completion as the original commands
 # Author:      Near Huscarl <near.huscarl@gmail.com>
-# Last Change: Wed Dec 27 21:39:35 +07 2017
+# Last Change: Thu Feb 01 15:18:12 +07 2018
 # Licence:     BSD 3-Clause license
 # Note:        N/A
 # ============================================================================
 
-source $HOME/bin/alias-utils
+# {{{ alias functions
+function alias_tree() { # {{{
+   local pwd=${1:-$(pwd)}
+   find $pwd -print | sed -e "s;$pwd;\.;g;s;[^/]*\/;|__;g;s;__|; |;g"
+} # }}}
+function alias_pac_install() { # {{{
+   sudo pacman -S "$@"
+   [[ -x $HOME/bin/pacMerge ]] && pacMerge
+} # }}}
+function alias_nm_connect() { # {{{
+	# connect to wifi, example: nmcli dev connect wlo1
+	if [[ $# == 0 ]]; then
+		nmcli --pretty device connect $(nmcli device status | awk '/wifi/ {print $1}')
+	# connect to saved wifi
+	elif [[ $# == 1 ]]; then
+		nmcli --pretty connection up "$1"
+	# connect to a new wifi
+	elif [[ $# == 2 ]]; then
+		nmcli --pretty device wifi connect "$1" password "$2"
+	else
+		echo 'Too many or few argument(s)'
+	fi
+} # }}}
+function alias_pac_update() { # {{{
+   sudo pacman -Syu
+   [[ -x $HOME/bin/pac_merge ]] && pac_merge
+} # }}}
+function alias_pac_list() { # {{{
+   pacman -Ql "$1" | grep "${2:-}"
+} #}}}
+function alias_pac_latest_explicit() { # {{{
+   # list nth last explicitly installed packages which is not in base/base-devel group
+	max_pkgs="${1:-20}"
+   explicit_pkgs=$(comm -23 <(pacman -Qqe | sort) <(pacman -Qqg base base-devel | sort))
+	expac -HM --timefmt='%Y-%m-%d %T' '%l\t%-20n\t%m' "$explicit_pkgs"  | sort | tail -n "$max_pkgs"
+} # }}}
+function alias_pac_latest() { # {{{
+	max_pkgs="${1:-20}"
+	expac -HM --timefmt="%Y-%m-%d %T" "%l\t%-20n\t%m" | sort | tail -n "$max_pkgs"
+} # }}}
+function alias_pac_size() { # {{{
+	expac -S -HM "%k\t%n" | sort -n | tail -n "${1:-20}"
+} # }}}
+function alias_pac_dep() { # {{{
+   # print package's dependencies
+   if [[ $# == 0 ]]; then
+      printf "Please enter a package name\n"
+   else
+      pacman -Si $1 | awk -F'[:<=>]' '/^Depends/ {print $2}' | xargs -n1 | sort -u
+   fi
+} # }}}
+function alias_aur_desc() { # {{{
+   pacaur -Si $@ | grep Description | sed -e "s/^Description.*://"
+} # }}}
+function alias_aur_size() { # {{{
+   pacaur -Qi $@ | grep "Installed Size" | sed -e "s/^Installed Size.*://"
+} # }}}
+function alias_aur_dependency() { # {{{
+   if [[ $# == 0 ]]; then
+      printf "Please enter a package name\n"
+   else
+      pacman -Qi $1 | awk -F'[:<=>]' '/^Depends/ {print $2}' | xargs -n1 | sort -u
+   fi
+} # }}}
+function alias_size() { # {{{
+   du -h --max-depth=${1:-0}
+} # }}}
+function alias_pic() { # {{{
+   shopt -s nullglob
 
+   # picture extensions
+   local picExt="(jpg|png)"
+   local pwd=$(pwd)
+
+   # get all *.(jpg|png) of current path
+   local allPath=("$pwd"/*.@$picExt)
+
+   # remove $(pwd) prefix, only keep file names
+   allPath=("${allPath[@]#"$pwd/"}")
+
+   for i in "${!allPath[@]}"; do
+      if [[ "${allPath[$i]}" == "$1" ]]; then
+         # open sxiv in 
+         # (s)cale mode: (h)eight
+         # hide (b)ottom info
+         # search dirs (r)ecursively for images
+         # open at pic (n)umber <NUM> which is the selected picture
+         sxiv -s h -b -n "$((i+1))" *.@$picExt
+         shopt -u nullglob
+         return 0
+      fi
+   done
+} # }}}
+function alias_rgr() { # {{{
+   rootDir=$(git rev-parse --show-toplevel 2> /dev/null)
+   if [[ $? == 0 ]]; then
+      rg "$@" $rootDir
+   else
+      rg "$@" $HOME
+   fi
+} # }}}
+# }}}
 # color {{{
 alias dir='dir --color=auto'
 alias vdir='vdir --color=auto'
@@ -35,13 +135,15 @@ alias  lr='ls --color=auto -R'
 alias lss='ls -A    | grep --color=auto -i'
 alias lls='ls -Aoh  | grep --color=auto -i'
 alias lrs='ls -ARoh | grep --color=auto -i'
-alias tree='alias-tree'
+alias tree='alias_tree'
 # }}}
 # vim {{{
 if [[ -x /usr/bin/vim ]]; then
 	alias view='vim -R'
 	alias vim0='vim -u NONE -N'
 	alias vimrc='vim $HOME/.vimrc'
+	alias nvim-startup='nvim -c q --startuptime /tmp/nvim.log && tail -n1 $_'
+	alias nvim-Startup='nvim -c q --startuptime /tmp/nvim.log && nvim $_'
 	alias vim-startup='vim -c q --startuptime /tmp/vim.log && tail -n1 $_'
 	alias vim-Startup='vim -c q --startuptime /tmp/vim.log && vim $_'
 	# vir in $HOME/bin/vir
@@ -50,9 +152,9 @@ if [[ -x /usr/bin/vim ]]; then
 	fi
 fi
 # }}}
-# NetworkManager {{{
+# network manager {{{
 if [[ -x /usr/bin/NetworkManager ]]; then
-	alias nm-connect='alias-nm-connect'
+	alias nm-connect='alias_nm_connect'
 	alias nm-disconnect='nmcli dev disconnect $(nmcli device status | awk "/wifi/ {print $1}")'
 	alias nm-list='nmcli connection show'
 	alias nm-delete='nmcli connection delete'
@@ -64,20 +166,19 @@ fi
 # }}}
 # pacman {{{
 if [[ -x /usr/bin/pacman ]]; then
-	alias pac-install='alias-pac-install'
-	alias pac-update='alias-pac-update'
+	alias pac-install='alias_pac_install'
+	alias pac-update='alias_pac_update'
 	alias pac-remove='sudo pacman -Rs'
 	alias pac-search='pacman -Qsq'
 	alias pac-Search='pacman -Ssq'
-	alias pac-list='alias-pac-list'
-	alias pac-orphan='sudo pacman -Rns $(pacman -Qtdq)'                                   # Remove unused packages (orphans)
+	alias pac-list='alias_pac_list'
+	alias pac-orphan='sudo pacman -Rns $(pacman -Qtdq)'           # Remove unused packages (orphans)
 	alias pac-info='pacman -Si'
 	alias pac-desc='expac -S "%d"'
-	alias pac-size='expac -S -HM "%k\t%n"'                                                # Show download size of package(s)
-	alias pac-Size='expac -S -HM "%k\t%n" | sort -n | tail -n20'                          # Show nth largest download size of package(s)
-	alias pac-latest='expac -HM --timefmt="%Y-%m-%d %T" "%l\t%-20n\t%m" | sort | tail -n20' # List nth last installed packages
-	alias pac-Latest='alias-pac-latest-e'                                                 # List nth last explicitly installed packages which is not in base/base-devel group
-	alias pac-dep='alias-pac-dep'                                                         # Print package's dependencies
+	alias pac-size='alias_pac_size'                               # Show download size of largest package(s)
+	alias pac-latest='alias_pac_latest'                           # List nth last installed packages
+	alias pac-Latest='alias_pac_latest_explicit'                  # List nth last explicitly installed packages which is not in base/base-devel group
+	alias pac-dep='alias_pac_dependency'                          # Print package's dependencies
 
 	# AUR
 	if [[ -x /usr/bin/pacaur ]]; then
@@ -89,43 +190,15 @@ if [[ -x /usr/bin/pacman ]]; then
 		alias aur-Search='pacaur -Ssqa'
 		alias aur-list='pacman -Qm'
 		alias aur-info='pacaur -Sia'
-		alias aur-desc='alias-aur-desc'
-		alias aur-size='alias-aur-size'
-		alias aur-dep='alias-aur-dep'
+		alias aur-desc='alias_aur_desc'
+		alias aur-size='alias_aur_size'
+		alias aur-dep='alias_aur_dep'
 	fi
-fi
-# }}}
-# systemd {{{
-if [[ -x /usr/bin/systemctl ]]; then
-	alias sd-start='sudo systemctl start'
-	alias sd-stop='sudo systemctl stop'
-	alias sd-enable='sudo systemctl enable'
-	alias sd-disable='sudo systemctl disable'
-	alias sd-status='sudo systemctl status'
-fi
-
-if [[ -x /usr/bin/journalctl ]]; then
-	alias sd-log='journalctl -b'
-	alias sd-search='journalctl -b | grep'
-	alias sd-clean='journalctl --vacuum-size=100M'
 fi
 # }}}
 # git {{{
 if [[ -x /usr/bin/git ]]; then
 	alias gstat='git status'
-	alias gadd='git add'
-	alias gcommit='git commit'
-	alias gCommit='git commit -a'
-	alias gclone='git clone'
-	alias glog='git log \
-		--color \
-		--graph \
-		--pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" \
-		--abbrev-commit'
-	alias glogstat='glog --stat'
-	alias glogdiff='glog --stat -p'
-	alias gschange='git log --patch -S'
-	alias gscommit='git log --grep'
 	alias gpull='git pull'
 	alias gpush='git push'
 	alias gfixcommit='git commit --amend'                     # Fix commit msg without altering its snapshot
@@ -134,29 +207,14 @@ if [[ -x /usr/bin/git ]]; then
 	alias grestore='git checkout --'
 	alias gcheck='git checkout'
 	alias gnewbranch='git checkout -b'
-	alias gremove='git rm --cached'                           # Remove file in vcs while keeping in the local location
 	alias gdelbranch='git branch -d'
-	alias gdelremote='git push origin :'
+	alias gremove='git rm --cached'                           # Remove file in vcs while keeping in the local location
 	alias gmerge='git merge'
-
-	# gdiff [num] where num is commit [num]nth
-	if [[ -x /usr/bin/vim && -f $HOME/.vim/plugged/vim-fugitive/plugin/fugitive.vim ]]; then
-		alias gdiff='alias-gdiff'
-	else
-		alias gdiff='alias-gdiff-old'
-	fi
 fi
 # }}}
 # trash-cli {{{
 if [[ -x /usr/bin/trash-put ]]; then
-	alias rm-hard='rm -I'
 	alias rm='trash-put'
-	alias rm-ls='trash-list'
-	alias rm-ls-latest='trash-list | sort | tail -n'
-	alias rm-search='trash-list | grep'
-	alias rm-restore='trash-restore'
-	alias rm-empty='trash-empty'
-	alias rm-rm='trash-rm'
 fi
 # }}}
 # xprop {{{
@@ -168,29 +226,26 @@ alias xprop-title='xprop _NET_WM_NAME WM_NAME'
 alias wallpaper='nitrogen --random --set-scaled "$HOME/Pictures/low_poly"'
 alias schedule='sxiv -f $HOME/Pictures/misc/schedule.png'
 alias thumnail='sxiv -f -t -b -r *'
-alias pic='alias-pic'
+alias pic='alias_pic'
 alias sxiv='sxiv -b -s h'
 # }}}
-# Other {{{
+# other {{{
 alias rtm='killall -USR1 termite' # reload termite config
-alias icon="python -c \"print(' '.join([chr(i) + '\u0020\0020' for i in range(61440, 61440+525)]))\""
 alias xmod='xmodmap ~/.Xmodmap'
 alias xres='xrdb ~/.Xresources'
 alias reboot='shutdown -r now'
 alias shutoff='$HOME/bin/shutdown'
-alias size='alias-size'
+alias size='alias_size'
 alias mkdir='mkdir -pv'
 alias top='vtop'
 alias internet='$EDITOR $HOME/misc/Internet.txt'
-alias alsa-fix='sudo /usr/local/bin/fix_headphones_audio.sh'
 alias music='ncmpcpp'
 alias clock='tty-clock -s -c -D -C6'
 alias symlink='ln -s'
 alias fuck='sudo $(history -p !!)'
-alias key-import='gpg --recv-keys'
-alias bat='upower --show-info $(upower --enumerate | grep BAT) | grep --color=never -E "state|to full|to empty|percentage" | sed "s/^\s*//"'
+alias battery='upower --show-info $(upower --enumerate | grep BAT) | grep --color=never -E "state|to full|to empty|percentage" | sed "s/^\s*//"'
 # }}}
-# Even shorter aliases {{{
+# even shorter aliases {{{
 alias r='fc -s'
 alias e='exit'
 alias c='clear'
@@ -201,7 +256,7 @@ alias ae='$EDITOR $HOME/bin/alias'
 alias sa='source $HOME/bin/alias'
 alias sb='source $HOME/.bashrc && clear'
 # }}}
-# Apply completion to aliases {{{
+# apply completion to aliases {{{
 
 # complete -p <command> -> show completion function of that command
 # note: if not work. try to source the completion script first by typing the original
@@ -214,12 +269,8 @@ if [ -d /usr/share/bash-completion/completions ]; then
 	# source $completionPath/pacman (_completion_loader pacman works too)
 	# _completion_loader pacman
 	source $completionPath/pacman
-	source $completionPath/journalctl
-	source $completionPath/systemctl
 	source $completionPath/git
-	# source $completionPath/systemctl
 	source $HOME/bin/completion-utils.sh
-	source $HOME/bin/completion-wrapper.sh
 	# }}}
 	# pacman {{{
 	complete -o default -F _pacman_S pac-install
@@ -240,44 +291,15 @@ if [ -d /usr/share/bash-completion/completions ]; then
 	complete -o default -F _pacman_Q aur-size
 	complete -o default -F _pacman_Q aur-dep
 	# }}}
-	# systemctl {{{
-	completion-wrapper _systemctl _sd-start   systemctl start  1> /dev/null
-	completion-wrapper _systemctl _sd-stop    systemctl stop   1> /dev/null
-	completion-wrapper _systemctl _sd-enable  systemctl enable 1> /dev/null
-	completion-wrapper _systemctl _sd-disable systemctl enable 1> /dev/null
-	completion-wrapper _systemctl _sd-status  systemctl status 1> /dev/null
-
-	complete -o default -F _sd-start   sd-start
-	complete -o default -F _sd-stop    sd-stop
-	complete -o default -F _sd-enable  sd-enable
-	complete -o default -F _sd-disable sd-disable
-	complete -o default -F _sd-status  sd-status
-
-	complete -o default -F _journalctl sd-log
-	# }}}
 	# git {{{
 	# git completion script already have its own function to set up completion
 	# for functions or commands, so no need to use complete-wrapper function
 	# see https://gist.github.com/JuggoPop/10706934
-	__git_complete gstat      _git_status
-	__git_complete gadd       _git_add
-	__git_complete gcommit    _git_commit
-	__git_complete glog       _git_log
-	__git_complete glogstat   _git_log
-	__git_complete glogdiff   _git_log
-	__git_complete gpull      _git_pull
-	__git_complete gpush      _git_push
-	__git_complete gfixcommit _git_commit
-	__git_complete gfixstage  _git_commit
-	__git_complete gunstage   _git_reset
-	__git_complete gswitch    _git_checkout
+	__git_complete gcheck     _git_checkout
 	__git_complete gnewbranch _git_branch
 	__git_complete gmerge     _git_merge
-	# __git_complete gdiff      _git_diff
 
-	# __git_complete gdelbranch __gitcomp
 	complete -o default -F _git_branch_d gdelbranch
-	complete -o default -F _git_log_S gscommit
 	# }}}
 fi
 

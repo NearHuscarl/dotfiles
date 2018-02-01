@@ -92,15 +92,6 @@ fi
 
 # Custom settings
 
-# Display quote at startup
-if [[ -x /usr/bin/cowsay && -x /usr/bin/fortune ]]; then
-	cow_type=$(shuf -n 1 -e bong cower default head-in moofasa moose sodomized three-eyes small www)
-	cow_mode=$(shuf -n 1 -e b d g p s t w y)
-	cow_express=$(shuf -n 1 -e cowsay cowthink)
-	fortune 70% computers 30% linux -s | fmt -80 -s | "$cow_express" -"$cow_mode" -f "$cow_type" -n | lolcat
-	echo
-fi
-
 # Export custom environment variables
 [[ -f ~/bin/export ]] && . ~/bin/export
 
@@ -132,11 +123,6 @@ if [ -f ~/bin/alias ]; then
 	source ~/bin/alias
 fi
 
-# run bash completion for custom alias script
-if [ -f ~/bin/completion-wrapper.sh ]; then
-	source ~/bin/completion-wrapper.sh
-fi
-
 # run bashrc in all session
 if [ -f ~/bin/fzf-script ]; then
 	source ~/bin/fzf-script
@@ -161,3 +147,6 @@ source $HOME/bin/virtualenvwrapper_lazyload
 
 # python interactive prompt
 export PYTHONSTARTUP=$HOME/.pythonrc.py
+
+# custom completion
+source $HOME/Github/termite-color-switcher/completion/bash
