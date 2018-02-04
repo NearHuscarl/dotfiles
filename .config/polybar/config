@@ -57,7 +57,7 @@ font-4 = "DejaVu Sans:pixelsize=10;1"
 ; font-5 = cryptocoins:style=Regular;0
 
 modules-left = i3 mpd
-modules-right = crypto wired-network wireless-network cpu memory filesystem home volume battery date time
+modules-right = wired-network wireless-network cpu memory filesystem home volume battery date time
 
 ; tray-position = right
 tray-padding = 2
@@ -165,13 +165,6 @@ label-song-foreground = ${colors.foreground-icon}
 
 label-song = %title:2:25:...%
 label-offline =  mpd is offline
-; }}}
-; {{{ [module/crypto]
-[module/crypto]
-type = custom/script
-interval = 300
-exec = bash -l -c '$HOME/.config/polybar/cryptocurrencies/main.py'
-click-left = xdg-open https://coinmarketcap.com/
 ; }}}
 ; {{{ [module/cpu]
 [module/cpu]
@@ -380,7 +373,7 @@ font-3 = ${bar/holybar.font-3}
 font-4 = ${bar/holybar.font-4}
 
 modules-left = weather
-modules-center = news
+modules-center = crypto
 modules-right = gmail pac_update trash
 ; }}}
 ; {{{ [module/weather]
@@ -430,6 +423,14 @@ tail = true
 exec = bash -l -c '$HOME/.config/polybar/news/launch.sh'
 
 click-left = $HOME/.config/polybar/news/open_url
+; }}}
+; {{{ [module/cryptocurrencies]
+[module/crypto]
+type = custom/script
+interval = 200
+exec =       bash -l -c '$HOME/.config/polybar/cryptocurrencies/main.py'
+click-left = bash -l -c '$HOME/.config/polybar/cryptocurrencies/main.py --display toggle'
+click-right = xdg-open https://coinmarketcap.com/
 ; }}}
 
 ; vim:ft=dosini foldmethod=marker

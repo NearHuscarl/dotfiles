@@ -1,20 +1,62 @@
 [general]
-; AUD BRL CAD CHF CLP CNY CZK DKK EUR GBP HKD HUF IDR ILS INR
-; JPY KRW MXN MYR NOK NZD PHP PKR PLN RUB SEK SGD THB TRY TWD ZAR
-base_currency = USD
-; percentage price both
+base_currency = VND
 display = percentage
+last_update = 1517771335.3330064
 
 [bitcoin]
-icon = [B]
+symbol = BTC
+change_24 = -9.69
+price_btc = 1.0
+price_usd = 8382.03
+price_vnd = 190372106.555
 
 [ethereum]
-icon = [E]
+symbol = ETH
+change_24 = -11.21
+price_btc = 0.103
+price_usd = 861.317
+price_vnd = 19562174.283
+
+[litecoin]
+symbol = LTC
+change_24 = -3.42
+price_btc = 0.018
+price_usd = 149.665
+price_vnd = 3399181.502
 
 [iota]
-icon = [I]
+symbol = MIOTA
+change_24 = -11.1
+price_btc = 0.0
+price_usd = 1.762
+price_vnd = 40022.969
 
 [cardano]
-icon = [C]
+symbol = ADA
+change_24 = -10.13
+price_btc = 0.0
+price_usd = 0.391
+price_vnd = 8880.23
 
-; vim:ft=dosini
+[raiblocks]
+symbol = XRB
+change_24 = -21.62
+price_btc = 0.002
+price_usd = 12.837
+price_vnd = 291553.088
+
+[qtum]
+symbol = QTUM
+change_24 = -11.66
+price_btc = 0.003
+price_usd = 26.472
+price_vnd = 601239.384
+
+[eos]
+symbol = EOS
+change_24 = -12.07
+price_btc = 0.001
+price_usd = 8.783
+price_vnd = 199472.778
+
+# vim: ft=dosini
