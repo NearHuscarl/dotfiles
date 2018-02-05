@@ -19,19 +19,14 @@ import requests
 from cache import get_path, read_cache, write_cache
 
 cache_path = get_path('currency_cache')
-
-def get_cache(path):
-	""" get content from cache in json file. return {} if file not exist or empty """
-	cache = read_cache(path)
-	if cache is None:
-		cache = {}
-	return cache
+cache = {} if read_cache(cache_path) is None else read_cache(cache_path)
 
 def check_update(from_currency, to_currency):
 	""" check if last update is over 30 mins ago. if so return True to update, else False """
-	cache = get_cache(cache_path)
 	# if currency never get converted before
-	if from_currency not in cache or cache[from_currency].get(to_currency) is None:
+	if from_currency not in cache:
+		cache[from_currency] = {}
+	if cache[from_currency].get(to_currency) is None:
 		cache[from_currency][to_currency] = {'last_update': 0}
 	last_update = float(cache[from_currency][to_currency]['last_update'])
 	if time.time() - last_update >= 30 * 60: # if last update is more than 30 min ago
@@ -41,8 +36,7 @@ def check_update(from_currency, to_currency):
 def update_cache(from_currency, to_currency):
 	""" update from_currency to_currency pair in cache if
 	last update for that pair is over 30 minutes ago by request API info """
-	cache = get_cache(cache_path)
-	if check_update is True:
+	if check_update(from_currency, to_currency) is True:
 		cache[from_currency][to_currency]['value'] = convert_using_api(from_currency, to_currency)
 		cache[from_currency][to_currency]['last_update'] = time.time()
 		write_cache(cache_path, cache)
@@ -58,7 +52,6 @@ def convert_using_api(from_currency, to_currency):
 def convert(from_currency, to_currency, from_currency_price=1):
 	""" convert from from_currency to to_currency using cached info """
 	update_cache(from_currency, to_currency)
-	cache = get_cache(cache_path)
 	return cache[from_currency][to_currency]['value'] * from_currency_price
 
 _symbol = {
@@ -178,8 +171,10 @@ def symbol(currency):
 	return _symbol[currency]
 
 def main():
+	fr = 'EUR'
+	to = 'JPY'
 	print('WARNING: API limit 100 calls per hour')
-	print('1 USD worths {} VND'.format(convert('USD', 'VND')))
+	print('1 {} worths {} {}'.format(fr, convert(fr, to), to))
 
 if __name__ == '__main__':
 	main()
