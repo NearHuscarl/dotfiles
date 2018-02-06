@@ -127,6 +127,15 @@ alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 # }}}
+# {{{ fzf
+alias fzf_cmd='
+fzf \
+	--multi \
+	--no-mouse \
+	--cycle \
+	--reverse \
+	--bind=alt-k:up,alt-j:down,alt-i:abort,alt-h:backward-char,alt-l:forward-char,alt-n:backward-word,alt-m:forward-word,alt-e:jump,alt-d:kill-line,alt-t:toggle'
+# }}}
 # list {{{
 alias  la='ls --color=auto -A'
 alias  ll='ls --color=auto -oh'
@@ -243,6 +252,7 @@ alias music='ncmpcpp'
 alias clock='tty-clock -s -c -D -C6'
 alias symlink='ln -s'
 alias fuck='sudo $(history -p !!)'
+alias json='python -m json.tool'
 alias battery='upower --show-info $(upower --enumerate | grep BAT) | grep --color=never -E "state|to full|to empty|percentage" | sed "s/^\s*//"'
 # }}}
 # even shorter aliases {{{

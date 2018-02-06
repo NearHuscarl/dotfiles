@@ -119,9 +119,8 @@ export PS2=" ${CYAN}${RESET} "
 # [ ! -s ~/.config/mpd/pid ] && mpd
 
 # run custom alias script in all session
-if [ -f ~/bin/alias ]; then
-	source ~/bin/alias
-fi
+source ~/script/bash/alias
+source ~/script/bash/cd_fzf # cd only work in subshell
 
 function fzf() {
 	"$(which fzf)" \

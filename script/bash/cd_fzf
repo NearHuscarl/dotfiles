@@ -1,0 +1,18 @@
+#!/bin/env bash
+
+# Usage:
+# source this file in ~/.bashrc
+# $ sd    # [s]earch [d]irectory
+
+# Dependencies:
+# fzf
+# fd
+
+function sd() {
+	local exclude_pattern='node_modules'
+	local directory=$(fd --type directory --no-ignore --exclude="$exclude_pattern"  | fzf)
+	if [[ "$directory" != '' ]]; then
+		echo cd "$(pwd)"/"$directory"
+		cd "$(pwd)"/"$directory"
+	fi
+}
