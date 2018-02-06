@@ -1,1 +1,0 @@
-/home/near/script/colorvim/colorvim
