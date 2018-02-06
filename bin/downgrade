@@ -1,0 +1,100 @@
+#!/bin/env bash
+
+# Usage:
+# $ ./downgrade
+
+# Dependencies:
+# $ pacman
+# $ fzf
+
+SCRIPT_NAME=$(basename "$0")
+USAGE="Usage: "$SCRIPT_NAME" [help]"
+HELP="\
+"$SCRIPT_NAME" <command>
+
+Downgrade package by typing its name and version using fzf
+
+Commands:
+  h, help      print this help message"
+
+# set -o errexit
+set -o pipefail
+set -o nounset
+# set -o xtrace
+
+function die () { # {{{
+	echo "$*" >&2
+	exit 1
+}
+# }}}
+function usage() { # {{{
+	die "$USAGE"
+}
+# }}}
+function help() { # {{{
+	echo "$HELP"
+} # }}}
+function strlen() { # {{{
+	local str="$1"
+	echo "${#str}"
+}
+# }}}
+function get_bar_length() { # {{{
+	# get bar length from the longest line in an array of string
+	local str_arr=("$@")
+	local maxlen=0
+	for str in "${str_arr[@]}"; do
+		if (("$(strlen "$str")" > "$maxlen")); then
+			maxlen="$(strlen "$str")"
+		fi
+	done
+	echo "$maxlen"
+}
+# }}}
+function print_bar() { # {{{
+	local length="$1"
+	echo $(seq -s '─' "$length" | sed 's/[0-9]//g')
+}
+# }}}
+function downgrade() { # {{{
+	local cache_path='/var/cache/pacman/pkg'
+	local extension='.pkg.tar.xz'
+	local package="$(ls "$cache_path" | sed s/"$extension"// | fzf)"
+
+	if [[  "$package" != '' ]]; then
+		echo Downgrade to "$package"
+		# read -n 1 -p 'Please [c]onfirm, [s]earch ALA or [q]uit: ' confirm
+		read -n 1 -p '[c]onfirm to proceed or [q]uit: ' confirm
+		echo
+
+		if [[ "$confirm" =~ ^[Cc] ]]; then
+			sudo pacman -U "$cache_path"/"$package""$extension"
+		elif [[ "$confirm" =~ ^[Qq] ]]; then
+			exit 0
+		elif [[ "$confirm" =~ ^[Ss] ]]; then
+			local arch_archive_path='https://archive.archlinux.org/packages/'
+			# fuzzy search installed package list
+			# profit
+		fi
+	fi
+}
+# }}}
+function main() { # {{{
+	local cmd="${1:-}"
+
+	case "$#" in
+		0)
+			downgrade ;;
+		*)
+			case "$cmd" in
+				h|help)
+					help ;;
+				*)
+					usage ;;
+			esac
+	esac
+}
+main "$@"
+# }}}
+
+# vim: foldmethod=marker
