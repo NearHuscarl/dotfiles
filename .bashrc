@@ -123,16 +123,23 @@ if [ -f ~/bin/alias ]; then
 	source ~/bin/alias
 fi
 
-# run bashrc in all session
-if [ -f ~/bin/fzf-script ]; then
-	source ~/bin/fzf-script
-fi
+function fzf() {
+	"$(which fzf)" \
+		--no-mouse \
+		--cycle \
+		--reverse \
+		--bind=alt-k:up,alt-j:down,alt-h:backward-char,alt-l:forward-char \
+		--bind=alt-n:backward-word,alt-m:forward-word,alt-e:jump \
+		--bind=alt-d:kill-line,alt-i:abort,alt-t:toggle "$@"
+}
+
+export -f fzf
 
 # start ssh-agent
 eval `keychain --eval --quiet --agents ssh id_rsa`
 
 # ranger
-if [[ -x /usr/bin/ranger && -f $HOME/.config/ranger/rc.conf ]]; then
+if [[ -x /usr/bin/ranger && -f ~/.config/ranger/rc.conf ]]; then
 	export RANGER_LOAD_DEFAULT_RC=FALSE
 fi
 
@@ -143,10 +150,10 @@ if [[ -x /usr/bin/rg ]]; then
 fi
 
 # mkvirtualenv rmvirtualenv workon ... commands to manage python virtualenv
-source $HOME/bin/virtualenvwrapper_lazyload
+source ~/bin/virtualenvwrapper_lazyload
 
 # python interactive prompt
-export PYTHONSTARTUP=$HOME/.pythonrc.py
+export PYTHONSTARTUP=~/.pythonrc.py
 
 # custom completion
-source $HOME/Github/termite-color-switcher/completion/bash
+source ~/Github/termite-color-switcher/completion/bash
