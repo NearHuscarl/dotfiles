@@ -40,7 +40,7 @@ function kill_process() { # {{{
 	local header="$(ps -f | head -n1)"
 	local pid=$(ps -Af | sed 1d | fzf --multi --header="$header" | awk '{print $2}')
 
-	if [[ "$pid" != '' ]]; then # keyboard interrupt like CTRL-C
+	if [[ "$pid" != '' ]]; then # keyboard interruption like CTRL-C
 		echo $pid | xargs kill -${1:-9}
 	fi
 }
@@ -55,6 +55,8 @@ function main() { # {{{
 			case "$cmd" in
 				h|help)
 					help ;;
+				[0-9][0-9])
+					kill_process "$cmd" ;;
 				*)
 					usage ;;
 			esac
