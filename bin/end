@@ -1,0 +1,64 @@
+#!/bin/env bash
+
+# Usage:
+# $ ./end
+
+# Dependencies:
+# fzf
+
+SCRIPT_NAME=$(basename "$0")
+USAGE="Usage: "$SCRIPT_NAME" [help|<signal>]"
+HELP="\
+"$SCRIPT_NAME" <command>
+
+Kill process by typing the process name using fzf
+Commands:
+  h, help      print this help message
+  <signal>     signal number to send to process. Default is 9 (SIGKILL)
+               an alternative is to use signal 15 (SIGTERM) to terminate
+               the program cleanly instead of killing it immediately"
+
+set -o errexit
+set -o pipefail
+set -o nounset
+# set -o xtrace
+
+function die () { # {{{
+	echo "$*" >&2
+	exit 1
+}
+# }}}
+function usage() { # {{{
+	die "$USAGE"
+}
+# }}}
+function help() { # {{{
+	echo "$HELP"
+}
+# }}}
+function kill_process() { # {{{
+	local header="$(ps -f | head -n1)"
+	local pid=$(ps -Af | sed 1d | fzf --multi --header="$header" | awk '{print $2}')
+
+	if [[ "$pid" != '' ]]; then # keyboard interrupt like CTRL-C
+		echo $pid | xargs kill -${1:-9}
+	fi
+}
+# }}}
+function main() { # {{{
+	local cmd="${1:-}"
+
+	case "$#" in
+		0)
+			kill_process ;;
+		*)
+			case "$cmd" in
+				h|help)
+					help ;;
+				*)
+					usage ;;
+			esac
+	esac
+}
+main "$@"
+# }}}
