@@ -38,10 +38,11 @@ function help() { # {{{
 # }}}
 function kill_process() { # {{{
 	local header="$(ps -f | head -n1)"
+	local signal="${1:-9}"
 	local pid=$(ps -Af | sed 1d | fzf --multi --header="$header" | awk '{print $2}')
 
 	if [[ "$pid" != '' ]]; then # keyboard interruption like CTRL-C
-		echo $pid | xargs kill -${1:-9}
+		echo $pid | xargs kill -"$signal"
 	fi
 }
 # }}}
