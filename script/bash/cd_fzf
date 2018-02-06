@@ -9,10 +9,62 @@
 # fd
 
 function sd() {
-	local exclude_pattern='node_modules'
-	local directory=$(fd --type directory --no-ignore --exclude="$exclude_pattern"  | fzf)
-	if [[ "$directory" != '' ]]; then
-		echo cd "$(pwd)"/"$directory"
-		cd "$(pwd)"/"$directory"
-	fi
+	local USAGE='Usage: sd [help|<directory pattern>]'
+	local HELP=''
+
+	HELP+="sd <command>\n"
+	HELP+="Change directory by using fzf to filter path\n"
+	HELP+="Commands:\n"
+	HELP+="   h, help                print this help message\n"
+	HELP+='   <directory pattern>    search pattern for dirname, a regular expression'
+
+	function usage() { # {{{
+		echo "$USAGE"
+	}
+	# }}}
+	function help() { # {{{
+		echo -e "$HELP"
+	}
+	# }}}
+	function find_dirs() { # {{{
+		local dir_pattern="${1:-}"
+		local exclude_pattern='node_modules'
+		fd --type directory --no-ignore --exclude="$exclude_pattern" "$dir_pattern"
+	}
+	# }}}
+	function cd_fzf() { # {{{
+		local dir_pattern="${1:-}"
+		local directory=$(find_dirs "$dir_pattern"| fzf --reverse --height=15 --prompt=cd:\ )
+		if [[ "$directory" != '' ]]; then
+			echo cd "$(pwd)"/"$directory"
+			cd "$directory"
+		fi
+	}
+	# }}}
+	function main() { # {{{
+		local cmd="${1:-}"
+
+		case "$#" in
+			0)
+				cd_fzf ;;
+			1)
+				case "$cmd" in
+					-h|--help)
+						help ;;
+					*)
+						cd_fzf "$cmd" ;;
+				esac ;;
+			*)
+			usage ;;
+		esac
+	}
+	# }}}
+
+	main "$@"
+	unset -f die
+	unset -f usage
+	unset -f help
+	unset -f find_dirs
+	unset -f cd_fzf
+	unset -f main
 }
