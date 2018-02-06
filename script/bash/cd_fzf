@@ -28,8 +28,12 @@ function sd() {
 	# }}}
 	function find_dirs() { # {{{
 		local dir_pattern="${1:-}"
-		local exclude_pattern='node_modules'
-		fd --type directory --no-ignore --exclude="$exclude_pattern" "$dir_pattern"
+		local exclude_pattern=''
+
+		exclude_pattern+='{node_modules,.cache,.cargo,.dropbox,.git,.local,site-packages,'
+		exclude_pattern+='.config/google-chrome}'
+
+		fd --type directory --no-ignore --hidden --exclude="$exclude_pattern" "$dir_pattern"
 	}
 	# }}}
 	function cd_fzf() { # {{{
