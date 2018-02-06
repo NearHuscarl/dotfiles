@@ -127,15 +127,6 @@ alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 # }}}
-# {{{ fzf
-alias fzf_cmd='
-fzf \
-	--multi \
-	--no-mouse \
-	--cycle \
-	--reverse \
-	--bind=alt-k:up,alt-j:down,alt-i:abort,alt-h:backward-char,alt-l:forward-char,alt-n:backward-word,alt-m:forward-word,alt-e:jump,alt-d:kill-line,alt-t:toggle'
-# }}}
 # list {{{
 alias  la='ls --color=auto -A'
 alias  ll='ls --color=auto -oh'
@@ -156,7 +147,7 @@ if [[ -x /usr/bin/vim ]]; then
 	alias vim-startup='vim -c q --startuptime /tmp/vim.log && tail -n1 $_'
 	alias vim-Startup='vim -c q --startuptime /tmp/vim.log && vim $_'
 	# vir in $HOME/bin/vir
-	if [[ -x $HOME/bin/viman ]]; then
+	if [[ -x ~/bin/viman ]]; then
 		alias man='viman'
 	fi
 fi
@@ -262,9 +253,7 @@ alias c='clear'
 alias js='node'
 alias py='python'
 alias pi='python -i'
-alias ae='$EDITOR $HOME/bin/alias'
-alias sa='source $HOME/bin/alias'
-alias sb='source $HOME/.bashrc && clear'
+alias sb='source $HOME/.bashrc'
 # }}}
 # apply completion to aliases {{{
 
