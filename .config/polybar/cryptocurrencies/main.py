@@ -4,16 +4,15 @@
 
 import argparse
 import sys
-import locale
 
 from util import color_polybar
 from config import get_config_path, read_config, write_config
-from crypto_config import update_config
+from crypto import update_cache, get_data
 
-locale.setlocale(locale.LC_NUMERIC, 'en_US')
 config_path = get_config_path()
 config = read_config(config_path)
-
+coinnames = [x for x in config.sections() if x != 'general']
+currencies = get_data(coinnames)
 
 def get_arg():
 	""" get script argument: display percentage or price """
@@ -22,29 +21,32 @@ def get_arg():
 			help='format to display: percentage or price')
 	return parser.parse_args()
 
-def get_color(crypto_id):
+def get_color(cryptoname):
 	""" Get color depend on how large the number is (use 24-hour percentage change) """
-	change_24 = float(config[crypto_id]['change_24'])
+	change_1h = float(currencies[cryptoname]['percent_change_1h'])
 
-	if change_24 > 3:
+	if change_1h > 3:
 		return 'green'
-	elif 3 >= change_24 >= -3:
+	elif 3 >= change_1h >= -3:
 		return 'yellow'
 	return 'red'
 
-def get_24_hour_change(crypto_id):
+def get_24_hour_change(cryptoname):
 	""" get 24h change in percent for crypto_id + polybar color """
-	return color_polybar(config[crypto_id]['change_24'] + '%', get_color(crypto_id))
+	return color_polybar(currencies[cryptoname]['percent_change_24h'] + '%', get_color(cryptoname))
 
-def get_usd_price(crypto_id):
+def get_1_hour_change(cryptoname):
+	""" get 1h change in percent for crypto_id + polybar color """
+	return color_polybar(currencies[cryptoname]['percent_change_1h'] + '%', get_color(cryptoname))
+
+def get_usd_price(cryptoname):
 	""" get usd price converted from 1 crypto_id + polybar color """
-	return color_polybar(config[crypto_id]['price_usd'] + '%', get_color(crypto_id))
+	return color_polybar(currencies[cryptoname]['price_usd'], get_color(cryptoname))
 
-def get_local_price(crypto_id):
+def get_local_price(cryptoname):
 	""" get local price converted from 1 crypto_id + polybar color """
 	local_price_str = 'price_' + config['general']['base_currency']
-	local_price = locale.format('%f', float(config[crypto_id][local_price_str]), grouping=True)
-	return color_polybar(local_price, get_color(crypto_id))
+	return color_polybar(currencies[cryptoname][local_price_str], get_color(cryptoname))
 
 def get_icon(crypto_id):
 	""" get icon + polybar color """
@@ -55,16 +57,15 @@ def get_icon(crypto_id):
 
 def print_cryptos_info():
 	""" print cryptos info on polybar """
-	cryptocurrencies = [x for x in config.sections() if x != 'general']
-	for crypto in cryptocurrencies:
-		icon = get_icon(crypto)
+	display = config['general']['display']
+	for currency in currencies:
+		icon = get_icon(currency)
 		if icon is None: # update_config() write to file not finish yet, wait for next turn
 			continue
-		display = config['general']['display']
 		if display == 'percentage':
-			sys.stdout.write('{} {} '.format(icon, get_24_hour_change(crypto)))
+			sys.stdout.write('{} {} '.format(icon, get_1_hour_change(currency)))
 		elif display == 'price':
-			sys.stdout.write('{} {} '.format(icon, get_local_price(crypto)))
+			sys.stdout.write('{} {} '.format(icon, get_local_price(currency)))
 
 def toggle_display():
 	""" toggle display mode (percentage, price) in config file """
@@ -73,11 +74,11 @@ def toggle_display():
 	write_config(config_path, config)
 
 def main():
-	update_config()
 	arg = get_arg()
 	if arg.display == 'toggle':
 		toggle_display()
 	print_cryptos_info()
+	update_cache(currencies)
 
 if __name__ == '__main__':
 	main()

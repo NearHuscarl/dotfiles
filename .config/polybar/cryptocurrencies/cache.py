@@ -5,7 +5,7 @@
 import json
 import os
 
-def get_path(filename='cache_example'):
+def get_cache_path(filename='cache'):
 	""" get file path """
 	cwd = os.path.dirname(os.path.realpath(__file__))
 	return os.path.join(cwd, filename)
@@ -19,17 +19,17 @@ def read_cache(file_path):
 	with open(file_path, 'r') as file:
 		return json.load(file)
 
-def write_cache(cache_path, data):
+def write_cache(cache_path, content):
 	""" write data to cache file
 	parameters:
 		cache_path - path to cache file
-		data - data to write to cache file"""
+		content - a data structure to save into cache file"""
 	with open(cache_path, 'w') as file:
-		if data is not None:
-			json.dump(data, file, indent=3, sort_keys=True)
+		if content is not None:
+			json.dump(content, file, indent=3, sort_keys=True)
 
 def main():
-	path = get_path() # path = {$PWD}/cache_example
+	path = get_cache_path() # path = {$PWD}/cache_example
 	cache = read_cache(path) if read_cache(path) is not None else {}
 	# do stuff
 	cache['key'] = {'key_1': {'key_2': 'value'}}
