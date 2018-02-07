@@ -137,20 +137,6 @@ export PS4
 source ~/script/bash/alias
 source ~/script/bash/cd_fzf # cd only work in subshell
 
-function fzf() {
-	"$(which fzf)" \
-		--no-mouse \
-		--cycle \
-		--bind=alt-k:up,alt-j:down,alt-h:backward-char,alt-l:forward-char \
-		--bind=alt-n:backward-word,alt-m:forward-word,alt-e:jump \
-		--bind=alt-d:kill-line,alt-i:abort,alt-t:toggle \
-		--color=hl:"$THEME_HL2",hl+:"$THEME_HL",bg+:"$THEME_BG_ALT" \
-		--color=info:"$THEME_MAIN",pointer:"$THEME_MAIN",marker:"$THEME_MAIN2" \
-		--color=spinner:"$THEME_MAIN",border:"$THEME_MAIN" "$@"
-}
-
-export -f fzf
-
 # start ssh-agent
 eval `keychain --eval --quiet --agents ssh id_rsa`
 
