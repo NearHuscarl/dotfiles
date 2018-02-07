@@ -98,25 +98,40 @@ fi
 shopt -s autocd
 shopt -s extglob
 
-BOLD="\[$(tput bold)\]"
-BLACK="\[$(tput setaf 0)\]"
-RED="\[$(tput setaf 1)\]"
-GREEN="\[$(tput setaf 2)\]"
-YELLOW="\[$(tput setaf 3)\]"
-BLUE="\[$(tput setaf 4)\]"
-MAGENTA="\[$(tput setaf 5)\]"
-CYAN="\[$(tput setaf 6)\]"
-GRAY="\[$(tput setaf 8)\]"
-BLUE="\[$(tput setaf 12)\]"
-RESET="\[$(tput sgr0)\]"
+# +-----------------------+-----------------------+
+# |    Regular Colors     |    High Intensity     |
+# |-----------------------+-----------------------|
+# | Black  | '\033[0;30m' | Black  | '\033[0;90m' |
+# | Red    | '\033[0;31m' | Red    | '\033[0;91m' |
+# | Green  | '\033[0;32m' | Green  | '\033[0;92m' |
+# | Yellow | '\033[0;33m' | Yellow | '\033[0;93m' |
+# | Blue   | '\033[0;34m' | Blue   | '\033[0;94m' |
+# | Purple | '\033[0;35m' | Purple | '\033[0;95m' |
+# | Cyan   | '\033[0;36m' | Cyan   | '\033[0;96m' |
+# | White  | '\033[0;37m' | White  | '\033[0;97m' |
+# | Reset  | '\033[0m'    |        |              |
+# +-----------------------+-----------------------+
+
+# {{{ prompt
+#    [----blue----][\u[----cyan----] \h][---magenta--] [\W] \$[--reset--]
+PS1='\[\033[0;34m\][\u\[\033[0;36m\] \h]\[\033[0;35m\] [\W] \$\[\033[0m\] '
+#     [----cyan----][--reset--]
+PS2=' \[\033[0;36m\]\[\033[0m\] '
+
+#    * [-magenta][--------script-name--------][reset]:[--green-][linenum]
+PS4='* \033[0;35m$(basename ${BASH_SOURCE[0]})\033[0m:\033[0;36m${LINENO}'
+#      [--blue--][--------function-name--------][reset]:
+PS4+=' \033[0;94m${FUNCNAME[0]:+${FUNCNAME[0]}()\033[0m }'
+
+export PS1
+export PS2
+export PS4
+# }}}
 
 # FONT_AWESOME="$(fc-list | grep --perl-regexp '(font-awesome|fontawesome)')"
 
-export PS1="${BLUE}[\u${CYAN} \h]${RESET}${MAGENTA} [\W] \$${RESET} "
-export PS2=" ${CYAN}${RESET} "
-
-# # MPD daemon start (if no other user instance exists)
-# [ ! -s ~/.config/mpd/pid ] && mpd
+# MPD daemon start (if no other user instance exists)
+[ ! -s ~/.config/mpd/pid ] && mpd
 
 # run custom alias script in all session
 source ~/script/bash/alias
