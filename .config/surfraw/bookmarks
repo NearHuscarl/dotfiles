@@ -5,7 +5,7 @@
 google                  https://www.google.com.vn/
 duckduckgo              https://duckduckgo.com/
 youtube                 https://www.youtube.com/
-yt-subscriptions        https://www.youtube.com/feed/subscriptions
+[yt]subscriptions       https://www.youtube.com/feed/subscriptions
 
 # Media
 reddit                  https://www.reddit.com
@@ -22,13 +22,13 @@ strftime                http://strftime.org/
 # Dev - github
 github                  https://github.com/
 gist                    https://gist.github.com/NearHuscarl
-gh-profiles             https://github.com/NearHuscarl
-gh-dotfiles             https://github.com/NearHuscarl/dotfiles
-gh-vim                  https://github.com/NearHuscarl/vim-config
-gh-io                   https://github.com/NearHuscarl/NearHuscarl.github.io
-gh-fcc                  https://github.com/NearHuscarl/FCC-Exercise-Archive
-gh-python               https://github.com/NearHuscarl/LearnPythonTheHardWay
-
+[gh]profiles            https://github.com/NearHuscarl
+[gh]dotfiles            https://github.com/NearHuscarl/dotfiles
+[gh]vim                 https://github.com/NearHuscarl/vim-config
+[gh]io                  https://github.com/NearHuscarl/NearHuscarl.github.io
+# [gh]fcc                https://github.com/NearHuscarl/FCC-Exercise-Archive
+[gh]python              https://github.com/NearHuscarl/LearnPythonTheHardWay
+[gh]VEdic               https://github.com/NearHuscarl/VE-Dictionary
 portfolio               https://nearhuscarl.github.io/Portfolio/portfolio.html
 
 # Dev - bash
@@ -38,6 +38,7 @@ portfolio               https://nearhuscarl.github.io/Portfolio/portfolio.html
 r/linux                 https://www.reddit.com/r/linux/
 r/unixporn              https://www.reddit.com/r/unixporn/
 r/vim                   https://www.reddit.com/r/vim/
+r/crypto                https://www.reddit.com/r/CryptoCurrency/
 vim-vivify              http://bytefluent.com/vivify/
 
 # Dev - web
