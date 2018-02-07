@@ -12,18 +12,18 @@ function sd() {
 	local USAGE='Usage: sd [help|<directory pattern>]'
 	local HELP=''
 
-	HELP+="sd <command>\n"
-	HELP+="Change directory by using fzf to filter path\n"
-	HELP+="Commands:\n"
-	HELP+="   h, help                print this help message\n"
-	HELP+='   <directory pattern>    search pattern for dirname, a regular expression'
+	HELP=('sd <command>'
+	'Change directory by using fzf to filter path'
+	'Commands:'
+	'   h, help                print this help message'
+	'   <directory pattern>    search pattern for dirname, a regular expression')
 
 	function usage() { # {{{
 		echo "$USAGE"
 	}
 	# }}}
 	function help() { # {{{
-		echo -e "$HELP"
+		printf '%s\n' "${HELP[@]}"
 	}
 	# }}}
 	function find_dirs() { # {{{
@@ -38,9 +38,12 @@ function sd() {
 	# }}}
 	function cd_fzf() { # {{{
 		local dir_pattern="${1:-}"
-		local directory=$(find_dirs "$dir_pattern"| fzf --reverse --height=15 --prompt=cd:\ )
+		local directory
+
+		directory=$(find_dirs "$dir_pattern"| fzf --reverse --height=15 --prompt=cd:\ )
 		if [[ "$directory" != '' ]]; then
 			echo cd "$(pwd)"/"$directory"
+			# shellcheck disable=SC2164
 			cd "$directory"
 		fi
 	}

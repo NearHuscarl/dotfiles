@@ -41,31 +41,40 @@ function get_volume() {
 }
 
 function is_mute() {
-	amixer get Master | grep -F [off] 1> /dev/null
+	amixer get Master | grep -F '[off]' 1> /dev/null
 }
 
 function get_icon() {
-	local volume=$(get_volume)
-
+	local volume
+	
+	volume=$(get_volume)
 	if is_mute; then
-		echo ""$HOME"/.icons/dunst/volume-muted.svg"
+		echo "$HOME/.icons/dunst/volume-muted.svg"
 	elif (( "$volume" < 33 )); then
-		echo ""$HOME"/.icons/dunst/volume-low.svg"
+		echo "$HOME/.icons/dunst/volume-low.svg"
 	elif (( "$volume" < 66 )); then
-		echo ""$HOME"/.icons/dunst/volume-medium.svg"
+		echo "$HOME/.icons/dunst/volume-medium.svg"
 	elif (( "$volume" <= 100 )); then
-		echo ""$HOME"/.icons/dunst/volume-high.svg"
+		echo "$HOME/.icons/dunst/volume-high.svg"
 	fi
 }
 
 function get_bar() {
-	echo $(seq -s "─" $(($volume / 3)) | sed 's/[0-9]//g')
+	seq -s '─' $((volume / 3)) | sed 's/[0-9]//g'
 }
 
 function notify_volume() {
-	local icon=$(get_icon)
-	local volume=$(get_volume)
-	is_mute && local mute_or_bar=' Mute' || local mute_or_bar="  $(get_bar)"
+	local icon
+	local volume
+	local mute_or_bar
+
+	icon=$(get_icon)
+	volume=$(get_volume)
+	if [[ $(is_mute) == true ]]; then
+		mute_or_bar=' Mute'
+	else
+		mute_or_bar="  $(get_bar)"
+	fi
 
 	dunstify \
 		--urgency=low \

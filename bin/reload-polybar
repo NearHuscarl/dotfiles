@@ -5,5 +5,5 @@ if [[ -x /usr/bin/polybar ]]; then
    bash --login -c 'polybar -r holybar &'
    bash --login -c 'polybar -r molybar &'
 else
-   printf "polybar is not installed. Nothing to reload\n"
+   printf 'polybar is not installed. Nothing to reload\n'
 fi

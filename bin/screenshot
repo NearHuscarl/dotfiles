@@ -20,6 +20,10 @@ Commands:
   cb, clipboard    save image to clipboard
   fs, filesystem   save image to filesystem"
 
+# shellcheck disable=SC2102
+PIC_NAME="$(date +[%Y-%m-%d]-[%H:%M:%S]).png" # maim name format
+PIC_DIR="$HOME/Pictures/"
+
 function die () {
 	echo "$*" >&2
 	exit 1
@@ -34,33 +38,38 @@ function help() {
 }
 
 function notify_screenshot() {
-	local notify_content="$@"
+	local notify_content=("$@")
 
 	dunstify \
 		--urgency=low \
 		--icon="$HOME/.icons/dunst/screenshot.png" \
-		"$notify_content"
+		"${notify_content[@]}"
 }
 
-function take_screenshot_to_clipboard() {
+function screenshot_to_clipboard() { # {{{
 	maim --select --delay=1 | xclip -in -selection clipboard -target image/png
-	if [[ $? != 0 ]]; then
+}
+# }}}
+
+function take_screenshot_to_clipboard() {
+	if ! screenshot_to_clipboard; then
 		notify_screenshot 'Stop taking screenshot'
 	else
 		notify_screenshot 'Screenshot has been copied to clipboard'
 	fi
 }
 
-function take_screenshot_to_filesystem() {
-	local pic_name="$(date +[%Y-%m-%d]-[%H:%M:%S]).png"
-	local pic_dir="$HOME/Pictures/"
-	local pic_path=""$pic_dir"/"$pic_name""
-
+function screenshot_to_filesystem() { # {{{
+	local pic_path="$PIC_DIR/$PIC_NAME"
 	maim --select --delay=1 "$pic_path"
-	if [[ $? != 0 ]]; then
+}
+# }}}
+
+function take_screenshot_to_filesystem() {
+	if ! screenshot_to_filesystem; then
 		notify_screenshot 'Stop taking screenshot'
 	else
-		notify_screenshot "Screenshot has been saved in <br>"$pic_dir" as" "$pic_name"
+		notify_screenshot "Screenshot has been saved in <br>$PIC_DIR as $PIC_NAME"
 	fi
 }
 

@@ -12,7 +12,7 @@
 # {{{ alias functions
 function alias_tree() { # {{{
    local pwd=${1:-$(pwd)}
-   find $pwd -print | sed -e "s;$pwd;\.;g;s;[^/]*\/;|__;g;s;__|; |;g"
+   find "$pwd" -print | sed -e 's;'"$pwd"';\.;g;s;[^/]*\/;|__;g;s;__|; |;g'
 } # }}}
 function alias_pac_install() { # {{{
    sudo pacman -S "$@"
@@ -21,7 +21,7 @@ function alias_pac_install() { # {{{
 function alias_nm_connect() { # {{{
 	# connect to wifi, example: nmcli dev connect wlo1
 	if [[ $# == 0 ]]; then
-		nmcli --pretty device connect $(nmcli device status | awk '/wifi/ {print $1}')
+		nmcli --pretty device connect "$(nmcli device status | awk '/wifi/ {print $1}')"
 	# connect to saved wifi
 	elif [[ $# == 1 ]]; then
 		nmcli --pretty connection up "$1"
@@ -47,44 +47,43 @@ function alias_pac_latest_explicit() { # {{{
 } # }}}
 function alias_pac_latest() { # {{{
 	max_pkgs="${1:-20}"
-	expac -HM --timefmt="%Y-%m-%d %T" "%l\t%-20n\t%m" | sort | tail -n "$max_pkgs"
+	expac -HM --timefmt="%Y-%m-%d %T" '%l\t%-20n\t%m' | sort | tail -n "$max_pkgs"
 } # }}}
 function alias_pac_size() { # {{{
-	expac -S -HM "%k\t%n" | sort -n | tail -n "${1:-20}"
+	expac -S -HM '%k\t%n' | sort -n | tail -n "${1:-20}"
 } # }}}
 function alias_pac_dep() { # {{{
    # print package's dependencies
    if [[ $# == 0 ]]; then
-      printf "Please enter a package name\n"
+      printf 'Please enter a package name\n'
    else
-      pacman -Si $1 | awk -F'[:<=>]' '/^Depends/ {print $2}' | xargs -n1 | sort -u
+      pacman -Si "$1" | awk -F'[:<=>]' '/^Depends/ {print $2}' | xargs -n1 | sort -u
    fi
 } # }}}
 function alias_aur_desc() { # {{{
-   pacaur -Si $@ | grep Description | sed -e "s/^Description.*://"
+   pacaur -Si "$@" | grep Description | sed -e "s/^Description.*://"
 } # }}}
 function alias_aur_size() { # {{{
-   pacaur -Qi $@ | grep "Installed Size" | sed -e "s/^Installed Size.*://"
+   pacaur -Qi "$@" | grep "Installed Size" | sed -e "s/^Installed Size.*://"
 } # }}}
 function alias_aur_dependency() { # {{{
    if [[ $# == 0 ]]; then
-      printf "Please enter a package name\n"
+      printf 'Please enter a package name\n'
    else
-      pacman -Qi $1 | awk -F'[:<=>]' '/^Depends/ {print $2}' | xargs -n1 | sort -u
+      pacman -Qi "$1" | awk -F'[:<=>]' '/^Depends/ {print $2}' | xargs -n1 | sort -u
    fi
 } # }}}
 function alias_size() { # {{{
-   du -h --max-depth=${1:-0}
+   du -h --max-depth="${1:-0}"
 } # }}}
 function alias_pic() { # {{{
    shopt -s nullglob
 
    # picture extensions
    local picExt="(jpg|png)"
-   local pwd=$(pwd)
 
    # get all *.(jpg|png) of current path
-   local allPath=("$pwd"/*.@$picExt)
+	local allPath=("$(pwd)"/*.@"$picExt")
 
    # remove $(pwd) prefix, only keep file names
    allPath=("${allPath[@]#"$pwd/"}")
@@ -104,10 +103,10 @@ function alias_pic() { # {{{
 } # }}}
 function alias_rgr() { # {{{
    rootDir=$(git rev-parse --show-toplevel 2> /dev/null)
-   if [[ $? == 0 ]]; then
-      rg "$@" $rootDir
+   if [[ "$rootDir" == '' ]]; then
+      rg "$@" "$HOME"
    else
-      rg "$@" $HOME
+      rg "$@" "$rootDir"
    fi
 } # }}}
 # }}}
@@ -269,7 +268,7 @@ if [ -d /usr/share/bash-completion/completions ]; then
 	# _completion_loader pacman
 	source $completionPath/pacman
 	source $completionPath/git
-	source $HOME/bin/completion-utils.sh
+	source "$HOME"/bin/completion-utils.sh
 	# }}}
 	# pacman {{{
 	complete -o default -F _pacman_S pac-install

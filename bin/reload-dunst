@@ -13,5 +13,5 @@ if [[ -x /usr/bin/dunst ]]; then
    notify-send -u normal "Test message: normal test 8"
    notify-send -u low "Test message: low test 9"
 else
-   printf "Dunst is not installed. Nothing to reload\n"
+   printf 'Dunst is not installed. Nothing to reload\n'
 fi

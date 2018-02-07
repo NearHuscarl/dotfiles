@@ -8,9 +8,9 @@
 # $ fzf
 
 SCRIPT_NAME=$(basename "$0")
-USAGE="Usage: "$SCRIPT_NAME" [help]"
+USAGE="Usage: $SCRIPT_NAME [help]"
 HELP="\
-"$SCRIPT_NAME" <command>
+$SCRIPT_NAME <command>
 
 Downgrade package by typing its name and version using fzf
 
@@ -53,14 +53,15 @@ function get_bar_length() { # {{{
 # }}}
 function print_bar() { # {{{
 	local length="$1"
-	echo $(seq -s '─' "$length" | sed 's/[0-9]//g')
+	seq -s '─' "$length" | sed 's/[0-9]//g'
 }
 # }}}
 function downgrade() { # {{{
 	local cache_path='/var/cache/pacman/pkg'
 	local extension='.pkg.tar.xz'
-	local package="$(ls "$cache_path" | sed s/"$extension"// | fzf)"
+	local package
 
+	package="$(find "$cache_path" -maxdepth 1 | sed "s/$extension//; s/$cache_path//" | fzf)"
 	if [[  "$package" != '' ]]; then
 		echo Downgrade to "$package"
 		# read -n 1 -p 'Please [c]onfirm, [s]earch ALA or [q]uit: ' confirm

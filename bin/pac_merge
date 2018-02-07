@@ -2,30 +2,31 @@
 
 # print output in red
 print_red() {
-   printf "\e[0;31m  $1\e[0m\n"
+   printf '\e[0;31m  %s\e[0m\n' "$1"
 }
 
 # print output in blue
 print_blue() {
-   printf "\e[0;34m  $1\e[0m\n"
+   printf '\e[0;34m  %s\e[0m\n' "$1"
 }
 
 # result
 declare -a result=()
 
 # find *.pacsave and *.pacnew on whole system
-pacPaths=$(find / -regextype posix-extended -regex ".+\.pac(new|save)" 2> /dev/null)
+pacPaths=$(find / -regextype posix-extended -regex '.+\.pac(new|save)' 2> /dev/null)
 
 # see diff
 for pacPath in $pacPaths; do
-   filePath=$(echo "$pacPath" | sed -e "s/\.pac\(new\|save\)$//")
+	# shellcheck disable=SC2001
+   filePath=$(echo "$pacPath" | sed -e 's/\.pac\(new\|save\)$//')
    # workaround to msg "2 files to edit" when using vimdiff command
-   vim $pacPath -c "vert diffsplit $filePath"
+   vim "$pacPath" -c "vert diffsplit $filePath"
 
-   printf "Remove "$pacPath"? (y/n) "
-   read
+   printf 'Remove %s? (y/n) ' "$pacPath"
+   read -r
    if [[ $REPLY =~ ^[yY]$ ]]; then
-      sudo rm $pacPath
+      sudo rm "$pacPath"
       result+=("print_red '$pacPath has been removed'")
    else
       result+=("print_blue '$pacPath is kept'")
@@ -33,10 +34,10 @@ for pacPath in $pacPaths; do
 done
 
 # print result
-if [[ ! -z "$result" ]]; then
+if [[ "${#result[@]}" != 0 ]]; then # if not empty
    for cmd in "${result[@]}"; do
-      eval $cmd
+      eval "$cmd"
    done
 else
-   printf "There is no *.pacnew or *.pacsave file\n"
+   printf 'There is no *.pacnew or *.pacsave file\n'
 fi

@@ -13,9 +13,9 @@ set -o pipefail
 # set -o xtrace
 
 SCRIPT_NAME=$(basename "$0")
-USAGE="Usage: "$SCRIPT_NAME" [help|edit]"
+USAGE="Usage: $SCRIPT_NAME [help|edit]"
 HELP="\
-"$SCRIPT_NAME" [<command>]
+$SCRIPT_NAME [<command>]
 Commands:
   h, help      print this help message
   e, edit      edit bookmarks list
@@ -47,17 +47,17 @@ function edit_bookmarks() {
 }
 
 function get_bookmarks() {
-	local bookmarks=$(cat "$BOOKMARK")
-	bookmarks=$(echo "$bookmarks" | sed '/^$/d' | sed '/^#/d' | sed '/^\//d')
+	local bookmarks
+	bookmarks=$(sed '/^$/d' < "$BOOKMARK"| sed '/^#/d' | sed '/^\//d')
 	echo "$bookmarks" | sort -n
 }
 
 function open_rofi() {
-	get_bookmarks | rofi -dmenu -mesg 'add more bookmark at: ~/.config/surfraw/bookmarks' -i -p 'bookmarks: '
+	get_bookmarks | rofi -dmenu -width 40 -mesg "add more bookmark at: $BOOKMARK" -i -p 'bookmarks'
 }
 
 function open_bookmark() {
-	surfraw -browser=$BROWSER "$(open_rofi)" 1> /dev/null
+	surfraw -browser="$BROWSER" "$(open_rofi)" 1> /dev/null
 }
 
 function main() {

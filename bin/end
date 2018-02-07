@@ -7,9 +7,9 @@
 # fzf
 
 SCRIPT_NAME=$(basename "$0")
-USAGE="Usage: "$SCRIPT_NAME" [help|<signal>]"
+USAGE="Usage: $SCRIPT_NAME [help|<signal>]"
 HELP="\
-"$SCRIPT_NAME" <command>
+$SCRIPT_NAME <command>
 
 Kill process by typing the process name using fzf
 Commands:
@@ -37,12 +37,14 @@ function help() { # {{{
 }
 # }}}
 function kill_process() { # {{{
-	local header="$(ps -f | head -n1)"
+	local header
 	local signal="${1:-9}"
-	local pid=$(ps -Af | sed 1d | fzf --multi --header="$header" | awk '{print $2}')
+	local pid
 
+	header="$(ps -f | head -n1)"
+	pid="$(ps -Af | sed 1d | fzf --multi --header="$header" | awk '{print $2}')"
 	if [[ "$pid" != '' ]]; then # keyboard interruption like CTRL-C
-		echo $pid | xargs kill -"$signal"
+		echo "$pid" | xargs kill -"$signal"
 	fi
 }
 # }}}

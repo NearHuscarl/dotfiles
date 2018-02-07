@@ -4,6 +4,6 @@ if [[ -x /usr/bin/compton ]]; then
 	killall compton
 	compton -b
 else
-	printf "compton is not installed. Nothing to reload\n"
+	printf 'compton is not installed. Nothing to reload\n'
 fi
 

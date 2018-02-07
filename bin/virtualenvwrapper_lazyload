@@ -9,11 +9,13 @@
 # Note:        N/A
 # ============================================================================
 
+# shellcheck disable=SC1094
+
 workon() {
-	unset -f ${FUNCNAME[0]}
+	unset -f "${FUNCNAME[0]}"
 	source /usr/bin/virtualenvwrapper.sh
 
-	if [[ $(type -t ${FUNCNAME[0]}) != function ]]; then
+	if [[ $(type -t "${FUNCNAME[0]}") != function ]]; then
 		echo 'virtualenvwrapper.sh not found'
 	else
 		${FUNCNAME[0]}
@@ -21,10 +23,10 @@ workon() {
 }
 
 mkvirtualenv() {
-	unset -f ${FUNCNAME[0]}
+	unset -f "${FUNCNAME[0]}"
 	source /usr/bin/virtualenvwrapper.sh
 
-	if [[ $(type -t ${FUNCNAME[0]}) != function ]]; then
+	if [[ $(type -t "${FUNCNAME[0]}") != function ]]; then
 		echo 'virtualenvwrapper.sh not found'
 	else
 		${FUNCNAME[0]} "$@"
