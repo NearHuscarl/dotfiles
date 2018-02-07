@@ -19,6 +19,7 @@ freecodecamp            https://www.freecodecamp.org
 pep8                    https://www.python.org/dev/peps/pep-0008/
 strftime                http://strftime.org/
 
+# Dev - github
 github                  https://github.com/
 gist                    https://gist.github.com/NearHuscarl
 gh-profiles             https://github.com/NearHuscarl
@@ -30,11 +31,16 @@ gh-python               https://github.com/NearHuscarl/LearnPythonTheHardWay
 
 portfolio               https://nearhuscarl.github.io/Portfolio/portfolio.html
 
+# Dev - bash
+[sh]parameter           http://wiki.bash-hackers.org/syntax/pe
+[sh]shellcheck          https://github.com/koalaman/shellcheck/wiki
+
 r/linux                 https://www.reddit.com/r/linux/
 r/unixporn              https://www.reddit.com/r/unixporn/
 r/vim                   https://www.reddit.com/r/vim/
 vim-vivify              http://bytefluent.com/vivify/
 
+# Dev - web
 lintJs                  https://github.com/eslint/eslint/tree/master/docs/rules
 lintScss                https://github.com/brigade/scss-lint/blob/master/lib/scss_lint/linter/README.md
 
