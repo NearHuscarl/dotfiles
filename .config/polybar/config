@@ -57,7 +57,7 @@ font-4 = "DejaVu Sans:pixelsize=10;1"
 ; font-5 = cryptocoins:style=Regular;0
 
 modules-left = i3 mpd
-modules-right = wired-network wireless-network cpu memory filesystem home volume battery date time
+modules-right = cryptomarket wired-network wireless-network cpu memory filesystem home volume battery date time
 
 ; tray-position = right
 tray-padding = 2
@@ -163,8 +163,16 @@ toggle-on-foreground  = ${colors.foreground-text}
 toggle-off-foreground = ${colors.foreground-inactive}
 label-song-foreground = ${colors.foreground-icon}
 
-label-song = %title:2:25:...%
-label-offline =  mpd is offline
+; label-song = %title:2:25:...%
+; label-offline =  mpd is offline
+; }}}
+; {{{ [module/cryptomarket]
+[module/cryptomarket]
+type = custom/script
+interval = 200
+exec = bash -l -c '$HOME/.config/polybar/cryptocurrencies/main.py --meta'
+click-left = xdg-open https://coinmarketcap.com/
+click-right = bash -l -c '$HOME/.config/polybar/cryptocurrencies/main.py --display toggle'
 ; }}}
 ; {{{ [module/cpu]
 [module/cpu]
@@ -424,13 +432,13 @@ exec = bash -l -c '$HOME/.config/polybar/news/launch.sh'
 
 click-left = $HOME/.config/polybar/news/open_url
 ; }}}
-; {{{ [module/cryptocurrencies]
+; {{{ [module/crypto]
 [module/crypto]
 type = custom/script
 interval = 200
-exec =       bash -l -c '$HOME/.config/polybar/cryptocurrencies/main.py'
-click-left = bash -l -c '$HOME/.config/polybar/cryptocurrencies/main.py --display toggle'
-click-right = xdg-open https://coinmarketcap.com/
+exec = bash -l -c '$HOME/.config/polybar/cryptocurrencies/main.py'
+click-left = xdg-open https://coinmarketcap.com/
+click-right = bash -l -c '$HOME/.config/polybar/cryptocurrencies/main.py --display toggle'
 ; }}}
 
 ; vim:ft=dosini foldmethod=marker

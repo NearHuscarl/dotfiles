@@ -18,12 +18,20 @@ supported_currencies = ['AUD', 'BRL', 'CAD', 'CHF', 'CLP', 'CNY', 'CZK', 'DKK', 
 config_path = get_config_path()
 config = read_config(config_path)
 
-def get_option(base_currency):
+def get_currency_to_convert_to(base_currency):
 	""" return a dict of currency to convert to for params argument in request.get()
 	empty dict if currency is not support in API """
 	if base_currency in supported_currencies: # if coinmarketcap API support convert to currency
 		return {'convert': base_currency}
 	return {}
+
+def process_meta_info(meta):
+	""" pretty price number in meta """
+	volume_24h = int(meta['total_24h_volume_usd'])
+	market_cap = int(meta['total_market_cap_usd'])
+	meta['total_24h_volume_usd'] = currency.pretty(volume_24h, 'USD')
+	meta['total_market_cap_usd'] = currency.pretty(market_cap, 'USD')
+	return meta
 
 def process_crypto_info(crypto):
 	""" convert to local currency if specified in config file
@@ -50,15 +58,18 @@ def get_data(tracked_coins):
 	value is a dict of its attributes """
 
 	base_currency = config['general']['base_currency']
+	convert_option = get_currency_to_convert_to(base_currency)
 	api_url = 'https://api.coinmarketcap.com/v1/ticker/'
-	option_dict = get_option(base_currency)
-	cryptocurrencies = requests.get(api_url, params=option_dict).json()
+	api_meta_url = 'https://api.coinmarketcap.com/v1/global/'
+	cryptocurrencies = requests.get(api_url, params=convert_option).json()
+	meta_info = requests.get(api_meta_url).json()
 
-	data = {}
+	crypto_info = {}
 	for crypto in cryptocurrencies:
 		if crypto['id'] in tracked_coins:
 			coinname = crypto['id']
-			data[coinname] = process_crypto_info(crypto)
+			crypto_info[coinname] = process_crypto_info(crypto)
+	data = {'GLOBAL': process_meta_info(meta_info), 'ticker': crypto_info}
 	return data
 
 def update_cache(crypto_info):
