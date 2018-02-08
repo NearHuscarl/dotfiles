@@ -74,10 +74,10 @@ function sd() {
 	# }}}
 
 	main "$@"
-	unset -f die
 	unset -f usage
 	unset -f help
 	unset -f find_dirs
 	unset -f cd_fzf
+	unset -f cd_fzf_with_ranger
 	unset -f main
 }
