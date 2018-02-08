@@ -16,11 +16,10 @@ import time
 
 import requests
 
-from cache import get_cache_path, read_cache, write_cache
+import cache
 from data import _currencies, _suffix, _no_space
 
-cache_path = get_cache_path('currency_cache')
-cache = {} if read_cache(cache_path) is None else read_cache(cache_path)
+cache = {} if cache.read('currency_cache') is None else cache.read('currency_cache')
 
 def validate_currency(*currencies):
 	""" some validation checks before doing anything """
@@ -120,7 +119,7 @@ def update_cache(from_currency, to_currency):
 	if check_update(from_currency, to_currency) is True:
 		cache[from_currency][to_currency]['value'] = convert_using_api(from_currency, to_currency)
 		cache[from_currency][to_currency]['last_update'] = time.time()
-		write_cache(cache_path, cache)
+		cache.write(cache, 'currency_cache')
 
 def convert_using_api(from_currency, to_currency):
 	""" convert from from_currency to to_currency by requesting API """

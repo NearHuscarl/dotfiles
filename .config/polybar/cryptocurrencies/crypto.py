@@ -1,79 +1,98 @@
 #!/usr/bin/env python3
 
-"""
-Update crypto statistics to cache file using coinmarketcap API
-Use currency.converter() if currency to convert to not supported,
-"""
+""" print out cryptos info from cache on polybar """
 
-import requests
+import argparse
+import sys
 
-import currency
-from config import get_config_path, read_config
-from cache import get_cache_path, write_cache
+from util import color_polybar
+import config
+import cache
 
-supported_currencies = ['AUD', 'BRL', 'CAD', 'CHF', 'CLP', 'CNY', 'CZK', 'DKK', 'EUR',
-'GBP', 'HKD', 'HUF', 'IDR', 'ILS', 'INR', 'JPY', 'KRW', 'MXN', 'MYR', 'NOK', 'NZD',
-'PHP', 'PKR', 'PLN', 'RUB', 'SEK', 'SGD', 'THB', 'TRY', 'TWD', 'ZAR', 'VND']
+config = config.read()
+currencies = cache.read('cache.json')['ticker']
 
-config_path = get_config_path()
-config = read_config(config_path)
+def get_args():
+	""" get script argument: display percentage or price """
+	parser = argparse.ArgumentParser(description='Display cryptocurrencies statistics')
+	parser.add_argument('--toggle-display', action='store_true',
+			help='toggle display format: percentage or price')
+	parser.add_argument('--toggle-currency', action='store_true',
+			help='toggle currency to convert to: usd or local price specified in config')
 
-def get_currency_to_convert_to(base_currency):
-	""" return a dict of currency to convert to for params argument in request.get()
-	empty dict if currency is not support in API """
-	if base_currency in supported_currencies: # if coinmarketcap API support convert to currency
-		return {'convert': base_currency}
-	return {}
-
-def process_meta_info(meta):
-	""" pretty price number in meta """
-	volume_24h = int(meta['total_24h_volume_usd'])
-	market_cap = int(meta['total_market_cap_usd'])
-	meta['total_24h_volume_usd'] = currency.pretty(volume_24h, 'USD')
-	meta['total_market_cap_usd'] = currency.pretty(market_cap, 'USD')
-	return meta
-
-def process_crypto_info(crypto):
-	""" convert to local currency if specified in config file
-	trim long decimals and format price number. then save into cache file """
-
-	base_currency = config['general']['base_currency'].lower()
-	local_price_str = 'price_' + base_currency
-
-	price_btc = float(crypto['price_btc'])
-	price_usd = float(crypto['price_usd'])
-	if local_price_str not in crypto: # API failed to convert to local price
-		local_price = float(currency.convert('USD', base_currency, price_usd))
+	parsed_args = parser.parse_args()
+	if parsed_args.currency == 'default': # override --display argument if --currency is given
+		parsed_args.currency = 'usd'
 	else:
-		local_price = float(crypto[local_price_str])
-	# dont have bitcoin icon yet :(
-	crypto['price_btc'] = currency.pretty(price_btc, 'BTC', abbrev=False)
-	crypto['price_usd'] = currency.pretty(price_usd, 'USD')
-	crypto[local_price_str] = currency.pretty(local_price, base_currency)
-	return crypto
+		parsed_args.display = 'price'
+	return parsed_args
 
-def get_data(tracked_coins):
-	""" request coinmarketcap API for list of cryptos each stored in a dictionary
-	return value: a dictionary with key is id of tracked cryptos list and
-	value is a dict of its attributes """
+args = get_args()
 
-	base_currency = config['general']['base_currency']
-	convert_option = get_currency_to_convert_to(base_currency)
-	api_url = 'https://api.coinmarketcap.com/v1/ticker/'
-	api_meta_url = 'https://api.coinmarketcap.com/v1/global/'
-	cryptocurrencies = requests.get(api_url, params=convert_option).json()
-	meta_info = requests.get(api_meta_url).json()
+def get_color(cryptoname):
+	""" Get color depend on how large the number is (use 24-hour percentage change) """
+	change_1h = float(currencies[cryptoname]['percent_change_1h'])
 
-	crypto_info = {}
-	for crypto in cryptocurrencies:
-		if crypto['id'] in tracked_coins:
-			coinname = crypto['id']
-			crypto_info[coinname] = process_crypto_info(crypto)
-	data = {'GLOBAL': process_meta_info(meta_info), 'ticker': crypto_info}
-	return data
+	if change_1h > 3:
+		return 'green'
+	elif 3 >= change_1h >= -3:
+		return 'yellow'
+	return 'red'
 
-def update_cache(crypto_info):
-	""" update crypto stats from coinmarketcap to cache file """
-	write_cache(get_cache_path('cache.json'), crypto_info)
+def get_24h_change(cryptoname):
+	""" get 24h change in percent for crypto_id + polybar color """
+	return color_polybar(currencies[cryptoname]['percent_change_24h'] + '%', get_color(cryptoname))
+
+def get_1h_change(cryptoname):
+	""" get 1h change in percent for crypto_id + polybar color """
+	return color_polybar(currencies[cryptoname]['percent_change_1h'] + '%', get_color(cryptoname))
+
+def get_usd_price(cryptoname):
+	""" get usd price converted from 1 crypto_id + polybar color """
+	return color_polybar(currencies[cryptoname]['price_usd'], get_color(cryptoname))
+
+def get_local_price(cryptoname):
+	""" get local price converted from 1 crypto_id + polybar color """
+	local_price_str = 'price_' + config['global']['base_currency'].lower()
+	return color_polybar(currencies[cryptoname][local_price_str], get_color(cryptoname))
+
+def get_icon(cryptoname):
+	""" get icon + polybar color """
+	icon = config[cryptoname].get('icon', None)
+	if icon is None:
+		return currencies[cryptoname]['symbol']
+	return color_polybar(config[cryptoname]['icon'], 'main')
+
+def get_display_state():
+	return -1
+
+def set_display_state(state):
+	pass
+
+def print_cryptos_info():
+	""" print cryptos info on polybar """
+	display = get_display_state()
+	for currency in currencies:
+		icon = get_icon(currency)
+		if display == 'percentage':
+			sys.stdout.write('{} {} '.format(icon, get_1h_change(currency)))
+		elif display == 'price':
+			if args.currency == 'usd':
+				sys.stdout.write('{} {} '.format(icon, get_local_price(currency)))
+			elif args.currency == 'local':
+				sys.stdout.write('{} {} '.format(icon, get_usd_price(currency)))
+
+def toggle_display():
+	""" toggle display mode (percentage, price) in config file """
+	toggle = {'percentage': 'price', 'price': 'percentage'}
+	set_display_state(toggle[get_display_state()])
+
+def main():
+	if args.display == 'toggle':
+		toggle_display()
+	print_cryptos_info()
+
+if __name__ == '__main__':
+	main()
 
 # vim: nofoldenable

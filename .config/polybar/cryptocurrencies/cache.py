@@ -5,38 +5,39 @@
 import json
 import os
 
-def get_cache_path(filename='cache'):
+def get_cache_path(filename):
 	""" get file path """
 	cwd = os.path.dirname(os.path.realpath(__file__))
 	return os.path.join(cwd, filename)
 
-def read_cache(file_path):
+def read(filename='cache'):
 	"""
 	parameter: file_path - path to cache file
 	return: data after parsing json file"""
-	if not os.path.exists(file_path) or os.stat(file_path).st_size == 0:
+	cache_path = get_cache_path(filename)
+	if not os.path.exists(cache_path) or os.stat(cache_path).st_size == 0:
 		return None
-	with open(file_path, 'r') as file:
+	with open(cache_path, 'r') as file:
 		return json.load(file)
 
-def write_cache(cache_path, content):
+def write(content, filename='cache'):
 	""" write data to cache file
 	parameters:
 		cache_path - path to cache file
 		content - a data structure to save into cache file"""
+	cache_path = get_cache_path(filename)
 	with open(cache_path, 'w') as file:
 		if content is not None:
 			json.dump(content, file, indent=3, sort_keys=True)
 
 def main():
-	path = get_cache_path() # path = {$PWD}/cache_example
-	cache = read_cache(path) if read_cache(path) is not None else {}
+	# path = {$PWD}/cache_example
+	cache = read('example_cache') if read('example_cache') is not None else {}
 	# do stuff
 	cache['key'] = {'key_1': {'key_2': 'value'}}
 	cache['another_key'] = {'a_number': 8}
 	# ...
-	write_cache(path, cache)
-	print('Cache created: ' + path)
+	write(cache, 'example_cache')
 
 if __name__ == '__main__':
 	main()

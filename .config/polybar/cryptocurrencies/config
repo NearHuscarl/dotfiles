@@ -1,9 +1,5 @@
-[general]
-base_currency = VND
-display = percentage
-last_update = 1518006879.5856376
-
 [global]
+base_currency = VND
 icon_market_cap = 
 icon_24h_volume = 
 
