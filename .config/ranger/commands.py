@@ -73,29 +73,11 @@ class fzf_select(Command):
 	"""
 	def execute(self):
 		import subprocess
-		import os.path
-		""" too command is the same but Id better not alter it. Remind me to learn python """
-		if self.quantifier:
-			# match only directories
-			command="rg $(pwd) --files --no-ignore --hidden --follow --no-messages | fzf +m \
-					--no-mouse \
-					--cycle \
-					--reverse \
-					--color=info:6,bg+:8,hl+:1,hl:3,pointer:6,marker:1,spinner:6 \
-					--bind=alt-k:up,alt-j:down,alt-i:abort,alt-h:backward-char,alt-l:forward-char,alt-n:backward-word,alt-m:forward-word,alt-e:jump,alt-t:kill-line'"
-		else:
-			# match files and directories
-			command="rg $(pwd) --files --no-ignore --hidden --follow --no-messages | fzf +m \
-					--no-mouse \
-					--cycle \
-					--reverse \
-					--color=info:6,bg+:8,hl+:1,hl:3,pointer:6,marker:1,spinner:6 \
-					--bind=alt-k:up,alt-j:down,alt-i:abort,alt-h:backward-char,alt-l:forward-char,alt-n:backward-word,alt-m:forward-word,alt-e:jump,alt-t:kill-line"
+
+		command = 'source ~/script/bash/cd_fzf && sd --ranger'
 		fzf = self.fm.execute_command(command, stdout=subprocess.PIPE)
 		stdout, stderr = fzf.communicate()
 		if fzf.returncode == 0:
 			fzf_file = os.path.abspath(stdout.decode('utf-8').rstrip('\n'))
 			if os.path.isdir(fzf_file):
 				self.fm.cd(fzf_file)
-			else:
-				self.fm.select_file(fzf_file)
