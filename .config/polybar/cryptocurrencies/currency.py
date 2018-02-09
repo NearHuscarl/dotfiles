@@ -19,62 +19,74 @@ import requests
 import cache
 from data import _currencies, _suffix, _no_space
 
-cache = {} if cache.read('currency_cache') is None else cache.read('currency_cache')
+ccache = {} if cache.read('currency_cache') is None else cache.read('currency_cache')
 
 def validate_currency(*currencies):
 	""" some validation checks before doing anything """
+	validated_currency = []
 	if not currencies:
 		raise ValueError('My function need something to run, duh')
 	for currency in currencies:
+		currency = currency.upper()
 		if not isinstance(currency, str):
 			raise TypeError('Currency code should be a string: ' + repr(currency))
 		if currency not in _currencies:
 			raise NameError('Currency code not found: ' + repr(currency))
+		validated_currency.append(currency)
+	return validated_currency[0] if len(validated_currency) == 1 else validated_currency
 
 def validate_price(price):
 	""" validation checks for price argument """
+	if isinstance(price, str):
+		try:
+			price = int(price)
+		except ValueError: # fallback if convert to int failed
+			price = float(price)
 	if not isinstance(price, (int, float)):
 		raise TypeError('Price should be a number: ' + repr(price))
+	return price
 
 def info(currency):
 	""" return all info about currency """
-	currency = currency.upper()
-	validate_currency(currency)
+	currency = validate_currency(currency)
 	return _currencies[currency]
 
 def code(currency):
 	""" return symbol of currency """
-	currency = currency.upper()
-	validate_currency(currency)
+	currency = validate_currency(currency)
 	return _currencies[currency]['code']
 
 def name(currency, *, plural=False):
 	""" return name of currency """
-	currency = currency.upper()
-	validate_currency(currency)
+	currency = validate_currency(currency)
 	if plural:
 		return _currencies[currency]['name_plural']
 	return _currencies[currency]['name']
 
 def symbol(currency, *, native=True):
 	""" return symbol of currency """
-	currency = currency.upper()
-	validate_currency(currency)
+	currency = validate_currency(currency)
 	if native:
 		return _currencies[currency]['symbol_native']
 	return _currencies[currency]['symbol']
 
 def decimals(currency):
 	""" return maximum decimal digits of currency """
-	currency = currency.upper()
-	validate_currency(currency)
+	currency = validate_currency(currency)
 	return _currencies[currency]['decimal_digits']
 
-def rounding(currency):
+def roundto(currency):
 	""" return currency increment used for rounding """
-	currency = currency.upper()
-	validate_currency(currency)
+	currency = validate_currency(currency)
 	return _currencies[currency]['rounding']
+
+def rounding(price, currency):
+	""" rounding currency value based on its max decimal digits """
+	currency = validate_currency(currency)
+	price = validate_price(price)
+	if decimals(currency) == 0:
+		return round(int(price), decimals(currency))
+	return round(price, decimals(currency))
 
 def issuffix(currency):
 	""" check if currency symbol is after price number unlike the majority """
@@ -86,9 +98,8 @@ def nospace(currency):
 
 def pretty(price, currency, *, abbrev=True):
 	""" return format price with symbol. Example format(100, 'USD') return $100 """
-	currency = currency.upper()
-	validate_price(price)
-	validate_currency(currency)
+	currency = validate_currency(currency)
+	price = validate_price(price)
 	space = '' if nospace(currency) else ' '
 	fmtstr = ''
 	if isinstance(price, int):
@@ -104,11 +115,11 @@ def pretty(price, currency, *, abbrev=True):
 def check_update(from_currency, to_currency):
 	""" check if last update is over 30 mins ago. if so return True to update, else False """
 	# if currency never get converted before
-	if from_currency not in cache:
-		cache[from_currency] = {}
-	if cache[from_currency].get(to_currency) is None:
-		cache[from_currency][to_currency] = {'last_update': 0}
-	last_update = float(cache[from_currency][to_currency]['last_update'])
+	if from_currency not in ccache:
+		ccache[from_currency] = {}
+	if ccache[from_currency].get(to_currency) is None:
+		ccache[from_currency][to_currency] = {'last_update': 0}
+	last_update = float(ccache[from_currency][to_currency]['last_update'])
 	if time.time() - last_update >= 30 * 60: # if last update is more than 30 min ago
 		return True
 	return False
@@ -117,9 +128,9 @@ def update_cache(from_currency, to_currency):
 	""" update from_currency to_currency pair in cache if
 	last update for that pair is over 30 minutes ago by request API info """
 	if check_update(from_currency, to_currency) is True:
-		cache[from_currency][to_currency]['value'] = convert_using_api(from_currency, to_currency)
-		cache[from_currency][to_currency]['last_update'] = time.time()
-		cache.write(cache, 'currency_cache')
+		ccache[from_currency][to_currency]['value'] = convert_using_api(from_currency, to_currency)
+		ccache[from_currency][to_currency]['last_update'] = time.time()
+		cache.write(ccache, 'currency_cache')
 
 def convert_using_api(from_currency, to_currency):
 	""" convert from from_currency to to_currency by requesting API """
@@ -131,11 +142,9 @@ def convert_using_api(from_currency, to_currency):
 
 def convert(from_currency, to_currency, from_currency_price=1):
 	""" convert from from_currency to to_currency using cached info """
-	from_currency = from_currency.upper()
-	to_currency = to_currency.upper()
-	validate_currency(from_currency, to_currency)
+	from_currency, to_currency = validate_currency(from_currency, to_currency)
 	update_cache(from_currency, to_currency)
-	return cache[from_currency][to_currency]['value'] * from_currency_price
+	return ccache[from_currency][to_currency]['value'] * from_currency_price
 
 def main():
 	fr = 'USD'

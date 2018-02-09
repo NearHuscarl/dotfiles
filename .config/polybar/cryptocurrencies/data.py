@@ -19,7 +19,7 @@ _no_space = ['CRC', 'EUR', 'GBP', 'JPY', 'KRW', 'NGN', 'PHP', 'THB', 'UAH', 'USD
 _crypto = ['BTC', 'ETH', 'LTC', 'ADA']
 
 _currencies = {
-		# cryptocurrencies
+		# cryptocurrencies [WIP]
 		'BTC': {
 			'symbol': 'B', # placeholder
 			'name': 'Bitcoin',

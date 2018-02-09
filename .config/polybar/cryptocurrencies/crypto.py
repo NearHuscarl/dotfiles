@@ -3,30 +3,82 @@
 """ print out cryptos info from cache on polybar """
 
 import argparse
+import os
 import sys
 
 from util import color_polybar
 import config
 import cache
 
-config = config.read()
-currencies = cache.read('cache.json')['ticker']
+class State():
+	""" get set current state
+	state type:
+		display: percentage, price
+		currency: usd, local
+	"""
+	toggling = {
+			'display': {'percentage': 'price', 'price': 'percentage'},
+			'currency': {'usd': 'local', 'local': 'usd'},
+			}
+	default_state = {
+			'currency': 'usd',
+			'display': 'percentage',
+			}
+
+	def __init__(self):
+		cwd = os.path.dirname(os.path.realpath(__file__))
+		self.toggle_path = os.path.join(cwd, 'togglestate')
+		self.state = {}
+		self.state['display'] = self.init_state('display')
+		self.state['currency'] = self.init_state('currency')
+
+	def init_state(self, statetype):
+		""" get state info from file """
+		path = os.path.join(self.toggle_path, statetype)
+		if not os.path.exists(path) or os.stat(path).st_size == 0: # file not exist
+			return self.default_state[statetype]
+		with open(path, 'r') as file:
+			return file.read()
+
+	def get(self, statetype):
+		""" get state of display or currency. use when toggle format """
+		return self.state[statetype]
+
+	def set(self, statetype, attr):
+		""" set state of display or currency. use when toggle format """
+		self.state[statetype] = attr
+		self.save(statetype, attr)
+
+	def save(self, statetype, attr):
+		""" set state of display or currency. use when toggle format """
+		path = os.path.join(self.toggle_path, statetype)
+		with open(path, 'w+') as file:
+			file.write(attr)
+
+	def toggle(self, statetype):
+		""" toggle display mode (percentage, price) in config file """
+		attr = self.get(statetype)
+		self.set(statetype, self.toggling[statetype][attr])
 
 def get_args():
 	""" get script argument: display percentage or price """
+
+	def toggle(arg):
+		""" handle --toggle argument """
+		if arg != 'display' and arg != 'currency':
+			raise argparse.ArgumentTypeError("value must be 'display' or 'currency'")
+		return arg
+
 	parser = argparse.ArgumentParser(description='Display cryptocurrencies statistics')
-	parser.add_argument('--toggle-display', action='store_true',
-			help='toggle display format: percentage or price')
-	parser.add_argument('--toggle-currency', action='store_true',
-			help='toggle currency to convert to: usd or local price specified in config')
+	parser.add_argument('--toggle', type=toggle,
+			help='toggle display (percentage|price) or currency (usd|local)')
+	parser.add_argument('--update', action='store_true',
+			help='update cache and display new info about cryptocurrencies')
+	return parser.parse_args()
 
-	parsed_args = parser.parse_args()
-	if parsed_args.currency == 'default': # override --display argument if --currency is given
-		parsed_args.currency = 'usd'
-	else:
-		parsed_args.display = 'price'
-	return parsed_args
-
+config = config.read()
+currencies = cache.read('cache.json')['ticker']
+state = State()
 args = get_args()
 
 def get_color(cryptoname):
@@ -63,33 +115,28 @@ def get_icon(cryptoname):
 		return currencies[cryptoname]['symbol']
 	return color_polybar(config[cryptoname]['icon'], 'main')
 
-def get_display_state():
-	return -1
-
-def set_display_state(state):
-	pass
-
 def print_cryptos_info():
 	""" print cryptos info on polybar """
-	display = get_display_state()
 	for currency in currencies:
 		icon = get_icon(currency)
-		if display == 'percentage':
+		if state.get('display') == 'percentage':
 			sys.stdout.write('{} {} '.format(icon, get_1h_change(currency)))
-		elif display == 'price':
-			if args.currency == 'usd':
-				sys.stdout.write('{} {} '.format(icon, get_local_price(currency)))
-			elif args.currency == 'local':
+		elif state.get('display') == 'price':
+			if state.get('currency') == 'usd':
 				sys.stdout.write('{} {} '.format(icon, get_usd_price(currency)))
-
-def toggle_display():
-	""" toggle display mode (percentage, price) in config file """
-	toggle = {'percentage': 'price', 'price': 'percentage'}
-	set_display_state(toggle[get_display_state()])
+			elif state.get('currency') == 'local':
+				sys.stdout.write('{} {} '.format(icon, get_local_price(currency)))
 
 def main():
-	if args.display == 'toggle':
-		toggle_display()
+	if args.update:
+		import update
+		update.update_cache()
+	else:
+		if args.toggle == 'display':
+			state.toggle('display')
+		elif args.toggle == 'currency':
+			state.set('display', 'price')
+			state.toggle('currency')
 	print_cryptos_info()
 
 if __name__ == '__main__':

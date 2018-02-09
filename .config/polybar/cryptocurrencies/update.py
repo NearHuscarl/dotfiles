@@ -15,8 +15,8 @@ config = config.read()
 
 def process_meta_info(meta):
 	""" pretty price number in meta """
-	volume_24h = int(meta['total_24h_volume_usd'])
-	market_cap = int(meta['total_market_cap_usd'])
+	volume_24h = currency.rounding(meta['total_24h_volume_usd'], 'USD')
+	market_cap = currency.rounding(meta['total_market_cap_usd'], 'USD')
 	meta['total_24h_volume_usd'] = currency.pretty(volume_24h, 'USD')
 	meta['total_market_cap_usd'] = currency.pretty(market_cap, 'USD')
 	return meta
@@ -29,11 +29,12 @@ def process_crypto_info(crypto):
 	local_price_str = 'price_' + base_currency
 
 	price_btc = float(crypto['price_btc'])
-	price_usd = float(crypto['price_usd'])
+	price_usd = currency.rounding(crypto['price_usd'], 'USD')
 	if local_price_str not in crypto: # API failed to convert to local price
-		local_price = float(currency.convert('USD', base_currency, price_usd))
+		price = currency.convert('USD', base_currency, price_usd)
+		local_price = currency.rounding(price, local_price_str)
 	else:
-		local_price = float(crypto[local_price_str])
+		local_price = currency.rounding(crypto[local_price_str], base_currency)
 	# dont have bitcoin icon yet :(
 	crypto['price_btc'] = currency.pretty(price_btc, 'BTC', abbrev=False)
 	crypto['price_usd'] = currency.pretty(price_usd, 'USD')
@@ -54,9 +55,10 @@ def request_info():
 
 	return (meta_info, cryptocurrencies)
 
-def update_cache(tracked_coins):
+def update_cache():
 	""" get coin info on the internet, format some values and write it to cache
 	for later retrieval """
+	tracked_coins = [x for x in config.sections() if x != 'global']
 	meta, cryptocurrencies = request_info()
 	crypto_info = {}
 	for crypto in cryptocurrencies:
@@ -67,8 +69,7 @@ def update_cache(tracked_coins):
 	cache.write(data, 'cache.json')
 
 def main():
-	coinnames = [x for x in config.sections() if x != 'global']
-	update_cache(coinnames)
+	update_cache()
 
 if __name__ == '__main__':
 	main()
