@@ -1,9 +1,15 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-if [[ -x /usr/bin/polybar ]]; then
-   killall -q polybar
-   bash --login -c 'polybar -r holybar &'
-   bash --login -c 'polybar -r molybar &'
-else
-   printf 'polybar is not installed. Nothing to reload\n'
-fi
+# Terminate already running bar instances
+killall -q polybar
+
+# Wait until the processes have been shut down
+while pgrep -x polybar >/dev/null; do sleep 1; done
+
+# Launch bar1 and bar2
+bash --login -c 'polybar -r holybar &'
+bash --login -c 'polybar -r molybar &'
+echo "holy and moly launched..."
+
+# run hook watcher to update cryptocurrency price
+source "$HOME/.config/polybar/cryptocurrencies/update_cache.sh"

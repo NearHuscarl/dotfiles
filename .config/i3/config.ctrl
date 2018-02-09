@@ -44,7 +44,7 @@ exec $no_loading $HOME/bin/start-todo
 exec $no_loading xfconfd
 exec $no_loading xfsettingsd
 
-exec_always $no_loading $HOME/.config/polybar/launch.sh
+exec_always $no_loading $HOME/bin/reload-polybar
 # }}}
 # Basic {{{
 font pango:Inconsolata bold 8
