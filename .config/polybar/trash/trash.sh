@@ -1,25 +1,40 @@
-#!/bin/bash
+#!/bin/env bash
 
-trash_dir=""$HOME"/.local/share/Trash/"
+# Dependencies:
+# alsa
 
-paren_dir="$(dirname "$(readlink -f "$0")")"
+trash_dir="$HOME/.local/share/Trash/"
+parent_dir="$(dirname "$(readlink -f "$0")")"
+
+
+function print_trash_info() { # {{{
+	# shellcheck disable=SC2012
+	trash_count=$(ls -A "$trash_dir"/files/ -1 -U 2> /dev/null | wc -l)
+	trash_size=$(du --total --human-readable --apparent-size "$trash_dir"/files/ \
+		| tail -n 1 | awk '{print $1}')
+	echo "$trash_count ($trash_size)"
+}
+# }}}
+function open_trash_bin() { # {{{
+	$TERMINAL --title=Floating --default-working-directory="$trash_dir/files/" -e ranger
+}
+# }}}
+function clean_trash() { # {{{
+	rm -rf "$trash_dir"/{files,info}/
+	aplay "$parent_dir/trash-empty-sound.wav"
+	mkdir "$trash_dir"/{files,info}/
+}
+# }}}
 
 case ${1:-print} in
 	'print')
-		trash_count=$(ls -A "$trash_dir"/files/ -1 -U 2> /dev/null | wc -l)
-		trash_size=$(du --total --human-readable --apparent-size $trash_dir/files/ \
-			| tail -n 1 | awk '{print $1}')
-		echo ""$trash_count" ("$trash_size")"
+		print_trash_info
 		;;
 	'open')
-		$TERMINAL --title=Floating --default-working-directory="$trash_dir/files/" -e ranger
+		open_trash_bin
 		;;
 	'clean')
-		rm -rf "$trash_dir"/files/
-		rm -rf "$trash_dir"/info/
-		mpv ""$paren_dir"/trash-empty-sound.mp3"
-		mkdir "$trash_dir"/files/
-		mkdir "$trash_dir"/info/
+		clean_trash
 		;;
 	*)
 		;;
