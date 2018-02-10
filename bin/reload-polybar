@@ -12,4 +12,6 @@ bash --login -c 'polybar -r molybar &'
 echo "holy and moly launched..."
 
 # run hook watcher to update cryptocurrency price
-source "$HOME/.config/polybar/cryptocurrencies/update_cache.sh"
+source "$HOME/.config/polybar/cryptocurrencies/update_cache.sh" &
+# run hook watcher to update trash info
+source "$HOME/.config/polybar/trash/update_info.sh" &

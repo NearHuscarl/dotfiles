@@ -414,15 +414,18 @@ click-middle = bash -l -c '$HOME/.config/polybar/pac_update/main list_packages'
 ; }}}
 ; {{{ [module/trash]
 [module/trash]
-type = custom/script
-interval = 3
+type = custom/ipc
+initial = 3
 
 format-prefix-foreground = ${colors.foreground-icon}
 format-prefix = " "
-exec = bash -l -c '$HOME/.config/polybar/trash/trash.sh'
 
-click-left  = bash -l -c '$HOME/.config/polybar/trash/trash.sh open'
-click-right = bash -l -c '$HOME/.config/polybar/trash/trash.sh clean'
+hook-0 = bash -l -c '$HOME/.config/polybar/trash/trash.sh toggle'
+hook-1 = bash -l -c '$HOME/.config/polybar/trash/trash.sh clean'
+hook-2 = bash -l -c '$HOME/.config/polybar/trash/trash.sh print'
+
+click-left = polybar-msg -p %pid% hook trash 1
+click-right = polybar-msg -p %pid% hook trash 2
 ; }}}
 ; {{{ [module/news]
 [module/news]
