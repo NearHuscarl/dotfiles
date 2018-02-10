@@ -20,9 +20,8 @@ function open_trash_bin() { # {{{
 }
 # }}}
 function clean_trash() { # {{{
-	rm -rf "$trash_dir"/{files,info}/
+	rm -rf "$trash_dir"/{files,info}/*
 	aplay "$parent_dir/trash-empty-sound.wav"
-	mkdir "$trash_dir"/{files,info}/
 }
 # }}}
 
