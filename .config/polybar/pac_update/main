@@ -1,26 +1,28 @@
 #!/bin/bash
 
 function check_update() {
-	cd $(dirname "$0")
-	local path=""$(pwd)"/package_list"
+	cd "$(dirname "$0")" || exit 1
+	local path
+	
+	path="$(pwd)/package_list"
 
 	checkupdates > "$path" 2> /dev/null
-	pac=$(cat "$path" | wc -l)
+	pac=$(wc -l < "$path")
 
 	pacaur -k | sed 's/:: aur  //' >> "$path" 2> /dev/null
-	aur=$(( $(cat "$path" | wc -l) - $pac ))
+	aur=$(( $(wc -l < "$path") - pac ))
 
 	# Align column and add column names
-	format_table="$(cat "$path" | column --table --table-columns 'Package','Prev Version','-','New Version')"
+	format_table="$(column --table --table-columns 'Package','Prev Version','-','New Version' < "$path")"
 	echo "$format_table" > "$path"
 
 	# Add newline to seperate between official repo and aur
-	newline=$(cat "$path" | sed "$(($pac + 2))i\ ")
+	newline=$(sed "$((pac + 2))i"'\ ' < "$path")
 	echo "$newline" > "$path"
 
 	local check=$((pac + aur))
 	if [[ "$check" != "0" ]]; then
-		echo ""$pac" %{F$THEME_MAIN}%{F-} "$aur""
+		echo "$pac %{F$THEME_MAIN}%{F-} $aur"
 	else
 		echo "0 %{F$THEME_MAIN}%{F-} 0"
 	fi
@@ -40,8 +42,8 @@ case "$action" in
 		$TERMINAL --title="Floating" -e 'pacaur -Syua'
 		;;
 	'list_packages')
-		cd $(dirname "$0")
-		cmd="cat "$(pwd)"/package_list"
+		cd "$(dirname "$0")" || exit 1
+		cmd="cat $(pwd)/package_list"
 		$TERMINAL --title="Floating" -e "$cmd" --hold
 		;;
 	*)
