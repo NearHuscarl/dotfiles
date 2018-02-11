@@ -38,6 +38,7 @@ exec $no_loading "dropbox start"
 exec $no_loading nm-applet
 exec $no_loading udiskie &
 exec $no_loading $HOME/bin/start-todo
+exec $no_loading $HOME/bin/take_a_break &
 # exec $no_loading i3-msg 'exec /usr/bin/pulseaudio --start'
 
 # xfce4 settings

@@ -1,0 +1,77 @@
+#!/bin/env bash
+
+# This script will send notify to take a 5-min break every 25 minutes
+
+# Dependencies:
+# dunstify
+
+WORK_INTERVAL=$((60 * 25))
+REST_INTERVAL=$((60 * 5))
+WORK_ICON="$HOME/.icons/dunst/rest-back-to-work.png"
+REST_ICON="$HOME/.icons/dunst/rest-take-a-break.png"
+WORK_IDIOMS=(
+'Rest time is over. Get back to work you lazy ass'
+'Get the fuck back to work'
+'If you could get back to work, that would be great'
+'Back to work bitch'
+)
+REST_IDIOMS=(
+'Take a break!'
+"Let's go smoke a Pepsi"
+"It's okay to take a break now"
+'Get some air'
+)
+REST_IDIOMS_LINES=${#REST_IDIOMS[@]}
+WORK_IDIOMS_LINES=${#WORK_IDIOMS[@]}
+
+function bootstrap() { # {{{
+	# this function wait until half or full hour like 7:30, 8:00, 8:30...  then
+	# run take_a_break and back_to_work which notify to take 5-min break every
+	# 25 mins
+	local current_minutes
+	local wait_minutes
+	local is_break_time
+
+	current_minutes="$(date +%M)"
+	if (( "$current_minutes" < 25 )); then
+		wait_minutes=$((25 - current_minutes))
+		is_break_time=false
+	elif ((25 <= "$current_minutes")) && (("$current_minutes" < 30)); then
+		wait_minutes=$((30 - current_minutes))
+		is_break_time=true
+	elif ((30 <= "$current_minutes")) && (("$current_minutes" < 55)); then
+		wait_minutes=$((55 - current_minutes))
+		is_break_time=false
+	else # >= 55
+		wait_minutes=$((60 - current_minutes))
+		is_break_time=true
+	fi
+
+	sleep $((wait_minutes * 60))
+
+	if [[ "$is_break_time" == false ]]; then
+		take_a_break
+	fi
+	back_to_work
+}
+# }}}
+
+function take_a_break() { # {{{
+	local rest_idiom=${REST_IDIOMS[$((RANDOM % REST_IDIOMS_LINES))]}
+	dunstify --urgency=low --icon="$REST_ICON" "$rest_idiom"
+	sleep "$REST_INTERVAL"
+}
+# }}}
+
+function back_to_work() { # {{{
+	local work_idiom
+	while true; do
+		work_idiom=${WORK_IDIOMS[$((RANDOM % WORK_IDIOMS_LINES))]}
+		dunstify --urgency=low --icon="$WORK_ICON" "$work_idiom"
+		sleep "$WORK_INTERVAL"
+		take_a_break
+	done
+}
+# }}}
+
+bootstrap
