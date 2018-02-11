@@ -1,6 +1,6 @@
 #!/bin/env bash
 
-# This script will send notify to take a 5-min break every 25 minutes
+# This script will send notification to take a 5-min break every 25 minutes
 
 # Dependencies:
 # dunstify
@@ -55,14 +55,12 @@ function bootstrap() { # {{{
 	back_to_work
 }
 # }}}
-
 function take_a_break() { # {{{
 	local rest_idiom=${REST_IDIOMS[$((RANDOM % REST_IDIOMS_LINES))]}
 	dunstify --urgency=low --icon="$REST_ICON" "$rest_idiom"
 	sleep "$REST_INTERVAL"
 }
 # }}}
-
 function back_to_work() { # {{{
 	local work_idiom
 	while true; do
