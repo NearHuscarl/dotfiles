@@ -57,7 +57,7 @@ function bootstrap() { # {{{
 # }}}
 function take_a_break() { # {{{
 	local rest_idiom=${REST_IDIOMS[$((RANDOM % REST_IDIOMS_LINES))]}
-	dunstify --urgency=low --icon="$REST_ICON" "$rest_idiom"
+	dunstify --replace=101 --urgency=low --icon="$REST_ICON" "$rest_idiom"
 	sleep "$REST_INTERVAL"
 }
 # }}}
@@ -65,7 +65,7 @@ function back_to_work() { # {{{
 	local work_idiom
 	while true; do
 		work_idiom=${WORK_IDIOMS[$((RANDOM % WORK_IDIOMS_LINES))]}
-		dunstify --urgency=low --icon="$WORK_ICON" "$work_idiom"
+		dunstify --replace=101 --urgency=low --icon="$WORK_ICON" "$work_idiom"
 		sleep "$WORK_INTERVAL"
 		take_a_break
 	done
