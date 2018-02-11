@@ -9,24 +9,30 @@ in .bashrc
 # pylint: disable=unused-import
 
 # Import common modules
+from datetime import datetime
+from pprint import pprint as p
 import os
 import sys
-from pprint import pprint as p
+# import time
 
 # Fix interactive prompt with virtualenv dont have autocomplete
 import rlcompleter
+
+# Fix history not working in virtualenv
 import readline
 import atexit
 
-histfile = os.path.join(os.path.expanduser("~"), ".pyhist")
+def make_history_great_again():
+	""" fix history in virtualenv """
+	histfile = os.path.join(os.path.expanduser("~"), ".pyhist")
+	try:
+		readline.read_history_file(histfile)
+		readline.set_history_length(2000) # default history len is -1 (infinite)
+	except IOError:
+		print('No history file')
+	atexit.register(readline.write_history_file, histfile)
 
-try:
-	readline.read_history_file(histfile)
-	readline.set_history_length(2000) # default history len is -1 (infinite), which may grow unruly
-except IOError:
-	print('No history file')
-
-atexit.register(readline.write_history_file, histfile)
+make_history_great_again()
 
 # pylint: disable=too-few-public-methods
 class Exit(object):
@@ -34,14 +40,10 @@ class Exit(object):
 	def __repr__(self):
 		sys.exit()
 
-# Caveat: do not assign e to something else
-# Do not use e like in print(e) or it will exit the shell
+# Caveat: Do not assign e to something else
+#         Do not use e like in print(e) or it will exit the shell
+# pylint: disable=invalid-name
 e = Exit()
-
-# Import common module
-# pylint: disable=wrong-import-position
-from datetime import datetime
-import time
 
 def get_var_name(obj, namespace):
 	""" return variable name. Only work with one variable assignment """
@@ -59,6 +61,7 @@ def find_defining_class(obj, method_name):
 	for class_name in type(obj).mro():
 		if method_name in class_name.__dict__:
 			return class_name
+	return None
 
 dict1 = {'one': 'mot', 'two': 'hai', 'three': 'ba', 'four': 'bon'}
 dict2 = {'dog': 'cat', 'rich': 'poor', 'me': 'you'}
