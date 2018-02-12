@@ -17,9 +17,9 @@ def get_script_path():
 if __name__ == '__main__':
 	pystartup = os.environ.get('PYTHONSTARTUP')
 	script = get_script_path()
-	if script and os.path.isfile(script):
+	if script:
 		exec(open(script).read())
-	if pystartup:
+	if pystartup and os.path.isfile(pystartup):
 		exec(open(pystartup).read())
 
 # vim: nofoldenable
