@@ -35,7 +35,6 @@ exec $no_loading xfce4-volumed
 exec $no_loading xfce4-power-manager
 exec $no_loading xscreensaver -nosplash
 exec $no_loading "dropbox start"
-exec $no_loading nm-applet
 exec $no_loading udiskie &
 exec $no_loading $HOME/bin/start-todo
 exec $no_loading $HOME/bin/take_a_break &
@@ -128,10 +127,10 @@ for_window [class="Sxiv"]                 $FLOAT
 for_window [class="feh"]                  $FLOAT
 for_window [title="Floating"]             $FLOAT
 for_window [class="mpv"]                  $FLOAT
-for_window [class="Nm-connection-editor"] $FLOAT
 for_window [class="Gimp"]                 $FLOAT
 for_window [class="Display"]              $FLOAT
 for_window [class="Peek"]                 $FLOAT
+for_window [class="Connman-gtk"]          $FLOAT
 for_window [title="Todo"]                 $SCRATCHPAD
 # for_window [class="File-roller"]          $FLOAT
 # for_window [class="Blueberry.py"]         $FLOAT

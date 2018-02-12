@@ -151,18 +151,6 @@ if [[ -x /usr/bin/vim ]]; then
 	fi
 fi
 # }}}
-# network manager {{{
-if [[ -x /usr/bin/NetworkManager ]]; then
-	alias nm-connect='alias_nm_connect'
-	alias nm-disconnect='nmcli dev disconnect $(nmcli device status | awk "/wifi/ {print $1}")'
-	alias nm-list='nmcli connection show'
-	alias nm-delete='nmcli connection delete'
-	alias nm-avail='nmcli dev wifi'
-	alias nm-active='nmcli connection show --active'
-	# info of active connection
-	alias nm-info='nmcli connection show $(nmcli connection show --active | awk "NR == 2 {print $1}")'
-fi
-# }}}
 # pacman {{{
 if [[ -x /usr/bin/pacman ]]; then
 	alias pac-install='alias_pac_install'
