@@ -11,8 +11,11 @@ in .bashrc
 # Import common modules
 from datetime import datetime
 from pprint import pprint as p
+from code import InteractiveConsole
+from tempfile import mkstemp
 import os
 import sys
+import re
 # import time
 
 # Fix interactive prompt with virtualenv dont have autocomplete
@@ -22,36 +25,154 @@ import rlcompleter
 import readline
 import atexit
 
+HISTFILE = os.path.join(os.path.expanduser("~"), ".pyhist")
+HISTLEN = 2000
+
 def make_history_great_again():
 	""" fix history in virtualenv """
-	histfile = os.path.join(os.path.expanduser("~"), ".pyhist")
 	try:
-		readline.read_history_file(histfile)
-		readline.set_history_length(2000) # default history len is -1 (infinite)
+		readline.read_history_file(HISTFILE)
+		readline.set_history_length(HISTLEN) # default history len is -1 (infinite)
 	except IOError:
 		print('No history file')
-	atexit.register(readline.write_history_file, histfile)
+	atexit.register(readline.write_history_file, HISTFILE)
 
-make_history_great_again()
+def pythonrc_set_prompt():
+	""" color interactive prompt """
+	if os.getenv('TERM') in ('xterm-termite', 'xterm', 'vt100', 'rxvt', 'Eterm', 'putty'):
+		if 'readline' in sys.modules:
+			# ^A and ^B delimit invisible characters for readline to count
+			# right.
+			sys.ps1 = '\001\033[0;32m\002>>> \001\033[0m\002'
+			sys.ps2 = '\001\033[0;32m\002... \001\033[0m\002'
+		else:
+			sys.ps1 = '\033[0;32m>>> \033[0m'
+			sys.ps2 = '\033[0;32m... \033[0m'
 
-# pylint: disable=too-few-public-methods
-class Exit(object):
-	""" hack to alias e to sys.exit() because CTRL-D is mapped to something else in i3wm """
-	def __repr__(self):
-		sys.exit()
+def pp(obj, *args):
+	""" pretty print. lazy load pprint module """
+	import pprint
+	pprint.pprint(obj, *args)
+	del pprint
 
-# Caveat: Do not assign e to something else
-#         Do not use e like in print(e) or it will exit the shell
-# pylint: disable=invalid-name
-e = Exit()
+def history(last=10, printout=True):
+	""" Display last commands in history """
+	global HISTFILE
 
-def get_var_name(obj, namespace):
-	""" return variable name. Only work with one variable assignment """
-	return ''.join([name for name in namespace if namespace[name] is obj])
+	lines = ''
+	length = readline.get_current_history_length()
+	start = length - last
+	for i in range(start, length):
+		line = readline.get_history_item(i)
+		if printout:
+			print('{} {}'.format(i, line))
+		lines += line + '\n'
+	return lines.encode().split(b'\n')
 
-def debug(varname, delimiter='\n'):
-	""" Print variable name and its value """
-	print(str(get_var_name(varname, globals())) + ': ' + str(varname), end=delimiter)
+class ImprovedInteractiveConsole(InteractiveConsole):
+	""" Allows editing of console commands in $EDITOR """
+
+	EDITOR = os.environ.get('EDITOR', 'vi')
+	EDIT_HISTORY_RE = r'h ?[0-9]{0,3}$' # match: 'h', 'h 5', 'h 200', 'h 1000'
+	DOC_RE = r'.*\?\s*$' # match: 'print?', 'request? '
+	CLEAR = 'c'
+	EDIT_CMD = 'v'
+	EXIT = 'e'
+	REPEAT = 'r'
+
+	def __init__(self, *args, **kwargs):
+		self.last_buffer = [] # This holds the last executed statement
+		InteractiveConsole.__init__(self, *args, **kwargs)
+
+	def runsource(self, source, *args):
+		self.last_buffer = [source.encode('utf-8')]
+		return InteractiveConsole.runsource(self, source, *args)
+
+	def _is_custom_cmd(self, line):
+		""" Return true if line is a custom command """
+		if (line not in [self.CLEAR, self.EDIT_CMD, self.EXIT, self.REPEAT]
+				and re.search(self.EDIT_HISTORY_RE, line) is None
+				and re.search(self.DOC_RE, line) is None):
+			return False
+		return True
+
+	def clear(self):
+		""" Clear python shell """
+		os.system('clear')
+		return ''
+
+	def print_docstring(self, line):
+		""" print docstring of object. For example: 'requests?' will print help about requests"""
+		try:
+			obj = line.split('?')[0].strip()
+			print(eval(obj).__doc__)
+		except:
+			pass
+		finally:
+			return ''
+
+	def _edit_in_texteditor(self, content):
+		""" Edit cmds in your $EDITOR. Content is a list of string which will
+		be prepopulated in $EDITOR"""
+		# Make temporary file
+		fd, tmpfile = mkstemp('.py')
+
+		# Write last statement to file
+		os.write(fd, b'\n'.join(content))
+		os.close(fd)
+
+		# Edit file in editor
+		os.system(self.EDITOR + ' ' + tmpfile)
+
+		# Get edited statement
+		line = open(tmpfile).read()
+		os.remove(tmpfile)
+
+		# Print output to python interactive shell and add to history
+		lines = line.split('\n')
+		for i in range(len(lines) - 1):
+			if not self._is_custom_cmd(lines[i]):
+				self.push(lines[i])
+				readline.add_history(lines[i])
+		return ''
+
+	def edithistory(self, last=10):
+		print('last: ' + str(last))
+		return self._edit_in_texteditor(history(last=last, printout=False))
+
+	def editcmd(self):
+		""" Edit previous cmd in your $EDITOR """
+		return self._edit_in_texteditor(self.last_buffer)
+
+	def repeat_last_cmd(self):
+		""" repeat previously type cmd """
+		index = readline.get_current_history_length()
+		line = readline.get_history_item(index - 1)
+		while self._is_custom_cmd(line):
+			index -= 1
+			line = readline.get_history_item(index)
+		self.push(line)
+		return ''
+
+	def raw_input(self, *args):
+		line = InteractiveConsole.raw_input(self, *args)
+		if line == self.CLEAR:
+			line = self.clear()
+		elif re.search(self.DOC_RE, line):
+			line = self.print_docstring(line)
+		elif re.search(self.EDIT_HISTORY_RE, line):
+			try:
+				_, last = line.split()
+				line = self.edithistory(int(last))
+			except:
+				line = self.edithistory()
+		elif line == self.EDIT_CMD:
+			line = self.editcmd()
+		elif line == self.REPEAT:
+			line = self.repeat_last_cmd()
+		elif line == self.EXIT:
+			sys.exit()
+		return line
 
 def find_defining_class(obj, method_name):
 	"""
@@ -63,31 +184,46 @@ def find_defining_class(obj, method_name):
 			return class_name
 	return None
 
-dict1 = {'one': 'mot', 'two': 'hai', 'three': 'ba', 'four': 'bon'}
-dict2 = {'dog': 'cat', 'rich': 'poor', 'me': 'you'}
+if __name__ == '__main__':
+	make_history_great_again()
+	pythonrc_set_prompt()
 
-list1 = ['this', 'is', 'an', 'example', 'list']
-list2 = ['another', 'example', 'list', 'to', 'test']
+	del make_history_great_again
+	del pythonrc_set_prompt
 
-str1 = 'I hate monday'
-str2 = 'some random string val'
+	# set up some variables to toy with
+	dict1 = {'one': 'mot', 'two': 'hai', 'three': 'ba', 'four': 'bon'}
+	dict2 = {'ny': 'new york', 'la': 'los angeles', 'tx': 'texas'}
 
-int1 = 1
-int2 = -9
+	list1 = ['this', 'is', 'an', 'example', 'list']
+	list2 = ['another', 'example', 'list', 'to', 'test']
 
-float1 = 5.00
-float2 = -6.9
+	str1 = 'I hate monday'
+	str2 = 'some random string val'
 
-print()
-debug(dict1)
-debug(dict2, delimiter='\n\n')
-debug(list1)
-debug(list2, delimiter='\n\n')
-debug(str1)
-debug(str2, delimiter='\n\n')
-debug(int1)
-debug(int2, delimiter='\n\n')
-debug(float1)
-debug(float2, delimiter='\n\n')
+	int1 = 1
+	int2 = -9
+
+	float1 = 5.00
+	float2 = -6.9
+
+	welcome_msg = '\n'
+	welcome_msg += 'dict1 = {}\n'.format(dict1)
+	welcome_msg += 'dict2 = {}\n'.format(dict2)
+	welcome_msg += '\n'
+	welcome_msg += 'list1 = {}\n'.format(list1)
+	welcome_msg += 'list2 = {}\n'.format(list2)
+	welcome_msg += '\n'
+	welcome_msg += 'str1 = {}\n'.format(str1)
+	welcome_msg += 'str2 = {}\n'.format(str2)
+	welcome_msg += '\n'
+	welcome_msg += 'int1 = {}\n'.format(int1)
+	welcome_msg += 'int2 = {}\n'.format(int2)
+	welcome_msg += '\n'
+	welcome_msg += 'float1 = {}\n'.format(float1)
+	welcome_msg += 'float2 = {}\n'.format(float2)
+
+	console = ImprovedInteractiveConsole(locals=locals())
+	console.interact(banner=welcome_msg)
 
 # vim: nofoldenable
