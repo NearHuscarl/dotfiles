@@ -98,6 +98,8 @@ fi
 shopt -s autocd
 shopt -s extglob
 
+# {{{ prompt
+
 # +-----------------------+-----------------------+
 # |    Regular Colors     |    High Intensity     |
 # |-----------------------+-----------------------|
@@ -112,7 +114,6 @@ shopt -s extglob
 # | Reset  | '\033[0m'    |        |              |
 # +-----------------------+-----------------------+
 
-# {{{ prompt
 #    [----blue----][\u[----cyan----] \h][---magenta--] [\W] \$[--reset--]
 PS1='\[\033[0;34m\][\u\[\033[0;36m\] \h]\[\033[0;35m\] [\W] \$\[\033[0m\] '
 #     [----cyan----][--reset--]
@@ -156,6 +157,7 @@ source ~/bin/virtualenvwrapper_lazyload
 
 # python interactive prompt
 export PYTHONSTARTUP=~/.pythonrc.py
+export SHELLCHECK_OPTS='-e SC1090' # disable check source
 
 # custom completion
 source ~/Github/termite-color-switcher/completion/bash
