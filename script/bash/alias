@@ -102,12 +102,8 @@ function alias_pic() { # {{{
    done
 } # }}}
 function alias_rgr() { # {{{
-   rootDir=$(git rev-parse --show-toplevel 2> /dev/null)
-   if [[ "$rootDir" == '' ]]; then
-      rg "$@" "$HOME"
-   else
-      rg "$@" "$rootDir"
-   fi
+   root=$(git rev-parse --show-toplevel 2> /dev/null)
+	rg "$@" "${root:-$HOME}"
 } # }}}
 # }}}
 # color {{{
@@ -240,6 +236,7 @@ alias c='clear'
 alias js='node'
 alias py='python'
 alias pi='python -i'
+alias bs='bash -x'
 alias sb='source $HOME/.bashrc'
 # }}}
 # apply completion to aliases {{{
