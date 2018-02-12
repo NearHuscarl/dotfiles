@@ -83,11 +83,11 @@ args = get_args()
 
 def get_color(cryptoname):
 	""" Get color depend on how large the number is (use 24-hour percentage change) """
-	change_1h = float(currencies[cryptoname]['percent_change_1h'])
+	change_24h = float(currencies[cryptoname]['percent_change_24h'])
 
-	if change_1h > 3:
+	if change_24h > 3:
 		return 'green'
-	elif 3 >= change_1h >= -3:
+	elif 3 >= change_24h >= -3:
 		return 'yellow'
 	return 'red'
 
@@ -120,7 +120,7 @@ def print_cryptos_info():
 	for currency in currencies:
 		icon = get_icon(currency)
 		if state.get('display') == 'percentage':
-			sys.stdout.write('{} {} '.format(icon, get_1h_change(currency)))
+			sys.stdout.write('{} {} '.format(icon, get_24h_change(currency)))
 		elif state.get('display') == 'price':
 			if state.get('currency') == 'usd':
 				sys.stdout.write('{} {} '.format(icon, get_usd_price(currency)))

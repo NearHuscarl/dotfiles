@@ -15,8 +15,8 @@ config = config.read()
 
 def process_meta_info(meta):
 	""" pretty price number in meta """
-	volume_24h = currency.rounding(meta['total_24h_volume_usd'], 'USD')
-	market_cap = currency.rounding(meta['total_market_cap_usd'], 'USD')
+	volume_24h = int(meta['total_24h_volume_usd'])
+	market_cap = int(meta['total_market_cap_usd'])
 	meta['total_24h_volume_usd'] = currency.pretty(volume_24h, 'USD')
 	meta['total_market_cap_usd'] = currency.pretty(market_cap, 'USD')
 	return meta
