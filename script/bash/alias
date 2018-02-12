@@ -235,7 +235,6 @@ alias e='exit'
 alias c='clear'
 alias js='node'
 alias py='python'
-alias pi='python -i'
 alias bs='bash -x'
 alias sb='source $HOME/.bashrc'
 # }}}

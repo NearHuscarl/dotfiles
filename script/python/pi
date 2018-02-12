@@ -1,0 +1,25 @@
+#!/bin/env python
+
+"""
+python -i <scriptname> do not run $PYTHONSTARTUP by default
+This script fix that problem
+"""
+
+import os
+import sys
+
+def get_script_path():
+	if len(sys.argv) == 2:
+		script = os.path.join(os.getcwd(), sys.argv[1])
+		if os.path.isfile(script):
+			return script
+
+if __name__ == '__main__':
+	pystartup = os.environ.get('PYTHONSTARTUP')
+	script = get_script_path()
+	if script and os.path.isfile(script):
+		exec(open(script).read())
+	if pystartup:
+		exec(open(pystartup).read())
+
+# vim: nofoldenable
