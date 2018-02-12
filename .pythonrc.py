@@ -145,7 +145,7 @@ class ImprovedInteractiveConsole(InteractiveConsole):
 		return self._edit_in_texteditor(self.last_buffer)
 
 	def repeat_last_cmd(self):
-		""" repeat previously type cmd """
+		""" repeat previously typed cmd """
 		index = readline.get_current_history_length()
 		line = readline.get_history_item(index - 1)
 		while self._is_custom_cmd(line):
