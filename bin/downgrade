@@ -51,9 +51,7 @@ function print_bar() { # {{{
 # }}}
 function search() { # {{{
 	local prompt="$1"
-	local result
-	result="$(fzf --prompt="$prompt" --height=15 --inline-info -0)"
-	echo "$result"
+	fzf --prompt="$prompt" --height=15 --inline-info -0
 }
 # }}}
 function base_url() { # {{{
@@ -91,7 +89,7 @@ function search_pacman_cache() { # {{{
 		| sort -n
 }
 # }}}
-function search_archlinux_archive() {
+function search_archlinux_archive() { # {{{
 	# return a list of urls to download packages
 	local name version index
 
@@ -104,12 +102,11 @@ function search_archlinux_archive() {
 	s||\1|g
 	'
 }
+# }}}
 function get_other_packages() { # {{{
 	# get package versions that are not currently installed
 	local package="$1"
-	search_pacman_cache "$(get_package_name "$package")" \
-		| sed '/'"$package"'/d' \
-		| sort -n
+	search_pacman_cache "$(get_package_name "$package")" | sed '/'"$package"'/d'
 }
 # }}}
 function downgrade_from_cache() { # {{{
@@ -126,7 +123,6 @@ function input() { # {{{
 	local confirm prompt="$1"
 	read -r -n 1 -p "$prompt" confirm
 	printf '%s' "$confirm"
-	printf '\n'
 }
 # }}}
 function process_responce() { # {{{
@@ -217,6 +213,4 @@ function main() { # {{{
 main "$@"
 # }}}
 
-# TODO:
-# reposition function order
 # vim: foldmethod=marker
