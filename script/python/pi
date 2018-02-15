@@ -5,14 +5,20 @@ python -i <scriptname> do not run $PYTHONSTARTUP by default
 This script fix that problem
 """
 
+# pylint: disable=exec-used
+
 import os
 import sys
 
 def get_script_path():
+	""" get script path and do some setup """
 	if len(sys.argv) == 2:
-		script = os.path.join(os.getcwd(), sys.argv[1])
-		if os.path.isfile(script):
-			return script
+		path = os.path.join(os.getcwd(), sys.argv[1])
+		if os.path.isfile(path):
+			# replace path to this script in sys.path with the real script path
+			sys.path = [os.getcwd() if pth in __file__ else pth for pth in sys.path]
+			return path
+	return None
 
 if __name__ == '__main__':
 	pystartup = os.environ.get('PYTHONSTARTUP')
