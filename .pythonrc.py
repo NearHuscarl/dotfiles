@@ -16,6 +16,7 @@ from tempfile import mkstemp
 import os
 import sys
 import re
+import threading
 # import time
 
 # Fix interactive prompt with virtualenv dont have autocomplete
@@ -184,12 +185,27 @@ def find_defining_class(obj, method_name):
 			return class_name
 	return None
 
+def auto_import_package():
+	""" execute import_package() in another because exec() is slow """
+	def import_package():
+		""" auto import package if detect directory in current directory
+		have __init__.py """
+		cwd = os.getcwd()
+		lsdir = os.listdir()
+		for directory in lsdir:
+			if os.path.isfile(os.path.join(cwd, directory, '__init__.py')):
+				exec('import ' + directory, globals()) # pylint: disable=exec-used
+	thread = threading.Thread(target=import_package)
+	thread.start()
+
 if __name__ == '__main__':
 	make_history_great_again()
 	pythonrc_set_prompt()
+	auto_import_package()
 
 	del make_history_great_again
 	del pythonrc_set_prompt
+	del auto_import_package
 
 	# set up some variables to toy with
 	dict1 = {'one': 'mot', 'two': 'hai', 'three': 'ba', 'four': 'bon'}
