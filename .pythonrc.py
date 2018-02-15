@@ -73,7 +73,7 @@ class ImprovedInteractiveConsole(InteractiveConsole):
 	""" Allows editing of console commands in $EDITOR """
 
 	EDITOR = os.environ.get('EDITOR', 'vi')
-	EDIT_HISTORY_RE = r'h ?[0-9]{0,3}$' # match: 'h', 'h 5', 'h 200', 'h 1000'
+	EDIT_HISTORY_RE = r'^\s*h ?[0-9]{0,3}$' # match: 'h', 'h 5', 'h 200', 'h 1000'
 	DOC_RE = r'.*\?\s*$' # match: 'print?', 'request? '
 	CLEAR = 'c'
 	EDIT_CMD = 'v'
