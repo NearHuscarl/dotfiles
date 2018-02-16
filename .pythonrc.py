@@ -80,6 +80,7 @@ class ImprovedInteractiveConsole(InteractiveConsole):
 	EDIT_CMD = 'v'
 	EXIT = 'e'
 	REPEAT = 'r'
+	PPRINT = 'pp'
 
 	def __init__(self, *args, **kwargs):
 		self.last_buffer = [] # This holds the last executed statement
@@ -91,7 +92,7 @@ class ImprovedInteractiveConsole(InteractiveConsole):
 
 	def _is_custom_cmd(self, line):
 		""" Return true if line is a custom command """
-		if (line not in [self.CLEAR, self.EDIT_CMD, self.EXIT, self.REPEAT]
+		if (line not in [self.CLEAR, self.EDIT_CMD, self.EXIT, self.REPEAT, self.PPRINT]
 				and re.search(self.EDIT_HISTORY_RE, line) is None
 				and re.search(self.DOC_RE, line) is None):
 			return False
@@ -155,6 +156,10 @@ class ImprovedInteractiveConsole(InteractiveConsole):
 		self.push(line)
 		return ''
 
+	def pprint_last_cmd(self):
+		""" pretty print last command output """
+		self.push('pp(_)')
+
 	def raw_input(self, *args):
 		line = InteractiveConsole.raw_input(self, *args)
 		if line == self.CLEAR:
@@ -171,6 +176,8 @@ class ImprovedInteractiveConsole(InteractiveConsole):
 			line = self.editcmd()
 		elif line == self.REPEAT:
 			line = self.repeat_last_cmd()
+		elif line == self.PPRINT:
+			line = self.pprint_last_cmd()
 		elif line == self.EXIT:
 			sys.exit()
 		return line
@@ -241,5 +248,16 @@ if __name__ == '__main__':
 
 	console = ImprovedInteractiveConsole(locals=locals())
 	console.interact(banner=welcome_msg)
+
+# e: exit
+# c: clear console
+# r: repeat last command
+# v: edit multiple cmds in vim
+# h <number>: edit <number> lines in history
+# pp: pretty print last cmd output
+# function/class/module?: help
+
+# color ps1/ps2
+# auto import package (subdir of cwd that has __init__.py)
 
 # vim: nofoldenable
