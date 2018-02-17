@@ -16,7 +16,7 @@ function alias_tree() { # {{{
 } # }}}
 function alias_pac_install() { # {{{
    sudo pacman -S "$@"
-   [[ -x $HOME/bin/pacMerge ]] && pacMerge
+   pac_merge
 } # }}}
 function alias_nm_connect() { # {{{
 	# connect to wifi, example: nmcli dev connect wlo1
@@ -34,7 +34,8 @@ function alias_nm_connect() { # {{{
 } # }}}
 function alias_pac_update() { # {{{
    sudo pacman -Syu
-   [[ -x $HOME/bin/pac_merge ]] && pac_merge
+   pac_merge
+	paccache --remove --keep 3
 } # }}}
 function alias_pac_list() { # {{{
    pacman -Ql "$1" | grep "${2:-}"
