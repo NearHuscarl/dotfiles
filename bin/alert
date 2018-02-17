@@ -1,0 +1,63 @@
+#!/bin/env bash
+
+# Usage:
+# $ ./alert
+
+SCRIPT_NAME=$(basename "$0")
+USAGE="Usage: $SCRIPT_NAME [--help|<command>]"
+HELP="\
+$SCRIPT_NAME <command>
+Add an 'alert' function for long running commands. Use like so:
+
+$ sleep 10; alert
+
+Commands:
+  -h, --help      print this help message
+  <command>       long command to alert when finish"
+
+set -o errexit
+set -o pipefail
+set -o nounset
+# set -o xtrace
+
+function die() { # {{{
+	echo "$*" >&2
+	exit 1
+}
+# }}}
+function usage() { # {{{
+	die "$USAGE"
+}
+# }}}
+function help() { # {{{
+	echo "$HELP"
+}
+# }}}
+function alert() { # {{{
+	local cmd=("$@")
+	local cmdstr="${cmd[*]}"
+	if "${cmd[@]}"; then
+		notify-send Finished: "$cmdstr"
+	else
+		notify-send Error: "$cmdstr"
+	fi
+}
+# }}}
+function main() { # {{{
+	local cmd=("${@}")
+
+	case "$#" in
+		0)
+			usage ;;
+		*)
+			case "${cmd[@]}" in
+				-h|--help)
+					help ;;
+				*)
+					alert "${cmd[@]}" ;;
+			esac
+	esac
+}
+
+main "$@"
+# }}}
