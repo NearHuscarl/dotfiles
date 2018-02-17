@@ -184,15 +184,20 @@ if [[ -x /usr/bin/git ]]; then
 	alias gstat='git status'
 	alias gpull='git pull'
 	alias gpush='git push'
+	alias gshow='$EDITOR <(git show)'                         # git diff last commit
+	alias gdiff='alias_git_diff'                              # git diff <branch1> <branch2>
+	alias glog='$EDITOR <(git log --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --abbrev-commit)'
 	alias gfixcommit='git commit --amend'                     # Fix commit msg without altering its snapshot
 	alias gfixstage='git commit --amend --reuse-message=HEAD' # Fix commit (staging other files)
 	alias gunstage='git reset HEAD'
 	alias grestore='git checkout --'
 	alias gcheck='git checkout'
+	alias gbr='git branch'                                    # list branch
 	alias gnewbranch='git checkout -b'
 	alias gdelbranch='git branch -d'
 	alias gremove='git rm --cached'                           # Remove file in vcs while keeping in the local location
 	alias gmerge='git merge'
+	alias gmerge1='git merge --squash'                        # Merge many commits from a branch as 1 big commit
 fi
 # }}}
 # trash-cli {{{
@@ -279,7 +284,9 @@ if [ -d /usr/share/bash-completion/completions ]; then
 	# see https://gist.github.com/JuggoPop/10706934
 	__git_complete gcheck     _git_checkout
 	__git_complete gnewbranch _git_branch
+	__git_complete gdiff      _git_merge
 	__git_complete gmerge     _git_merge
+	__git_complete gmerge1    _git_merge
 
 	complete -o default -F _git_branch_d gdelbranch
 	# }}}
