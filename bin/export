@@ -60,3 +60,5 @@ export WORKON_HOME=~/.virtualenvs
 
 # neovim remote
 export NVIM_LISTEN_ADDRESS=/tmp/nvimsocket
+# disable check source
+export SHELLCHECK_OPTS='-e SC1090' 

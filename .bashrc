@@ -153,7 +153,6 @@ source ~/bin/virtualenvwrapper_lazyload
 
 # python interactive prompt
 export PYTHONSTARTUP=~/.pythonrc.py
-export SHELLCHECK_OPTS='-e SC1090' # disable check source
 
 # custom completion
 source ~/Github/termite-color-switcher/completion/bash
