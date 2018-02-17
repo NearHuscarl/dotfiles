@@ -13,7 +13,7 @@ fi
 declare -a result=()
 
 # find *.pacsave and *.pacnew on whole system
-pac_paths=$(fd 'pac(new|save)$' / 2> /dev/null)
+pac_paths=$(find / -regextype posix-extended -regex '.+\.pac(new|save)' 2> /dev/null)
 
 # see diff
 for pac_path in $pac_paths; do
