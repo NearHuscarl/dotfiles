@@ -43,6 +43,10 @@
 /Pictures/low_poly/*
 !/Pictures/low_poly/README.md
 
+!/.cache/
+/.cache/*
+!/.cache/pacfzf/
+
 # Repeat the process for subdir .config
 !/.config/
 /.config/*
