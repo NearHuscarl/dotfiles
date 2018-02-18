@@ -1,0 +1,66 @@
+#!/bin/env bash
+
+# Usage:
+# $ ./skeleton.sh
+
+# Dependencies:
+
+SCRIPT_NAME=$(basename "$0")
+USAGE="Usage: $SCRIPT_NAME [--help|<query>]"
+HELP="\
+$SCRIPT_NAME <command>
+Commands:
+  -h, --help      print this help message
+  <query>         read manual of <query>"
+
+MAN_PATH='/usr/share/man/'
+MAN_EXT='gz'
+
+set -o errexit
+set -o pipefail
+set -o nounset
+# set -o xtrace
+
+function die() { # {{{
+	echo "$*" >&2
+	exit 1
+}
+# }}}
+function usage() { # {{{
+	die "$USAGE"
+}
+# }}}
+function help() { # {{{
+	echo "$HELP"
+}
+# }}}
+function get_manpages() {
+	find "${MAN_PATH}" -iname "*.${MAN_EXT}" -printf '%f\n' | \
+		sed -e 's/\.'"${MAN_EXT}"'//g' | \
+		sort -u
+}
+function viman() { # {{{
+	vim -c "Man $1 ${2:-}" -c 'silent only'
+}
+# }}}
+function search_man() { # {{{
+	result="$(get_manpages | fzf --prompt='manpage: ' --multi --height=15 --inline-info -0)"
+	viman "$result"
+}
+# }}}
+function main() { # {{{
+	case "$#" in
+		0)
+			search_man ;;
+		*)
+			case "$1" in
+				-h|--help)
+					help ;;
+				*)
+					viman "$@" ;;
+			esac
+	esac
+}
+
+main "$@"
+# }}}
