@@ -1,9 +1,11 @@
 #!/bin/env bash
 
 # Usage:
-# $ ./skeleton.sh
+# $ man
 
 # Dependencies:
+# fzf
+# vim-man
 
 SCRIPT_NAME=$(basename "$0")
 USAGE="Usage: $SCRIPT_NAME [--help|<query>]"
@@ -44,7 +46,7 @@ function viman() { # {{{
 }
 # }}}
 function search_man() { # {{{
-	result="$(get_manpages | fzf --prompt='manpage: ' --multi --height=15 --inline-info -0)"
+	result="$(get_manpages | fzf --prompt='manpage: ' --height=15 --inline-info -0)"
 	viman "$result"
 }
 # }}}
