@@ -19,7 +19,12 @@ Commands:
   -r, --remove        remove package
   -d, --dependencies  print package dependencies"
 
-BACKUP_PATH="$HOME/.cache/packages"
+AUR_PKG_URL=https://aur.archlinux.org/packages.gz
+CACHE_PATH="$HOME/.cache/pacfzf"
+BACKUP_OFFICIAL="$CACHE_PATH"/Official_E
+BACKUP_AUR="$CACHE_PATH"/AUR_E
+OFFICIAL_PKGS="$CACHE_PATH/Official"
+AUR_PKGS="$CACHE_PATH/AUR"
 
 set -o errexit
 set -o pipefail
@@ -40,38 +45,83 @@ function help() { # {{{
 	echo "$HELP"
 }
 # }}}
-function get_pacman_packages() { # {{{
-	local flag="$1"
+function update_aur_list() { # {{{
+	curl --fail --silent "$AUR_PKG_URL" | gunzip --stdout | sed 1d > "$AUR_PKGS"
+}
+# }}}
+function update_official_list() { # {{{
+	pacman -Slq > "$OFFICIAL_PKGS" # save to cache to retrieve info faster
+}
+# }}}
+function update_cache() { # {{{
+	update_official_list
+	update_aur_list
+}
+# }}}
+function search() { # {{{
+	local packages="$1"
 	local select
-	select="$(pacman -"$flag" | fzf --prompt='package: ' --height=30)"
+	select="$(echo "$packages" | fzf --prompt='package: ' --height=30)"
 	[[ "$select" == '' ]] && exit 55 || echo "$select"
 }
 # }}}
-function get_local_packages() { # {{{
-	get_pacman_packages Qq # official + aur
+function get_all_local_packages() { # {{{
+	local pkg
+	pkg="$(pacman -Qq)"
+	search "$pkg"
 }
 # }}}
-function get_remote_packages() { # {{{
-	get_pacman_packages Slq # official
+function get_all_remote_packages() { # {{{
+	local pkg
+	pkg="$(cat "$OFFICIAL_PKGS" "$AUR_PKGS")"
+	search "$pkg"
 }
 # }}}
-function get_local_aur_packages() { # {{{
-	get_pacman_packages Qmq # aur
+function get_official_local_packages() { # {{{
+	local pkg
+	pkg="$(pacman -Qq | grep -v -Qmq)"
+	search "$pkg"
 }
 # }}}
-function get_remote_aur_packages() { # {{{
-	get_pacman_packages Slq
+function get_official_remote_packages() { # {{{
+	local pkg
+	pkg="$(cat "$OFFICIAL_PKGS")"
+	search "$pkg"
+}
+# }}}
+function get_aur_local_packages() { # {{{
+	local pkg
+	pkg="$(pacman -Qmq)"
+	search "$pkg"
+}
+# }}}
+function get_aur_remote_packages() { # {{{
+	local pkg
+	pkg="$(cat "$AUR_PKGS")"
+	search "$pkg"
 }
 # }}}
 function info() { # {{{
 	local package
-	package="$(get_remote_packages)"
+	package="$(get_all_remote_packages)"
 	pacman -Si "$package"
+}
+# }}}
+function backup_official() { # {{{
+	pacman -Qeq | grep -v "$(pacman -Qmq)" > "$BACKUP_OFFICIAL"
+}
+# }}}
+function backup_aur() { # {{{
+	pacman -Qmeq > "$BACKUP_AUR"
+}
+# }}}
+function install_official_backup() { # {{{
+	xargs pacman -S --needed --noconfirm < "$BACKUP_OFFICIAL"
 }
 # }}}
 function install() { # {{{
 	echo install
-	pacman -Qqe | grep -v "$(pacman -Qqm)" > "$BACKUP_PATH"/pacman
+	backup_official # backup explicit offical packages
 }
 # }}}
 function remove() { # {{{
@@ -85,6 +135,7 @@ function update() { # {{{
 	notify-send --icon="$HOME/.icons/dunst/archlinux.png" 'pacman' 'Package updated'
    pacmerge
 	paccache --remove --keep 3
+	update_cache
 }
 # }}}
 function dependencies() { # {{{
@@ -117,3 +168,7 @@ function main() { # {{{
 
 main "$@"
 # }}}
+
+# TODO:
+# backup when?
+# update cache when?
