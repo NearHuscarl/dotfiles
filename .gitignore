@@ -114,7 +114,6 @@
 **/tags
 **/node_modules/
 **/package-lock.json
-/.cache/
 /.local/
 /.ssh/
 /.thumbnails/
