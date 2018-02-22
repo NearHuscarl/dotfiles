@@ -1,0 +1,34 @@
+#!/bin/env bash
+
+# Use surfraw to search on some popular websites via rofi interface
+
+# Dependencies:
+# surfraw
+# rofi
+
+# Usage:
+# ./websearch
+
+: "${BROWSER:=vivaldi-stable}"
+
+function openmenu() { # {{{
+	rofi -dmenu -mesg ">> Tab = Autocomplete" -i -p "websearch: "
+}
+# }}}
+function get_search_term() { # {{{
+	sr -elvi | awk -F '-' '{print $1}' | sed '1d' | awk '{$1=$1};1' | openmenu
+}
+# }}}
+function websearch() { # {{{
+	local search_result
+	search_result="$(get_search_term)"
+	if [[ "$search_result" != '' ]]; then
+		# shellcheck disable=SC2086
+		surfraw -browser="$BROWSER" $search_result
+	fi
+}
+# }}}
+
+websearch
+
+# vim: nofoldenable

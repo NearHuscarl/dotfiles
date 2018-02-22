@@ -33,6 +33,8 @@ rofi.kb-move-end: Alt+period
 rofi.kb-move-front: Alt+comma
 rofi.kb-row-down: Alt+j
 rofi.kb-row-up: Alt+k
+rofi.kb-row-select: Tab
+rofi.kb-row-tab:
 rofi.kb-move-word-back: Alt+n
 rofi.kb-move-word-forward: Alt+m
 rofi.kb-cancel: Alt+Return
