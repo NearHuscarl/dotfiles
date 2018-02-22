@@ -14,66 +14,101 @@ function alias_tree() { # {{{
    local pwd=${1:-$(pwd)}
    find "$pwd" -print | sed -e 's;'"$pwd"';\.;g;s;[^/]*\/;|__;g;s;__|; |;g'
 } # }}}
-function alias_pac_install() { # {{{
-   sudo pacman -S "$@"
-   pac_merge
-} # }}}
-function alias_nm_connect() { # {{{
-	# connect to wifi, example: nmcli dev connect wlo1
-	if [[ $# == 0 ]]; then
-		nmcli --pretty device connect "$(nmcli device status | awk '/wifi/ {print $1}')"
-	# connect to saved wifi
-	elif [[ $# == 1 ]]; then
-		nmcli --pretty connection up "$1"
-	# connect to a new wifi
-	elif [[ $# == 2 ]]; then
-		nmcli --pretty device wifi connect "$1" password "$2"
-	else
-		echo 'Too many or few argument(s)'
-	fi
-} # }}}
-function alias_pac_update() { # {{{
-   sudo pacman -Syu
-   pac_merge
+function alias_paci() { # {{{
+   sudo pacfzf -S "$@"
+	notify-send --icon="$HOME/.icons/dunst/archlinux.png" 'pacman' 'package '"$*"' installed'
+   pacmerge
 	paccache --remove --keep 3
-} # }}}
-function alias_pac_list() { # {{{
-   pacman -Ql "$1" | grep "${2:-}"
-} #}}}
-function alias_pac_latest_explicit() { # {{{
-   # list nth last explicitly installed packages which is not in base/base-devel group
-	max_pkgs="${1:-20}"
-   explicit_pkgs=$(comm -23 <(pacman -Qqe | sort) <(pacman -Qqg base base-devel | sort))
-	expac -HM --timefmt='%Y-%m-%d %T' '%l\t%-20n\t%m' "$explicit_pkgs"  | sort | tail -n "$max_pkgs"
-} # }}}
-function alias_pac_latest() { # {{{
+	pacfzf --cache o
+}
+# }}}
+function alias_pacu() { # {{{
+   sudo pacfzf -Syu "$@"
+	notify-send --icon="$HOME/.icons/dunst/archlinux.png" 'pacman' 'Package(s) updated'
+   pacmerge
+	paccache --remove --keep 3
+	pacfzf --cache o
+}
+# }}}
+function alias_pacr() { # {{{
+	sudo pacfzf -Rs "$@"
+	notify-send --icon="$HOME/.icons/dunst/archlinux.png" 'pacman' 'package '"$*"' deleted'
+	pacfzf --cache o
+}
+# }}}
+function alias_pacdesc() { # {{{
+	pacfzf -Qi "$1" | awk -F ': ' '/Description/ {print $2}'
+}
+# }}}
+function alias_pacDesc() { # {{{
+	pacfzf -Si "$1" | awk -F ': ' '/Description/ {print $2}'
+}
+function alias_paclatest() { # {{{
 	max_pkgs="${1:-20}"
 	expac -HM --timefmt="%Y-%m-%d %T" '%l\t%-20n\t%m' | sort | tail -n "$max_pkgs"
-} # }}}
-function alias_pac_size() { # {{{
+}
+# }}}
+function alias_paclatest-explicit() { # {{{
+	# list nth last explicitly installed packages which is not in base/base-devel group
+	maxpkgs="${1:-20}"
+	explicit_pkgs=$(comm -23 <(pacman -Qqe | sort) <(pacman -Qqg base base-devel | sort))
+	expac -HM --timefmt='%Y-%m-%d %T' '%l\t%-20n\t%m' "$explicit_pkgs"  | sort | tail -n "$maxpkgs"
+}
+# }}}
+function alias_pacsize() { # {{{
 	expac -S -HM '%k\t%n' | sort -n | tail -n "${1:-20}"
-} # }}}
-function alias_pac_dep() { # {{{
-   # print package's dependencies
-   if [[ $# == 0 ]]; then
-      printf 'Please enter a package name\n'
-   else
-      pacman -Si "$1" | awk -F'[:<=>]' '/^Depends/ {print $2}' | xargs -n1 | sort -u
-   fi
-} # }}}
-function alias_aur_desc() { # {{{
-   pacaur -Si "$@" | grep Description | sed -e "s/^Description.*://"
-} # }}}
-function alias_aur_size() { # {{{
-   pacaur -Qi "$@" | grep "Installed Size" | sed -e "s/^Installed Size.*://"
-} # }}}
-function alias_aur_dependency() { # {{{
-   if [[ $# == 0 ]]; then
-      printf 'Please enter a package name\n'
-   else
-      pacman -Qi "$1" | awk -F'[:<=>]' '/^Depends/ {print $2}' | xargs -n1 | sort -u
-   fi
-} # }}}
+}
+# }}}
+function alias_pacdep() { # {{{
+	pacfzf -Qi "$1" | awk -F'[:<=>]' '/^Depends/ {print $2}' | xargs -n1 | sort -u
+}
+# }}}
+function alias_auri() { # {{{
+   sudo pacfzf -Sa "$@"
+	notify-send --icon="$HOME/.icons/dunst/archlinux.png" 'AUR' 'package '"$*"' installed'
+   pacmerge
+	paccache --remove --keep 3
+	pacfzf --cache a
+}
+# }}}
+function alias_auru() { # {{{
+   sudo pacfzf -Syua "$@"
+	notify-send --icon="$HOME/.icons/dunst/archlinux.png" 'AUR' 'Package(s) updated'
+   pacmerge
+	paccache --remove --keep 3
+	pacfzf --cache a
+}
+# }}}
+function alias_aurr() { # {{{
+	sudo pacfzf -Rsa "$@"
+	notify-send --icon="$HOME/.icons/dunst/archlinux.png" 'AUR' 'package '"$*"' deleted'
+	pacfzf --cache a
+}
+# }}}
+function alias_aurdesc() { # {{{
+	pacfzf -Qia "$1" | awk -F ': ' '/Description/ {print $2}'
+}
+# }}}
+function alias_aurDesc() { # {{{
+	pacfzf -Sia "$1" | awk -F ': ' '/Description/ {print $2}'
+}
+# }}}
+function alias_aursize() { # {{{
+   pacfzf -Qia "$@" | grep "Installed Size" | sed -e "s/^Installed Size.*://"
+}
+# }}}
+function alias_aurdep() { # {{{
+	pacfzf -Qia "$1" | awk -F'[:<=>]' '/^Depends/ {print $2}' | xargs -n1 | sort -u
+}
+# }}}
+function alias_git_diff() { # {{{
+	if [[ "$#" == 1 ]]; then
+		"$EDITOR" <(git diff master "$1")
+	else
+		"$EDITOR" <(git diff "$@")
+	fi
+}
+# }}}
 function alias_size() { # {{{
    du -h --max-depth="${1:-0}"
 } # }}}
@@ -150,34 +185,35 @@ fi
 # }}}
 # pacman {{{
 if [[ -x /usr/bin/pacman ]]; then
-	alias pac-install='alias_pac_install'
-	alias pac-update='alias_pac_update'
-	alias pac-remove='sudo pacman -Rs'
-	alias pac-search='pacman -Qsq'
-	alias pac-Search='pacman -Ssq'
-	alias pac-list='alias_pac_list'
-	alias pac-orphan='sudo pacman -Rns $(pacman -Qtdq)'           # Remove unused packages (orphans)
-	alias pac-info='pacman -Si'
-	alias pac-desc='expac -S "%d"'
-	alias pac-size='alias_pac_size'                               # Show download size of largest package(s)
-	alias pac-latest='alias_pac_latest'                           # List nth last installed packages
-	alias pac-Latest='alias_pac_latest_explicit'                  # List nth last explicitly installed packages which is not in base/base-devel group
-	alias pac-dep='alias_pac_dependency'                          # Print package's dependencies
+	alias paci='alias_paci'
+	alias pacu='alias_pacu'
+	alias pacr='alias_pacr'
+	alias pacs='pacfzf -Qsq'
+	alias pacS='pacfzf -Ssq'
+	alias pacinfo='pacfzf -Qi'
+	alias pacInfo='pacfzf -Si'
+	alias paclist='pacfzf -Ql'
+	alias pacdesc='alias_pacdesc'
+	alias pacDesc='alias_pacDesc'
+	alias pacsize='alias_pacsize'                              # Show download size of largest package(s)
+	alias paclatest='alias_paclatest'                          # List nth last installed packages
+	alias paclatest-explicit='alias_paclatest-explicit'        # List nth last explicitly installed packages which is not in base/base-devel group
+	alias pacdep='alias_pacdep'                                # Print package's dependencies
+	alias pacorphan='sudo pacman -Rns $(pacman -Qtdq)'         # Remove unused packages (orphans)
 
 	# AUR
-	if [[ -x /usr/bin/pacaur ]]; then
-		alias aur-install='pacaur -Sa'
-		alias aur-clean='pacaur -Sca'
-		alias aur-update='pacaur -Syua'
-		alias aur-remove='pacaur -Rsa'
-		alias aur-search='pacaur -Qsqa'
-		alias aur-Search='pacaur -Ssqa'
-		alias aur-list='pacman -Qm'
-		alias aur-info='pacaur -Sia'
-		alias aur-desc='alias_aur_desc'
-		alias aur-size='alias_aur_size'
-		alias aur-dep='alias_aur_dep'
-	fi
+	alias auri='alias_auri'
+	alias auru='alias_auru'
+	alias aurr='alias_auru'
+	alias aurs='pacfzf -Qsqa'
+	alias aurS='pacfzf -Ssqa'
+	alias aurinfo='pacfzf -Sia'
+	alias aurInfo='pacfzf -Sia'
+	alias aurlist='pacfzf -Qla'
+	alias aurdesc='alias_aurdesc'
+	alias aurDesc='alias_aurDesc'
+	alias aursize='alias_aursize'
+	alias aurdep='alias_aurdep'
 fi
 # }}}
 # git {{{
