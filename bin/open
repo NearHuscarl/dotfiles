@@ -43,13 +43,13 @@ function openmenu() { # {{{
 	rofi -dmenu -location 2 -threads 0 -width 60 -lines 12 -i -p "$OPEN"
 }
 # }}}
-function get_files() { # {{{
+function getfiles() { # {{{
 	rg "$(pwd)" --files --no-ignore-vcs --hidden --follow --no-messages
 }
 # }}}
 function open() { # {{{
 	local file
-	file="$(get_files | openmenu)"
+	file="$(getfiles | openmenu)"
 	if [[ "$file" != '' ]]; then
 		"$OPEN" "$file"
 	fi
