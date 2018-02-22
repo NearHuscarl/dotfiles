@@ -43,6 +43,7 @@ function alias_pacdesc() { # {{{
 function alias_pacDesc() { # {{{
 	pacfzf -Si "$1" | awk -F ': ' '/Description/ {print $2}'
 }
+# }}}
 function alias_paclatest() { # {{{
 	max_pkgs="${1:-20}"
 	expac -HM --timefmt="%Y-%m-%d %T" '%l\t%-20n\t%m' | sort | tail -n "$max_pkgs"
