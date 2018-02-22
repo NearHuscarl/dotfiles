@@ -1,2 +1,31 @@
-.git
+# binary
+*.so
 __pycache__
+
+site-packages
+node_modules
+
+.cargo
+.gem
+.npm
+
+.cache/
+.local/
+
+.dropbox-dist/
+.git/
+.mozilla/
+.thunderbird/
+.vim/undo/
+.vscode/
+
+.config/chromium/
+.config/google-chrome/
+.config/vivaldi/
+
+# exceptions
+!/.cache/
+/.cache/*
+!/.cache/pacfzf/
+
+# vim ft=conf

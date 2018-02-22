@@ -1,0 +1,75 @@
+#!/bin/env bash
+
+# Open file with rifle by using ripgrep to search for files
+# and display on rofi menu to select from
+
+# Dependencies:
+# ripgrep
+# rofi
+
+# Usage:
+# $ ./launch
+
+set -o errexit
+set -o pipefail
+# set -o nounset
+# set -o xtrace
+
+SCRIPT_NAME=$(basename "$0")
+USAGE="Usage: $SCRIPT_NAME [help|edit]"
+HELP="\
+Open file using rifle program by using ripgrep to search
+for files and display on rofi menu to select from
+$SCRIPT_NAME [<command>]
+Commands:
+  -h, --help      print this help message"
+
+: "${OPEN:=rifle}"
+
+function die() { # {{{
+	echo "$*" >&2
+	exit 1
+}
+# }}}
+function usage() { # {{{
+	die "$USAGE"
+}
+# }}}
+function help() { # {{{
+	echo "$HELP"
+}
+# }}}
+function openmenu() { # {{{
+	rofi -dmenu -location 2 -threads 0 -width 60 -lines 12 -i -p "$OPEN"
+}
+# }}}
+function get_files() { # {{{
+	rg "$(pwd)" --files --no-ignore-vcs --hidden --follow --no-messages
+}
+# }}}
+function open() { # {{{
+	local file
+	file="$(get_files | openmenu)"
+	if [[ "$file" != '' ]]; then
+		"$OPEN" "$file"
+	fi
+}
+# }}}
+function main() { # {{{
+	local cmd="$1"
+
+	case "$#" in
+		0)
+			open ;;
+		*)
+			case "$cmd" in
+				-h|--help)
+					help ;;
+				*)
+					usage ;;
+			esac
+	esac
+}
+# }}}
+
+main "$@"
