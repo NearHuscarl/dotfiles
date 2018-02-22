@@ -167,10 +167,25 @@ function install_official_backup() { # {{{
 	xargs pacman -S --needed --noconfirm --asdeps < "$BACKUP_OFFICIAL_DEPS"
 }
 # }}}
+function is_require_sudo() { # {{{
+	local operation="$1" flag="$2"
+	if [[ "$operation" =~ (R|U|remove|upgrade) ]] && [[ ! "$flag" =~ (p|print) ]]; then
+		echo true
+	elif [[ "$operation" =~ (S|sync) ]] && [[ ! "$flag" =~ (g|i|l|s|p|groups|info|list|search|print) ]]; then
+		echo true
+	elif [[ "$operation" =~ (D|database) ]] && [[ ! "$flag" =~ (k|check) ]]; then
+		echo true
+	fi
+	echo false
+}
+# }}}
 function execute() { # {{{
 	local cmd operation="$1" flag="$2" repo="$3" database="$4"
 
-	package="$(get_packages "$repo" "$database" | search)"
+	if [[ ! "$operation" =~ (h|V|help|version) ]]; then
+		package="$(get_packages "$repo" "$database" | search)"
+	fi
+
 	if [[ "$repo" == official ]]; then
 		cmd=pacman" $operation""$flag"" ${package:-}"
 	elif [[ "$repo" == aur ]]; then
@@ -179,7 +194,7 @@ function execute() { # {{{
 		cmd="$AUR_HELPER"" $operation""$flag"" ${package:-}"
 	fi
 
-	if [[ "$operation" =~ (S|R|D|U|sync|remove|database|upgrade) ]]; then
+	if [[ "$(is_require_sudo "$operation" "$flag")" == true ]]; then
 		cmd='sudo '$cmd
 	fi
 	$cmd
@@ -194,7 +209,10 @@ function main() { # {{{
 		if [[ "${operation:-}" == '' ]]; then
 			operation="$1"
 		else
-			die "${RED}"'Error:'"${RESET}"' Only one operation is allowed'
+			if [[ ! "$operation" =~ (help|h) ]]; then
+				die "${RED}"'Error:'"${RESET}"' Only one operation is allowed'
+			fi
+			operation+=" $1"
 		fi
 
 		if [[ "$operation" =~ (Q|R|query|remove) ]]; then
@@ -228,19 +246,7 @@ function main() { # {{{
 		case "${opt}" in
 			-)
 				case ${OPTARG} in # a hack to use --option
-					help)
-						handle_operation_opt --"$OPTARG"
-						;;
-					version)
-						handle_operation_opt --"$OPTARG"
-						;;
-					query)
-						handle_operation_opt --"$OPTARG"
-						;;
-					remove)
-						handle_operation_opt --"$OPTARG"
-						;;
-					sync)
+					help|version|query|remove|sync)
 						handle_operation_opt --"$OPTARG"
 						;;
 					cache)
@@ -252,10 +258,7 @@ function main() { # {{{
 						local db="${OPTARG#*=}"
 						handle_operation_opt "$OPTARG" "$db"
 						;;
-					all)
-						handle_repo_opt "$OPTARG"
-						;;
-					aur)
+					all|aur)
 						handle_repo_opt "$OPTARG"
 						;;
 					*)
@@ -263,31 +266,13 @@ function main() { # {{{
 						;;
 				esac
 				;;
-			h)
-				handle_operation_opt help
-				;;
-			V)
-				handle_operation_opt -"$opt"
-				;;
-			Q)
-				handle_operation_opt -"$opt"
-				;;
-			R)
-				handle_operation_opt -"$opt"
-				;;
-			S)
-				handle_operation_opt -"$opt"
-				;;
-			U)
+			h|V|Q|R|S|U)
 				handle_operation_opt -"$opt"
 				;;
 			C)
 				handle_operation_opt "$opt" "${OPTARG}"
 				;;
-			A)
-				handle_repo_opt "$opt"
-				;;
-			a)
+			A|a)
 				handle_repo_opt "$opt"
 				;;
 			*)
@@ -306,7 +291,7 @@ function main() { # {{{
 	# printf 'flag:%s\n' "$flag"
 	shift $((OPTIND-1))
 
-	if [[ "$operation" =~ (h|help) ]] && [[ "$flag" == '' ]]; then
+	if [[ "$operation" =~ ^(-h|--help)$ ]] && [[ "$flag" == '' ]]; then
 		help
 	fi
 	execute "$operation" "$flag" "$repo" "$database"
