@@ -15,7 +15,7 @@ function alias_tree() { # {{{
    find "$pwd" -print | sed -e 's;'"$pwd"';\.;g;s;[^/]*\/;|__;g;s;__|; |;g'
 } # }}}
 function alias_paci() { # {{{
-   sudo pacfzf -S "$@"
+   pacfzf -S "$@"
 	notify-send --icon="$HOME/.icons/dunst/archlinux.png" 'pacman' 'package '"$*"' installed'
    pacmerge
 	paccache --remove --keep 3
@@ -23,7 +23,7 @@ function alias_paci() { # {{{
 }
 # }}}
 function alias_pacu() { # {{{
-   sudo pacfzf -Syu "$@"
+   pacfzf -Syu "$@"
 	notify-send --icon="$HOME/.icons/dunst/archlinux.png" 'pacman' 'Package(s) updated'
    pacmerge
 	paccache --remove --keep 3
@@ -31,7 +31,7 @@ function alias_pacu() { # {{{
 }
 # }}}
 function alias_pacr() { # {{{
-	sudo pacfzf -Rs "$@"
+	pacfzf -Rs "$@"
 	notify-send --icon="$HOME/.icons/dunst/archlinux.png" 'pacman' 'package '"$*"' deleted'
 	pacfzf --cache o
 }
@@ -65,7 +65,7 @@ function alias_pacdep() { # {{{
 }
 # }}}
 function alias_auri() { # {{{
-   sudo pacfzf -Sa "$@"
+   pacfzf -Sa "$@"
 	notify-send --icon="$HOME/.icons/dunst/archlinux.png" 'AUR' 'package '"$*"' installed'
    pacmerge
 	paccache --remove --keep 3
@@ -73,7 +73,7 @@ function alias_auri() { # {{{
 }
 # }}}
 function alias_auru() { # {{{
-   sudo pacfzf -Syua "$@"
+   pacfzf -Syua "$@"
 	notify-send --icon="$HOME/.icons/dunst/archlinux.png" 'AUR' 'Package(s) updated'
    pacmerge
 	paccache --remove --keep 3
@@ -81,7 +81,7 @@ function alias_auru() { # {{{
 }
 # }}}
 function alias_aurr() { # {{{
-	sudo pacfzf -Rsa "$@"
+	pacfzf -Rsa "$@"
 	notify-send --icon="$HOME/.icons/dunst/archlinux.png" 'AUR' 'package '"$*"' deleted'
 	pacfzf --cache a
 }
@@ -205,7 +205,7 @@ if [[ -x /usr/bin/pacman ]]; then
 	# AUR
 	alias auri='alias_auri'
 	alias auru='alias_auru'
-	alias aurr='alias_auru'
+	alias aurr='alias_aurr'
 	alias aurs='pacfzf -Qsqa'
 	alias aurS='pacfzf -Ssqa'
 	alias aurinfo='pacfzf -Sia'
