@@ -1,13 +1,9 @@
 #!/bin/env bash
 
-# Usage:
-# $ ./pacfzf
-
 # Dependencies:
 # pacman
 # trizen
 # fzf
-
 
 # BLACK="$(tput setaf 0)"
 RED="$(tput setaf 1)"
@@ -167,7 +163,7 @@ function install_official_backup() { # {{{
 	xargs pacman -S --needed --noconfirm --asdeps < "$BACKUP_OFFICIAL_DEPS"
 }
 # }}}
-function is_require_sudo() { # {{{
+function require_sudo() { # {{{
 	local operation="$1" flag="$2"
 	if [[ "$operation" =~ (R|U|remove|upgrade) ]] && [[ ! "$flag" =~ (p|print) ]]; then
 		echo true
@@ -194,7 +190,7 @@ function execute() { # {{{
 		cmd="$AUR_HELPER"" $operation""$flag"" ${package:-}"
 	fi
 
-	if [[ "$(is_require_sudo "$operation" "$flag")" == true ]]; then
+	if [[ "$(require_sudo "$operation" "$flag")" == true ]]; then
 		cmd='sudo '$cmd
 	fi
 	$cmd
