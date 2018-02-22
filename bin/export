@@ -41,7 +41,7 @@ function fzf() {
 export -f fzf
 
 # custom bash script
-export PATH=$PATH:$HOME/bin/
+export PATH=$HOME/bin:$PATH
 # global node_modules (see $HOME/.npmrc)
 export PATH=$PATH:$HOME/.npm-global/bin
 # custom python script
