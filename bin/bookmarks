@@ -1,8 +1,10 @@
 #!/bin/env bash
 
+# Use surfraw to open bookmarks in $BROWSER via rofi interface
+
 # Dependencies:
-# rofi
 # surfraw
+# rofi
 
 # Usage:
 # $ ./bookmarks
@@ -15,6 +17,7 @@ set -o pipefail
 SCRIPT_NAME=$(basename "$0")
 USAGE="Usage: $SCRIPT_NAME [help|edit]"
 HELP="\
+Open bookmarks using surfraw in $BROWSER via rofi interface
 $SCRIPT_NAME [<command>]
 Commands:
   h, help      print this help message
@@ -22,12 +25,8 @@ Commands:
 When command is omitted, Open bookmark menu
 Selected bookmark will be opened in \$BROWSER"
 
-BOOKMARK=$HOME/.config/surfraw/bookmarks
-
-if [[ ! -v EDITOR ]]; then
-	EDITOR=vim
-fi
-
+: "${BOOKMARK:="$HOME/.config/surfraw/bookmarks"}"
+: "${EDITOR:=vim}"
 
 function die () {
 	echo "$*" >&2
@@ -52,12 +51,12 @@ function get_bookmarks() {
 	echo "$bookmarks" | sort -n
 }
 
-function open_rofi() {
+function openmenu() {
 	get_bookmarks | rofi -dmenu -width 40 -mesg "add more bookmark at: $BOOKMARK" -i -p 'bookmarks'
 }
 
 function open_bookmark() {
-	surfraw -browser="$BROWSER" "$(open_rofi)" 1> /dev/null
+	surfraw -browser="$BROWSER" "$(openmenu)" 1> /dev/null
 }
 
 function main() {
@@ -68,9 +67,9 @@ function main() {
 			open_bookmark ;;
 		*)
 			case "$cmd" in
-				h|help)
+				-h|--help)
 					help ;;
-				e|edit)
+				-e|--edit)
 					edit_bookmarks ;;
 				*)
 					usage ;;
