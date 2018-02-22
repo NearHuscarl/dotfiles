@@ -8,7 +8,7 @@
 # rofi
 
 # Usage:
-# $ ./launch
+# $ ./open
 
 set -o errexit
 set -o pipefail
@@ -16,11 +16,11 @@ set -o pipefail
 # set -o xtrace
 
 SCRIPT_NAME=$(basename "$0")
-USAGE="Usage: $SCRIPT_NAME [help|edit]"
+USAGE="Usage: $SCRIPT_NAME [command]"
 HELP="\
 Open file using rifle program by using ripgrep to search
 for files and display on rofi menu to select from
-$SCRIPT_NAME [<command>]
+$SCRIPT_NAME [command]
 Commands:
   -h, --help      print this help message"
 
