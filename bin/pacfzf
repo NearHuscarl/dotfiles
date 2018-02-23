@@ -147,16 +147,11 @@ function cache_official_deps() { # {{{
 function update_cache() { # {{{
 	local db="$1"
 	printf 'Caching package list...\n'
-	if [[ "$db" == O ]]; then
-		cache_official_remote_pkgs
-	elif [[ "$db" == o ]]; then
-		cache_official_local_pkgs # backup explicit official packages
-		cache_official_deps
-	elif [[ "$db" == A ]]; then
-		cache_aur_remote_pkgs
-	elif [[ "$db" == a ]]; then
-		cache_aur_local_pkgs
-	fi
+	[[ "$db" =~ O ]] && cache_official_remote_pkgs
+	# backup explicit official packages
+	[[ "$db" =~ o ]] && cache_official_local_pkgs && cache_official_deps
+	[[ "$db" =~ A ]] && cache_aur_remote_pkgs
+	[[ "$db" =~ a ]] && cache_aur_local_pkgs
 }
 # }}}
 function install_official_backup() { # {{{
@@ -178,7 +173,7 @@ function require_sudo() { # {{{
 }
 # }}}
 function execute() { # {{{
-	local cmd operation="$1" flag="$2" repo="$3" database="$4"
+	local cmd operation="$1" flag="$2" repo="$3" database="$4" caching=false
 
 	if [[ ! "$operation" =~ (h|V|help|version) ]]; then
 		package="$(get_packages "$repo" "$database" | search)"
@@ -194,8 +189,16 @@ function execute() { # {{{
 
 	if [[ "$(require_sudo "$operation" "$flag")" == true ]]; then
 		cmd='sudo '$cmd
+		caching=true
 	fi
 	$cmd
+	if [[ "$caching" == true ]]; then
+		if [[ "$repo" == official ]]; then
+			update_cache Oo # O for the [installed] mark
+		else
+			update_cache a
+		fi
+	fi
 }
 # }}}
 # shellcheck disable=SC2059
