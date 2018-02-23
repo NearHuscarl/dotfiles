@@ -172,8 +172,9 @@ function require_sudo() { # {{{
 		echo true
 	elif [[ "$operation" =~ (D|database) ]] && [[ ! "$flag" =~ (k|check) ]]; then
 		echo true
+	else
+		echo false
 	fi
-	echo false
 }
 # }}}
 function execute() { # {{{
