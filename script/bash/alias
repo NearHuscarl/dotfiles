@@ -23,9 +23,9 @@ function alias_paci() { # {{{
 }
 # }}}
 function alias_pacu() { # {{{
-   pacfzf -Syu "$@"
+	sudo pacman -Syu "$@"
 	notify-send --icon="$HOME/.icons/dunst/archlinux.png" 'pacman' 'Package(s) updated'
-   pacmerge
+	pacmerge
 	paccache --remove --keep 3
 	pacfzf --cache o
 }
@@ -73,9 +73,9 @@ function alias_auri() { # {{{
 }
 # }}}
 function alias_auru() { # {{{
-   pacfzf -Syua "$@"
+	sudo trizen -Syu "$@"
 	notify-send --icon="$HOME/.icons/dunst/archlinux.png" 'AUR' 'Package(s) updated'
-   pacmerge
+	pacmerge
 	paccache --remove --keep 3
 	pacfzf --cache a
 }
