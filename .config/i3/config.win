@@ -66,8 +66,9 @@ bindsym $mod+space focus mode_toggle
 bindsym $mod+Shift+r reload
 bindsym $super+r restart
 
-bindsym $mod+shift+minus move scratchpad
-bindsym $mod+minus scratchpad show
+bindsym $mod+shift+s move scratchpad
+bindsym $mod+s scratchpad show
+bindsym $mod+minus [title="Todo"] scratchpad show
 
 # Change focus
 bindsym $mod+h focus left
@@ -305,9 +306,9 @@ bindsym XF86AudioMute exec $no_loading $HOME/bin/volume toggle
 bindsym $mod+shift+p exec $no_loading $HOME/bin/reload-polybar
 bindsym $mod+shift+d exec $no_loading $HOME/bin/reload-dunst
 
-bindsym $mod+b exec $no_loading $HOME/bin/bookmarks; workspace $ws_web
-bindsym $mod+w exec $no_loading $HOME/bin/websearch; workspace $ws_web
-bindsym $mod+o exec $no_loading $HOME/bin/open
+bindsym $mod+b         exec $no_loading $HOME/bin/bookmarks; workspace $ws_web
+bindsym $mod+semicolon exec $no_loading $HOME/bin/websearch; workspace $ws_web
+bindsym $mod+o         exec $no_loading $HOME/bin/open
 
 # Toggle between config with (ctrl|win) as modifier
 bindsym $mod+i exec $no_loading $HOME/script/bash/toggle-i3-config; reload
