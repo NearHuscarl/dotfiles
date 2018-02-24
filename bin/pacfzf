@@ -182,23 +182,22 @@ function execute() { # {{{
 	local cmd operation="$1" flag="$2" repo="$3" database="$4" caching=false
 
 	if [[ ! "$operation" =~ (h|V|help|version) ]]; then
-		package="$(get_packages "$repo" "$database" | search)"
+		packages="$(get_packages "$repo" "$database" | search | tr '\n' ' ')"
 	fi
 
 	if [[ "$repo" == official ]]; then
-		cmd="echo $package | xargs pacman $operation $flag"
+		cmd="pacman $operation $flag $packages"
 	elif [[ "$repo" == aur ]]; then
-		cmd="echo $package | xargs $AUR_HELPER $operation $flag"
+		cmd="$AUR_HELPER $operation $flag $packages"
 	elif [[ "$repo" == all ]]; then
-		cmd="echo $package | xargs $AUR_HELPER $operation $flag"
+		cmd="$AUR_HELPER $operation $flag $packages"
 	fi
 
 	if [[ "$(require_sudo "$operation" "$flag")" == true ]]; then
 		cmd='sudo '$cmd
 		caching=true
 	fi
-	# shellcheck disable=SC2086
-	eval $cmd
+	$cmd
 	if [[ "$caching" == true ]]; then
 		if [[ "$repo" == official ]]; then
 			update_cache Oo # O for the [installed] mark
