@@ -310,7 +310,7 @@ bindsym $mod+w exec $no_loading $HOME/bin/websearch; workspace $ws_web
 bindsym $mod+o exec $no_loading $HOME/bin/open
 
 # Toggle between config with (ctrl|win) as modifier
-bindsym $mod+i exec $no_loading $HOME/bin/toggle-i3-config; reload
+bindsym $mod+i exec $no_loading $HOME/script/bash/toggle-i3-config; reload
 
 # hack to add padding left to title bar
 for_window [class=".*"] title_format " %title"
