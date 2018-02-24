@@ -129,7 +129,7 @@ function cache_official_local_pkgs() { # {{{
 # }}}
 function cache_official_remote_pkgs() { # {{{
 	# save to cache to retrieve info faster
-	pacman -Sl | cut -d ' ' -f2- |  awk -F ' ' '{printf "%s '"$CYAN"'%s'"$RESET"'\n", $1, $3}' > "$OFFICIAL_PKGS"
+	pacman -Sl | cut -d ' ' -f 2- |  awk -F ' ' '{printf "%s '"$CYAN"'%s'"$RESET"'\n", $1, $3}' > "$OFFICIAL_PKGS"
 }
 # }}}
 function cache_aur_local_pkgs() { # {{{
@@ -147,11 +147,17 @@ function cache_official_deps() { # {{{
 function update_cache() { # {{{
 	local db="$1"
 	printf 'Caching package list...\n'
-	[[ "$db" =~ O ]] && cache_official_remote_pkgs
+	if [[ ! -f "$CACHE_PATH" ]]; then
+		printf 'Creating new cache at %s\n' "$CACHE_PATH"
+		mkdir -p "$CACHE_PATH"
+	fi
+
+	[[ "$db" =~ O ]] && touch "$OFFICIAL_PKGS" && cache_official_remote_pkgs
 	# backup explicit official packages
-	[[ "$db" =~ o ]] && cache_official_local_pkgs && cache_official_deps
-	[[ "$db" =~ A ]] && cache_aur_remote_pkgs
-	[[ "$db" =~ a ]] && cache_aur_local_pkgs
+	[[ "$db" =~ o ]] && touch "$BACKUP_OFFICIAL" "$BACKUP_OFFICIAL_DEPS" \
+		&& cache_official_local_pkgs && cache_official_deps
+	[[ "$db" =~ A ]] && touch "$AUR_PKGS" && cache_aur_remote_pkgs
+	[[ "$db" =~ a ]] && touch "$BACKUP_AUR" && cache_aur_local_pkgs
 }
 # }}}
 function install_official_backup() { # {{{
