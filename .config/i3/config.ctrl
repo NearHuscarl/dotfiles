@@ -144,7 +144,7 @@ bindsym F1 exec $terminal
 # bindsym F2 exec termite --title="Vim - Dev" -e "bash --login -c 'vim --servername vim'"; workspace $ws_dev
 bindsym F2 exec termite --title="Vim - Dev" -e "bash --login -c nvim"; workspace $ws_dev
 # bindsym F3 exec google-chrome-stable; workspace $ws_web
-bindsym F3 exec vivaldi-stable; workspace $ws_web
+bindsym F3 exec google-chrome-stable; workspace $ws_web
 bindsym F4 exec urxvt -title Ranger -e bash --login -c ranger; workspace $ws_file
 bindsym F5 exec zathura; workspace $ws_doc
 # bindsym F6 exec caprine; workspace $ws_design

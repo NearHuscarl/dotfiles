@@ -9,7 +9,7 @@
 # Usage:
 # ./websearch
 
-: "${BROWSER:=vivaldi-stable}"
+: "${BROWSER:=google-chrome-stable}"
 
 function openmenu() { # {{{
 	rofi -dmenu -mesg ">> Tab = Autocomplete" -i -p "websearch"

@@ -52,7 +52,7 @@ export PATH=$PATH:$HOME/.gem/ruby/2.4.0/bin/
 export PATH=$PATH:$HOME/.local/bin/
 # python linter
 export PYLINTRC=$HOME/.pylintrc
-export BROWSER=vivaldi-stable
+export BROWSER=google-chrome-stable
 export EDITOR=vim
 
 # Python virtualenvwrapper setup
