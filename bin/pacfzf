@@ -71,7 +71,7 @@ function help() { # {{{
 }
 # }}}
 function search() { # {{{
-	fzf --prompt='package: ' --height=30 --ansi | sed 's/ \[installed\]//'
+	fzf --multi --prompt='package: ' --height=30 --ansi | sed 's/ \[installed\]//'
 }
 # }}}
 function get_all_local_pkgs() { # {{{
@@ -186,18 +186,19 @@ function execute() { # {{{
 	fi
 
 	if [[ "$repo" == official ]]; then
-		cmd=pacman" $operation""$flag"" ${package:-}"
+		cmd="echo $package | xargs pacman $operation $flag"
 	elif [[ "$repo" == aur ]]; then
-		cmd="$AUR_HELPER"" $operation""$flag"" ${package:-}"
+		cmd="echo $package | xargs $AUR_HELPER $operation $flag"
 	elif [[ "$repo" == all ]]; then
-		cmd="$AUR_HELPER"" $operation""$flag"" ${package:-}"
+		cmd="echo $package | xargs $AUR_HELPER $operation $flag"
 	fi
 
 	if [[ "$(require_sudo "$operation" "$flag")" == true ]]; then
 		cmd='sudo '$cmd
 		caching=true
 	fi
-	$cmd
+	# shellcheck disable=SC2086
+	eval $cmd
 	if [[ "$caching" == true ]]; then
 		if [[ "$repo" == official ]]; then
 			update_cache Oo # O for the [installed] mark
