@@ -80,6 +80,7 @@ function cache_manpages() { # {{{
 }
 # }}}
 function get_cache() { # {{{
+	[[ ! -f "$MAN_CACHE" ]] && cache_manpages
 	cat "$MAN_CACHE"
 }
 # }}}
@@ -101,7 +102,7 @@ function manfzf() { # {{{
 
 	if [[ ! "$page" ]]; then
 		if [[ "$USE_CACHE" == true ]]; then
-			result="$(search < "$MAN_CACHE" | cut -d ' ' -f 1 )"
+			result="$(get_cache | search | cut -d ' ' -f 1 )"
 		else
 			result="$(get_manpages | search | cut -d ' ' -f 1 )"
 		fi
