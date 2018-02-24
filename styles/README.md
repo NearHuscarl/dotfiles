@@ -12,11 +12,9 @@ $ npm install # install dependencies list in package.json
 $ cd ~/styles/
 $ gulp
 ```
-Gulp will auto rebuild when save new change in $EDITOR.
-At the first time it will include all the files
-due to gulp-cached plugin litmitation. After that, it
-will only rebuild new change from current file and its
-dependent files
+Gulp will auto rebuild when save new change in $EDITOR.  At the first time it
+will include all the files due to `gulp-cached` plugin litmitation. After that,
+it will only rebuild new change from current file and its dependent files
 
 ## Using tampermonkey to init those custom css files into the browser:
 Tampermonkey is an extension for chromium-based browser (chrome, vivaldi, opera)
@@ -28,7 +26,7 @@ have similar functionality
 Tampermonkey icon > Create a new script...
 ```
 
-This is a sample snippet get the css file to work on reddit.com
+This is a sample snippet to make custom css work on reddit.com
 
 ```javascript
 // ==UserScript==
@@ -64,6 +62,9 @@ Here is another one for github page
 let cssText = GM_getResourceText ('FILE_CSS');
 GM_addStyle (cssText);
 ```
+
+**Note:** To apply local css file with tampermonkey. Go to extension setting
+and check `Allow access to file URLs`
 
 ## Backup scripts
 ```
