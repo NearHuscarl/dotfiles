@@ -16,9 +16,9 @@ i3_win = path.join(home_dir, '.config/i3/config.win')
 if path.isfile(i3_ctrl):
 	with open(i3_ctrl, 'r') as file:
 		filedata = file.read()
-		
+
 	filedata = filedata.replace('Control', 'Mod4')
-		
+
 	with open(i3_win, 'w') as file:
 		file.write(filedata)
 
