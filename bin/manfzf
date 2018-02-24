@@ -97,20 +97,24 @@ function search() { # {{{
 }
 # }}}
 function manfzf() { # {{{
-	local result page section
+	local result page=${1:-} section=''
 
-	if [[ "$USE_CACHE" == true ]]; then
-		result="$(search < "$MAN_CACHE" | cut -d ' ' -f 1 )"
-	else
-		result="$(get_manpages | search | cut -d ' ' -f 1 )"
+	if [[ ! "$page" ]]; then
+		if [[ "$USE_CACHE" == true ]]; then
+			result="$(search < "$MAN_CACHE" | cut -d ' ' -f 1 )"
+		else
+			result="$(get_manpages | search | cut -d ' ' -f 1 )"
+		fi
+		# shellcheck disable=SC2001
+		page="$(echo "$result" | sed 's/\(.*\)\.[^.]*$/\1/')"
+		section="${result##"$page."}"
 	fi
-	# shellcheck disable=SC2001
-	page="$(echo "$result" | sed 's/\(.*\)\.[^.]*$/\1/')"
-	section="${result##"$page."}"
 	"$MAN_PROG" "$section" "$page"
 }
 # }}}
 function main() { # {{{
+	local page
+
 	while getopts ':hucv-:' opt; do
 		case "${opt}" in
 			-)
@@ -149,7 +153,9 @@ function main() { # {{{
 				;;
 		esac
 	done
-	manfzf
+	shift $((OPTIND-1))
+	page="${1:-}"
+	manfzf "$page"
 }
 
 main "$@"
