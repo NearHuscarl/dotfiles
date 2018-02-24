@@ -1,7 +1,7 @@
 #!/bin/env bash
 
 # Usage:
-# $ man
+# $ ./manfzf
 
 # Dependencies:
 # fzf
@@ -18,11 +18,11 @@ HELP="\
 ${YELLOW}USAGE${RESET}:
   ${CYAN}$SCRIPT_NAME${RESET} [command|<query>]
 ${YELLOW}COMMANDS${RESET}:
-  ${CYAN}-h, --help${RESET}           print this help message
-  ${CYAN}-c, --cache${RESET}          use cache to get manpages (slightly faster)
-  ${CYAN}-u, --update-cache${RESET}   update manpage list cache
-  ${CYAN}-v, --vim${RESET}            use vim to read manual
-  ${CYAN}-h, --help${RESET}           print this help message
+  ${CYAN}-h  --help${RESET}           print this help message
+  ${CYAN}-c  --cache${RESET}          use cache to get manpages (slightly faster)
+  ${CYAN}-u  --update-cache${RESET}   update manpage list cache
+  ${CYAN}-v  --vim${RESET}            use vim to read manual
+  ${CYAN}-h  --help${RESET}           print this help message
 ${YELLOW}QUERY${RESET}:
   ${CYAN}<query>${RESET}              read manual of <query>"
 
@@ -104,6 +104,7 @@ function manfzf() { # {{{
 	else
 		result="$(get_manpages | search | cut -d ' ' -f 1 )"
 	fi
+	# shellcheck disable=SC2001
 	page="$(echo "$result" | sed 's/\(.*\)\.[^.]*$/\1/')"
 	section="${result##"$page."}"
 	"$MAN_PROG" "$section" "$page"
