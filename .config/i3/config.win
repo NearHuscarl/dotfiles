@@ -311,6 +311,7 @@ bindsym $mod+shift+d exec $no_loading $HOME/bin/reload-dunst
 bindsym $mod+b         exec $no_loading $HOME/bin/bookmarks; workspace $ws_web
 bindsym $mod+semicolon exec $no_loading $HOME/bin/websearch; workspace $ws_web
 bindsym $mod+o         exec $no_loading $HOME/bin/open
+bindsym $mod+Shift+h   exec $no_loading $HOME/script/python/i3_quake -H 0.5 -t termite chromehist
 
 # Toggle between config with (ctrl|win) as modifier
 bindsym $mod+i exec $no_loading $HOME/script/bash/toggle-i3-config; reload

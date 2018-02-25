@@ -1,0 +1,151 @@
+#!/bin/env python
+
+""" quake it """
+
+import argparse
+import subprocess
+import os
+import sys
+
+import shlex
+import i3ipc
+
+# pylint: disable=invalid-name
+
+i3 = i3ipc.Connection()
+
+def get_args():
+	""" get script args """
+	def position(pos):
+		""" position argument handling """
+		if pos != 'top' and pos != 'bottom':
+			raise ValueError('argument should be top or bottom, not both')
+		return pos
+
+	parser = argparse.ArgumentParser()
+	parser.add_argument('-i', '--in-place', action='store_true',
+			help='set current terminal at top down position and execute cmd')
+	parser.add_argument('-p', '--pos', type=position, default='top',
+			help='open terminal at top or bottom (default top)')
+	parser.add_argument('-H', '--height', dest='ratio', type=float, default=0.25,
+			help='height of terminal in percentage of monitor height')
+	parser.add_argument('-t', '--term', default='xterm', help='terminal name (default is xterm)')
+	parser.add_argument('cmd', metavar='CMD', default='{$SHELL}', nargs='?',
+			help='command to execute in new terminal')
+
+	return parser.parse_args()
+
+args = get_args()
+
+def TERM(executable, execopt='-e', execfmt='expanded', titleopt='-T'):
+	""" Helper to declare a terminal in the hardcoded list """
+	if execfmt not in ('expanded', 'string'):
+		raise RuntimeError('Invalid execfmt')
+
+	fmt = executable
+
+	if titleopt is not None:
+		fmt += ' ' + titleopt + " '{title}'"
+
+	fmt += ' {} {{{}}}'.format(execopt, execfmt)
+
+	return fmt
+
+TERMS = {
+		'alacritty': TERM('alacritty', titleopt='-t'),
+		'gnome-terminal': TERM('gnome-terminal', execopt='--', titleopt=None),
+		'roxterm': TERM('roxterm'),
+		'st': TERM('st'),
+		'termite': TERM('termite', execfmt='string', titleopt='-t'),
+		'urxvt': TERM('urxvt'),
+		'xfce4-terminal': TERM('xfce4-terminal', execfmt='string'),
+		'xterm': TERM('xterm'),
+		}
+
+MARK_QUAKE = 'quake_'
+
+
+def quoted(string):
+	""" quoting string """
+	return "'" + string + "'"
+
+def expand_command(cmd, **rplc_map):
+	""" return a tuple of command and its options/parameters with environment
+	variables expanded """
+	replacement_map = {'$' + key: val for key, val in
+	os.environ.items()}
+	replacement_map.update(rplc_map)
+
+	return shlex.split(cmd.format(**replacement_map))
+
+def get_current_workspace(i3):
+	return [ws for ws in i3.get_workspaces() if ws['focused']][0]
+
+def term_title(cmd):
+	""" get terminal tittle """
+	return 'quake ' + cmd
+
+def get_mark():
+	""" get quake terminal mark for current workspace """
+	ws_num = get_current_workspace(i3)['num']
+	return MARK_QUAKE + str(ws_num)
+
+def move_back(mark):
+	i3.command('[con_mark={}], floating enable, move scratchpad'.format(mark))
+
+def toggle_quake(terminal):
+	quake_term = i3.get_tree().find_marked(get_mark())
+
+	# quake terminal not exist yet
+	if not quake_term:
+		term = TERMS.get(args.term, 'xterm')
+		quake_cmd = "{} -i -p {pos} -H {height} -t {term} {exec}".format(
+				sys.argv[0], pos=args.pos, height=args.ratio, term=args.term, exec=args.cmd)
+		term_cmd = expand_command(term, title=get_mark(), expanded=quake_cmd, string=quoted(quake_cmd))
+
+		os.execvp(term_cmd[0], term_cmd)
+	else:
+		quake_term = quake_term[0]
+		move_back(quake_term.marks[0])
+
+def quake(mark):
+	workspace = get_current_workspace(i3)
+	ws_x = workspace['rect']['x']
+	ws_y = workspace['rect']['y']
+	ws_width = workspace['rect']['width']
+	ws_height = workspace['rect']['height']
+
+	width = ws_width
+	height = int(ws_height * args.ratio)
+	posx = ws_x
+
+	if args.pos == 'bottom':
+		margin = 6
+		posy = ws_y + ws_height - height - margin
+	else: # top
+		posy = ws_y
+
+	i3.command('[con_mark={mark}],'
+			'resize set {width} px {height} px,'
+			'move absolute position {posx}px {posy}px,'
+			'move scratchpad,'
+			'scratchpad show'
+			''.format(mark=mark, posx=posx, posy=posy, width=width, height=height))
+
+def launch_inplace():
+	mark = get_mark()
+	i3.command('mark {}'.format(mark))
+	move_back(mark)
+	quake(mark)
+	cmd = expand_command(args.cmd)
+	os.execvp(cmd[0], cmd)
+
+if __name__ == '__main__':
+	if args.in_place:
+		launch_inplace()
+	else:
+		toggle_quake(args.term)
+
+# i3-quake -h 15 --top -e <command> --terminal <term>
+# i3-quake chromehist -> open new terminal and run chromehist cmd
+# i3-quake chromehist -> if quake already exists, disrecard cmd
