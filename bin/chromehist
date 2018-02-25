@@ -19,9 +19,19 @@ RESET="$(tput sgr0)"
 
 COLS="$(("$(tput cols)"/3))"
 SEP='{::}'
+TEMP='/tmp/chromehist'
+
+function cleanup() { # {{{
+	local rv="$?"
+	rm -f "$TEMP"
+	return "$rv"
+}
+# }}}
+
+trap cleanup EXIT
 
 function get_history() { # {{{
-	local temp=/tmp/chromehist sqlget=(
+	local sqlget=(
 	'select'
 	"strftime('%d/%m/%Y %H:%M:%S', datetime(last_visit_time/1000000-11644473600, 'unixepoch')) as Date,"
 	"substr(title, 1, $COLS) as Title,"
@@ -31,8 +41,8 @@ function get_history() { # {{{
 	'desc'
 	)
 
-	cp -f "$HISTORY_PATH" "$temp"
-	sqlite3 -separator $SEP "$temp" "${sqlget[*]}" |
+	cp -f "$HISTORY_PATH" "$TEMP"
+	sqlite3 -separator $SEP "$TEMP" "${sqlget[*]}" |
 		awk -F $SEP '{printf "'"$MAGENTA"'%-20s'"$RESET"' %-'$COLS's '"$CYAN"'%s\n'"$RESET"'", $1, $2, $3}'
 }
 # }}}
