@@ -17,7 +17,8 @@ RESET="$(tput sgr0)"
 : "${HISTORY_PATH:="$HOME/.config/google-chrome/Default/History"}"
 : "${BROWSER:=google-chrome-stable}"
 
-COLS="$(("$(tput cols)"/3))"
+# COLS="$(("$(tput cols)"/3))"
+COLS=90
 SEP='{::}'
 TEMP='/tmp/chromehist'
 
@@ -32,13 +33,13 @@ trap cleanup EXIT
 
 function get_history() { # {{{
 	local sqlget=(
-	'select'
-	"strftime('%d/%m/%Y %H:%M:%S', datetime(last_visit_time/1000000-11644473600, 'unixepoch')) as Date,"
-	"substr(title, 1, $COLS) as Title,"
-	'url as Url'
-	'from urls'
-	'order by last_visit_time'
-	'desc'
+	'SELECT DISTINCT'
+	"strftime('%d/%m/%Y %H:%M:%S', datetime(last_visit_time/1000000-11644473600, 'unixepoch')),"
+	"substr(title, 1, $COLS),"
+	'url'
+	'FROM urls'
+	'ORDER BY last_visit_time'
+	'DESC'
 	)
 
 	cp -f "$HISTORY_PATH" "$TEMP"
