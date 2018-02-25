@@ -3,7 +3,6 @@
 """ quake it """
 
 import argparse
-import subprocess
 import os
 import sys
 
@@ -26,7 +25,7 @@ def get_args():
 	parser.add_argument('-i', '--in-place', action='store_true',
 			help='set current terminal at top down position and execute cmd')
 	parser.add_argument('-p', '--pos', type=position, default='top',
-			help='open terminal at top or bottom (default top)')
+			help='open terminal at top or bottom (default is top)')
 	parser.add_argument('-H', '--height', dest='ratio', type=float, default=0.25,
 			help='height of terminal in percentage of monitor height')
 	parser.add_argument('-t', '--term', default='xterm', help='terminal name (default is xterm)')
@@ -64,7 +63,6 @@ TERMS = {
 
 MARK_QUAKE = 'quake_'
 
-
 def quoted(string):
 	""" quoting string """
 	return "'" + string + "'"
@@ -78,7 +76,8 @@ def expand_command(cmd, **rplc_map):
 
 	return shlex.split(cmd.format(**replacement_map))
 
-def get_current_workspace(i3):
+def get_current_workspace():
+	""" get info of focused workspace """
 	return [ws for ws in i3.get_workspaces() if ws['focused']][0]
 
 def term_title(cmd):
@@ -87,13 +86,15 @@ def term_title(cmd):
 
 def get_mark():
 	""" get quake terminal mark for current workspace """
-	ws_num = get_current_workspace(i3)['num']
+	ws_num = get_current_workspace()['num']
 	return MARK_QUAKE + str(ws_num)
 
 def move_back(mark):
+	""" hide container mark """
 	i3.command('[con_mark={}], floating enable, move scratchpad'.format(mark))
 
-def toggle_quake(terminal):
+def toggle_quake():
+	""" toggle quake """
 	quake_term = i3.get_tree().find_marked(get_mark())
 
 	# quake terminal not exist yet
@@ -103,13 +104,19 @@ def toggle_quake(terminal):
 				sys.argv[0], pos=args.pos, height=args.ratio, term=args.term, exec=args.cmd)
 		term_cmd = expand_command(term, title=get_mark(), expanded=quake_cmd, string=quoted(quake_cmd))
 
-		os.execvp(term_cmd[0], term_cmd)
+		try:
+			os.execvp(term_cmd[0], term_cmd)
+		except FileNotFoundError:
+			print('{} executable not found. Please select another terminal using --term flag'
+					''.format(term_cmd[0]))
+			sys.exit(1)
 	else:
 		quake_term = quake_term[0]
 		move_back(quake_term.marks[0])
 
 def quake(mark):
-	workspace = get_current_workspace(i3)
+	""" resize terminal to make it looks top down or bottom up """
+	workspace = get_current_workspace()
 	ws_x = workspace['rect']['x']
 	ws_y = workspace['rect']['y']
 	ws_width = workspace['rect']['width']
@@ -133,6 +140,7 @@ def quake(mark):
 			''.format(mark=mark, posx=posx, posy=posy, width=width, height=height))
 
 def launch_inplace():
+	""" make current terminal top down """
 	mark = get_mark()
 	i3.command('mark {}'.format(mark))
 	move_back(mark)
@@ -144,8 +152,4 @@ if __name__ == '__main__':
 	if args.in_place:
 		launch_inplace()
 	else:
-		toggle_quake(args.term)
-
-# i3-quake -h 15 --top -e <command> --terminal <term>
-# i3-quake chromehist -> open new terminal and run chromehist cmd
-# i3-quake chromehist -> if quake already exists, disrecard cmd
+		toggle_quake()
