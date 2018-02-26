@@ -1,24 +1,10 @@
 rofi.dmenu: true
 rofi.modi: keys,drun,run,window
-rofi.separator-style: solid
-!rofi.font: roboto mono 9
-rofi.font: inconsolata 10
-rofi.lines: 8
-rofi.columns: 1
-!rofi.hide-scrollbar: true
-rofi.scrollbar-width: 5
-rofi.width: 30
-rofi.padding: 20
 rofi.bw: 0
-!rofi.sidebar-mode: true
+rofi.sidebar-mode: true
 
 ! color
-! State:	            bg	       fg     bgalt    hlbg     hlfg
-rofi.color-normal: #2c3e50, #bdc3c7, #2c3e50, #16a085, #ecf0f1
-rofi.color-active: #2980b9, #ecf0f1, #2980b9, #3498db, #ecf0f1
-rofi.color-urgent: #c0392b, #ecf0f1, #c0392b, #e74c3c, #ecf0f1
-!                    bg     border  separator
-rofi.color-window: #2c3e50, #2980b9, #34495e
+rofi.theme: .config/rofi/themes/flat.rasi
 
 ! shortcuts
 rofi.kb-mode-next: Alt+i
