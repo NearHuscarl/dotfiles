@@ -61,7 +61,7 @@ TERMS = {
 		'xterm': TERM('xterm'),
 		}
 
-MARK_QUAKE = 'quake_'
+QUAKE_NAME = 'quake_'
 
 def quoted(string):
 	""" quoting string """
@@ -80,39 +80,51 @@ def get_current_workspace():
 	""" get info of focused workspace """
 	return [ws for ws in i3.get_workspaces() if ws['focused']][0]
 
-def term_title(cmd):
-	""" get terminal tittle """
-	return 'quake ' + cmd
+def get_current_workspace_info():
+	""" get even more info of focused workspace """
+	workspace = get_current_workspace()
+	tree = i3.get_tree()
+	return [c for c in tree.descendents()
+			if c.type == 'workspace' and c.name == workspace['name']][0]
 
-def get_mark():
-	""" get quake terminal mark for current workspace """
+def get_name():
+	""" get quake terminal name of current workspace """
 	ws_num = get_current_workspace()['num']
-	return MARK_QUAKE + str(ws_num)
+	return QUAKE_NAME + str(ws_num)
 
-def move_back(mark):
-	""" hide container mark """
-	i3.command('[con_mark={}], floating enable, move scratchpad'.format(mark))
+def move_back(title):
+	""" hide container """
+	i3.command('[title={}], floating enable, move scratchpad'.format(title))
+
+def toggle_display(title):
+	""" show/hide container """
+	i3.command('[title={}], scratchpad show'.format(title))
+
+def show(title):
+	""" show container """
+	i3.command('[title={}], focus'.format(title))
 
 def toggle_quake():
 	""" toggle quake """
-	quake_term = i3.get_tree().find_marked(get_mark())
+	quake_term = i3.get_tree().find_named(get_name())
 
 	# quake terminal not exist yet
 	if not quake_term:
 		term = TERMS.get(args.term, 'xterm')
 		quake_cmd = "{} -i -p {pos} -H {height} -t {term} {exec}".format(
 				sys.argv[0], pos=args.pos, height=args.ratio, term=args.term, exec=args.cmd)
-		term_cmd = expand_command(term, title=get_mark(), expanded=quake_cmd, string=quoted(quake_cmd))
+		term_cmd = expand_command(term, title=get_name(), expanded=quake_cmd, string=quoted(quake_cmd))
 
 		try:
+			print('shit happened')
 			os.execvp(term_cmd[0], term_cmd)
 		except FileNotFoundError:
 			print('{} executable not found. Please select another terminal using --term flag'
 					''.format(term_cmd[0]))
 			sys.exit(1)
-	else:
+	else: # toggling scratchpad
 		quake_term = quake_term[0]
-		move_back(quake_term.marks[0])
+		toggle_display(quake_term.name[0])
 
 def quake(mark):
 	""" resize terminal to make it looks top down or bottom up """
@@ -132,7 +144,7 @@ def quake(mark):
 	else: # top
 		posy = ws_y
 
-	i3.command('[con_mark={mark}],'
+	i3.command('[title={mark}],'
 			'resize set {width} px {height} px,'
 			'move absolute position {posx}px {posy}px,'
 			'move scratchpad,'
@@ -141,10 +153,10 @@ def quake(mark):
 
 def launch_inplace():
 	""" make current terminal top down """
-	mark = get_mark()
-	i3.command('mark {}'.format(mark))
-	move_back(mark)
-	quake(mark)
+	title = get_name()
+	move_back(title)
+	quake(title)
+	show(title)
 	cmd = expand_command(args.cmd)
 	os.execvp(cmd[0], cmd)
 
