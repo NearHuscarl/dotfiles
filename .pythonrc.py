@@ -81,6 +81,7 @@ class ImprovedInteractiveConsole(InteractiveConsole):
 	EXIT = 'e'
 	REPEAT = 'r'
 	PPRINT = 'pp'
+	PPRINT_ATTR_RE = r'^\s*pa\s+[a-zA-Z_][a-zA-Z0-9_]*$' # match: pa <object>
 
 	def __init__(self, *args, **kwargs):
 		self.last_buffer = [] # This holds the last executed statement
@@ -94,7 +95,9 @@ class ImprovedInteractiveConsole(InteractiveConsole):
 		""" Return true if line is a custom command """
 		if (line not in [self.CLEAR, self.EDIT_CMD, self.EXIT, self.REPEAT, self.PPRINT]
 				and re.search(self.EDIT_HISTORY_RE, line) is None
-				and re.search(self.DOC_RE, line) is None):
+				and re.search(self.DOC_RE, line) is None
+				and re.search(self.PPRINT_ATTR_RE, line) is None
+				):
 			return False
 		return True
 
@@ -159,6 +162,15 @@ class ImprovedInteractiveConsole(InteractiveConsole):
 	def pprint_last_cmd(self):
 		""" pretty print last command output """
 		self.push('pp(_)')
+		return ''
+
+	def pprint_attr(self, obj):
+		""" pretty print object attributes """
+		if hasattr(eval(obj), '__dict__'):
+			self.push('pp({}.__dict__)'.format(obj))
+		else:
+			self.push('print("{} do not have any attributes")'.format(obj))
+		return ''
 
 	def raw_input(self, *args):
 		line = InteractiveConsole.raw_input(self, *args)
@@ -172,6 +184,9 @@ class ImprovedInteractiveConsole(InteractiveConsole):
 				line = self.edithistory(int(last))
 			except:
 				line = self.edithistory()
+		elif re.search(self.PPRINT_ATTR_RE, line):
+			obj = line.split(' ')[1]
+			line = self.pprint_attr(obj)
 		elif line == self.EDIT_CMD:
 			line = self.editcmd()
 		elif line == self.REPEAT:
