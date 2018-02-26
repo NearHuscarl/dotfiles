@@ -17,8 +17,7 @@ RESET="$(tput sgr0)"
 : "${HISTORY_PATH:="$HOME/.config/google-chrome/Default/History"}"
 : "${BROWSER:=google-chrome-stable}"
 
-# COLS="$(("$(tput cols)"/3))"
-COLS=90
+COLS="$(("$(tput cols)"/2))"
 SEP='{::}'
 TEMP='/tmp/chromehist'
 
@@ -50,7 +49,7 @@ function get_history() { # {{{
 function search() { # {{{
 	local header
 	header="$(printf '%-20s %-'"$COLS"'s %s' 'Date' 'Title' 'Url')"
-	fzf --header "$header" --ansi --multi | sed 's|.*\(https*://\)|\1|' | tr '\n' ' '
+	fzf --header "$header" --ansi --multi --prompt 'history: ' | sed 's|.*\(https*://\)|\1|' | tr '\n' ' '
 }
 # }}}
 function chromehist() { # {{{
