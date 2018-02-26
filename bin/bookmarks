@@ -52,7 +52,7 @@ function get_bookmarks() {
 }
 
 function openmenu() {
-	get_bookmarks | rofi -dmenu -width 40 -mesg "add more bookmark at: $BOOKMARK" -i -p 'bookmarks'
+	get_bookmarks | rofi -dmenu -width 40 -mesg "add more bookmark at: $BOOKMARK" -i -p 'bookmarks: '
 }
 
 function open_bookmark() {

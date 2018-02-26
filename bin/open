@@ -40,7 +40,7 @@ function help() { # {{{
 }
 # }}}
 function openmenu() { # {{{
-	rofi -dmenu -location 2 -threads 0 -width 60 -lines 12 -i -p "$OPEN"
+	rofi -dmenu -location 2 -threads 0 -width 60 -lines 12 -i -p "$OPEN: "
 }
 # }}}
 function getfiles() { # {{{
