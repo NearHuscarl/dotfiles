@@ -6,6 +6,11 @@
 # Dependencies:
 # fzf
 
+set -o errexit
+set -o pipefail
+set -o nounset
+# set -o xtrace
+
 SCRIPT_NAME=$(basename "$0")
 USAGE="Usage: $SCRIPT_NAME [help|<signal>]"
 HELP="\
@@ -18,10 +23,12 @@ Commands:
                an alternative is to use signal 15 (SIGTERM) to terminate
                the program cleanly instead of killing it immediately"
 
-set -o errexit
-set -o pipefail
-set -o nounset
-# set -o xtrace
+TERM_COLS="$(tput cols)"
+COLS="$(("$TERM_COLS"/2))"
+BLUE="$(tput setaf 4)"
+MAGENTA="$(tput setaf 5)"
+CYAN="$(tput setaf 6)"
+RESET="$(tput sgr0)"
 
 function die () { # {{{
 	echo "$*" >&2
@@ -36,13 +43,22 @@ function help() { # {{{
 	echo "$HELP"
 }
 # }}}
-function kill_process() { # {{{
+function search() { # {{{
 	local header
+	header="$(ps aux | head -n1)"
+	fzf --ansi --multi --header="$header" 
+}
+# }}}
+function color() { # {{{
+	local rplc='^\([^ ]\+ \+\)\([0-9]\+ \+\)\([0-9.]\+ \+[0-9.]\+ \+\)\([0-9]\+ \+[0-9]\+ \+[^ ]\+ \+[^ ]\+ \+\)\([^ ]\+ \+[^ ]\+ \+\)\(.*$\)$'
+	sed 's/'"$rplc"'/'"$MAGENTA"'\1'"$CYAN"'\2'"$BLUE"'\3'"$RESET"'\4'"$MAGENTA"'\5'"$CYAN"'\6'"$RESET"'/'
+}
+# }}}
+function kill_process() { # {{{
 	local signal="${1:-9}"
 	local pid
 
-	header="$(ps -f | head -n1)"
-	pid="$(ps -Af | sed 1d | fzf --multi --header="$header" | awk '{print $2}')"
+	pid="$(ps aux | sed 1d | cut -c 1-$(("$TERM_COLS")) | color | search | awk '{print $2}')"
 	if [[ "$pid" != '' ]]; then # keyboard interruption like CTRL-C
 		echo "$pid" | xargs kill -"$signal"
 	fi
