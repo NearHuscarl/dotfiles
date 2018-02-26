@@ -34,7 +34,7 @@ trap cleanup EXIT
 function get_history() { # {{{
 	local sqlget=(
 	'SELECT DISTINCT'
-	"strftime('%d/%m/%Y %H:%M:%S', datetime(last_visit_time/1000000-11644473600, 'unixepoch')),"
+	"strftime('%d/%m/%Y %H:%M:%S', datetime(last_visit_time/1000000-11644473600, 'unixepoch', 'localtime')),"
 	"substr(title, 1, $COLS),"
 	'url'
 	'FROM urls'
