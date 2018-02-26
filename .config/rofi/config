@@ -4,7 +4,7 @@ rofi.bw: 0
 rofi.sidebar-mode: true
 
 ! color
-rofi.theme: .config/rofi/themes/flat.rasi
+rofi.theme: flat
 
 ! shortcuts
 rofi.kb-mode-next: Alt+i
