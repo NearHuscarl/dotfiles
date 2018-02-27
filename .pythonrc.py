@@ -56,6 +56,10 @@ def pp(obj, *args):
 	pprint.pprint(obj, *args)
 	del pprint
 
+def get_source(obj):
+	import inspect
+	print(''.join(inspect.getsourcelines(obj)[0]))
+
 def history(last=10, printout=True):
 	""" Display last commands in history """
 	global HISTFILE
