@@ -10,7 +10,7 @@
 SCRIPT_NAME=$(basename "$0")
 USAGE="Usage: $SCRIPT_NAME [help]"
 HELP="\
-$SCRIPT_NAME <command>
+$SCRIPT_NAME [<command>]
 Open rofi menu to start stop or toggle recording gif
 Commands:
   h, help      print this help message"
@@ -47,7 +47,7 @@ function help() { # {{{
 # }}}
 function peek_menu() { # {{{
 	local action
-	action="$(echo "${PEEK_OPTS[*]}" | rofi -dmenu -p 'Peek: ')"
+	action="$(echo "${PEEK_OPTS[*]}" | rofi -i -dmenu -p 'Peek: ')"
 	if pgrep -x 'peek' > /dev/null; then
 		case "$action" in
 			Start)
