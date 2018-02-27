@@ -6,6 +6,7 @@
 # Dependencies:
 # peek
 # rofi
+# i3_fullscreen
 
 SCRIPT_NAME=$(basename "$0")
 USAGE="Usage: $SCRIPT_NAME [help]"
@@ -24,6 +25,7 @@ PEEK_OPTS=(
 'Toggle
 Start
 Stop
+Fullscreen
 Exit'
 )
 
@@ -51,13 +53,16 @@ function peek_menu() { # {{{
 	if pgrep -x 'peek' > /dev/null; then
 		case "$action" in
 			Start)
-				peek --start
+				peek --no-headerbar --start
 				;;
 			Stop)
-				peek --stop
+				peek --no-headerbar --stop
 				;;
 			Toggle)
-				peek --toggle
+				peek --no-headerbar --toggle
+				;;
+			Fullscreen)
+				i3_fullscreen title=Peek # see https://github.com/phw/peek/issues/61
 				;;
 			Exit)
 				killall peek
@@ -70,7 +75,7 @@ function peek_menu() { # {{{
 		if [[ "$action" == No ]]; then
 			exit 0
 		else
-			peek &
+			peek --no-headerbar &
 		fi
 	fi
 }
