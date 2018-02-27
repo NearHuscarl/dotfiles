@@ -1,0 +1,95 @@
+#!/bin/env bash
+
+# Usage:
+# $ ./peek
+
+# Dependencies:
+# peek
+# rofi
+
+SCRIPT_NAME=$(basename "$0")
+USAGE="Usage: $SCRIPT_NAME [help]"
+HELP="\
+$SCRIPT_NAME <command>
+Open rofi menu to start stop or toggle recording gif
+Commands:
+  h, help      print this help message"
+
+set -o errexit
+set -o pipefail
+set -o nounset
+# set -o xtrace
+
+PEEK_OPTS=(
+'Toggle
+Start
+Stop
+Exit'
+)
+
+BOOL_OPT=(
+'Yes
+No'
+)
+
+function die() { # {{{
+	echo "$*" >&2
+	exit 1
+}
+# }}}
+function usage() { # {{{
+	die "$USAGE"
+}
+# }}}
+function help() { # {{{
+	echo "$HELP"
+}
+# }}}
+function peek_menu() { # {{{
+	local action
+	action="$(echo "${PEEK_OPTS[*]}" | rofi -dmenu -p 'Peek: ')"
+	if pgrep -x 'peek' > /dev/null; then
+		case "$action" in
+			Start)
+				peek --start
+				;;
+			Stop)
+				peek --stop
+				;;
+			Toggle)
+				peek --toggle
+				;;
+			Exit)
+				killall peek
+				;;
+			*)
+				;;
+		esac
+	else
+		action="$(echo "${BOOL_OPT[*]}" | rofi -i -scroll-method 0 -dmenu -p 'Peek is not running yet. Open Peek? ')"
+		if [[ "$action" == No ]]; then
+			exit 0
+		else
+			peek &
+		fi
+	fi
+}
+# }}}
+function main() { # {{{
+	local cmd="${1:-}"
+
+	case "$#" in
+		0)
+			peek_menu ;;
+		*)
+			case "$cmd" in
+				h|help)
+					help ;;
+				*)
+					usage ;;
+			esac
+	esac
+}
+
+main "$@"
+# }}}
