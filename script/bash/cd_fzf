@@ -40,12 +40,16 @@ function sd() {
 		fd --type directory --no-ignore --hidden --exclude="$EXCLUDE_PATTERN" "$dir_pattern" "$path"
 	}
 	# }}}
+	function gitroot() { # {{{
+		git rev-parse --show-toplevel 2> /dev/null
+	}
+	# }}}
 	function cd_fzf() { # {{{
 		local dir_pattern="${1:-}"
 		local root
 		local directory
 
-		root=$(git rev-parse --show-toplevel 2> /dev/null)
+		root=$(gitroot)
 		directory=$(find_dirs "$dir_pattern" "${root:-$HOME}" |
 			fzf -1 --height=15 --prompt=cd:\ )
 		if [[ "$directory" != '' ]]; then
@@ -56,7 +60,9 @@ function sd() {
 	}
 	# }}}
 	function cd_fzf_with_ranger() { # {{{
-		find_dirs | fzf --prompt='cd: '
+		local root
+		root=$(gitroot)
+		find_dirs "$dir_pattern" "${root:-"$HOME"}" | fzf --prompt='cd: '
 	}
 	# }}}
 	function main() { # {{{
