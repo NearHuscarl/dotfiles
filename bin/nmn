@@ -1,0 +1,158 @@
+#!/bin/env bash
+
+# Usage:
+# $ ./nmn
+
+# Dependencies:
+# fzf
+# nmcli
+
+set -o errexit
+set -o pipefail
+set -o nounset
+# set -o xtrace
+
+SCRIPT_NAME=$(basename "$0")
+USAGE="Usage: $SCRIPT_NAME [-h]"
+HELP="\
+$SCRIPT_NAME <command>
+Commands:
+  -h, --help      print this help message"
+
+RED="$(tput setaf 1)"
+YELLOW="$(tput setaf 3)"
+GREEN="$(tput setaf 2)"
+RESET="$(tput sgr0)"
+
+function die() { # {{{
+	echo "$*" >&2
+	exit 1
+}
+# }}}
+function usage() { # {{{
+	die "$USAGE"
+}
+# }}}
+function help() { # {{{
+	echo "$HELP"
+}
+# }}}
+function list_wifi() { # {{{
+	nmcli --field in-use,ssid,rate,signal,bars,security,active device wifi list
+}
+# }}}
+function list_remembered_connection() { # {{{
+	nmcli --terse --field name connection
+}
+# }}}
+function list_security() { # {{{
+	nmcli --terse --field ssid,security device wifi list
+}
+# }}}
+function wifi() { # {{{
+	local ssid="$1" password="${2:-}"
+	if [[ "$password" == '' ]]; then
+		nmcli device wifi connect "$ssid"
+	else
+		nmcli device wifi connect "$ssid" password "$password"
+	fi
+}
+# }}}
+function get_password() { # {{{
+	local pass prompt="${YELLOW}Please enter your password: ${RESET}"
+	read -r -p "$prompt" pass
+	echo "$pass"
+}
+# }}}
+function is_wpa() { # {{{
+	local security name="$1"
+	mapfile -t security < <(list_security)
+	for each in "${security[@]}"; do
+		if [[ "$each" =~ $name:WPA.* ]]; then
+			echo true && return 0
+		fi
+	done
+	echo false
+}
+# }}}
+function is_remembered() { # {{{
+	local remembered_list name="$1"
+	mapfile -t remembered_list < <(list_remembered_connection)
+	for each in "${remembered_list[@]}"; do
+		if [[ "$each" == "$name" ]]; then
+			echo true && return 0
+		fi
+	done
+	echo false
+}
+# }}}
+function color() { # {{{
+	awk '
+	{
+		signal_idx = match($0, /[0-9][0-9]  /)
+		signal = substr($0, signal_idx, 2)
+		if (signal > 70)
+			printf "'"$GREEN"'%s'"$RESET"'\n", $0
+		else if (signal > 40)
+			printf "'"$YELLOW"'%s'"$RESET"'\n", $0
+		else
+			printf "'"$RED"'%s'"$RESET"'\n", $0
+		}
+	'
+}
+# }}}
+function connect_wifi() { # {{{
+	local header ssid pass
+	header="$(list_wifi | head -n 1)"
+	ssid="$(list_wifi | sed '1d' | color | fzf --ansi --header="$header")"
+	if [[ $(is_remembered "$ssid") == true ]]; then
+		wifi "$ssid"
+	elif [[ "$(is_wpa "$ssid")" == true ]]; then
+		pass="$(get_password)"
+		wifi "$ssid" "$pass"
+	fi
+}
+# }}}
+function main() { # {{{
+	local cmd="${1:-}"
+
+	case "$#" in
+		0)
+			connect_wifi ;;
+		*)
+			case "$cmd" in
+				-h|--help)
+					help ;;
+				*)
+					usage ;;
+			esac
+	esac
+}
+
+main "$@"
+# }}}
+
+
+
+
+#                           SSID                                 pass
+# nmcli device wifi connect National\ University\ Wi-Fi password 59XK-LV94
+
+# switch wifi on/off
+# nmcli radio wifi [on|off] # remember last wifi
+
+# turn off wifi # manually choose wifi name again
+# nmcli device wifi disconnect
+
+# turn off all
+# nmcli connection down
+
+# forget connection
+# nmcli connection delete<Tab>
+
+
+# use networkmanager cmdline: nmcli
+# connect to wifi
+# choose wifi SSID (wifi name) and connect
+# prompt password if have password and not rememebered
+# connect to ethernet
