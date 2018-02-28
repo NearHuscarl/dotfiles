@@ -50,6 +50,10 @@ function help() { # {{{
 function peek_menu() { # {{{
 	local action
 	action="$(echo "${PEEK_OPTS[*]}" | rofi -i -dmenu -p 'Peek: ')"
+	if [[ "$action" == Exit ]]; then
+		killall peek 2> /dev/null
+		exit 0
+	fi
 	if pgrep -x 'peek' > /dev/null; then
 		case "$action" in
 			Start)
@@ -63,9 +67,6 @@ function peek_menu() { # {{{
 				;;
 			Fullscreen)
 				i3_fullscreen title=Peek # see https://github.com/phw/peek/issues/61
-				;;
-			Exit)
-				killall peek
 				;;
 			*)
 				;;
