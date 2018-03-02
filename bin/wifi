@@ -1,0 +1,243 @@
+#!/bin/env bash
+
+# Usage:
+# $ ./nmn
+
+# Dependencies:
+# fzf
+# nmcli
+
+set -o errexit
+set -o pipefail
+set -o nounset
+set -E
+# set -o xtrace
+
+SCRIPT_NAME=$(basename "$0")
+USAGE="Usage: $SCRIPT_NAME [-h]"
+HELP="\
+$SCRIPT_NAME <command>
+Commands:
+  -h, --help      print this help message"
+
+RED="$(tput setaf 1)"
+YELLOW="$(tput setaf 3)"
+GREEN="$(tput setaf 2)"
+RESET="$(tput sgr0)"
+
+trap '[ "$?" -ne 55 ] || exit 55' ERR
+
+function die() { # {{{
+	echo "$*" >&2
+	exit 1
+}
+# }}}
+function usage() { # {{{
+	die "$USAGE"
+}
+# }}}
+function help() { # {{{
+	echo "$HELP"
+}
+# }}}
+function list_wifi() { # {{{
+	nmcli device wifi rescan 2> /dev/null
+	nmcli --field active,signal,ssid,rate,bars,security device wifi list
+}
+# }}}
+function list_wifi_ssid_unique() { # {{{
+	list_wifi | sed '1d' | sort -n -r | awk '!a[$3]++' | sort -n -r -k 2
+}
+# }}}
+function search() { # {{{
+	fzf --ansi --header="$header" | sed 's/\(^\(yes\|no\) \+[0-9][0-9][0-9 ] \+\| \+[0-9]\+ [KMG]bit.*$\)//g'
+}
+# }}}
+function list_remembered_connection() { # {{{
+	nmcli --terse --field name connection show
+}
+# }}}
+function list_security() { # {{{
+	nmcli --terse --field ssid,security device wifi list
+}
+# }}}
+function list_connection_status() { # {{{
+	nmcli --terse --field name,active connection show
+}
+# }}}
+function get_security() { # {{{
+	local securities ssid="$1"
+	mapfile -t securities < <(list_security)
+	for each in "${securities[@]}"; do
+		if [[ "$each" =~ $ssid ]]; then
+			echo "$each" | awk -F ':' '{print $2}' && return 0
+		fi
+	done
+	echo ''
+}
+# }}}
+function is_remembered() { # {{{
+	# [WIP] check if WPA connection has real password
+	local remembered_list ssid="$1"
+	mapfile -t remembered_list < <(list_remembered_connection)
+	for each in "${remembered_list[@]}"; do
+		if [[ "$each" == "$ssid" ]]; then
+			echo true && return 0
+		fi
+	done
+	echo false
+}
+# }}}
+function current_connection() { # {{{
+	local active connection
+	active="$(list_connection_status | sed '1!d' | awk -F ':' '{print $2}')"
+	if [[ "$active" == yes ]]; then
+		connection="$(list_connection_status | sed '1!d' | awk -F ':' '{print $1}')"
+	else
+		connection=''
+	fi
+	echo "$connection"
+}
+# }}}
+function is_connected() { # {{{
+	local connection ssid="$1"
+	connection="$(current_connection)"
+	if [[ "$connection" == "$ssid" ]]; then
+		echo true
+	else
+		echo false
+	fi
+}
+# }}}
+function wifi_logout() { # {{{
+	local connection
+	connection="$(current_connection)"
+	nmcli connection down "$connection"
+}
+# }}}
+function wifi_new() { # {{{
+	local errmsg ssid="$1" password="${2:-}"
+	if [[ "$password" == '' ]]; then
+		nmcli --wait 6 device wifi connect "$ssid"
+	else
+		errmsg="$(nmcli --wait 6 device wifi connect "$ssid" password "$password" 2>&1)"
+		# nmcli connect wifi + pass do not return correct $?
+		if [[ "$errmsg" =~  Connection\ activation\ failed ]]; then
+			nmcli connection delete "$ssid" &> /dev/null
+		fi
+	fi
+}
+# }}}
+function wifi_login() { # {{{
+	local errmsg ssid="$1" password="${2:-}"
+	if [[ "$password" == '' ]]; then
+		nmcli connection up "$ssid"
+	else
+		echo '[WIP] nmcli connection up <ssid> pass-file'
+	fi
+}
+# }}}
+function get_password() { # {{{
+	local pass prompt="${YELLOW}Please enter your password: ${RESET}"
+	read -r -p "$prompt" pass
+	echo "$pass"
+}
+# }}}
+function color() { # {{{
+	awk '
+	{
+		signal_idx = match($0, /[0-9][0-9][0-9 ]  /)
+		signal = int(substr($0, signal_idx, 3))
+		if (signal > 70)
+			printf "'"$GREEN"'%s'"$RESET"'\n", $0
+		else if (signal > 40)
+			printf "'"$YELLOW"'%s'"$RESET"'\n", $0
+		else
+			printf "'"$RED"'%s'"$RESET"'\n", $0
+		}
+	'
+}
+# }}}
+function connect_wifi() { # {{{
+	local header ssid pass security
+	header="$(list_wifi | head -n 1)"
+	ssid="$(list_wifi_ssid_unique | color | search)"
+	if [[ "$(is_connected "$ssid")" == true ]]; then
+		wifi_logout
+	else
+		if [[ "$(is_remembered "$ssid")" == true ]]; then
+			wifi_login "$ssid"
+			# if [[ "$(get_security "$ssid")" == true ]]; then
+			# 	pass="$(get_password)"
+			# 	wifi_login "$ssid" "$pass"
+			# else
+			# 	wifi_login "$ssid"
+			# fi
+		else
+			security="$(get_security "$ssid")"
+			if [[ "$security" =~ WPA ]]; then
+				pass="$(get_password)"
+				wifi_new "$ssid" "$pass"
+			elif [[ "$security" == '' ]]; then
+				wifi_new "$ssid"
+			else
+				echo '[WIP] UIT'
+			fi
+		fi
+	fi
+}
+# }}}
+function main() { # {{{
+	local cmd="${1:-}"
+
+	case "$#" in
+		0)
+			connect_wifi ;;
+		*)
+			case "$cmd" in
+				-h|--help)
+					help ;;
+				*)
+					usage ;;
+			esac
+	esac
+}
+
+main "$@"
+# }}}
+
+
+# TODO:
+# search for [WIP]
+
+
+# Commands:
+
+# connect wifi
+# nmcli device wifi connect National\ University\ Wi-Fi
+# connect wifi which has password
+# nmcli device wifi connect National\ University\ Wi-Fi password 59XK-LV94
+
+# switch wifi on/off
+# nmcli device wifi connection "Nation University Wi-fi" password theirpass name "Nation University Wi-fi "
+# nmcli radio wifi [on|off] # remember last wifi
+
+# logout wifi connection
+# nmcli connection down <connection name>
+
+# turn off wifi interface (manually choose wifi name again)
+# nmcli device wifi disconnect
+
+# turn off all
+# nmcli connection down
+
+# forget connection
+# nmcli connection delete<Tab>
+
+
+# Features:
+# use networkmanager cmdline: nmcli
+# connect to wifi
+# choose wifi SSID (wifi name) and connect
+# prompt password if have password and not rememebered
+# connect to ethernet
