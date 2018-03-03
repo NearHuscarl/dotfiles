@@ -245,11 +245,6 @@ if [[ -x /usr/bin/trash-put ]]; then
 	alias rm='trash-put'
 fi
 # }}}
-# xprop {{{
-alias xprop-class='xprop WM_CLASS'
-alias xprop-role='xprop WM_WINDOW_ROLE'
-alias xprop-title='xprop _NET_WM_NAME WM_NAME'
-# }}}
 # picture {{{
 alias wallpaper='nitrogen --random --set-scaled "$HOME/Pictures/low_poly"'
 alias schedule='sxiv -f $HOME/Pictures/misc/schedule.png'
@@ -258,6 +253,7 @@ alias pic='alias_pic'
 alias sxiv='sxiv -b -s h'
 # }}}
 # other {{{
+alias man='manfzf -vc'
 alias rtm='killall -USR1 termite' # reload termite config
 alias xmod='xmodmap ~/.Xmodmap'
 alias xres='xrdb ~/.Xresources'
