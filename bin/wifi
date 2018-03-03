@@ -53,56 +53,38 @@ function search() { # {{{
 	fzf --ansi --header="$header" | sed 's/\(^\(yes\|no\) \+[0-9][0-9][0-9 ] \+\| \+[0-9]\+ [KMG]bit.*$\)//g'
 }
 # }}}
-function list_remembered_connection() { # {{{
-	nmcli --terse --field name connection show
-}
-# }}}
 function list_security() { # {{{
 	nmcli --terse --field ssid,security device wifi list
 }
 # }}}
-function list_connection_status() { # {{{
+function get_security() { # {{{
+	local ssid="$1"
+	list_security | grep "$ssid" | awk -F ':' '{print $2}'
+}
+# }}}
+function connections() { # {{{
 	nmcli --terse --field name,active connection show
 }
 # }}}
-function get_security() { # {{{
-	local securities ssid="$1"
-	mapfile -t securities < <(list_security)
-	for each in "${securities[@]}"; do
-		if [[ "$each" =~ $ssid ]]; then
-			echo "$each" | awk -F ':' '{print $2}' && return 0
-		fi
-	done
-	echo ''
-}
-# }}}
-function is_remembered() { # {{{
-	# [WIP] check if WPA connection has real password
-	local remembered_list ssid="$1"
-	mapfile -t remembered_list < <(list_remembered_connection)
-	for each in "${remembered_list[@]}"; do
-		if [[ "$each" == "$ssid" ]]; then
-			echo true && return 0
-		fi
-	done
-	echo false
-}
-# }}}
 function current_connection() { # {{{
-	local active connection
-	active="$(list_connection_status | sed '1!d' | awk -F ':' '{print $2}')"
-	if [[ "$active" == yes ]]; then
-		connection="$(list_connection_status | sed '1!d' | awk -F ':' '{print $1}')"
-	else
-		connection=''
-	fi
-	echo "$connection"
+	connections | grep yes | awk -F ':' '{print $1}'
 }
 # }}}
 function is_connected() { # {{{
 	local connection ssid="$1"
 	connection="$(current_connection)"
 	if [[ "$connection" == "$ssid" ]]; then
+		echo true
+	else
+		echo false
+	fi
+}
+# }}}
+function is_remembered() { # {{{
+	# [WIP] check if WPA connection has real password
+	local result ssid="$1"
+	result="$(connections | grep "$ssid")"
+	if [[ "$result" =~ $ssid:(yes|no) ]]; then
 		echo true
 	else
 		echo false
@@ -133,7 +115,8 @@ function wifi_login() { # {{{
 	if [[ "$password" == '' ]]; then
 		nmcli connection up "$ssid"
 	else
-		echo '[WIP] nmcli connection up <ssid> pass-file'
+		# [WIP] nmcli connection up <ssid> pass-file (UIT ?)
+		die "${RED}Error:${RESET} Unsupported at the momment"
 	fi
 }
 # }}}
@@ -181,7 +164,8 @@ function connect_wifi() { # {{{
 			elif [[ "$security" == '' ]]; then
 				wifi_new "$ssid"
 			else
-				echo '[WIP] UIT'
+				# [WIP] UIT
+				die "${RED}Error:${RESET} Unsupported security type at the momment"
 			fi
 		fi
 	fi
