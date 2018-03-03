@@ -22,7 +22,7 @@ compinit
 # End of lines added by compinstall
 
 # Load custom environtment variables
-[[ -f ~/bin/export ]] && . ~/bin/export
+[[ -f ~/script/bash/export ]] && . ~/script/bash/export
 
 PROMPT='%F{blue}%n%f@%F{cyan}%m%f %F{magenta}%1~%f $ '
 
