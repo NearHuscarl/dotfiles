@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # ============================================================================
 # File:        export
@@ -10,7 +10,7 @@
 # ============================================================================
 
 # load current theme environment variables
-[[ -f ~/themes/current_theme ]] && . ~/themes/current_theme
+[ -f ~/themes/current_theme ] && . ~/themes/current_theme
 
 TERMINAL=''
 
@@ -21,11 +21,11 @@ do
    fi
 done
 
-if [[ $TERMINAL != '' ]]; then
+if [ $TERMINAL != '' ]; then
    export TERMINAL
 fi
 
-function fzf() {
+fzf() {
 	"$(which fzf)" \
 		--reverse \
 		--no-mouse \

@@ -89,7 +89,7 @@ fi
 # Custom settings
 
 # Export custom environment variables
-[[ -f ~/script/bash/export ]] && . ~/script/bash/export
+[[ -f ~/script/shell/export ]] && . ~/script/shell/export
 
 shopt -s autocd
 shopt -s extglob
