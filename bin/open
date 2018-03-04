@@ -39,8 +39,19 @@ function help() { # {{{
 	echo "$HELP"
 }
 # }}}
+function screen_resolution() { # {{{
+	local dimension="${1:-}"
+	# shellcheck disable=SC2016
+	if [[ "$dimension" == width ]]; then
+		dimension='$1'
+	elif [[ "$dimension" == height ]]; then
+		dimension='$2'
+	fi
+	xdpyinfo | grep dimension | awk '{print $2}' | awk -F 'x' '{print '"$dimension"'}'
+}
+# }}}
 function openmenu() { # {{{
-	rofi -dmenu -location 2 -threads 0 -width 60 -lines 12 -i -p "$OPEN: "
+	rofi -dmenu -location 2 -threads 0 -width "$(screen_resolution width)" -lines 12 -i -p "$OPEN: "
 }
 # }}}
 function getfiles() { # {{{
