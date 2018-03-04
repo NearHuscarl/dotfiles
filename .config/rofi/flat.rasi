@@ -54,8 +54,8 @@
 	spacing: 2;
 	font: "Inconsolata Medium 9.5";
 
-	width: 35%;
-	lines: 10;
+	// width: 35%;
+	// lines: 10;
 	columns: 1;
 }
 #window {
@@ -100,7 +100,7 @@
 	text-color:       @active-foreground;
 }
 #element.selected {
-	highlight:        @highlight-current;
+	/* highlight:        @highlight-current; */
 }
 #element.selected.normal {
 	background-color: @selected-normal-background;
@@ -165,4 +165,4 @@
 	text-color: @normal-foreground;
 }
 
-/* vim: ft=css */
+// vim: ft=scss
