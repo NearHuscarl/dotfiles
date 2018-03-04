@@ -16,7 +16,6 @@ function alias_tree() { # {{{
 } # }}}
 function alias_paci() { # {{{
    pacfzf -S "$@"
-	notify-send --icon="$HOME/.icons/dunst/archlinux.png" 'pacman' 'package '"$*"' installed'
    pacmerge
 	paccache --remove --keep 3
 	pacfzf --cache o
@@ -32,7 +31,6 @@ function alias_pacu() { # {{{
 # }}}
 function alias_pacr() { # {{{
 	pacfzf -Rs "$@"
-	notify-send --icon="$HOME/.icons/dunst/archlinux.png" 'pacman' 'package '"$*"' deleted'
 	pacfzf --cache o
 }
 # }}}
@@ -66,7 +64,6 @@ function alias_pacdep() { # {{{
 # }}}
 function alias_auri() { # {{{
    pacfzf -Sa "$@"
-	notify-send --icon="$HOME/.icons/dunst/archlinux.png" 'AUR' 'package '"$*"' installed'
    pacmerge
 	paccache --remove --keep 3
 	pacfzf --cache a
@@ -82,7 +79,6 @@ function alias_auru() { # {{{
 # }}}
 function alias_aurr() { # {{{
 	pacfzf -Rsa "$@"
-	notify-send --icon="$HOME/.icons/dunst/archlinux.png" 'AUR' 'package '"$*"' deleted'
 	pacfzf --cache a
 }
 # }}}
