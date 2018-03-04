@@ -311,10 +311,11 @@ bindsym $mod+shift+d exec $no_loading $HOME/bin/reload-dunst
 bindsym $mod+b         exec $no_loading $HOME/bin/bookmarks; workspace $ws_web
 bindsym $mod+semicolon exec $no_loading $HOME/bin/websearch; workspace $ws_web
 bindsym $mod+o         exec $no_loading $HOME/bin/open
-bindsym $mod+Shift+h   exec $no_loading $HOME/script/python/i3_quake -H 0.5 -t $terminal chromehist
-bindsym $mod+Shift+k   exec $no_loading $HOME/script/python/i3_quake -H 0.7 -t $terminal end
-bindsym $mod+Shift+o   exec $no_loading $HOME/script/python/i3_quake -H 0.2 -t $terminal fo
-bindsym $mod+Shift+w   exec $no_loading $HOME/script/python/i3_quake -H 0.3 -t $terminal wifi
+bindsym $mod+Shift+m   exec $no_loading rofi-emoij
+bindsym $mod+Shift+h   exec $no_loading i3_quake -H 0.5 -t $terminal chromehist
+bindsym $mod+Shift+k   exec $no_loading i3_quake -H 0.7 -t $terminal end
+bindsym $mod+Shift+o   exec $no_loading i3_quake -H 0.2 -t $terminal fo
+bindsym $mod+Shift+w   exec $no_loading i3_quake -H 0.3 -t $terminal wifi
 
 # Toggle between config with (ctrl|win) as modifier
 bindsym $mod+i exec $no_loading $HOME/script/bash/toggle-i3-config; reload
