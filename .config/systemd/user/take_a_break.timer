@@ -1,0 +1,9 @@
+[Unit]
+Description=Runs take_a_break every 25 minutes
+
+[Timer]
+Unit=take_a_break.service
+OnCalendar=*:25,55:00
+
+[Install]
+WantedBy=timers.target

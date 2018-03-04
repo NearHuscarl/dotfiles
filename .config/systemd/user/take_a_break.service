@@ -1,0 +1,9 @@
+[Unit]
+Description=Take a break for 5 minutes
+
+[Service]
+Type=simple
+ExecStart=%h/script/bash/take_a_break
+
+[Install]
+WantedBy=default.target

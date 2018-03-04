@@ -37,7 +37,6 @@ exec $no_loading xscreensaver -nosplash
 exec $no_loading "dropbox start"
 exec $no_loading udiskie &
 exec $no_loading $HOME/bin/start-todo
-exec $no_loading $HOME/bin/take_a_break &
 # exec $no_loading i3-msg 'exec /usr/bin/pulseaudio --start'
 
 exec $no_loading $HOME/script/python/i3_on_workspace_focus &

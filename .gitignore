@@ -61,6 +61,7 @@
 !/.config/qutebrowser/
 !/.config/rofi/
 !/.config/surfraw/
+!/.config/systemd/
 !/.config/termite/
 !/.config/youtube-dl/
 !/.config/zathura/
