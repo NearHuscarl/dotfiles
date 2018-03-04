@@ -1,0 +1,10 @@
+[Unit]
+Description=Runs manfzf_cache.service everyday
+
+[Timer]
+Unit=manfzf_cache.service
+OnCalendar=daily
+Persistent=true
+
+[Install]
+WantedBy=timers.target

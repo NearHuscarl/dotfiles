@@ -1,0 +1,10 @@
+[Unit]
+Description=Update pacfzf cache
+RequiresMountsFor=%h/.cache/pacfzf/
+
+[Service]
+Type=oneshot
+ExecStart=%h/bin/pacfzf --cache oOaA
+
+[Install]
+WantedBy=default.target

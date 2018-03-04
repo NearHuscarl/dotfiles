@@ -1,0 +1,10 @@
+[Unit]
+Description=Runs pacfzf_cache.service twice a week
+
+[Timer]
+Unit=pacfzf_cache.service
+OnCalendar=Mon,Thu
+Persistent=true
+
+[Install]
+WantedBy=timers.target

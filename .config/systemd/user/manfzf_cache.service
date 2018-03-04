@@ -1,0 +1,10 @@
+[Unit]
+Description=Update manfzf cache (~/.cache/manfzf/manpages)
+RequiresMountsFor=%h/.cache/manfzf/
+
+[Service]
+Type=oneshot
+ExecStart=%h/bin/manfzf --update-cache
+
+[Install]
+WantedBy=default.target
