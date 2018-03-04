@@ -70,7 +70,7 @@ function alias_auri() { # {{{
 }
 # }}}
 function alias_auru() { # {{{
-	sudo trizen -Syu "$@"
+	trizen -Syu "$@"
 	notify-send --icon="$HOME/.icons/dunst/archlinux.png" 'AUR' 'Package(s) updated'
 	pacmerge
 	paccache --remove --keep 3
