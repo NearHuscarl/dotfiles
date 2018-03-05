@@ -65,7 +65,7 @@ bindsym $mod+Shift+space floating toggle
 bindsym $mod+space focus mode_toggle
 
 bindsym $mod+Shift+r reload
-bindsym $super+r restart
+bindsym $mod+grave restart
 
 bindsym $mod+shift+s move scratchpad
 bindsym $mod+s scratchpad show
@@ -294,8 +294,9 @@ bindsym $mod+d mode "launch"
 
 # }}}
 # {{{ Screenshot
-bindsym Print      exec $no_loading $HOME/bin/screenshot clipboard
-bindsym $mod+Print exec $no_loading $HOME/bin/screenshot filesystem
+bindsym Print       exec $no_loading $HOME/bin/screenshot clipboard
+bindsym $mod+Print  exec $no_loading $HOME/bin/screenshot filesystem
+bindsym Shift+Print exec $no_loading peekmenu
 # }}}
 # Sound {{{
 bindsym XF86AudioRaiseVolume exec $no_loading $HOME/bin/volume up
@@ -327,7 +328,7 @@ for_window [class=".*"] title_format " %title"
 
 # class                 border        background    foreground    indicator    child_border
 client.focused          $color_main   $color_main   $color_fg     $color_main2 $color_main
-client.focused_inactive #1F2D3A       #5f676a       #ffffff       #2C3E50      $color_bg
+client.focused_inactive $color_bg     $color_bg     $color_fg_alt #2C3E50      $color_bg
 client.unfocused        $color_bg_alt $color_bg_alt $color_fg_alt #2C3E50      $color_bg
 client.urgent           #2f343a       #900000       #ffffff       #900000      $color_alert
 client.placeholder      #000000       #0c0c0c       #ffffff       #000000      #0c0c0c
