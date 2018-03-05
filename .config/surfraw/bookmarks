@@ -33,6 +33,7 @@ portfolio               https://nearhuscarl.github.io/Portfolio/portfolio.html
 
 # Dev - bash
 [sh]parameter           http://wiki.bash-hackers.org/syntax/pe
+[sh]getopts             http://wiki.bash-hackers.org/howto/getopts_tutorial
 [sh]shellcheck          https://github.com/koalaman/shellcheck/wiki
 
 r/linux                 https://www.reddit.com/r/linux/
@@ -58,6 +59,8 @@ arch-wiki               https://wiki.archlinux.org/
 regex                   https://regexr.com
 devdoc                  http://devdocs.io/
 csslayout               http://learnlayout.com/
+
+i3ipc                   http://i3ipc-python.readthedocs.io/en/latest/
 
 # Game
 beamng-blog             http://blog.beamng.com/blog/
