@@ -3,6 +3,11 @@ rofi.modi: keys,drun,run,window
 rofi.bw: 0
 rofi.sidebar-mode: true
 
+rofi.display-keys: keys:
+rofi.display-drun: drun:
+rofi.display-run: run:
+rofi.display-window: window:
+
 ! color
 rofi.theme: flat
 
