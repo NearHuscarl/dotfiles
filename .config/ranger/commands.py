@@ -60,7 +60,6 @@ class my_edit(Command):
 		# content of the current directory.
 		return self._tab_directory_content()
 
-
 class fzf_select(Command):
 	"""
 	:fzf_select
@@ -81,3 +80,28 @@ class fzf_select(Command):
 			fzf_file = os.path.abspath(stdout.decode('utf-8').rstrip('\n'))
 			if os.path.isdir(fzf_file):
 				self.fm.cd(fzf_file)
+
+def disown(cmd):
+	"""Call a system command in the background,
+	   disown it and hide it's output."""
+	import subprocess
+	subprocess.Popen(cmd,
+			stdout=subprocess.DEVNULL,
+			stderr=subprocess.DEVNULL)
+
+class sh(Command):
+	""" Open shell in a new process: sh <terminal-name>
+	because terminal command in ranger is broken """
+	def execute(self):
+		if self.arg(1):
+			terminal = self.arg(1)
+		else:
+			try:
+				terminal = os.environ['TERMINAL']
+			except KeyError:
+				terminal = ''
+
+		if terminal == '':
+			self.fm.notify('Where ur terminal name!!', bad=True)
+		else:
+			disown([terminal])
