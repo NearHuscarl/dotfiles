@@ -7,6 +7,7 @@ Use currency.converter() if currency to convert to not supported,
 
 import requests
 
+# pip install nh-currency
 import currency
 import config
 import cache

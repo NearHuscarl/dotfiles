@@ -6,6 +6,7 @@ import argparse
 import os
 import sys
 
+from exceptions import ConnectionError, HTTPError, Timeout
 from util import color_polybar
 import config
 import cache
@@ -129,8 +130,12 @@ def print_cryptos_info():
 
 def main():
 	if args.update:
-		import update
-		update.update_cache()
+		try:
+			import update
+			update.update_cache()
+		except (ConnectionError, HTTPError, Timeout):
+			sys.stdout.write(color_polybar('....', 'red'))
+			sys.exit(1)
 	else:
 		if args.toggle == 'display':
 			state.toggle('display')

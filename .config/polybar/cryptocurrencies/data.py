@@ -1,1 +1,0 @@
-/home/near/Github/py-currency/data.py
