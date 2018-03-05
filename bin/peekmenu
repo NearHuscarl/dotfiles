@@ -49,7 +49,7 @@ function help() { # {{{
 # }}}
 function peek_menu() { # {{{
 	local action
-	action="$(echo "${PEEK_OPTS[*]}" | rofi -i -dmenu -p 'Peek: ')"
+	action="$(echo "${PEEK_OPTS[*]}" | rofi -lines 5 -width 15 -i -dmenu -p 'Peek: ')"
 	if [[ "$action" == Exit ]]; then
 		killall peek 2> /dev/null
 		exit 0
