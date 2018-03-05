@@ -9,10 +9,9 @@ import requests
 
 # pip install nh-currency
 import currency
-import config
-import cache
+import util
 
-config = config.read()
+config = util.readconfig()
 
 def process_meta_info(meta):
 	""" pretty price number in meta """
@@ -67,7 +66,7 @@ def update_cache():
 			coinname = crypto['id']
 			crypto_info[coinname] = process_crypto_info(crypto)
 	data = {'GLOBAL': process_meta_info(meta), 'ticker': crypto_info}
-	cache.write(data, 'cache.json')
+	util.writecache(data, 'cache.json')
 
 def main():
 	update_cache()
