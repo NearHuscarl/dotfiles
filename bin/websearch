@@ -12,7 +12,7 @@
 : "${BROWSER:=google-chrome-stable}"
 
 function openmenu() { # {{{
-	rofi -dmenu -mesg ">> Tab = Autocomplete" -i  -kb-row-tab '' -kb-row-select Tab -p "websearch: "
+	rofi -dmenu -mesg ">> Tab = Autocomplete" -i  -kb-row-tab '' -kb-row-select Tab -p "websearch:"
 }
 # }}}
 function get_search_term() { # {{{

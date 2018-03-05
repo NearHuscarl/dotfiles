@@ -163,6 +163,7 @@
 #prompt {
 	spacing:    1;
 	text-color: @normal-foreground;
+	margin:     0px 0.3em 0px 0px;
 }
 
 // vim: ft=scss

@@ -51,7 +51,7 @@ function screen_resolution() { # {{{
 }
 # }}}
 function openmenu() { # {{{
-	rofi -dmenu -location 2 -threads 0 -width "$(screen_resolution width)" -lines 12 -i -p "$OPEN: "
+	rofi -dmenu -location 2 -threads 0 -width "$(screen_resolution width)" -lines 12 -i -p "$OPEN:"
 }
 # }}}
 function getfiles() { # {{{
