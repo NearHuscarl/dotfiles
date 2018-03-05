@@ -45,6 +45,8 @@
 
 !/.cache/
 /.cache/*
+# git update-index --assume-unchanged ~/.cache/pacfzf/AUR
+# git update-index --assume-unchanged ~/.cache/pacfzf/Official
 !/.cache/pacfzf/
 
 # Repeat the process for subdir .config
