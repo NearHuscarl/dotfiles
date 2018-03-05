@@ -2,7 +2,6 @@ alacritty-git
 asoundconf
 chromedriver
 clerk-git
-connman-gtk
 cower
 dunst-git
 faba-icon-theme-git
@@ -22,6 +21,7 @@ peek
 polybar
 pycharm-community
 pyenv
+python-pywal
 rxvt-unicode-patched
 teamviewer
 trizen

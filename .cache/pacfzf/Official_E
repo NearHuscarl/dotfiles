@@ -11,9 +11,9 @@ automake
 bash
 bash-completion
 bbswitch
-beep
 binutils
 bison
+bluez-libs
 bluez-utils
 bumblebee
 bzip2
@@ -78,8 +78,13 @@ lib32-alsa-plugins
 lib32-nvidia-utils
 lib32-virtualgl
 libmad
+libmm-glib
 libmp4v2
+libndp
+libnewt
+libnm-glib
 libreoffice-still
+libteam
 libtool
 libxvmc
 licenses
@@ -96,6 +101,7 @@ make
 man-db
 man-pages
 mdadm
+mobile-broadband-provider-info
 mousepad
 mpd
 mpv
@@ -103,7 +109,10 @@ mupdf
 nano
 ncmpcpp
 neovim
+network-manager-applet
+networkmanager
 nitrogen
+nm-connection-editor
 nodejs
 npm
 ntfs-3g
@@ -125,7 +134,9 @@ pkg-config
 procps-ng
 psmisc
 python
+python-greenlet
 python-i3-py
+python-neovim
 python-pip
 python-pylint
 python-virtualenv
@@ -143,6 +154,7 @@ s-nail
 sed
 shadow
 shellcheck
+slang
 sudo
 surfraw
 swh-plugins
@@ -185,6 +197,7 @@ wpa_supplicant
 xarchiver
 xclip
 xdg-user-dirs
+xdotool
 xf86-video-vesa
 xfburn
 xfce4-appfinder
@@ -279,6 +292,8 @@ xorg-xvinfo
 xorg-xwd
 xorg-xwininfo
 xorg-xwud
+xsel
 youtube-dl
 zathura-pdf-mupdf
+zeromq
 zsh
