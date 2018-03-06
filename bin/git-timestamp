@@ -8,14 +8,14 @@ function gitroot() { # {{{
 	git rev-parse --show-toplevel 2> /dev/null
 }
 # }}}
-function get_unstage_files() { # {{{
-	git diff --name-only
+function stagefiles() { # {{{
+	git diff --cached --name-only
 }
 # }}}
 function update_timestamp() { # {{{
 	local root files datenow
 
-	files="$(get_unstage_files)"
+	files="$(stagefiles)"
 	root="$(gitroot)"
 	datenow="$(date +'%a %b %d %H:%M:%S %Z %Y')"
 
@@ -23,6 +23,7 @@ function update_timestamp() { # {{{
 		if [[ ! -d "$root/$file" ]]; then # some maybe submodules (directory)
 			sed -i '5,15s/'"$DATE_RE"'/\1'"$datenow"'/' "$root/$file"
 		fi
+		git add "$file"
 	done
 }
 # }}}
