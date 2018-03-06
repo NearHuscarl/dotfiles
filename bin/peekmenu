@@ -6,7 +6,7 @@
 # Dependencies:
 # peek
 # rofi
-# i3_fullscreen
+# i3-fullscreen
 
 SCRIPT_NAME=$(basename "$0")
 USAGE="Usage: $SCRIPT_NAME [help]"
@@ -66,7 +66,7 @@ function peek_menu() { # {{{
 				peek --no-headerbar --toggle
 				;;
 			Fullscreen)
-				i3_fullscreen title=Peek # see https://github.com/phw/peek/issues/61
+				i3-fullscreen title=Peek # see https://github.com/phw/peek/issues/61
 				;;
 			*)
 				;;
