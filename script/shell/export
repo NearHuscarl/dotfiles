@@ -45,8 +45,7 @@ export PATH=$HOME/bin:$PATH
 # global node_modules (see $HOME/.npmrc)
 export PATH=$PATH:$HOME/.npm-global/bin
 # custom python script
-export PATH=$PATH:$HOME/script/python/
-export PYTHONPATH=$PYTHONPATH:$HOME/script/lib/
+export PYTHONPATH=$PYTHONPATH:$HOME/script/python/
 # Temp fix for scss_lint
 export PATH=$PATH:$HOME/.gem/ruby/2.4.0/bin/
 # Stuff when install using pip install --user
