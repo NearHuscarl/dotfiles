@@ -3,13 +3,12 @@
 # Dependencies
 # vim
 
-DIR="${BASH_SOURCE%/*}"
-if [[ ! -d "$DIR" ]]; then
-	DIR="$PWD"
-fi
-. "$DIR/cprint"
+# shellcheck disable=SC2034
+RED="$(tput setaf 1)"
+GREEN="$(tput setaf 2)"
+YELLOW="$(tput setaf 3)"
+RESET="$(tput sgr0)"
 
-# result
 declare -a result=()
 
 # find *.pacsave and *.pacnew on whole system
@@ -27,9 +26,9 @@ for pac_path in $pac_paths; do
 	# shellcheck disable=SC2016
 	if [[ $REPLY =~ ^[yY]$ ]]; then
 		sudo rm "$pac_path"
-		result+=('cprint "$pac_path has been removed\n" red')
+		result+=('echo "${RED}$pac_path has been removed${RESET}"')
 	else
-		result+=('cprint "$pac_path is kept\n" green')
+		result+=('echo "${GREEN}$pac_path is kept${RESET}"')
 	fi
 done
 
@@ -39,5 +38,5 @@ if [[ "${#result[@]}" != 0 ]]; then # if not empty
 		eval "$cmd"
 	done
 else
-	cprint 'There is no *.pacnew or *.pacsave file\n' yellow
+	echo "${YELLOW}There is no *.pacnew or *.pacsave file${RESET}"
 fi
