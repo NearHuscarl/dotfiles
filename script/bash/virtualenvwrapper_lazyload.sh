@@ -1,10 +1,10 @@
 #!/bin/bash
 # ============================================================================
-# File:        virtualenvwrapper_lazyload
+# File:        virtualenvwrapper_lazyload.sh
 # Description: Lazyload virtualenvwrapper.sh because it's too slow when source
 #              it in ~/.bashrc
 # Author:      Near Huscarl <near.huscarl@gmail.com>
-# Last Change: Wed Nov 22 04:43:47 +07 2017
+# Last Change: Tue Mar 06 11:27:54 +07 2018
 # Licence:     BSD 3-Clause license
 # Note:        N/A
 # ============================================================================

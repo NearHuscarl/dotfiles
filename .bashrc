@@ -149,7 +149,7 @@ if [[ -x /usr/bin/rg ]]; then
 fi
 
 # mkvirtualenv rmvirtualenv workon ... commands to manage python virtualenv
-source ~/bin/virtualenvwrapper_lazyload
+source ~/script/bash/virtualenvwrapper_lazyload.sh
 
 # python interactive prompt
 export PYTHONSTARTUP=~/.pythonrc.py
