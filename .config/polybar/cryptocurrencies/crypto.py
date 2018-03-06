@@ -98,7 +98,7 @@ def main():
 			import update
 			update.update_cache()
 		except (ConnectionError, HTTPError, Timeout):
-			polybar.cprint('....', 'red')
+			polybar.cprint('{red}....{reset}')
 			sys.exit(1)
 
 	else:
