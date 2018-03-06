@@ -49,6 +49,10 @@
 # git update-index --assume-unchanged ~/.cache/pacfzf/Official
 !/.cache/pacfzf/
 
+!/.ssh/
+/.ssh/*
+!/.ssh/config
+
 # Repeat the process for subdir .config
 !/.config/
 /.config/*
@@ -120,7 +124,6 @@
 **/node_modules/
 **/package-lock.json
 /.local/
-/.ssh/
 /.thumbnails/
 /.vim/autoload/plug.vim
 /.config/ranger/history
