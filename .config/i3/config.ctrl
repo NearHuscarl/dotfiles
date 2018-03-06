@@ -183,9 +183,9 @@ mode "launch" {
         bindsym d exec $no_loading rofi -show drun; mode "default"
         bindsym r exec $no_loading rofi -show run; mode "default"
         bindsym w exec $no_loading rofi -show window; mode "default"
-        bindsym i exec $no_loading $HOME/bin/websearch; mode "default"
-        bindsym b exec $no_loading $HOME/bin/bookmarks; mode "default"
-        bindsym o exec $no_loading $HOME/bin/open; mode "default"
+        bindsym i exec $no_loading $HOME/bin/rofi-websearch; mode "default"
+        bindsym b exec $no_loading $HOME/bin/rofi-bookmarks; mode "default"
+        bindsym o exec $no_loading $HOME/bin/rofi-open; mode "default"
         bindsym shift+1 exec $no_loading ~/bin/rofi-bangs.sh; mode "default"
 
         # back to normal: Enter or Escape
@@ -296,7 +296,7 @@ bindsym $mod+d mode "launch"
 # {{{ Screenshot
 bindsym Print       exec $no_loading $HOME/bin/screenshot clipboard
 bindsym $mod+Print  exec $no_loading $HOME/bin/screenshot filesystem
-bindsym Shift+Print exec $no_loading peekmenu
+bindsym Shift+Print exec $no_loading rofi-peek
 # }}}
 # Sound {{{
 bindsym XF86AudioRaiseVolume exec $no_loading $HOME/bin/volume up
@@ -309,9 +309,9 @@ bindsym XF86AudioMute exec $no_loading $HOME/bin/volume toggle
 bindsym $mod+shift+p exec $no_loading $HOME/bin/reload-polybar
 bindsym $mod+shift+d exec $no_loading $HOME/bin/reload-dunst
 
-bindsym $mod+b         exec $no_loading $HOME/bin/bookmarks; workspace $ws_web
-bindsym $mod+semicolon exec $no_loading $HOME/bin/websearch; workspace $ws_web
-bindsym $mod+o         exec $no_loading $HOME/bin/open
+bindsym $mod+b         exec $no_loading $HOME/bin/rofi-bookmarks; workspace $ws_web
+bindsym $mod+semicolon exec $no_loading $HOME/bin/rofi-websearch; workspace $ws_web
+bindsym $mod+o         exec $no_loading $HOME/bin/rofi-open
 bindsym $mod+Shift+m   exec $no_loading rofi-emoij
 bindsym $mod+Shift+h   exec $no_loading i3-quake -H 0.5 -t $terminal chromehist
 bindsym $mod+Shift+k   exec $no_loading i3-quake -H 0.7 -t $terminal end
