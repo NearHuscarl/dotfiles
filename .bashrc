@@ -3,12 +3,6 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-# If not running interactively, don't do anything
-case $- in
-	*i*) ;;
-	*) return;;
-esac
-
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
 HISTCONTROL=ignoreboth
@@ -134,8 +128,8 @@ export PS4
 source ~/script/bash/alias
 source ~/script/bash/cd_fzf # cd only work in subshell
 
-# start ssh-agent
-eval `keychain --eval --quiet --agents ssh id_rsa`
+# https://stackoverflow.com/a/29520600
+export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
 
 # ranger
 if [[ -x /usr/bin/ranger && -f ~/.config/ranger/rc.conf ]]; then
