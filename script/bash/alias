@@ -254,7 +254,6 @@ alias rtm='killall -USR1 termite' # reload termite config
 alias xmod='xmodmap ~/.Xmodmap'
 alias xres='xrdb ~/.Xresources'
 alias reboot='shutdown -r now'
-alias shutoff='$HOME/bin/shutdown'
 alias size='alias_size'
 alias mkdir='mkdir -pv'
 alias top='vtop'

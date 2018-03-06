@@ -13,4 +13,4 @@ if [[ "$(pgrep -x vim)" ]]; then
 fi
 
 # now shutdown
-command -p shutdown -h now
+shutdown -h now
