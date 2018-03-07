@@ -1,6 +1,6 @@
 #!/bin/env python
 
-""" wrapper functions to use configparser module easier """
+""" util functions for polybar crypto module """
 
 import configparser
 import json
@@ -25,11 +25,6 @@ def isfile(path):
 		return False
 	return True
 
-def get_config_path(filename):
-	""" return config file path. default is {$PWD}/config """
-	cwd = os.path.dirname(os.path.realpath(__file__))
-	return os.path.join(cwd, filename)
-
 
 DEFAULT_CONFIG = """
 [global]
@@ -49,6 +44,11 @@ icon = LTC
 # vim: ft=dosini
 """
 
+def get_config_path(filename):
+	""" return config file path. default is ${PWD}/config """
+	cwd = os.path.dirname(os.path.realpath(__file__))
+	return os.path.join(cwd, filename)
+
 def readconfig(filename='config'):
 	""" return ConfigParser object
 	parameter: config_path - path to config file
@@ -66,8 +66,8 @@ def readconfig(filename='config'):
 def writeconfig(config_obj, filename='config'):
 	""" write config to config file
 	parameters:
-		config_path - path to config file
-		config_obj - ConfigParser obj to write into config file"""
+		config_obj - ConfigParser obj to write into config file
+		config_path - path to config file """
 	config_path = get_config_path(filename)
 	if not isfile(config_path):
 		touch(config_path)
@@ -77,14 +77,14 @@ def writeconfig(config_obj, filename='config'):
 		file.write("# vim: ft=dosini")
 
 def get_cache_path(filename):
-	""" get file path """
+	""" get crypto cache path """
 	homedir = os.environ['HOME']
 	return os.path.join(homedir, '.cache/polybar/crypto', filename)
 
 def readcache(filename='cache'):
 	"""
 	parameter: file_path - path to cache file
-	return: data after parsing json file"""
+	return: cache data from api result """
 	cache_path = get_cache_path(filename)
 	if not isfile(cache_path):
 		import update
