@@ -1,6 +1,15 @@
 #!/bin/env python
 
-""" util functions for polybar module """
+"""
+============================================================================
+File:        polybar.py
+Description: util functions for polybar module
+Author:      Near Huscarl <near.huscarl@gmail.com>
+Last Change: Wed Mar 07 17:37:43 +07 2018
+Licence:     BSD 3-Clause license
+Note:        N/A
+============================================================================
+"""
 
 import os
 import sys
@@ -33,19 +42,19 @@ def fmtstr(string, color):
 	Return string with color using polybar format, for printing on polybar only,
 	second argument is environment variable from $HOME/themes/current_theme
 	"""
-	return colors['polybar'][color] + string + colors['polybar']['reset']
+	return colors[color] + string + colors['reset']
 
 def main():
-	cprint('{main}test{reset}')
-	cprint('{black}test{reset}')
-	cprint('{red}test{reset}')
-	cprint('{green}test{reset}')
-	cprint('{yellow}test{reset}')
-	cprint('{blue}test{reset}')
-	cprint('{magenta}test{reset}')
-	cprint('{cyan}test{reset}')
-	cprint('{gray}test{reset}')
-	cprint('{white}test{reset}')
+	cprint('{main}test{reset}\n')
+	cprint('{black}test{reset}\n')
+	cprint('{red}test{reset}\n')
+	cprint('{green}test{reset}\n')
+	cprint('{yellow}test{reset}\n')
+	cprint('{blue}test{reset}\n')
+	cprint('{magenta}test{reset}\n')
+	cprint('{cyan}test{reset}\n')
+	cprint('{gray}test{reset}\n')
+	cprint('{white}test{reset}\n')
 
 if __name__ == '__main__':
 	main()
