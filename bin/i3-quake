@@ -1,1 +1,203 @@
-/home/near/Github/i3-quake/i3-quake
+#!/bin/env python
+
+""" quake it """
+
+import argparse
+import os
+import sys
+import subprocess
+import time
+
+import shlex
+import i3ipc
+
+# pylint: disable=invalid-name
+
+i3 = i3ipc.Connection()
+QUAKE_NAME = 'quake_'
+
+def get_args():
+	""" get script args """
+
+	def position(pos):
+		""" position argument handling """
+		if pos != 'top' and pos != 'bottom':
+			raise ValueError('argument should be top or bottom, not both')
+		return pos
+
+	parser = argparse.ArgumentParser()
+
+	parser.add_argument('-p', '--pos', type=position, default='top',
+			help='open terminal at top or bottom (default is top)')
+
+	parser.add_argument('-H', '--height', dest='ratio', type=float, default=0.25,
+			help='height of terminal in percentage of monitor height')
+
+	parser.add_argument('-t', '--term', default='xterm', help='terminal name (default is xterm)')
+
+	parser.add_argument('cmd', metavar='CMD', default=os.environ['SHELL'], nargs='?',
+			help='command to execute in new terminal')
+
+	return parser.parse_args()
+
+def TERM(executable, execopt='-e', execfmt='expanded', titleopt='-T'):
+	""" Helper to declare a terminal in the hardcoded list """
+	if execfmt not in ('expanded', 'string'):
+		raise RuntimeError('Invalid execfmt')
+
+	fmt = executable
+
+	if titleopt is not None:
+		fmt += ' ' + titleopt + " '{title}'"
+
+	fmt += ' {} {{{}}}'.format(execopt, execfmt)
+
+	return fmt
+
+def TERMS(terminal):
+	""" get term command """
+	if terminal == 'alacritty':
+		return TERM('alacritty', titleopt='-t')
+
+	elif terminal == 'gnome-terminal':
+		return TERM('gnome-terminal', execopt='--', titleopt=None)
+
+	elif terminal == 'roxterm':
+		return TERM('roxterm')
+
+	elif terminal == 'st':
+		return TERM('st')
+
+	elif terminal == 'termite':
+		return TERM('termite', execfmt='string', titleopt='-t')
+
+	elif terminal == 'urxvt':
+		return TERM('urxvt')
+
+	elif terminal == 'xfce4-terminal':
+		return TERM('xfce4-terminal', execfmt='string')
+
+	else:
+		return TERM('xterm')
+
+def quoted(string):
+	""" quoting string """
+	return "'" + string + "'"
+
+def expand_command(cmd, **rplc_map):
+	""" return a tuple of command and its options/parameters with environment
+	variables expanded """
+	replacement_map = {'$' + key: val for key, val in
+	os.environ.items()}
+	replacement_map.update(rplc_map)
+
+	return shlex.split(cmd.format(**replacement_map))
+
+def get_current_workspace():
+	""" get info of focused workspace """
+	return [ws for ws in i3.get_workspaces() if ws['focused']][0]
+
+def get_name():
+	""" get quake terminal name of current workspace """
+	ws_num = get_current_workspace()['num']
+	return QUAKE_NAME + str(ws_num)
+
+def move_back(title):
+	""" hide container """
+	i3.command('[title={}], floating enable, move scratchpad'.format(title))
+
+def toggle_display(title):
+	""" show/hide container """
+	i3.command('[title={}], scratchpad show'.format(title))
+
+def open_terminal(terminal, title, cmd):
+	""" open terminal with the format in general: terminal -t <title> -e <command> """
+	term_cmd = TERMS(terminal)
+	term_cmd = expand_command(term_cmd, title=title, expanded=cmd, string=quoted(cmd))
+	# print(term_cmd)
+	try:
+		subprocess.Popen(term_cmd)
+	except FileNotFoundError:
+		print('{} executable not found. Please select another terminal using --term flag'
+				''.format(term_cmd[0]))
+		sys.exit(1)
+
+def exists(title):
+	""" is process open """
+	res = os.system('ps axo state,command | grep ' + title + ' | grep -v grep > /dev/null 2>&1')
+	if res == 0:
+		return True
+	return False
+
+def isready(title):
+	""" is process waiting for an event to complete """
+	res = os.system('ps axo state,command | grep ' + title + ' | grep -v grep | egrep ^S > /dev/null 2>&1')
+	if res == 0:
+		return True
+	return False
+
+def wait(title, timeout=2):
+	""" wait for terminal process open and ready """
+	timenow = time.time()
+	wasopen = False
+
+	while True:
+		time.sleep(0.02)
+
+		if time.time() - timenow > timeout:
+			print('No terminal process')
+			sys.exit(1)
+
+		if exists(title):
+			wasopen = True
+
+		if not exists(title) and wasopen is True:
+			sys.exit(0)
+
+		if isready(title):
+			return 0
+
+def toggle_quake(term, pos, ratio, cmd):
+	""" toggle quake """
+	quake_term = i3.get_tree().find_named(get_name())
+
+	# quake terminal not exist yet
+	if not quake_term:
+		title = get_name()
+
+		open_terminal(term, title, cmd)
+		move_back(title)
+		wait(title)
+		quake(title, pos, ratio)
+	else: # toggling scratchpad
+		quake_term = quake_term[0]
+		toggle_display(quake_term.name[0])
+
+def quake(title, pos, ratio):
+	""" resize terminal to make it looks top down or bottom up """
+	workspace = get_current_workspace()
+	ws_x = workspace['rect']['x']
+	ws_y = workspace['rect']['y']
+	ws_width = workspace['rect']['width']
+	ws_height = workspace['rect']['height']
+
+	width = ws_width
+	height = int(ws_height * ratio)
+	posx = ws_x
+
+	if pos == 'bottom':
+		posy = ws_y + ws_height - height
+	else: # top
+		posy = ws_y
+
+	i3.command(
+			'[title={title}],'
+			'resize set {width} px {height} px,'
+			'move absolute position {posx}px {posy}px,'
+			'move scratchpad,'
+			'scratchpad show'
+			''.format(title=title, posx=posx, posy=posy, width=width, height=height))
+
+if __name__ == '__main__':
+	args = get_args()
+	toggle_quake(args.term, args.pos, args.ratio, args.cmd)
