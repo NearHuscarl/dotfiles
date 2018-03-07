@@ -1,21 +1,32 @@
 #!/bin/env bash
 
-# get a list of unstaged files and update timestamp if match regex before commit
-
-DATE_RE='\(.* Last Change: \).*'
+# ============================================================================
+# File:        git-timestamp
+# Description: get a list of unstaged files and update timestamp if match
+#              regex before commit
+# Author:      Near Huscarl <near.huscarl@gmail.com>
+# Last Change: Wed Mar 07 17:37:43 +07 2018
+# Licence:     BSD 3-Clause license
+# Note:        N/A
+# ============================================================================
+#
+#
+#
+#
+DATE_RE='\(.*Last Change: \).*'
 
 function gitroot() { # {{{
 	git rev-parse --show-toplevel 2> /dev/null
 }
 # }}}
-function stagefiles() { # {{{
-	git diff --cached --name-only
+function get_unstage_files() { # {{{
+	git diff --name-only
 }
 # }}}
 function update_timestamp() { # {{{
 	local root files datenow
 
-	files="$(stagefiles)"
+	files="$(get_unstage_files)"
 	root="$(gitroot)"
 	datenow="$(date +'%a %b %d %H:%M:%S %Z %Y')"
 
@@ -23,7 +34,6 @@ function update_timestamp() { # {{{
 		if [[ ! -d "$root/$file" ]]; then # some maybe submodules (directory)
 			sed -i '5,15s/'"$DATE_RE"'/\1'"$datenow"'/' "$root/$file"
 		fi
-		git add "$file"
 	done
 }
 # }}}
