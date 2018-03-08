@@ -88,7 +88,7 @@ def print_cryptos():
 			elif currency == 'local':
 				local = config['global']['base_currency'].lower()
 				local_price = cryptos[crypto]['price_' + local]
-				polybar.cprint('{main}' + icon + ' {color}' + local_price, color=color)
+				polybar.cprint('{main}' + icon + ' {color}' + local_price + ' ', color=color)
 
 def main():
 	args = get_args()
