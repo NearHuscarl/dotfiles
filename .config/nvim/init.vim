@@ -1,5 +1,4 @@
 " Program to use for evaluating Python code. Setting this makes startup faster
-let g:python3_host_prog = '/usr/bin/python'
 let g:loaded_python_provider = 1 " Disable python2
 
 if !exists('os')
@@ -11,10 +10,12 @@ if !exists('os')
 endif
 
 if g:os ==# 'win'
+	let g:python3_host_prog = 'E:\Program Files\Python36\python'
 	set runtimepath^=~\vimfiles
 	set runtimepath+=~\vimfiles\after
 	source ~\vimfiles\vimrc
 else
+	let g:python3_host_prog = '/usr/bin/python'
 	set runtimepath^=~/.vim
 	set runtimepath+=~/.vim/after
 	source ~/.vim/vimrc
