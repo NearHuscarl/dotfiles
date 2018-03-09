@@ -100,5 +100,5 @@ set notification-error-fg "#ECF0F1"
 set notification-bg "#27AE60"
 set notification-fg "#ECF0F1"
 
-set default-bg "#1F2D3A"
+set default-bg "#2C3E50"
 set default-fg "#ECF0F1"
