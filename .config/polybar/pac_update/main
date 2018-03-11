@@ -60,8 +60,8 @@ function count() { # {{{
 	local count pac_count aur_count
 
 	count="$(newpkgs --count)"
-	aur_count="$(echo "$count" | awk '{print $1}' | awk -F ':' '{print $2}')"
-	pac_count="$(echo "$count" | awk '{print $2}' | awk -F ':' '{print $2}')"
+	pac_count="$(echo "$count" | awk '{print $1}' | awk -F ':' '{print $2}')"
+	aur_count="$(echo "$count" | awk '{print $2}' | awk -F ':' '{print $2}')"
 
 	if ((pac_count + aur_count > 0)); then
 		echo "$pac_count %{F$THEME_MAIN}%{F-} $aur_count"
