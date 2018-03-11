@@ -4,7 +4,7 @@
 # checkupdates (pacman)
 # pacaur
 
-set -o errexit
+# set -o errexit
 set -o pipefail
 set -o nounset
 
