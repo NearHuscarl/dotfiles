@@ -1,0 +1,132 @@
+#!/bin/env bash
+
+# Dependencies:
+# checkupdates (pacman)
+# pacaur
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
+RED="$(tput setaf 1)"
+GREEN="$(tput setaf 2)"
+YELLOW="$(tput setaf 3)"
+BLUE="$(tput setaf 4)"
+CYAN="$(tput setaf 6)"
+RESET="$(tput sgr0)"
+
+SCRIPT_NAME=$(basename "${BASH_SOURCE[0]}")
+USAGE="${YELLOW}Usage: ${CYAN}$SCRIPT_NAME${RESET} [--help|--list|--count]"
+HELP="\
+${YELLOW}DESCRIPTION${RESET}
+  Print or count new packages available for update with pacman package manager
+${YELLOW}USAGE${RESET}
+  $SCRIPT_NAME [--help|--list|--count]
+${YELLOW}COMMANDS${RESET}
+  ${CYAN}-h  --help${RESET}      print this help message
+  ${CYAN}-l  --list${RESET}      list new packages
+  ${CYAN}-c  --count${RESET}     count new packages"
+
+function die() { # {{{
+	echo "$*" >&2
+	exit 1
+}
+# }}}
+function usage() { # {{{
+	die "$USAGE"
+}
+# }}}
+function help() { # {{{
+	echo "$HELP"
+}
+# }}}
+function new_official_packages() { # {{{
+	checkupdates | sed 's/^/\[O\] /' | sed 's/->//'
+}
+# }}}
+function new_aur_packages() { # {{{
+	pacaur -k | sed 's/^:: aur  /\[A\] /' | sed 's/->//'
+}
+# }}}
+function get_new_packages() { # {{{
+	new_official_packages
+	new_aur_packages
+}
+# }}}
+function count() { # {{{
+	local official_count aur_count packages="$1"
+
+	official_count=$(wc -l < <(echo "$packages" | awk '/^\[O\]/ {print}'))
+	aur_count=$(wc -l < <(echo "$packages" | awk '/^\[A\]/ {print}'))
+
+	echo "Official:$official_count  AUR:$aur_count"
+}
+# }}}
+function list() { # {{{
+	local packages="$1"
+	# shellcheck disable=SC2001
+	printf '%-3s %-25s %-25s %s\n' '---' 'Package' 'Old version' 'New version'
+	echo "$packages" | awk '/^\[O\]/ {printf "'"${CYAN}"'%s '"${BLUE}"'%-25s '"${RED}"'%25-s '"${GREEN}"'%s'"${RESET}"'\n", $1, $2, $3, $4}'
+	echo "$packages" | awk '/^\[A\]/ {printf "'"${YELLOW}"'%s '"${BLUE}"'%-25s '"${RED}"'%25-s '"${GREEN}"'%s'"${RESET}"'\n", $1, $2, $3, $4}'
+}
+# }}}
+function check_update() { # {{{
+	local newpkgs count="$1" list="$2"
+
+	newpkgs="$(get_new_packages)"
+
+	if [[ "$count" == true ]]; then
+		count "$newpkgs"
+	fi
+	if [[ "$list" == true ]]; then
+		list "$newpkgs"
+	fi
+}
+# }}}
+
+function main() { # {{{
+	local OPTIND opt count=false list=false
+
+	while getopts ':hcl-:' opt; do
+		case "${opt}" in
+			-)
+				case ${OPTARG} in # a hack to use --option
+					help)
+						help && exit 0
+						;;
+					count)
+						count=true
+						;;
+					list)
+						list=true
+						;;
+					*)
+						usage
+						;;
+				esac
+				;;
+			h)
+				help && exit 0
+				;;
+			c)
+				count=true
+				;;
+			l)
+				list=true
+				;;
+			*)
+				usage
+				;;
+		esac
+	done
+	shift $((OPTIND-1))
+
+	if [[ "$list" == false ]] && [[ "$count" == false ]]; then
+		list=true # default is listing
+	fi
+
+	check_update "$count" "$list"
+}
+# }}}
+
+main "$@"

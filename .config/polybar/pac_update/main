@@ -1,50 +1,100 @@
-#!/bin/bash
+#!/bin/env bash
 
-function check_update() {
-	cd "$(dirname "$0")" || exit 1
-	local path
+# Dependencies:
+# - i3-quake
+# - pacman
+# - an AUR helper
+# - newpkgs
+
+RED="$(tput setaf 1 2> /dev/null)"
+GREEN="$(tput setaf 2 2> /dev/null)"
+RESET="$(tput sgr0 2> /dev/null)"
+
+SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)/$(basename "${BASH_SOURCE[0]}")"
+
+function prompt() { # {{{
+	local prompt="$1"
+	read -r -p "$prompt"
+}
+# }}}
+function update() { # {{{
+	local repo="$1"
 	
-	path="$(pwd)/package_list"
+	if [[ "$repo" == official ]]; then
+		sudo pacman -Syu
+	elif [[ "$repo" == aur ]]; then
+		trizen -Syu
+	fi
+	prompt "${GREEN}Press any key to finish... ${RESET}"
+}
+# }}}
+function list() { # {{{
+	newpkgs --list
+	prompt "${GREEN}Press any key to finish... ${RESET}"
+}
+# }}}
+function i3_quake() { # {{{
+	local command="$1"
+	if command -v i3-quake > /dev/null 2>&1; then
+			i3-quake -t "$TERMINAL" -p bottom "$command"
+	else
+		prompt "${RED}i3-quake${RESET} is required but not exists. Aborting..."
+	fi
+}
+# }}}
+function prompt_update() { # {{{
+	local repo="$1"
 
-	checkupdates > "$path" 2> /dev/null
-	pac=$(wc -l < "$path")
+	if [[ "$repo" == official ]]; then
+		i3_quake "$SCRIPT_PATH --update-official"
+	elif [[ "$repo" == aur ]]; then
+		i3_quake "$SCRIPT_PATH --update-aur"
+	fi
+}
+# }}}
+function prompt_list() { # {{{
+	i3_quake "$SCRIPT_PATH --list"
+}
+# }}}
+function count() { # {{{
+	local count pac_count aur_count
 
-	pacaur -k | sed 's/:: aur  //' >> "$path" 2> /dev/null
-	aur=$(( $(wc -l < "$path") - pac ))
+	count="$(newpkgs --count)"
+	aur_count="$(echo "$count" | awk '{print $1}' | awk -F ':' '{print $2}')"
+	pac_count="$(echo "$count" | awk '{print $2}' | awk -F ':' '{print $2}')"
 
-	# Align column and add column names
-	format_table="$(column --table --table-columns 'Package','Prev Version','-','New Version' < "$path")"
-	echo "$format_table" > "$path"
-
-	# Add newline to seperate between official repo and aur
-	newline=$(sed "$((pac + 2))i"'\ ' < "$path")
-	echo "$newline" > "$path"
-
-	local check=$((pac + aur))
-	if [[ "$check" != "0" ]]; then
-		echo "$pac %{F$THEME_MAIN}%{F-} $aur"
+	if ((pac_count + aur_count > 0)); then
+		echo "$pac_count %{F$THEME_MAIN}%{F-} $aur_count"
 	else
 		echo "0 %{F$THEME_MAIN}%{F-} 0"
 	fi
 }
+# }}}
 
-action=${1:-checkupdate}
+
+action=${1:---print-count}
 
 case "$action" in
-	'checkupdate')
-		check_update
+	--update-official)
+		update official
 		;;
-	'update_pac')
-		# set title to Floating for i3 to regconize and make it a float window
-		$TERMINAL --title="Floating" -e 'sudo pacman -Syu'
+	--update-aur)
+		update aur
 		;;
-	'update_aur')
-		$TERMINAL --title="Floating" -e 'pacaur -Syua'
+	--list)
+		list
 		;;
-	'list_packages')
-		cd "$(dirname "$0")" || exit 1
-		cmd="cat $(pwd)/package_list"
-		$TERMINAL --title="Floating" -e "$cmd" --hold
+	--print-count)
+		count
+		;;
+	--prompt-update-official)
+		prompt_update official
+		;;
+	--prompt-update-aur)
+		prompt_update aur
+		;;
+	--prompt-new-pkgs)
+		prompt_list
 		;;
 	*)
 		;;

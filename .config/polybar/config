@@ -405,12 +405,12 @@ click-left = xdg-open https://mail.google.com
 type = custom/script
 interval = 1200
 
-exec = bash -l -c $HOME/.config/polybar/pac_update/main
+exec = bash -l -c '$HOME/.config/polybar/pac_update/main --print-count'
 exec-if = "ping -q -w 2 -c 1 176.34.135.167 > /dev/null"
 
-click-left  = bash -l -c '$HOME/.config/polybar/pac_update/main update_pac'
-click-right = bash -l -c '$HOME/.config/polybar/pac_update/main update_aur'
-click-middle = bash -l -c '$HOME/.config/polybar/pac_update/main list_packages'
+click-left  = bash -l -c '$HOME/.config/polybar/pac_update/main --prompt-update-official'
+click-right = bash -l -c '$HOME/.config/polybar/pac_update/main --prompt-update-aur'
+click-middle = bash -l -c '$HOME/.config/polybar/pac_update/main --prompt-new-pkgs'
 ; }}}
 ; {{{ [module/trash]
 [module/trash]
