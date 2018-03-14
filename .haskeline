@@ -1,0 +1,28 @@
+editMode: Vi
+maxhistorysize: Just 1000
+historyDuplicates: IgnoreConsecutive
+
+bind: meta-i escape
+bind: meta-u ctrl-r
+
+bind: meta-9 ctrl-w
+bind: meta-0 right escape d W i
+
+bind: meta-h left
+bind: meta-l right
+
+bind: meta-n escape b i
+bind: meta-m escape w w i
+
+bind: meta-, home
+bind: meta-. end
+
+bind: meta-backspace escape c c : q return
+bind: meta-r         escape c c : r return
+
+bind: { { } left
+bind: ( ( ) left
+bind: [ [ ] left
+bind: } right
+bind: ] right
+bind: ) right
