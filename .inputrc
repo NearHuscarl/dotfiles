@@ -1,3 +1,5 @@
+# -- Use `showkey` command to get the binding hotkeys --
+
 # ignore case when completing
 set completion-ignore-case on
 # only one tab for completion, even if there is more than one option
@@ -29,9 +31,15 @@ $if mode=vi
 
    set keymap vi-insert
    "\ei": vi-movement-mode
+
    "\t": menu-complete
-   "\en": menu-complete
-   "\ep": menu-complete-backward
+   "\e[Z": menu-complete-backward
+
+   "\en": backward-word
+   "\em": forward-word
+   "\e,": beginning-of-line
+   "\e.": end-of-line
+
    "\ej": history-search-forward
    "\ek": history-search-backward
    "\er": re-read-init-file
