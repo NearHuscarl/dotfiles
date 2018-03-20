@@ -19,41 +19,41 @@ set vi-cmd-mode-string [n]
 set vi-ins-mode-string [i]
 
 $if mode=vi
-   set keymap vi-command
-   # some combination with alt not work in vi command mode
-   # press <C-v> + <A-key> to know if <A-key> works if mapped or not
-   "\ej": history-search-forward
-   "\ek": history-search-backward
-   "\eu": vi-redo
-   "\er": re-read-init-file
-   "gg": beginning-of-history
-   "G": end-of-history
+	set keymap vi-command
+	# some combination with alt not work in vi command mode
+	# press <C-v> + <A-key> to know if <A-key> works if mapped or not
+	"\ej": history-search-forward
+	"\ek": history-search-backward
+	"\eu": vi-redo
+	"\er": re-read-init-file
+	"gg": beginning-of-history
+	"G": end-of-history
 
-   set keymap vi-insert
-   "\ei": vi-movement-mode
+	set keymap vi-insert
+	"\ei": vi-movement-mode
 
-   "\t": menu-complete
-   "\e[Z": menu-complete-backward
+	"\t": menu-complete
+	"\e[Z": menu-complete-backward
 
-   "\en": backward-word
-   "\em": forward-word
-   "\e,": beginning-of-line
-   "\e.": end-of-line
+	"\en": backward-word
+	"\em": forward-word
+	"\e,": beginning-of-line
+	"\e.": end-of-line
 
-   "\ej": history-search-forward
-   "\ek": history-search-backward
-   "\er": re-read-init-file
+	"\ej": history-search-forward
+	"\ek": history-search-backward
+	"\er": re-read-init-file
 $else
-   "\e.": end-of-line
-   "\e,": beginning-of-line
-   "\e;": backward-word
-   "\e'": forward-word
-   "\ep": previous-history
-   "\en": next-history
-   "\ej": menu-complete
-   "\ek": menu-complete-backward
-   "\ey": yank-pop
-   "\eu": kill-whole-line
-   "\e9": backward-kill-word
-   "\e0": kill-word
+	"\e.": end-of-line
+	"\e,": beginning-of-line
+	"\e;": backward-word
+	"\e'": forward-word
+	"\ep": previous-history
+	"\en": next-history
+	"\ej": menu-complete
+	"\ek": menu-complete-backward
+	"\ey": yank-pop
+	"\eu": kill-whole-line
+	"\e9": backward-kill-word
+	"\e0": kill-word
 $endif
