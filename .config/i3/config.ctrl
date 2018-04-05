@@ -7,9 +7,9 @@
 # Note:        None
 # ============================================================================
 
-# to get non-printable key like Home, Delete on terminal, type 'xev'.  Press
-# anykey. The output will say 'Keysim, ... [keyname]' where [keyname] is the
-# name to use in i3 config file
+# to get non-printable key like Home, Delete. On terminal, type 'xev', then
+# press anykey. The output will say 'Keysim, ... [keyname]' where [keyname] is
+# the name to use in i3 config file
 
 # Reserve:
 #  ctrl+c
