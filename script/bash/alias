@@ -75,7 +75,7 @@ function alias_auri() { # {{{
 }
 # }}}
 function alias_auru() { # {{{
-	trizen -Syu "$@"
+	trizen -Syua "$@"
 	notify 'archlinux.png' 'AUR' 'Package(s) updated'
 	pacmerge
 	paccache --remove --keep 3
