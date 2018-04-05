@@ -4,12 +4,17 @@
 # Description: Bash custom aliases and other alias functions, some alias have
 #              the equivalent completion as the original commands
 # Author:      Near Huscarl <near.huscarl@gmail.com>
-# Last Change: Thu Feb 01 15:18:12 +07 2018
+# Last Change: Thu Apr 05 07:16:41 +07 2018
 # Licence:     BSD 3-Clause license
 # Note:        N/A
 # ============================================================================
 
 # {{{ alias functions
+function notify() { # {{{
+	local icon="$1" title="$2" message="$3"
+	nohup notify-send --icon="$HOME/.icons/dunst/$icon" "$title" "$message" 1>/dev/null
+}
+# }}}
 function alias_tree() { # {{{
    local pwd=${1:-$(pwd)}
    find "$pwd" -print | sed -e 's;'"$pwd"';\.;g;s;[^/]*\/;|__;g;s;__|; |;g'
@@ -23,7 +28,7 @@ function alias_paci() { # {{{
 # }}}
 function alias_pacu() { # {{{
 	sudo pacman -Syu "$@"
-	notify-send --icon="$HOME/.icons/dunst/archlinux.png" 'pacman' 'Package(s) updated'
+	notify 'archlinux.png' 'pacman' 'Package(s) updated'
 	pacmerge
 	paccache --remove --keep 3
 	pacfzf --cache o
@@ -71,7 +76,7 @@ function alias_auri() { # {{{
 # }}}
 function alias_auru() { # {{{
 	trizen -Syu "$@"
-	notify-send --icon="$HOME/.icons/dunst/archlinux.png" 'AUR' 'Package(s) updated'
+	notify 'archlinux.png' 'AUR' 'Package(s) updated'
 	pacmerge
 	paccache --remove --keep 3
 	pacfzf --cache a
