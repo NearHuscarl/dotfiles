@@ -222,9 +222,6 @@ fi
 # }}}
 # git {{{
 if [[ -x /usr/bin/git ]]; then
-	alias gstat='git status'
-	alias gpull='git pull'
-	alias gpush='git push'
 	alias gshow='$EDITOR <(git show)'                         # git diff last commit
 	alias gdiff='alias_git_diff'                              # git diff <branch1> <branch2>. if no argument, see diff of git pull
 	alias glog='$EDITOR <(git log --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --abbrev-commit)'
