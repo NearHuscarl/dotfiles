@@ -1,4 +1,22 @@
-# i3 config
+# ============================================================================
+# File:        config
+# Description: i3 config
+# Author:      Near Huscarl <near.huscarl@gmail.com>
+# Last Change: Fri Apr 06 01:21:21 +07 2018
+# Licence:     BSD 3-Clause license
+# Note:        None
+# ============================================================================
+
+# to get non-printable key like Home, Delete on terminal, type 'xev'.  Press
+# anykey. The output will say 'Keysim, ... [keyname]' where [keyname] is the
+# name to use in i3 config file
+
+# Reserve:
+#  ctrl+c
+#  ctrl+v
+#  ctrl+s
+#  ctrl+a
+#  ctrl+f
 
 # Variables {{{
 set $ws_term   "1"
@@ -52,8 +70,8 @@ font pango:Inconsolata bold 8
 floating_modifier $mod
 focus_follows_mouse no
 
-bindsym $mod+slash kill
-bindsym $mod+shift+slash focus parent,focus parent,focus parent,focus parent,kill
+bindsym $mod+Delete kill
+bindsym $mod+shift+Delete focus parent,focus parent,focus parent,focus parent,kill
 
 bindsym $mod+Shift+l exec i3lock-fancy -f $lock_font
 bindsym $mod+Return exec $terminal
@@ -67,8 +85,8 @@ bindsym $mod+space focus mode_toggle
 bindsym $mod+Shift+r reload
 bindsym $mod+grave restart
 
-bindsym $mod+shift+s move scratchpad
-bindsym $mod+s scratchpad show
+bindsym $mod+shift+slash move scratchpad
+bindsym $mod+slash scratchpad show
 bindsym $mod+minus [title="Todo"] scratchpad show
 
 # Change focus
