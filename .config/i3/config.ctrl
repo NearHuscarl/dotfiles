@@ -119,7 +119,7 @@ bindsym $mod+comma workspace prev
 # }}}
 # Assign application to specific workspace {{{
 assign [class="Gvim"]                $ws_dev
-assign [title="Vim - Dev"]           $ws_dev
+assign [title="Neovim - Dev"]        $ws_dev
 assign [class="Google-chrome"]       $ws_web
 assign [class="Vivaldi-stable"]      $ws_web
 assign [class="Zathura"]             $ws_doc
@@ -163,7 +163,7 @@ for_window [title="^quake_.*"]            $SCRATCHPAD
 bindsym F1 exec $terminal
 # bindsym F2 exec gvim; workspace $ws_dev
 # bindsym F2 exec termite --title="Vim - Dev" -e "bash --login -c 'vim --servername vim'"; workspace $ws_dev
-bindsym F2 exec termite --title="Vim - Dev" -e "bash --login -c nvim"; workspace $ws_dev
+bindsym F2 exec termite --title="Neovim - Dev" -e "bash --login -c nvim"; workspace $ws_dev
 # bindsym F3 exec google-chrome-stable; workspace $ws_web
 bindsym F3 exec google-chrome-stable; workspace $ws_web
 bindsym F4 exec urxvt -title Ranger -e bash --login -c ranger; workspace $ws_file
