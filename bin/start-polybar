@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+# close all remaining jobs (polybar and hook watchers)
+trap 'kill 0' EXIT
+
+# Terminate already running bar instances
+killall -q polybar
+
+# Wait until the processes have been shut down
+while pgrep -x polybar >/dev/null; do sleep 1; done
+
+# Launch bar1 and bar2
+bash --login -c 'polybar -r holybar &'
+bash --login -c 'polybar -r molybar &'
+echo "holy and moly launched..."
+
+# run hook watcher to update in an interval
+"$HOME/.config/polybar/cryptocurrencies/hook.sh" &
+"$HOME/.config/polybar/trash/hook.sh" &
+
+# prevent the script exiting which will terminate all child jobs
+wait

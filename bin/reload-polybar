@@ -1,17 +1,5 @@
-#!/usr/bin/env bash
+#!/bin/env bash
 
-# Terminate already running bar instances
-killall -q polybar
-
-# Wait until the processes have been shut down
-while pgrep -x polybar >/dev/null; do sleep 1; done
-
-# Launch bar1 and bar2
-bash --login -c 'polybar -r holybar &'
-bash --login -c 'polybar -r molybar &'
-echo "holy and moly launched..."
-
-# run hook watcher to update cryptocurrency price
-source "$HOME/.config/polybar/cryptocurrencies/update_cache.sh" &
-# run hook watcher to update trash info
-source "$HOME/.config/polybar/trash/update_info.sh" &
+# kill process whose name match this
+pkill -f 'start-polybar'
+start-polybar &
