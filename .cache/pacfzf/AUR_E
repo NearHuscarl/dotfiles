@@ -1,4 +1,4 @@
-alacritty-git
+alacritty-terminfo-git
 asoundconf
 chromedriver
 clerk-git
@@ -11,9 +11,9 @@ gstreamer0.10-base
 gstreamer0.10-base-plugins
 i3-gaps-next-git
 i3lock-fancy-git
+inxi
 libjson-rpc-cpp
 mars-mips
-neofetch
 neovim-remote
 numix-icon-theme-git
 pacaur

@@ -1,0 +1,8 @@
+#!/bin/env bash
+
+scriptname="$1"
+shift
+args="$*"
+
+# shellcheck disable=SC2086
+python -m cProfile "$scriptname" $args | sort -k4 | tail -n 20

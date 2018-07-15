@@ -3,17 +3,17 @@ rofi.modi: keys,drun,run,window
 rofi.bw: 0
 rofi.sidebar-mode: true
 
-rofi.display-keys: keys:
-rofi.display-drun: drun:
-rofi.display-run: run:
-rofi.display-window: window:
+rofi.display-keys: keys
+rofi.display-drun: drun
+rofi.display-run: run
+rofi.display-window: window
 
 ! color
 rofi.theme: flat
 
 ! shortcuts
-rofi.kb-mode-next: Alt+i
-rofi.kb-mode-previous: Alt+u
+rofi.kb-mode-next: Right
+rofi.kb-mode-previous: Left
 rofi.kb-custom-9:
 rofi.kb-custom-10:
 rofi.kb-remove-word-back: Alt+9
@@ -27,6 +27,4 @@ rofi.kb-row-up: Alt+k
 rofi.kb-move-word-back: Alt+n
 rofi.kb-move-word-forward: Alt+m
 rofi.kb-cancel: Alt+Return
-rofi.kb-cancel: Alt+d
-
-! mode: websearch, locale
+rofi.kb-cancel: Alt+i

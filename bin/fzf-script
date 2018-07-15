@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# edit file in vim
+fe() {
+	file=$(rg --files --glob "!*.{ttf,png}" --hidden --follow --no-messages \
+		| fzf --preview="cat {}") && start-vim "$file"
+}
+
+# open file using rifle. only follow $HOME/.ripignore, do not follow .gitignore
+fo() {
+	cd $HOME
+	file=$(rg --files --ignore-file '.ripignore' --no-ignore-vcs --hidden --follow --no-messages \
+		| fzf --preview="cat {}") && rifle "$file"
+}
+
+# command history
+fh() {
+	eval $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf --tac --no-sort | sed 's/ *[0-9]* *//')
+}

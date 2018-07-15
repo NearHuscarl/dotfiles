@@ -44,7 +44,10 @@ garcon
 gawk
 gcc
 gcc-libs
+gedit
 gettext
+ghc
+ghc-static
 gimp
 git
 glibc
@@ -59,6 +62,7 @@ gtk-engine-murrine
 gtk-xfce-engine
 gucharmap
 gvfs
+gvfs-mtp
 gvim
 gzip
 htop
@@ -66,7 +70,6 @@ i3lock
 ibus-unikey
 inetutils
 iniparser
-inxi
 iproute2
 iputils
 ipython
@@ -108,6 +111,7 @@ mpv
 mupdf
 nano
 ncmpcpp
+neofetch
 neovim
 network-manager-applet
 networkmanager
@@ -155,6 +159,7 @@ sed
 shadow
 shellcheck
 slang
+stack
 sudo
 surfraw
 swh-plugins

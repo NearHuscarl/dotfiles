@@ -1,0 +1,63 @@
+! {{{ Color
+*background: #1F2D3A
+*foreground: #ECF0F1
+! *foreground: #ff00ff
+
+*highlightColor: #2980B9
+*highlightTextColor: #ECF0F1
+
+!! black dark/light
+*color0: #1F2D3A
+*color8: #2C3E50
+
+!! red dark/light
+*color1: #C0392B
+*color9: #E74C3C
+
+!! green dark/light
+*color2: #27AE60
+*color10: #2ECC71
+
+!! yellow dark/light
+*color3: #F39C12
+*color11: #F1C40F
+
+!! blue dark/light
+*color4: #2980B9
+*color12: #3498DB
+
+!! magenta dark/light
+*color5: #8E44AD
+*color13: #9B59B6
+
+!! cyan dark/light
+*color6: #16A085
+*color14: #2AA198
+
+!! white dark/light
+*color7: #84888B
+*color15: #ECF0F1
+! }}}
+! {{{ Urxvt
+! force a visual with alpah channel (trasparency)
+URxvt.depth: 32
+URxvt.background: [75]#1F2D3A
+
+! Remove ugly scrollbar
+URxvt.scrollBar: false
+
+! gap between text and border
+URxvt.internalBorder: 10
+
+! By default the distance between characters can feel too wide
+URxvt.xftAntialias: true
+URxvt.letterSpace: -1
+URxvt.font: xft:inconsolata:bold:pixelsize=11.5,xft:FontAwesome:bold:pixelsize=8
+URxvt.cursorBlink: true
+URxvt.saveLines: 10000
+
+URxvt.letterSpace: true
+urxvt.dynamicColors: on
+! }}}
+
+! vim: set foldmethod=marker

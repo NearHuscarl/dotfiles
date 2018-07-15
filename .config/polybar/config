@@ -381,9 +381,9 @@ font-4 = ${bar/holybar.font-4}
 
 enable-ipc = true
 
-modules-left = weather
+; modules-left = weather
 modules-center = crypto
-modules-right = gmail pac_update trash
+modules-right = trash
 ; }}}
 ; {{{ [module/weather]
 [module/weather]

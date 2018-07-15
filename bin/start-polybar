@@ -18,5 +18,5 @@ echo "holy and moly launched..."
 "$HOME/.config/polybar/cryptocurrencies/hook.sh" &
 "$HOME/.config/polybar/trash/hook.sh" &
 
-# prevent the script exiting which will terminate all child jobs
+# prevent the script from exiting which will terminate all child jobs
 wait

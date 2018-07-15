@@ -22,6 +22,7 @@ $if mode=vi
 	set keymap vi-command
 	# some combination with alt not work in vi command mode
 	# press <C-v> + <A-key> to know if <A-key> works if mapped or not
+	"\ef": reverse-search-history
 	"\ej": history-search-forward
 	"\ek": history-search-backward
 	"\eu": vi-redo
@@ -30,8 +31,8 @@ $if mode=vi
 	"G": end-of-history
 
 	set keymap vi-insert
+	"\ef": reverse-search-history
 	"\ei": vi-movement-mode
-
 	"\t": menu-complete
 	"\e[Z": menu-complete-backward
 
