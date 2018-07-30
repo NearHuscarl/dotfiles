@@ -15,5 +15,5 @@
 	untracked = red
 [credential "https://github.com"]
 	NearHuscarl = NearHuscarl
-[url "ssh://git@github.com/"]
-	insteadOf = https://github.com/
+# [url "ssh://git@github.com/"]
+#	insteadOf = https://github.com/
