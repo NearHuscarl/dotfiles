@@ -1,7 +1,7 @@
 ; vim:ft=gitconfig
 
 [user]
-	name = Near Huscarl
+	name = NearHuscarl
 	email = near.huscarl@gmail.com
 [color]
 	ui = true
