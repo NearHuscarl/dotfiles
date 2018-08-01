@@ -60,6 +60,7 @@
 !/.config/
 /.config/*
 !/.config/compton.conf
+!/.config/kwalletrc
 !/.config/dunst/
 !/.config/i3/
 !/.config/git/
