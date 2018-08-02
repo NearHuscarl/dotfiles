@@ -1,0 +1,93 @@
+#!/bin/env bash
+
+# quickly change git remote url from https to ssh or vice versa instead of having to type
+# git remote -v
+# # origin  https://github.com/NearHuscarl/dotfiles (fetch)
+# # origin  https://github.com/NearHuscarl/dotfiles (push)
+
+# git remote set-url origin git@github.com:NearHuscarl/dotfiles.git
+
+# git remote -v
+# # origin  git@github.com:NearHuscarl/dotfiles.git (fetch)
+# # origin  git@github.com:NearHuscarl/dotfiles.git (push)
+
+# Dependencies:
+
+set -o errexit
+set -o pipefail
+set -o nounset
+# set -o xtrace
+
+SCRIPT_NAME=$(basename "${BASH_SOURCE[0]}")
+USAGE="Usage: $SCRIPT_NAME [-h|https|ssh]"
+HELP="\
+$SCRIPT_NAME <command>
+Change git remote repository url to ssh or https
+COMMANDS
+  -h  --help      print this help message
+  https           change remote url to https
+  ssh             change remote url to ssh"
+
+function die() { # {{{
+	echo "$*" >&2
+	exit 1
+}
+# }}}
+function usage() { # {{{
+	die "$USAGE"
+}
+# }}}
+function help() { # {{{
+	echo "$HELP"
+}
+# }}}
+change_url_to_ssh() { # {{{
+	local remote_url username repo
+
+	remote_url="$(git remote --verbose | awk '{print $2}' | head -n1)"
+	if [[ "$remote_url" == https* ]]; then
+		username="$(echo "$remote_url" | cut -d / -f 4)"
+		repo="$(echo "$remote_url" | cut -d / -f 5)"
+		git remote set-url origin "git@github.com:${username}/${repo}.git"
+	fi
+
+	echo 'New remote url:'
+	git remote --verbose
+}
+# }}}
+change_url_to_https() { # {{{
+	local remote_url username repo
+
+	remote_url="$(git remote --verbose | awk '{print $2}' | head -n1)"
+	if [[ "$remote_url" == git* ]]; then
+		username="$(echo "$remote_url" | cut -d : -f 2 | cut -d / -f 1)"
+		repo="$(echo "$remote_url" | cut -d : -f 2 | cut -d / -f 2 | cut -d . -f 1)"
+		git remote set-url origin "https://github.com/${username}/${repo}"
+	fi
+
+	echo 'New remote url:'
+	git remote --verbose
+}
+# }}}
+function main() { # {{{
+	local cmd="${1:-}"
+
+	case "$#" in
+		0)
+			git remote --verbose ;;
+		*)
+			case "$cmd" in
+				-h|--help)
+					help ;;
+				ssh)
+					change_url_to_ssh ;;
+				https)
+					change_url_to_https ;;
+				*)
+					usage ;;
+			esac
+	esac
+}
+
+main "$@"
+# }}}
