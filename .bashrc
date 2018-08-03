@@ -119,11 +119,6 @@ export PS2
 export PS4
 # }}}
 
-# FONT_AWESOME="$(fc-list | grep --perl-regexp '(font-awesome|fontawesome)')"
-
-# MPD daemon start (if no other user instance exists)
-[ ! -s ~/.config/mpd/pid ] && mpd
-
 # run custom alias script in all session
 source ~/script/bash/alias
 source ~/script/bash/cd_fzf # cd only work in subshell
@@ -149,4 +144,4 @@ source ~/script/bash/virtualenvwrapper_lazyload.sh
 export PYTHONSTARTUP=~/.pythonrc.py
 
 # custom completion
-source ~/Github/termite-color-switcher/completion/bash
+source ~/github/termite-color-switcher/completion/bash
