@@ -1,0 +1,18 @@
+[Desktop Entry]
+DefaultProfile=near_profile.profile
+
+[DownloadDialog Settings]
+Height 768=498
+Width 1366=700
+
+[Favorite Profiles]
+Favorites=
+
+[MainWindow]
+Height 768=716
+State=AAAA/wAAAAD9AAAAAAAAAqkAAAKuAAAABAAAAAQAAAAIAAAACPwAAAAA
+ToolBarsMovable=Disabled
+Width 1366=681
+
+[TabBar]
+ShowQuickButtons=true
