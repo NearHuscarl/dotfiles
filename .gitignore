@@ -20,8 +20,11 @@
 !/.pylintrc
 !/.pythonrc.py
 !/.ripignore
+
+!/.prettierrc
 !/.scss-lint.yml
 !/.tern-project
+
 !/.vimrc
 !/.vintrc
 !/.xprofile
@@ -79,6 +82,7 @@
 !/.config/youtube-dl/
 !/.config/zathura/
 
+# visual studio code
 !/.config/Code/
 /.config/Code/*
 !/.config/Code/User/
@@ -86,6 +90,32 @@
 !/.config/Code/User/settings.json
 !/.config/Code/User/keybindings.json
 !/.config/Code/User/README.md
+
+# KDE config
+!/.config/kaccessrc
+!/.config/kactivitymanagerdrc
+!/.config/kactivitymanagerd-statsrc
+!/.config/kateschemarc
+!/.config/kcmdisplayrc
+!/.config/kcmfonts
+!/.config/kcmshell5rc
+!/.config/kconf_updaterc
+!/.config/kded_device_automounterrc
+!/.config/kdeglobals
+!/.config/kglobalshortcutsrc
+!/.config/khotkeysrc
+!/.config/kinfocenterrc
+!/.config/kmixrc
+!/.config/konsolerc
+!/.config/krunnerrc
+!/.config/kscreenlockerrc
+!/.config/ksmserverrc
+!/.config/ksysguardrc
+!/.config/ktimezonedrc
+!/.config/kwalletrc
+!/.config/kwinrc
+!/.config/kwinrulesrc
+
 
 !/.config/polybar/
 # git update-index --assume-unchanged ~/.config/polybar/pac_update/package_list
@@ -134,7 +164,11 @@
 /.config/ranger/history
 /.npm-global/
 __pycache__
+
+# ignore log files
 *.log
+log
+
 # api
 weather_api.txt
 gmail_pass.txt
