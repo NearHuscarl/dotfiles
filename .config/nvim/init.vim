@@ -25,6 +25,18 @@ let &packpath = &runtimepath
 
 set inccommand=nosplit " like incsearch, but with command
 
+" terminal mode {{{
+" open terminal in 1/3 screen height vertical split
+command! -nargs=* Term execute 'belowright ' .winheight(0)/4 ' split' | terminal <args>
+tnoremap <Esc> <C-\><C-n>
+tnoremap <A-n> <C-\><C-n><C-W>W
+tnoremap <A-m> <C-\><C-n><C-W>w
+
+augroup OpenTerminalInInsertMode
+	autocmd!
+	autocmd BufWinEnter,WinEnter term://* startinsert
+augroup END
+" }}}
 " {{{ deoplete
 let g:deoplete#enable_at_startup = 1
 " }}}
