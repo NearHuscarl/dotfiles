@@ -132,6 +132,7 @@ Theme=Papirus
 ColorScheme=Breeze
 ShowIconsInMenuItems=true
 ShowIconsOnPushButtons=true
+SingleClick=false
 contrast=4
 widgetStyle=breeze
 
