@@ -91,25 +91,19 @@
 !/.config/Code/User/keybindings.json
 !/.config/Code/User/README.md
 
-# KDE config
+# KDE config files
 !/.config/kaccessrc
-!/.config/kactivitymanagerdrc
-!/.config/kactivitymanagerd-statsrc
-!/.config/kateschemarc
 !/.config/kcmdisplayrc
 !/.config/kcmfonts
 !/.config/kcmshell5rc
 !/.config/kconf_updaterc
-!/.config/kded_device_automounterrc
 !/.config/kdeglobals
 !/.config/kglobalshortcutsrc
 !/.config/khotkeysrc
 !/.config/kinfocenterrc
 !/.config/kmixrc
 !/.config/konsolerc
-!/.config/krunnerrc
 !/.config/kscreenlockerrc
-!/.config/ksmserverrc
 !/.config/ksysguardrc
 !/.config/ktimezonedrc
 !/.config/kwalletrc
@@ -143,6 +137,13 @@
 /.icons/*
 !/.icons/dunst/
 
+# .local/share/konsole/ArcDark.colorscheme
+!/.local/
+/.local/*
+!/.local/share/
+/.local/share/*
+!/.local/share/konsole/
+
 # Only include some custom scripts in .virtualenvs/projectX/bin/
 !/.virtualenvs/
 /.virtualenvs/*
@@ -158,7 +159,6 @@
 **/tags
 **/node_modules/
 **/package-lock.json
-/.local/
 /.thumbnails/
 /.vim/autoload/plug.vim
 /.config/ranger/history
