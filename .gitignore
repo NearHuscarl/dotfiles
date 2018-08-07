@@ -38,7 +38,10 @@
 !/script/
 !/styles/
 !/themes/
+
+.uuid
 !/.fonts/
+
 # git submodule add https://github.com/NearHuscarl/vim-config \.vim
 # git commit # 2 new files
 # git push origin master
@@ -164,6 +167,9 @@
 /.config/ranger/history
 /.npm-global/
 __pycache__
+
+# dolphin config files
+.directory
 
 # ignore log files
 *.log
