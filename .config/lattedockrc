@@ -1,0 +1,16 @@
+[ScreenConnectors]
+10=eDP-1
+
+[UniversalSettings]
+canDisableBorders=false
+currentLayout=Main
+downloadWindowSize=800,550
+lastNonAssignedLayout=Main
+launchers=
+layoutsColumnWidths=82,72,59,0
+layoutsWindowSize=700,553
+memoryUsage=0
+mouseSensitivity=2
+screenTrackerInterval=2500
+showInfoWindow=true
+version=2

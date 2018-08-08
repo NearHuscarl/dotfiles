@@ -113,6 +113,12 @@
 !/.config/kwinrc
 !/.config/kwinrulesrc
 
+!/.config/plasmarc
+!/.config/lattedockrc
+!/.config/latte
+/.config/latte/*
+!/.config/latte/Main.layout.latte
+
 
 !/.config/polybar/
 # git update-index --assume-unchanged ~/.config/polybar/pac_update/package_list
