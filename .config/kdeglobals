@@ -112,6 +112,7 @@ DirSelectDialog Size=640,480
 History Items[$e]=file:$HOME/Pictures/Wallpapers
 
 [General]
+BrowserApplication[$e]=chromium.desktop
 ColorScheme=Breeze Dark
 Name=Breeze
 UseSystemBell=true

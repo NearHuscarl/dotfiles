@@ -60,6 +60,7 @@ CommandWindowWheel=Scroll
 [Plugins]
 coverswitchEnabled=true
 highlightwindowEnabled=true
+slideEnabled=false
 windowgeometryEnabled=false
 
 [TabBox]
