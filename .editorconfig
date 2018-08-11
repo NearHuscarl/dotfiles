@@ -3,10 +3,15 @@ root = true
 [*]
 indent_size = 3
 trim_trailing_whitespace = true
+indent_style = tab
 
 [*.xaml]
 indent_size = 2
 indent_style = space
 
-[*.xml]
+[*.{xml,html}]
 indent_size = 2
+
+# 4 space indentation
+[*.py]
+indent_size = 4

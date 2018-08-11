@@ -6,7 +6,7 @@ let parentDir = cwd.split('/').slice(-1).pop();
 
 // name property in package.json only accept lowercase chars and dash
 function transformName(name) {
-	return name.toLowerCase().replace(/[^a-z- ]/g, '').replace(/\s+/g, '-');
+	return name.toLowerCase().replace(/[^a-z- 0-9]/g, '').replace(/\s+/g, '-');
 }
 
 function getGlobalGitConfig() {
