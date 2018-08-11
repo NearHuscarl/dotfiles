@@ -103,47 +103,31 @@ function alias_aurdep() { # {{{
 	pacfzf -Qia "$1" | awk -F'[:<=>]' '/^Depends/ {print $2}' | xargs -n1 | sort -u
 }
 # }}}
-function alias_git_diff() { # {{{
-	if [[ "$#" == 0 ]]; then
-		git diff master@{1} master
-	elif [[ "$#" == 1 ]]; then
-		"$EDITOR" <(git diff master "$1")
-	else
-		"$EDITOR" <(git diff "$@")
-	fi
-}
-# }}}
-function alias_size() { # {{{
-   du -h --max-depth="${1:-0}"
-} # }}}
 function alias_pic() { # {{{
-   shopt -s nullglob
+	shopt -s nullglob
 
-   # picture extensions
-   local picExt="(jpg|png)"
+	# picture extensions
+	local pic_ext="(jpg|png)"
 
-   # get all *.(jpg|png) of current path
-	local allPath=("$(pwd)"/*.@"$picExt")
+	# get all *.(jpg|png) of current path
+	local paths=("$(pwd)"/*.@"$pic_ext")
+	echo "$paths"
 
-   # remove $(pwd) prefix, only keep file names
-   allPath=("${allPath[@]#"$pwd/"}")
+	# remove $(pwd) prefix, only keep file names
+	paths=("${paths[@]#"$pwd/"}")
 
-   for i in "${!allPath[@]}"; do
-      if [[ "${allPath[$i]}" == "$1" ]]; then
-         # open sxiv in 
-         # (s)cale mode: (h)eight
-         # hide (b)ottom info
-         # search dirs (r)ecursively for images
-         # open at pic (n)umber <NUM> which is the selected picture
-         sxiv -s h -b -n "$((i+1))" *.@$picExt
-         shopt -u nullglob
-         return 0
-      fi
-   done
-} # }}}
-function alias_rgr() { # {{{
-   root=$(git rev-parse --show-toplevel 2> /dev/null)
-	rg "$@" "${root:-$HOME}"
+	for i in "${!paths[@]}"; do
+		if [[ "${paths[$i]}" == "$1" ]]; then
+			# open sxiv in 
+			# (s)cale mode: (h)eight
+			# hide (b)ottom info
+			# search dirs (r)ecursively for images
+			# open at pic (n)umber <NUM> which is the selected picture
+			sxiv -s h -b -n "$((i+1))" *.@$pic_ext
+			shopt -u nullglob
+			return 0
+		fi
+	done
 } # }}}
 # }}}
 # color {{{
@@ -155,28 +139,26 @@ alias egrep='egrep --color=auto'
 alias ls="ls --color=auto"
 # }}}
 # change directory {{{
-alias dkt='cd $HOME/Desktop'
+alias cdt='cd $HOME/Desktop'
 alias cdh='cd $HOME'
 alias cdp='cd $HOME/Pictures'
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 # }}}
-# list {{{
+# ls {{{
 alias  la='ls --color=auto -A'
 alias  ll='ls --color=auto -oh'
 alias lla='ls --color=auto -ohA'
-alias  lr='ls --color=auto -R'
-alias lss='ls -A    | grep --color=auto -i'
-alias lls='ls -Aoh  | grep --color=auto -i'
-alias lrs='ls -ARoh | grep --color=auto -i'
+alias lss='ls -A   | grep --color=auto -iP'
+alias lls='ls -Aoh | grep --color=auto -iP'
 alias tree='alias_tree'
 # }}}
 # vim {{{
 if [[ -x /usr/bin/vim ]]; then
 	alias view='vim -R'
 	alias vim0='vim -u NONE -N'
-	alias vimrc='vim $HOME/.vimrc'
+	alias vimrc='vim $HOME/.vim/vimrc'
 	alias nvim-startup='nvim -c q --startuptime /tmp/nvim.log && tail -n1 $_'
 	alias nvim-Startup='nvim -c q --startuptime /tmp/nvim.log && nvim $_'
 	alias vim-startup='vim -c q --startuptime /tmp/vim.log && tail -n1 $_'
@@ -222,20 +204,7 @@ fi
 # }}}
 # git {{{
 if [[ -x /usr/bin/git ]]; then
-	alias gshow='$EDITOR <(git show)'                         # git diff last commit
-	alias gdiff='alias_git_diff'                              # git diff <branch1> <branch2>. if no argument, see diff of git pull
-	alias glog='$EDITOR <(git log --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --abbrev-commit)'
-	alias gfixcommit='git commit --amend'                     # Fix commit msg without altering its snapshot
-	alias gfixstage='git commit --amend --reuse-message=HEAD' # Fix commit (staging other files)
-	alias gunstage='git reset HEAD'
-	alias grestore='git checkout --'
-	alias gcheck='git checkout'
-	alias gbr='git branch'                                    # list branch
-	alias gnewbranch='git checkout -b'
-	alias gdelbranch='git branch -d'
-	alias gremove='git rm --cached'                           # Remove file in vcs while keeping in the local location
-	alias gmerge='git merge'
-	alias gmerge1='git merge --squash'                        # Merge many commits from a branch as 1 big commit
+	alias git-log='git log --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --abbrev-commit' # git log + formatting
 fi
 # }}}
 # trash-cli {{{
@@ -244,27 +213,27 @@ if [[ -x /usr/bin/trash-put ]]; then
 fi
 # }}}
 # picture {{{
-alias wallpaper='nitrogen --random --set-scaled "$HOME/Pictures/low_poly"'
-alias schedule='sxiv -f $HOME/Pictures/misc/schedule.png'
-alias thumnail='sxiv -f -t -b -r *'
-alias pic='alias_pic'
-alias sxiv='sxiv -b -s h'
+if [[ -x /usr/bin/nitrogen ]]; then
+	alias wallpaper='nitrogen --random --set-scaled "$HOME/Pictures/low_poly"'
+fi
+if [[ -x /usr/bin/sxiv ]]; then
+	alias thumnail='sxiv -f -t -b -r *'
+	alias sxiv='sxiv -b -s h'
+	alias pic='alias_pic' # TODO: broken on KDE
+fi
 # }}}
 # other {{{
+alias bigfiles='sudo find / -type f -size +50M -exec du -ahx {} \; 2>/dev/null | sort -rh | head -n 10' # list top 10 files that is over 50Mb
 alias man='manfzf -vc'
 alias rtm='killall -USR1 termite' # reload termite config
 alias xmod='xmodmap ~/.Xmodmap'
 alias xres='xrdb ~/.Xresources'
 alias reboot='shutdown -r now'
-alias size='alias_size'
+alias size='du -h --max-depth ' # list space of current path with argument is max depth
 alias mkdir='mkdir -pv'
-alias tkb='rifle $HOME/Pictures/tkb.png'
-alias top='vtop'
-alias internet='$EDITOR $HOME/misc/Internet.txt'
-alias music='ncmpcpp'
-alias clock='tty-clock -s -c -D -C6'
-alias symlink='ln -s'
-alias fuck='sudo $(history -p !!)'
+if [[ -x ~/usr/bin/vtop ]]; then
+	alias top='vtop'
+fi
 alias json='python -m json.tool'
 alias battery='upower --show-info $(upower --enumerate | grep BAT) | grep --color=never -E "state|to full|to empty|percentage" | sed "s/^\s*//"'
 # }}}
@@ -272,9 +241,6 @@ alias battery='upower --show-info $(upower --enumerate | grep BAT) | grep --colo
 alias r='fc -s'
 alias e='exit'
 alias c='clear'
-alias js='node'
-alias py='python'
-alias bs='bash -x'
 alias sb='source $HOME/.bashrc'
 # }}}
 # apply completion to aliases {{{
@@ -290,7 +256,6 @@ if [ -d /usr/share/bash-completion/completions ]; then
 	# source $completionPath/pacman (_completion_loader pacman works too)
 	# _completion_loader pacman
 	source $completionPath/pacman
-	source $completionPath/git
 	source "$HOME"/bin/completion-utils.sh
 	# }}}
 	# pacman {{{
@@ -311,18 +276,6 @@ if [ -d /usr/share/bash-completion/completions ]; then
 	complete -o default -F _pacman_Q aur-desc
 	complete -o default -F _pacman_Q aur-size
 	complete -o default -F _pacman_Q aur-dep
-	# }}}
-	# git {{{
-	# git completion script already have its own function to set up completion
-	# for functions or commands, so no need to use complete-wrapper function
-	# see https://gist.github.com/JuggoPop/10706934
-	__git_complete gcheck     _git_checkout
-	__git_complete gnewbranch _git_branch
-	__git_complete gdiff      _git_merge
-	__git_complete gmerge     _git_merge
-	__git_complete gmerge1    _git_merge
-
-	complete -o default -F _git_branch_d gdelbranch
 	# }}}
 fi
 
