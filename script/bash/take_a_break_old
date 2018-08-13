@@ -55,9 +55,18 @@ function bootstrap() { # {{{
 	back_to_work
 }
 # }}}
+function notify() { # {{{
+	local title="$1" message="$2" icon="$3"
+	if [[ -x /usr/share/dunstify ]]; then
+		dunstify --replace=101 --urgency=low --icon="$icon" "$message"
+	else
+		notify-send --urgency=low --icon="$icon" "$title" "$message"
+	fi
+}
+# }}}
 function take_a_break() { # {{{
 	local rest_idiom=${REST_IDIOMS[$((RANDOM % REST_IDIOMS_LINES))]}
-	dunstify --replace=101 --urgency=low --icon="$REST_ICON" "$rest_idiom"
+	notify 'take_a_break' "$rest_idiom" "$REST_ICON"
 	sleep "$REST_INTERVAL"
 }
 # }}}
@@ -65,7 +74,7 @@ function back_to_work() { # {{{
 	local work_idiom
 	while true; do
 		work_idiom=${WORK_IDIOMS[$((RANDOM % WORK_IDIOMS_LINES))]}
-		dunstify --replace=101 --urgency=low --icon="$WORK_ICON" "$work_idiom"
+		notify 'take_a_break' "$work_idiom" "$WORK_ICON"
 		sleep "$WORK_INTERVAL"
 		take_a_break
 	done
