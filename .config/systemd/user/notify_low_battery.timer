@@ -1,0 +1,9 @@
+[Unit]
+Description=Run notify_low_battery every 10 minutes
+
+[Timer]
+Unit=notify_low_battery.service
+OnCalendar=*:0/10
+
+[Install]
+WantedBy=timers.target

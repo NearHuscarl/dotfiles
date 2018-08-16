@@ -1,0 +1,27 @@
+#!/bin/env bash
+
+# notify low battery when battery is under $PERCENTAGE_THRESHOLD and uncharged
+# use with systemd timer
+
+# charging|discharging
+STATE="$(upower --show-info $(upower --enumerate | grep BAT) | grep "state" | awk '{print $2}')"
+PERCENTAGE="$(upower --show-info $(upower --enumerate | grep BAT) | grep "percentage" | awk '{print $2}')"
+PERCENTAGE_THRESHOLD=20
+BATTERY_EMPTY_ICON="$HOME/.icons/dunst/battery-empty.svg"
+
+echo "state: $STATE"
+echo "percentage: ${PERCENTAGE%\%}"
+
+function notify() { # {{{
+	local title="$1" message="$2" icon="$3"
+	if [[ -x /usr/share/dunstify ]]; then
+		dunstify --replace=101 --urgency=low --icon="$icon" "$message"
+	else
+		notify-send --urgency=low --icon="$icon" "$title" "$message"
+	fi
+}
+# }}}
+
+if (( ${PERCENTAGE%\%} < "$PERCENTAGE_THRESHOLD" )) && [[ "$STATE" != charging ]]; then
+	notify 'Low Battery' "Battery is $PERCENTAGE left and uncharged" "$BATTERY_EMPTY_ICON"
+fi

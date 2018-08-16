@@ -1,0 +1,9 @@
+[Unit]
+Description=notify low battery when battery is under threshold and uncharged
+
+[Service]
+Type=simple
+ExecStart=%h/script/bash/notify_low_battery
+
+[Install]
+WantedBy=default.target
