@@ -1,9 +1,9 @@
 [Unit]
-Description=Run notify_low_battery every 10 minutes
+Description=Run notify_low_battery every 4 minutes
 
 [Timer]
 Unit=notify_low_battery.service
-OnCalendar=*:0/10
+OnCalendar=*:0/4
 
 [Install]
 WantedBy=timers.target
