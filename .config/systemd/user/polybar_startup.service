@@ -1,0 +1,16 @@
+[Unit]
+Description=Launch polybar at startup
+After=graphical-session-pre.target
+PartOf=graphical-session.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=forking
+Restart=on-failures
+RestartSec=4
+; Environment=PATH=%h/bin:/usr/bin/:/bin/
+Environment=PYTHONPATH=%h/script/python/
+ExecStart=/bin/env bash %h/bin/start-polybar
+
+[Install]
+WantedBy=graphical-session.target
