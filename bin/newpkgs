@@ -40,17 +40,17 @@ function help() { # {{{
 	echo "$HELP"
 }
 # }}}
-function new_official_packages() { # {{{
-	checkupdates | sed 's/^/\[O\] /' | sed 's/->//'
+function get_new_official_packages() { # {{{
+	checkupdates 2>/dev/null | sed 's/^/\[O\] /' | sed 's/->//'
 }
 # }}}
-function new_aur_packages() { # {{{
-	cower --update | sed 's/^:: /\[A\] /' | sed 's/->//'
+function get_new_aur_packages() { # {{{
+	cower --update 2>/dev/null | sed 's/^:: /\[A\] /' | sed 's/->//'
 }
 # }}}
 function get_new_packages() { # {{{
-	new_official_packages
-	new_aur_packages
+	get_new_official_packages
+	get_new_aur_packages
 }
 # }}}
 function count() { # {{{
