@@ -2,7 +2,7 @@
 
 # Dependencies:
 # checkupdates (pacman)
-# pacaur
+# cower
 
 # set -o errexit
 set -o pipefail
@@ -45,7 +45,7 @@ function new_official_packages() { # {{{
 }
 # }}}
 function new_aur_packages() { # {{{
-	pacaur -k | sed 's/^:: aur  /\[A\] /' | sed 's/->//'
+	cower --update | sed 's/^:: /\[A\] /' | sed 's/->//'
 }
 # }}}
 function get_new_packages() { # {{{

@@ -383,7 +383,7 @@ enable-ipc = true
 
 ; modules-left = weather
 modules-center = crypto
-modules-right = trash
+modules-right = pac_update trash
 ; }}}
 ; {{{ [module/weather]
 [module/weather]
