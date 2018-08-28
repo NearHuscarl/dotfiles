@@ -4,8 +4,8 @@
 
 UPDATE_INTERVAL=200
 
-HOOK_NAME='module/crypto3'
-HOOK_CMD='hook:module/crypto3'
+HOOK_NAME='crypto'
+HOOK_INDEX=3
 
 # source "$HOME/script/bash/clear_polybar_pipe.sh"
 source "$HOME/.config/polybar/updatehook.sh"

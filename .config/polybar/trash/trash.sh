@@ -19,7 +19,7 @@ function get_display_state() { # {{{
 # }}}
 function print_trash_count() { # {{{
 	# shellcheck disable=SC2012
-	ls -A "$trash_dir"/files/ -1 -U 2> /dev/null | wc -l
+	ls -A "$trash_dir/files/" -1 -U 2> /dev/null | wc -l
 	set_display_state 'count'
 }
 # }}}

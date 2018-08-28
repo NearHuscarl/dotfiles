@@ -4,8 +4,8 @@
 
 UPDATE_INTERVAL=3
 
-HOOK_NAME='module/trash3'
-HOOK_CMD='hook:module/trash3'
+HOOK_NAME='trash'
+HOOK_INDEX=3
 
 # source "$HOME/script/bash/clear_polybar_pipe.sh"
 source "$HOME/.config/polybar/updatehook.sh"
