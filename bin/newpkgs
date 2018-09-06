@@ -16,6 +16,7 @@ CYAN="$(tput setaf 6 2> /dev/null)"
 RESET="$(tput sgr0 2> /dev/null)"
 
 SCRIPT_NAME=$(basename "${BASH_SOURCE[0]}")
+CACHE_PATH="$HOME/.cache/newpkgs"
 USAGE="${YELLOW}Usage: ${CYAN}$SCRIPT_NAME${RESET} [--help|--list|--count]"
 HELP="\
 ${YELLOW}DESCRIPTION${RESET}
@@ -40,12 +41,38 @@ function help() { # {{{
 	echo "$HELP"
 }
 # }}}
+function update_new_official_packages() { # {{{
+	if [[ ! -d "$CACHE_PATH" ]]; then
+		mkdir -pv "$CACHE_PATH"
+	fi
+	checkupdates 2>/dev/null | sed 's/^/\[O\] /' | sed 's/->//' > "$CACHE_PATH/official"
+}
+# }}}
+function update_new_aur_packages() { # {{{
+	if [[ ! -d "$CACHE_PATH" ]]; then
+		mkdir -pv "$CACHE_PATH"
+	fi
+	cower --update 2>/dev/null | sed 's/^:: /\[A\] /' | sed 's/->//' > "$CACHE_PATH/aur"
+}
+# }}}
+function update_cache() { # {{{
+	local official_count aur_count
+
+	update_new_official_packages
+	update_new_aur_packages
+
+	official_count=$(wc -l < <(echo "$packages" | awk '/^\[O\]/ {print}'))
+	aur_count=$(wc -l < <(echo "$packages" | awk '/^\[A\]/ {print}'))
+
+	echo "Update cache: O:$official_count:A:$aur_count"
+}
+# }}}
 function get_new_official_packages() { # {{{
-	checkupdates 2>/dev/null | sed 's/^/\[O\] /' | sed 's/->//'
+	cat "$CACHE_PATH/official"
 }
 # }}}
 function get_new_aur_packages() { # {{{
-	cower --update 2>/dev/null | sed 's/^:: /\[A\] /' | sed 's/->//'
+	cat "$CACHE_PATH/aur"
 }
 # }}}
 function get_new_packages() { # {{{
@@ -94,6 +121,9 @@ function main() { # {{{
 					help)
 						help && exit 0
 						;;
+					update)
+						update_cache
+						;;
 					count)
 						count=true
 						;;
@@ -107,6 +137,9 @@ function main() { # {{{
 				;;
 			h)
 				help && exit 0
+				;;
+			u)
+				update_cache
 				;;
 			c)
 				count=true

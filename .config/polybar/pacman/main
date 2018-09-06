@@ -1,0 +1,25 @@
+#!/bin/env bash
+
+# Show new package count on polybar format
+# - newpkgs
+
+function count_new_packages() { # {{{
+	local count pac_count aur_count
+
+	count="$(newpkgs --count)"
+	pac_count="$(echo "$count" | awk '{print $1}' | awk -F ':' '{print $2}')"
+	aur_count="$(echo "$count" | awk '{print $2}' | awk -F ':' '{print $2}')"
+
+	if ((pac_count + aur_count > 0)); then
+		echo "$pac_count %{F$THEME_MAIN}%{F-} $aur_count"
+	else
+		echo "0 %{F$THEME_MAIN}%{F-} 0"
+	fi
+}
+# }}}
+function main() { # {{{
+	count_new_packages
+}
+# }}}
+
+main

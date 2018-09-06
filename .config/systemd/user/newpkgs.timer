@@ -1,0 +1,10 @@
+[Unit]
+Description=Runs newpkgs.service to update cache every 35 minutes
+
+[Timer]
+Unit=newpkgs.service
+OnCalendar=*:0/35
+Persistent=true
+
+[Install]
+WantedBy=timers.target

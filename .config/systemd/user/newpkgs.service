@@ -1,0 +1,10 @@
+[Unit]
+Description=Update newpkgs cache
+RequiresMountsFor=%h/.cache/newpkgs/
+
+[Service]
+Type=oneshot
+ExecStart=%h/bin/newpkgs --update
+
+[Install]
+WantedBy=default.target
