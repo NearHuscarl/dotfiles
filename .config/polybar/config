@@ -411,17 +411,19 @@ exec-if = "ping -q -w 2 -c 1 176.34.135.167 > /dev/null"
 ; {{{ [module/trash]
 [module/trash]
 type = custom/ipc
-initial = 3
+initial = 1
 
 format-prefix-foreground = ${colors.foreground-icon}
 format-prefix = " "
 
-hook-0 = bash -l -c '$HOME/.config/polybar/trash/trash.sh toggle'
-hook-1 = bash -l -c '$HOME/.config/polybar/trash/trash.sh clean'
-hook-2 = bash -l -c '$HOME/.config/polybar/trash/trash.sh print'
+hook-0 = bash -l -c '$HOME/.config/polybar/trash/trash.sh print'
+hook-1 = bash -l -c '$HOME/.config/polybar/trash/trash.sh toggle'
+hook-2 = bash -l -c '$HOME/.config/polybar/trash/trash.sh clean'
+hook-3 = bash -l -c '$HOME/.config/polybar/trash/trash.sh open'
 
-click-left = polybar-msg -p %pid% hook trash 1
-click-right = polybar-msg -p %pid% hook trash 2
+click-left = polybar-msg -p %pid% hook trash 2
+click-middle = polybar-msg -p %pid% hook trash 3
+click-right = polybar-msg -p %pid% hook trash 4
 ; }}}
 ; {{{ [module/news]
 [module/news]
