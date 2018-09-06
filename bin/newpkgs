@@ -17,14 +17,15 @@ RESET="$(tput sgr0 2> /dev/null)"
 
 SCRIPT_NAME=$(basename "${BASH_SOURCE[0]}")
 CACHE_PATH="$HOME/.cache/newpkgs"
-USAGE="${YELLOW}Usage: ${CYAN}$SCRIPT_NAME${RESET} [--help|--list|--count]"
+USAGE="${YELLOW}Usage: ${CYAN}$SCRIPT_NAME${RESET} [--help|--update|--list|--count]"
 HELP="\
 ${YELLOW}DESCRIPTION${RESET}
   Print or count new packages available for update with pacman package manager
 ${YELLOW}USAGE${RESET}
-  $SCRIPT_NAME [--help|--list|--count]
+  $SCRIPT_NAME [--help|--update|--list|--count]
 ${YELLOW}COMMANDS${RESET}
   ${CYAN}-h  --help${RESET}      print this help message
+  ${CYAN}-u  --update${RESET}    update new package list cache
   ${CYAN}-l  --list${RESET}      list new packages
   ${CYAN}-c  --count${RESET}     count new packages"
 
@@ -61,8 +62,8 @@ function update_cache() { # {{{
 	update_new_official_packages
 	update_new_aur_packages
 
-	official_count=$(wc -l < <(echo "$packages" | awk '/^\[O\]/ {print}'))
-	aur_count=$(wc -l < <(echo "$packages" | awk '/^\[A\]/ {print}'))
+	official_count=$(wc -l < <(cat "$CACHE_PATH/official" | awk '/^\[O\]/ {print}'))
+	aur_count=$(wc -l < <(cat "$CACHE_PATH/aur" | awk '/^\[A\]/ {print}'))
 
 	echo "Update cache: O:$official_count:A:$aur_count"
 }
@@ -83,8 +84,8 @@ function get_new_packages() { # {{{
 function count() { # {{{
 	local official_count aur_count packages="$1"
 
-	official_count=$(wc -l < <(echo "$packages" | awk '/^\[O\]/ {print}'))
-	aur_count=$(wc -l < <(echo "$packages" | awk '/^\[A\]/ {print}'))
+	official_count=$(wc -l < <(cat "$CACHE_PATH/official" | awk '/^\[O\]/ {print}'))
+	aur_count=$(wc -l < <(cat "$CACHE_PATH/aur" | awk '/^\[A\]/ {print}'))
 
 	echo "Official:$official_count  AUR:$aur_count"
 }
@@ -114,7 +115,7 @@ function check_update() { # {{{
 function main() { # {{{
 	local OPTIND opt count=false list=false
 
-	while getopts ':hcl-:' opt; do
+	while getopts ':hclu-:' opt; do
 		case "${opt}" in
 			-)
 				case ${OPTARG} in # a hack to use --option
@@ -122,7 +123,7 @@ function main() { # {{{
 						help && exit 0
 						;;
 					update)
-						update_cache
+						update_cache && exit 0
 						;;
 					count)
 						count=true
@@ -139,7 +140,7 @@ function main() { # {{{
 				help && exit 0
 				;;
 			u)
-				update_cache
+				update_cache && exit 0
 				;;
 			c)
 				count=true
