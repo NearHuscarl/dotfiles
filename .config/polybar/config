@@ -383,7 +383,7 @@ enable-ipc = true
 
 ; modules-left = weather
 modules-center = crypto
-modules-right = pac_update trash
+modules-right = pacman trash
 ; }}}
 ; {{{ [module/weather]
 [module/weather]
@@ -400,8 +400,8 @@ tail = true
 exec = bash -l -c '$HOME/.config/polybar/gmail/launch.sh'
 click-left = xdg-open https://mail.google.com
 ; }}}
-; {{{ [module/pac_update]
-[module/pac_update]
+; {{{ [module/pacman]
+[module/pacman]
 type = custom/script
 interval = 5
 

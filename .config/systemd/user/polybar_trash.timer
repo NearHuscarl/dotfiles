@@ -1,0 +1,11 @@
+[Unit]
+Description=Runs polybar_trash.service to update cache every 5 seconds
+
+[Timer]
+Unit=polybar_trash.service
+OnCalendar=*:*:0/5
+Persistent=true
+AccuracySec=1s
+
+[Install]
+WantedBy=timers.target

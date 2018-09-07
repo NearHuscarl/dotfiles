@@ -1,0 +1,10 @@
+[Unit]
+Description=Run polybar trash hook to update trash info
+ConditionFileIsExecutable=/usr/bin/polybar-msg
+
+[Service]
+Type=oneshot
+ExecStart=polybar-msg hook trash 1
+
+[Install]
+WantedBy=default.target
