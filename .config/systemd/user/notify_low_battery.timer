@@ -4,6 +4,7 @@ Description=Run notify_low_battery every 4 minutes
 [Timer]
 Unit=notify_low_battery.service
 OnCalendar=*:0/4
+Persistent=true
 
 [Install]
 WantedBy=timers.target

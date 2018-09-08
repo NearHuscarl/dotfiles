@@ -1,5 +1,5 @@
 [Unit]
-Description=Runs polybar_trash.service to update cache every 5 seconds
+Description=Runs polybar_trash.service every 5 seconds
 
 [Timer]
 Unit=polybar_trash.service
