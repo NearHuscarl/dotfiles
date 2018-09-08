@@ -1,0 +1,10 @@
+[Unit]
+Description=Run polybar crypto hook to update crypto price
+ConditionFileIsExecutable=/usr/bin/polybar-msg
+
+[Service]
+Type=oneshot
+ExecStart=polybar-msg hook crypto 1
+
+[Install]
+WantedBy=default.target

@@ -437,15 +437,15 @@ click-left = $HOME/.config/polybar/news/open_url
 ; {{{ [module/crypto]
 [module/crypto]
 type = custom/ipc
-initial = 3
+initial = 1
 
-hook-0 = bash -l -c '$HOME/.config/polybar/cryptocurrencies/crypto.py --toggle display'
-hook-1 = bash -l -c '$HOME/.config/polybar/cryptocurrencies/crypto.py --toggle currency'
-hook-2 = bash -l -c '$HOME/.config/polybar/cryptocurrencies/crypto.py --update'
+hook-0 = bash -l -c '$HOME/.config/polybar/cryptocurrencies/crypto.py --update'
+hook-1 = bash -l -c '$HOME/.config/polybar/cryptocurrencies/crypto.py --toggle display'
+hook-2 = bash -l -c '$HOME/.config/polybar/cryptocurrencies/crypto.py --toggle currency'
 
 # based-1 index :(
-click-left = polybar-msg -p %pid% hook crypto 1
-click-right = polybar-msg -p %pid% hook crypto 2
+click-left = polybar-msg -p %pid% hook crypto 2
+click-right = polybar-msg -p %pid% hook crypto 3
 click-middle = xdg-open https://coinmarketcap.com/
 ; }}}
 
