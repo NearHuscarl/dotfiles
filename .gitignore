@@ -31,7 +31,7 @@
 !/.Xmodmap
 !/.Xresources
 !/.zshrc
-!/install.sh
+!/setup.sh
 
 !/bin/
 !/screenshot/
