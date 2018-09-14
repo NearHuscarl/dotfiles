@@ -36,6 +36,8 @@ setup_vim() { # {{{
 	if [[ -e "$HOME/.vim/setup.sh" ]]; then
 		print_progress 'Setup vim config files'
 		"$HOME/.vim/setup.sh"
+		cd "$HOME/.vim"
+		git pull origin master
 	else
 		print_warning 'Vim setup file not found'
 	fi
