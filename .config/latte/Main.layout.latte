@@ -5,10 +5,10 @@ RightButton;NoModifier=org.kde.latte.contextmenu
 activityId=
 dockWindowBehavior=true
 enableKWinEdges=true
-formfactor=2
+formfactor=3
 immutability=1
 lastScreen=-1
-location=4
+location=5
 onPrimary=true
 plugin=org.kde.latte.containment
 raiseOnActivityChange=false
@@ -27,7 +27,7 @@ PreloadWeight=0
 
 [Containments][1][Applets][2][Configuration][General]
 isInLatteDock=true
-launchers59=applications:org.kde.konsole.desktop,applications:chromium.desktop,applications:vlc.desktop,applications:org.kde.spectacle.desktop,applications:systemsettings.desktop,applications:org.kde.dolphin.desktop,applications:gimp.desktop,applications:pycharm.desktop,applications:org.kde.kcolorchooser.desktop,applications:qalculate-gtk.desktop,applications:org.kde.ksysguard.desktop,applications:dwarffortress.desktop
+launchers59=applications:org.kde.konsole.desktop,applications:chromium.desktop,applications:vlc.desktop,applications:org.kde.spectacle.desktop,applications:systemsettings.desktop,applications:org.kde.dolphin.desktop,applications:pycharm.desktop,applications:org.kde.kcolorchooser.desktop,applications:qalculate-gtk.desktop,applications:org.kde.ksysguard.desktop,applications:virtualbox.desktop,applications:intellij-idea-ce.desktop
 
 [Containments][1][Applets][3]
 immutability=1
@@ -46,7 +46,7 @@ plugin=org.kde.plasma.folder
 wallpaperplugin=
 
 [Containments][1][Applets][4][Configuration]
-PreloadWeight=5
+PreloadWeight=0
 activityId=
 formfactor=0
 immutability=1
@@ -65,8 +65,15 @@ PreloadWeight=0
 [Containments][1][Applets][5][Configuration][General]
 favoritesPortedToKAstats=true
 
+[Containments][1][Applets][6]
+immutability=1
+plugin=org.kde.plasma.networkmanagement
+
+[Containments][1][Applets][6][Configuration]
+PreloadWeight=100
+
 [Containments][1][ConfigDialog]
-DialogHeight=648
+DialogHeight=674
 DialogWidth=450
 
 [Containments][1][Configuration]
@@ -74,7 +81,7 @@ PreloadWeight=0
 
 [Containments][1][General]
 advanced=true
-appletOrder=5;4;2;3
+appletOrder=5;4;2;6;3
 dotsOnActive=true
 iconSize=40
 panelSize=100
@@ -92,7 +99,7 @@ activities=
 background=
 color=blue
 disableBordersForMaximizedWindows=false
-lastUsedActivity=b16da569-0cdf-46f2-8462-8be20c60ffa4
+lastUsedActivity=c0e11508-91a0-4e5e-a61c-6da8178f30a8
 launchers=
 showInMenu=true
 textColor=fcfcfc

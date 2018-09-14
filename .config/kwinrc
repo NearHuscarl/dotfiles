@@ -2,7 +2,7 @@
 OpenGLIsUnsafe=false
 
 [Desktops]
-Number=1
+Number=3
 
 [Effect-Blur]
 BlurStrength=9
